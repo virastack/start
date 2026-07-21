@@ -40,13 +40,13 @@ A production-ready **Next.js 16** boilerplate designed for scalability, performa
 - Absolute Imports using `@` prefix
 - Lighthouse Score: `100`
 
-## Built with @virastack/ai-rules
+## Built with @virastack/ai
 
-This boilerplate is designed and powered by [@virastack/ai-rules](https://github.com/virastack/ai-rules), an AI-native architecture kit for modern React. The governance layer that ships with this boilerplate—`.cursor/rules`, `docs/`, and `AGENTS.md`—is derived from `@virastack/ai-rules` and is included by default; no extra setup is required.
+This boilerplate is designed and powered by [@virastack/ai](https://github.com/virastack/ai), an AI-native architecture kit for modern React. The governance layer that ships with this boilerplate—`.cursor/rules`, `docs/`, and `AGENTS.md`—is derived from `@virastack/ai` and is included by default; no extra setup is required.
 
 ## AI-Ready Architecture
 
-This boilerplate is fully aligned with 2026 AI-driven development standards. It is built on [@virastack/ai-rules](https://github.com/virastack/ai-rules) (see **Built with @virastack/ai-rules** above). So that AI agents (Cursor, Windsurf, etc.) can understand the project in seconds, it includes the following optimizations:
+This boilerplate is fully aligned with 2026 AI-driven development standards. It is built on [@virastack/ai](https://github.com/virastack/ai) (see **Built with @virastack/ai** above). So that AI agents (Cursor, Windsurf, etc.) can understand the project in seconds, it includes the following optimizations:
 
 - **llms.txt & llms-full.txt**: These files live in the `/public` directory and provide LLMs with high-quality context about the project’s architecture and tech stack.
 - **.cursor/rules**: Project-specific rules ensure that when coding with AI assistance, the project's architectural conventions stay consistent.
@@ -229,22 +229,7 @@ Benefits include automatic release notes and semantic versioning based on commit
 
 ## Explore the ViraStack Ecosystem
 
-### Projects
-
-- [**Next.js Boilerplate**](https://github.com/virastack/nextjs-boilerplate) - Production-ready Next.js 16+ starter template built with Tailwind CSS 4 and TypeScript.
-- [**AI Rules**](https://github.com/virastack/ai-rules) - AI-native architecture kit and high-discipline protocols for modern React applications.
-- [**Input Mask**](https://github.com/virastack/input-mask) - Lightweight, zero-dependency input masking library optimized for React Hook Form.
-- [**Password Toggle**](https://github.com/virastack/password-toggle) - Fully accessible and highly customizable password visibility hook for React.
-- [**Modern Web in 3 Minutes**](https://github.com/virastack/modern-web-in-3-minutes) - Master modern web development standards in just 3 minutes.
-
-### 🚧 Coming Soon
-
-- [**Start (CLI)**](https://github.com/virastack/cli) - Automated scaffolding tool to initialize and scale high-discipline ViraStack architectures.
-- [**TanStack Boilerplate**](https://github.com/virastack/tanstack-boilerplate) - Production-ready TanStack Start starter template built with Tailwind CSS 4 and TypeScript.
-- [**Standards**](https://github.com/virastack/standards) - A unified suite of ESLint, Prettier, and architectural rules to enforce absolute code integrity.
-- [**Error Guard**](https://github.com/virastack/error-guard) - Pro-grade error handling and smart recovery protocols for zero-friction React environments.
-
-... and more at [**virastack.com**](https://virastack.com)
+Discover all ViraStack tools, libraries, and boilerplates at [**virastack.com**](https://virastack.com).
 
 ## License
 
