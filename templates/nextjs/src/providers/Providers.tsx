@@ -1,23 +1,15 @@
-"use client";
+import { Toaster } from "sonner";
 
-import { type AbstractIntlMessages } from "next-intl";
+import { QueryProvider } from "@/providers/QueryProvider";
+import { ThemeProvider } from "@/providers/ThemeProvider";
 
-import { IntlProvider, QueryProvider, ThemeProvider } from "@/providers";
-
-export function Providers({
-  children,
-  messages,
-  locale
-}: {
-  children: React.ReactNode;
-  messages: AbstractIntlMessages;
-  locale?: string;
-}) {
+export function Providers({ children }: { children: React.ReactNode }) {
   return (
-    <ThemeProvider>
-      <IntlProvider messages={messages} locale={locale}>
-        <QueryProvider>{children}</QueryProvider>
-      </IntlProvider>
+    <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+      <QueryProvider>
+        {children}
+        <Toaster richColors position="bottom-right" closeButton />
+      </QueryProvider>
     </ThemeProvider>
   );
 }

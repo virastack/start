@@ -1,0 +1,55 @@
+---
+description: "USE WHEN: Applying core principles and enforcing global project constraints."
+alwaysApply: true
+---
+
+# Core Constitution
+
+## Constraints
+
+- **INTENTIONAL_TODO Rule:** Usage is ONLY permitted for non-functional placeholders (e.g., temporary mock UI, future logging). 
+- **Business Integrity:** Forbidden to use `INTENTIONAL_TODO` for business logic, error handling, or API integrations.
+- **Pseudo-code:** Forbidden. Provide working TypeScript/React code.
+- **Reference:** Do not say "Usually done like this"; link to repo rules.
+- **Validation:** Do not deliver without passing `pnpm check-types` and `pnpm lint`.
+- **Search First:** Analyze existing patterns before coding.
+- **Minimal Intervention:** Modify only necessary areas.
+- **Source of Truth:** Reference the codebase. Correct it if erroneous.
+- **Boy Scout:** Clean unused imports, `console.log`, and dead code.
+- **Naming:** `kebab-case` for folders/non-component files; `PascalCase` for React components. File type suffixes: `*.types.ts`, `*.constants.ts`, `*.config.ts`, `*.test.ts`, `*.spec.ts`, `*.stories.tsx`, `*.schema.ts`, `*.api.ts`, `*.store.ts` (base name in kebab-case).
+- **Exports:** Group exports with `index.ts`.
+- **No Silent Failures:** Do not swallow errors. Manage `try/catch` blocks.
+- **Secret Protection:** Do not log `.env` content.
+- **Dependency:** Obtain approval for new packages.
+
+## Bans
+
+- Comments (except JSDoc).
+- Placeholders/incomplete code.
+- `catch (e) {}` (Silent catch).
+- Logging secrets.
+- Out-of-scope refactoring.
+- `// ...existing code` (Provide full blocks).
+- Standard `TODO` or `FIXME` comments.
+- Using `INTENTIONAL_TODO` to skip core logic implementation.
+- Parent-relative imports (`../`, `../../`). Use path aliases only.
+
+## Correct Implementation
+
+<example>
+```js
+try {
+  process(data);
+} catch (error) {
+  throw new ProcessingError({ cause: error });
+}
+```
+</example>
+
+## Incorrect Implementation
+
+<incorrect-example>
+```js
+try { process(data); } catch (e) {}
+```
+</incorrect-example>

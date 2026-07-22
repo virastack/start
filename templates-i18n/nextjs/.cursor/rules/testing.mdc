@@ -1,0 +1,27 @@
+---
+description: "USE WHEN: Writing unit, integration, or component tests. Mandatory for logic in features."
+globs: "**/*.{test,spec}.{ts,tsx}"
+alwaysApply: false
+---
+
+# Testing Guide (Pragmatic)
+
+## Principles
+- **Value over Coverage:** Focus on testing complex business logic in `features/[feature]`. Skip simple UI components unless critical.
+- **Behavior Testing:** Focus on user outcomes (Arrange-Act-Assert).
+
+## Tech Stack
+- Vitest & React Testing Library.
+
+## Preferences (Not Hard Rules)
+- **API:** Use `MSW` for stable features; simple mocks are okay for rapid prototyping.
+- **Location:** Keep `.test.ts` next to implementation.
+- **Snapshots:** Use only for small, static data structures to prevent maintenance hell.
+
+## Correct Approach
+<example>
+it('should calculate discount correctly', () => {
+  const result = calculateTotal({ price: 100, discount: 20 }); 
+  expect(result).toBe(80); 
+});
+</example>

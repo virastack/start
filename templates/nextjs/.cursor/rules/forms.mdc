@@ -1,6 +1,6 @@
 ---
 description: "USE WHEN: Constructing forms, validating inputs, and managing form state with Zod schemas."
-globs: "src/features/**/components/*Form*.tsx,src/features/**/schemas/*.ts"
+globs: "src/features/**/*Form*.tsx,src/schemas/**/*.ts"
 alwaysApply: false
 ---
 
@@ -9,10 +9,11 @@ alwaysApply: false
 ## Constraints
 
 - **Library:** Use `react-hook-form` + `@hookform/resolvers/zod`.
-- **Schema:** Store schemas in `features/[feature]/schemas/`.
-- **Defaults:** Define `defaultValues` fully using `z.infer` from the schema.
-- **Performance:** Use `useWatch` or `Controller` instead of `watch`.
+- **Schema:** Store schemas in `src/schemas/*.schema.ts` (or `features/[feature]/schemas/` for feature-local schemas).
+- **Defaults:** Define `defaultValues` fully, typed via `z.infer<typeof schema>`.
+- **Performance:** Use `useWatch` or `Controller` instead of `watch()` at the root level.
 - **Submission:** Use `handleSubmit`. Prevent double clicks with `isSubmitting`.
+- **Feedback:** Surface success/failure with `sonner` toasts (`toast.success`, `toast.error`).
 - **Errors:** Map server errors using `setError`.
 
 ## Bans
@@ -27,9 +28,9 @@ alwaysApply: false
 
 <example>
 ```tsx
-const form = useForm<z.infer<typeof Schema>>({
-  resolver: zodResolver(Schema),
-  defaultValues: { email: "" }
+const form = useForm<z.infer<typeof newsletterSchema>>({
+  resolver: zodResolver(newsletterSchema),
+  defaultValues: { email: "" },
 });
 const email = useWatch({ control: form.control, name: "email" });
 ```

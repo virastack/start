@@ -1,68 +1,65 @@
-# ViraStack - Next.js Boilerplate — Next.js 16 Boilerplate
+# ViraStack Start (Next.js)
 
-> Production-ready Next.js 16 + React 19 + Tailwind CSS v4 boilerplate designed for scalability, performance, and developer happiness. It intentionally omits Authentication and Testing scaffolds to keep the core minimal and let developers choose their preferred solutions.
+> Premium Next.js 16 + React 19 + Tailwind CSS 4 boilerplate focused on clean architecture, UI/UX, and agent-ready developer experience. It intentionally omits Authentication, Database/ORM, and Testing scaffolds to stay lightweight — bring the solution that fits your project.
 
-ViraStack - Next.js Boilerplate is built with the App Router and embraces modern Next.js patterns: Server/Client Components, streaming, metadata, and internationalization. It includes well-structured folders, type-safe env validation with Zod, TanStack Query for data fetching, and opinionated UI building blocks. For AI-native development, this repo includes a `.cursor/rules` file that encodes coding standards and conventions so agents can collaborate effectively.
+Built on the App Router with modern Next.js patterns: Server/Client Components, streaming, and the Metadata API. UI primitives are built on **Base UI** (unstyled, accessible) instead of shadcn's Radix, styled with Tailwind CSS 4 design tokens. State is split cleanly: TanStack Query for server state, Zustand for client state, and `nuqs` for URL state. Forms use React Hook Form + Zod. **ViraStack AI** ships pre-configured agent context — `.cursor/rules` encodes coding standards, `AGENTS.md` guides all agents, and `.agents/skills` provides design-taste skills (`emil-design-eng`, `make-interfaces-feel-better`).
 
-- Tech stack: Next.js 16, React 19, Tailwind CSS v4, TypeScript 5
-- Data & state: TanStack Query 5, lightweight state with Zustand
-- i18n: next-intl with locale-aware routing under `src/app/[locale]`
-- Env: `@t3-oss/env-nextjs` + Zod in `src/env.ts`
-- Philosophy: “lightweight core” — no Auth/Test by default; add what you need
-- Tooling: ESLint 9, Prettier 3, Husky, Knip; Bundler Analyzer; absolute imports (`@` prefix); SEO and lighthouse-focused
-- AI-native: `llms.txt` & `llms-full.txt` in `/public` plus `.cursor/rules` for agent collaboration
+- Tech stack: Next.js 16, React 19, Tailwind CSS 4, TypeScript 5 (strict + `noUncheckedIndexedAccess`)
+- UI: Base UI, Framer Motion, Sonner, Lucide React, `next-themes`, `class-variance-authority`
+- Data & state: TanStack Query 5, Zustand, `nuqs`
+- Forms: React Hook Form + Zod (+ `@hookform/resolvers`)
+- Env: Hand-rolled Zod schema in `src/env.ts` (no `@t3-oss/env-nextjs`, kept dependency-free)
+- Philosophy: "lightweight core" — no Auth/DB/Test by default; add what you need
+- Tooling: ESLint 9, Prettier 3, Husky, Knip, Commitlint, Changesets, `@next/bundle-analyzer`
+- ViraStack AI: `llms.txt` (this file), `AGENTS.md`, `CLAUDE.md`, `.cursor/rules/*.mdc`, `.agents/skills/*`
 
 ## Docs
 - [Repository (GitHub)](https://github.com/virastack/nextjs-boilerplate): Source code and issues
 - [README](https://github.com/virastack/nextjs-boilerplate/blob/main/README.md): Features, structure, and conventions
 
 ## Key Files & Entry Points
-- [`src/app/[locale]/layout.tsx`](https://github.com/virastack/nextjs-boilerplate/blob/main/src/app/%5Blocale%5D/layout.tsx): Root layout (App Router)
-- [`src/app/[locale]/page.tsx`](https://github.com/virastack/nextjs-boilerplate/blob/main/src/app/%5Blocale%5D/page.tsx): Home page with locale segment
+- [`src/app/layout.tsx`](https://github.com/virastack/nextjs-boilerplate/blob/main/src/app/layout.tsx): Root layout, fonts, providers
+- [`src/app/page.tsx`](https://github.com/virastack/nextjs-boilerplate/blob/main/src/app/page.tsx): Home page
+- [`src/app/loading.tsx`](https://github.com/virastack/nextjs-boilerplate/blob/main/src/app/loading.tsx): Route-level skeleton
+- [`src/app/error.tsx`](https://github.com/virastack/nextjs-boilerplate/blob/main/src/app/error.tsx): Route-level error boundary
 - [`src/app/not-found.tsx`](https://github.com/virastack/nextjs-boilerplate/blob/main/src/app/not-found.tsx): 404 boundary
+- [`src/app/global-error.tsx`](https://github.com/virastack/nextjs-boilerplate/blob/main/src/app/global-error.tsx): Root error boundary
 - [`src/app/robots.ts`](https://github.com/virastack/nextjs-boilerplate/blob/main/src/app/robots.ts): Robots configuration
 - [`src/app/sitemap.ts`](https://github.com/virastack/nextjs-boilerplate/blob/main/src/app/sitemap.ts): Sitemap generation
-- [`src/env.ts`](https://github.com/virastack/nextjs-boilerplate/blob/main/src/env.ts): Zod-validated environment schema (single source of truth)
-- [`src/config/site.ts`](https://github.com/virastack/nextjs-boilerplate/blob/main/src/config/site.ts): Site config (name, URL, socials)
-- [`src/config/seo.ts`](https://github.com/virastack/nextjs-boilerplate/blob/main/src/config/seo.ts): Metadata and SEO defaults
-- [`src/lib/api.ts`](https://github.com/virastack/nextjs-boilerplate/blob/main/src/lib/api.ts): Axios instance and `get/post/put/del` helpers
-- [`src/providers/Providers.tsx`](https://github.com/virastack/nextjs-boilerplate/blob/main/src/providers/Providers.tsx): App-wide providers (Theme, Query, Intl)
-
-## Internationalization
-- [`src/i18n/routing.ts`](https://github.com/virastack/nextjs-boilerplate/blob/main/src/i18n/routing.ts): Locale-aware routing helpers
-- [`src/messages/en.json`](https://github.com/virastack/nextjs-boilerplate/blob/main/src/messages/en.json): English translations
-- [`src/messages/tr.json`](https://github.com/virastack/nextjs-boilerplate/blob/main/src/messages/tr.json): Turkish translations
+- [`src/env.ts`](https://github.com/virastack/nextjs-boilerplate/blob/main/src/env.ts): Zod-validated environment schema
+- [`src/config/site.config.ts`](https://github.com/virastack/nextjs-boilerplate/blob/main/src/config/site.config.ts): Site config (name, URL, links)
+- [`src/config/seo.config.ts`](https://github.com/virastack/nextjs-boilerplate/blob/main/src/config/seo.config.ts): Default Metadata object
+- [`src/lib/api.ts`](https://github.com/virastack/nextjs-boilerplate/blob/main/src/lib/api.ts): Native `fetch` wrapper with retry & typed errors
+- [`src/providers/Providers.tsx`](https://github.com/virastack/nextjs-boilerplate/blob/main/src/providers/Providers.tsx): App-wide providers (Theme, Query, Toaster)
 
 ## Data Fetching & State
 - [`src/hooks/use-users.ts`](https://github.com/virastack/nextjs-boilerplate/blob/main/src/hooks/use-users.ts): Example TanStack Query hook
-- [`src/stores/counter.ts`](https://github.com/virastack/nextjs-boilerplate/blob/main/src/stores/counter.ts): Example Zustand store
-- [`src/lib/query-client.ts`](https://github.com/virastack/nextjs-boilerplate/blob/main/src/lib/query-client.ts): Query client setup
+- [`src/stores/counter.store.ts`](https://github.com/virastack/nextjs-boilerplate/blob/main/src/stores/counter.store.ts): Example Zustand store
+- [`src/lib/query-client.ts`](https://github.com/virastack/nextjs-boilerplate/blob/main/src/lib/query-client.ts): QueryClient factory & defaults
+- [`src/features/landing/Playground.tsx`](https://github.com/virastack/nextjs-boilerplate/blob/main/src/features/landing/Playground.tsx): `nuqs` URL state + Base UI Tabs demo
 
 ## UI & Design System
-- [`src/components/ui`](https://github.com/virastack/nextjs-boilerplate/tree/main/src/components/ui): Shadcn-based UI primitives (keep as-is)
-- [`src/components/widgets`](https://github.com/virastack/nextjs-boilerplate/tree/main/src/components/widgets): Higher-level UI (Hero, Dashboard, etc.)
-- [`src/styles/tailwind.css`](https://github.com/virastack/nextjs-boilerplate/blob/main/src/styles/tailwind.css): Tailwind v4 entry
+- [`src/components/ui`](https://github.com/virastack/nextjs-boilerplate/tree/main/src/components/ui): Base UI-backed primitives (Button, Input, Dialog, Tabs, Skeleton, Label)
+- [`src/components/layout`](https://github.com/virastack/nextjs-boilerplate/tree/main/src/components/layout): Header/Footer
+- [`src/components/shared`](https://github.com/virastack/nextjs-boilerplate/tree/main/src/components/shared): Cross-feature components (ThemeToggle)
+- [`src/features/landing`](https://github.com/virastack/nextjs-boilerplate/tree/main/src/features/landing): Home page feature slice
+- [`src/styles/tailwind.css`](https://github.com/virastack/nextjs-boilerplate/blob/main/src/styles/tailwind.css): Tailwind v4 entry + design tokens
 
 ## Customization & Imports
-- Search the project for `FIXME:` tags to find customization points (env, robots, sitemap, site config, SEO, i18n, api).
-- Prefer short path aliases: `@/ui`, `@/widgets`, `@/hooks`, `@/data`, `@/schemas`, `@/layouts`.
+- Search the project for `FIXME:` to find customization points (env, next.config images, site config, OG image).
+- Prefer short path aliases: `@/ui`, `@/hooks`, `@/data`, `@/schemas`, `@/layout` over long forms.
 
-## AI‑Native Development
-- [`.cursor/rules`](https://github.com/virastack/nextjs-boilerplate/blob/main/.cursor/rules): Project rules for agents (naming, structure, a11y, styling). Keep aligned with README. Type names: PascalCase without Type suffix (e.g. User, SiteConfig). Critical for consistent, reliable agent edits.
+## ViraStack AI
+- [`AGENTS.md`](https://github.com/virastack/nextjs-boilerplate/blob/main/AGENTS.md): Agent operating guide (all agents)
+- [`CLAUDE.md`](https://github.com/virastack/nextjs-boilerplate/blob/main/CLAUDE.md): Claude Code entry point
+- [`.cursor/rules`](https://github.com/virastack/nextjs-boilerplate/tree/main/.cursor/rules): Scoped coding rules (Cursor auto-loads; others read via AGENTS.md)
+- [`.agents/skills`](https://github.com/virastack/nextjs-boilerplate/tree/main/.agents/skills): `emil-design-eng` and `make-interfaces-feel-better` design-taste skills
 
 ## External References
 - [Next.js 16 Docs](https://nextjs.org/docs): App Router, Server/Client Components, routing, metadata, images, fonts
 - [React 19](https://react.dev/): Modern React APIs and RSC foundations
-- [Tailwind CSS v4](https://tailwindcss.com/): Latest design tokens & utility-first styling
+- [Tailwind CSS v4](https://tailwindcss.com/): Design tokens & utility-first styling
+- [Base UI](https://base-ui.com/): Unstyled, accessible React components
 - [TanStack Query](https://tanstack.com/query/latest): Server-state syncing & caching
-- [next-intl](https://next-intl-docs.vercel.app/): i18n & formatting
-- [@t3-oss/env-nextjs](https://env.t3.gg/): Type-safe env validation with Zod
+- [nuqs](https://nuqs.dev/): Type-safe URL search param state
 - [Zod](https://zod.dev/): Runtime validation and parsing
-
-## Optional
-- [`src/components/layouts`](https://github.com/virastack/nextjs-boilerplate/tree/main/src/components/layouts): Header/Footer scaffolding
-- [`src/constants`](https://github.com/virastack/nextjs-boilerplate/tree/main/src/constants): Global constants (i18n, date)
-- [`src/lib/helpers`](https://github.com/virastack/nextjs-boilerplate/tree/main/src/lib/helpers): Utility helpers
-- [`src/types`](https://github.com/virastack/nextjs-boilerplate/tree/main/src/types): Centralized TypeScript types (PascalCase, no Type suffix: User, SiteConfig)
-- [`src/data`](https://github.com/virastack/nextjs-boilerplate/tree/main/src/data): Static data sets for examples
-

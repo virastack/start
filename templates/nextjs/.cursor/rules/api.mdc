@@ -8,30 +8,35 @@ alwaysApply: false
 
 ## Constraints
 
-* **Location:** Place all HTTP calls under `features/[feature]/api`.
-* **Validation:** Use Zod for input/output validation when data is external or untrusted. Parse responses before they reach UI or state.
-* **Return Type:** Return typed data, not raw responses.
-* **Error Handling:** Normalize all API errors to a consistent `AppError` format (`code`, `message`) before throwing.
-* **Config:** Load `baseURL` from env. Use a single `axios` instance (`src/lib/api.ts`).
-* **Interceptors:** Handle cross-cutting concerns (auth, headers) via interceptors.
-* **Naming:** `verb-entity.api.ts` (e.g., `get-users.api.ts`). Function: `getUsers`.
-* **SSR Safety:** Use only whitelisted internal URLs or absolute paths for server-to-server calls to prevent SSRF.
+- **Location:** Place all HTTP calls under `src/features/[feature]/api`.
+- **Client:** Use the shared native-`fetch` wrapper (`src/lib/api.ts` → `api.get/post/put/patch/delete`). Do not introduce axios/ofetch — the wrapper exists specifically to stay dependency-free and 100% compatible with Next.js `fetch` caching (`cache`, `next.revalidate`, `next.tags`).
+- **Validation:** Use Zod to validate external/untrusted responses before they reach UI or state.
+- **Return Type:** Return typed, parsed data — never raw `Response` objects.
+- **Error Handling:** Rely on `ApiError` (thrown by the wrapper) for a consistent `status`/`data` shape; do not leak raw stack traces to the client.
+- **Auth:** Attach tokens in `buildHeaders()` inside `src/lib/api.ts` (see the `FIXME` marker) — never scatter `Authorization` headers across call sites.
+- **Naming:** `verb-entity.api.ts` (e.g., `get-users.api.ts`). Function: `getUsers`.
+- **SSR Safety:** Use only whitelisted internal URLs or absolute paths for server-to-server calls to prevent SSRF.
 
 ## Bans
 
-* **Raw Exposure:** Forbidden to use `fetch`/`axios` or raw API data inside UI components, hooks, or state without validation.
-* **Logic Leaks:** Forbidden to leak internal error stack traces or raw axios/fetch errors to the client.
-* **Security:** Forbidden to construct dynamic URLs using unsanitized user inputs.
-* **Architecture:** No `axios.create` inside features, no cross-feature API imports, no hardcoded endpoint strings in queries.
+- **Raw Exposure:** Forbidden to use `fetch` directly (bypassing `api.ts`) or raw API data inside UI components/hooks without validation.
+- **New HTTP Clients:** No axios, ofetch, or ky — the fetch wrapper is the single source of truth.
+- **Logic Leaks:** Forbidden to leak internal error stack traces or raw fetch errors to the client.
+- **Security:** Forbidden to construct dynamic URLs using unsanitized user input.
+- **Architecture:** No cross-feature API imports, no hardcoded endpoint strings inside query hooks.
 
 ## Correct Implementation
 
 <example>
 ```ts
-export const getUsers = async (): Promise<User[]> => {
-  const { data } = await api.get("/users");
-  return UserSchema.array().parse(data);
-};
+// features/users/api/get-users.api.ts
+import { api } from "@/lib/api";
+import { userSchema } from "@/features/users/schemas/user.schema";
+
+export async function getUsers() {
+  const data = await api.get<unknown[]>("/users");
+  return userSchema.array().parse(data);
+}
 ```
 </example>
 
@@ -39,6 +44,8 @@ export const getUsers = async (): Promise<User[]> => {
 
 <incorrect-example>
 ```tsx
-useEffect(() => { axios.get("/users"); }, []);
+useEffect(() => {
+  fetch("/users").then((r) => r.json()).then(setUsers);
+}, []);
 ```
 </incorrect-example>

@@ -2,54 +2,39 @@
 
 ## Technical Stack (SSOT)
 
-| Layer            | Technology           | Authority (Rule Ref)   |
-| :--------------- | :------------------- | :--------------------- |
-| **Server State** | TanStack Query       | `tanstack-query.mdc`   |
-| **Client State** | Zustand              | `state-management.mdc` |
-| **Validation**   | Zod                  | `typescript.mdc`       |
-| **UI / Styling** | shadcn/ui + Tailwind | `ui-components.mdc`    |
-| **API Client**   | Axios (Centralized)  | `api.mdc`              |
-
-## Framework Isolation Boundary
-
-Implementation details for Next.js and TanStack Start are strictly segregated. Framework-specific patterns are delegated to their respective .mdc rules.
-
-- **Next.js 16:** See `.cursor/rules/nextjs.mdc`
-- **TanStack Start:** See `.cursor/rules/tanstack-start.mdc`
-
-**Shared Layer:** Reserved strictly for framework-agnostic code (`shared/schemas`, `ui-primitives`).
+| Layer            | Technology               | Authority (Rule Ref)   |
+| :--------------- | :----------------------- | :--------------------- |
+| **Server State** | TanStack Query           | `tanstack-query.mdc`   |
+| **Client State** | Zustand                  | `state-management.mdc` |
+| **URL State**    | nuqs                     | `state-management.mdc` |
+| **Validation**   | Zod                      | `typescript.mdc`       |
+| **UI / Styling** | Base UI + Tailwind CSS 4 | `ui-components.mdc`    |
+| **API Client**   | Native `fetch` wrapper   | `api.mdc`              |
 
 ## Global Directory Hierarchy
 
-Adhere strictly to the following tree structure. Creating arbitrary folders is FORBIDDEN:
+Adhere strictly to the following tree structure. Creating arbitrary top-level folders is FORBIDDEN.
 
 ```text
 src/
-├── app/ | routes/
+├── app/            # Routing & layouts only (Next.js App Router)
 ├── features/
-│   └── [feature-name]/
+│   └── [feature]/
 │       ├── api/
-│       ├── components/
-│       ├── constants/
-│       ├── data/
-│       ├── helpers/
-│       ├── hooks/
 │       ├── schemas/
+│       ├── hooks/
 │       ├── stores/
-│       ├── types/
 │       └── index.ts
 ├── components/
-│   ├── icons/
-│   ├── layout/
-│   ├── shared/
-│   └── ui/
-├── config/
+│   ├── layout/     # Header, Footer, page-level structure
+│   ├── shared/     # Cross-feature, stateful-but-generic (ThemeToggle, ...)
+│   └── ui/         # Stateless Base UI-backed primitives (button, input, ...)
+├── config/         # site.config.ts, seo.config.ts
 ├── constants/
-├── helpers/
+├── data/
+├── helpers/        # Pure functions, zero package imports
 ├── hooks/
-├── i18n/
-├── lib/
-├── messages/
+├── lib/            # Configured instances of external libs (api.ts, query-client.ts, utils.ts)
 ├── providers/
 ├── schemas/
 ├── stores/
@@ -60,50 +45,40 @@ src/
 
 ## Shared vs. Feature Matrix (The Rule of Three)
 
-Apply the following metric hierarchy to determine code location:
-
-- **Default Scope:** All logic and components originate within `features/[feature]/`.
-- **Promotion:** Any logic or component requested by 2 different features MUST be moved to the global `src/` (shared) layer.
-- **Cross-Import Ban:** Direct imports between features are FORBIDDEN. Communication is restricted to the `src/shared` layer or via prop-drilling at the Page level.
-- **Helpers:** Pure TypeScript functions that strictly transform input to output without side effects. MUST NOT contain any package imports. (e.g., `isBrowser()`).
-- **Data:** Feature-specific static data (lists, config objects, constants). ONLY allowed within `features/[feature]/data/`.
-- **Lib:** Contains project-specific configured instances of external libraries (axios, date-fns, js-cookie, etc.). Files containing package imports MUST be placed here. Pure TS functions without package imports belong in `helpers`. (e.g., `isToday()` using date-fns goes to `lib`, `isBrowser()` goes to `helpers`).
-- **Zod Schemas:** All feature-related schemas MUST be stored in `features/[feature]/schemas/`. API functions and UI components MUST import from this single source to prevent duplication.
+- **Default Scope:** New logic and components start inside `features/[feature]/`.
+- **Promotion:** Logic or components needed by 2+ features MUST be promoted to the global `src/` layer.
+- **Cross-Import Ban:** Direct imports between features are FORBIDDEN. Communicate through the shared layer or via props at the page level.
+- **Helpers vs Lib:** `helpers/*` are pure functions with **zero** package imports (e.g. `formatDate` using only `Intl`). `lib/*` wraps configured external library instances (e.g. `api.ts`, `query-client.ts`).
+- **Data:** Static example/demo data lives in `src/data/*.data.ts` (or `features/[feature]/data/`).
+- **Zod Schemas:** All schemas live in `src/schemas/*.schema.ts` (or `features/[feature]/schemas/`). API functions and forms MUST import from this single source to prevent duplication.
 
 ## Imports
 
-- **Path Aliases:** Usage of path aliases is MANDATORY.
-- **Parent-Relative:** Parent-relative imports (`../`, `../../`) are FORBIDDEN. Use absolute path aliases.
+- **Path Aliases:** Mandatory. See `.cursor/rules/naming-conventions.mdc` for the full alias table (`@/ui`, `@/hooks`, `@/data`, `@/schemas`, `@/layout`).
+- **Parent-Relative:** `../`, `../../` imports are FORBIDDEN.
 
 ## Server State & Ownership
 
-Server state is global, but access is hierarchical:
+- **Ownership:** Every query/mutation hook belongs to its feature. Promote to `src/hooks` only if genuinely shared.
+- **Defaults:** `staleTime` ~60s by default (see `src/lib/query-client.ts`). Override per-query when justified.
+- **No HTTP in UI:** The UI layer is FORBIDDEN from calling `fetch` directly — consume `src/lib/api.ts` (or feature `api/*` functions built on it) only.
 
-- **Ownership:** Every API hook belongs to its respective feature. Promote to `src/hooks/api` only if shared.
-- **Invalidation:** Cross-feature cache invalidation is permitted only via the global `Query Key Factory`.
-- **Defaults:** StaleTime: ~60s (Lists), ~5m (Details). Centralized management: `src/providers/query-provider.tsx`.
+## Rendering
 
-## Rendering & Access Control
-
-Rendering strategies (RSC vs Client) and Data Fetching patterns are governed by the active framework's specific rule file.
-
-- **No HTTP in UI:** UI layer is FORBIDDEN from using `axios` or `fetch` directly. Consume only `features/api` functions.
-- **Insecure Scripts:** All content MUST adhere to the project's Content Security Policy; `unsafe-inline` and `unsafe-eval` are strictly forbidden.
+- Server Components by default. `"use client"` only on interactive leaves. See `.cursor/rules/nextjs.mdc`.
 
 ## Canonical Rules (MDC Refs)
 
-This document is the architectural map. Enforceable laws are located in:
+This document is the architectural map. Enforceable laws live in:
 
 - `Ref: .cursor/rules/core-principles.mdc`
+- `Ref: .cursor/rules/naming-conventions.mdc`
 - `Ref: .cursor/rules/api.mdc`
 - `Ref: .cursor/rules/forms.mdc`
-- `Ref: .cursor/rules/i18n.mdc`
 - `Ref: .cursor/rules/nextjs.mdc`
 - `Ref: .cursor/rules/performance.mdc`
 - `Ref: .cursor/rules/react-best-practices.mdc`
 - `Ref: .cursor/rules/state-management.mdc`
 - `Ref: .cursor/rules/tanstack-query.mdc`
-- `Ref: .cursor/rules/tanstack-start.mdc`
-- `Ref: .cursor/rules/testing.mdc`
 - `Ref: .cursor/rules/typescript.mdc`
 - `Ref: .cursor/rules/ui-components.mdc`

@@ -1,8 +1,8 @@
-# ViraStack — Next.js 16 Boilerplate (Full)
+# ViraStack Start (Next.js i18n - Full)
 
 > Production-ready Next.js 16 + React 19 + Tailwind CSS v4 boilerplate designed for scalability, performance, and developer happiness. Minimal by design: no built-in Auth or Testing to keep the core flexible. Strong conventions, internationalization, and AI-native rules for reliable agent collaboration.
 
-ViraStack - Next.js Boilerplate provides a clean, scalable baseline for modern App Router projects:
+ViraStack Start provides a clean, scalable baseline for modern App Router projects:
 
 - Next.js 16 with Server/Client Components, streaming, metadata, and file-system routing under `src/app/[locale]`
 - React 19 concurrency features
@@ -72,7 +72,7 @@ Important notes:
 ## Internationalization
 - [Internationalization (App Router)](https://nextjs.org/docs/app/guides/internationalization)
 - [next-intl docs](https://next-intl-docs.vercel.app/)
-- ViraStack - Next.js Boilerplate uses locale segments under `src/app/[locale]` and JSON message catalogs under `src/messages/`.
+- ViraStack Start uses locale segments under `src/app/[locale]` and JSON message catalogs under `src/messages/`.
 
 ## Styling
 - [Tailwind CSS v4](https://tailwindcss.com/)

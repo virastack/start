@@ -1,0 +1,51 @@
+---
+description: "USE WHEN: Managing server state, fetching data, and handling mutations with TanStack Query."
+globs: "src/features/**/api/*.{ts,tsx},src/features/**/hooks/*.{ts,tsx},src/providers/query-provider.tsx"
+alwaysApply: false
+---
+
+# TanStack Query
+
+## Constraints
+
+- **Structure:** Use Query Key Factory (`src/features/[feature]/api/query-keys.ts`).
+- **Hooks:** Create custom hooks for every query/mutation.
+- **Keys:** Use `as const`. Establish hierarchical structure (all -> lists -> details).
+- **Signal:** Pass `AbortSignal` to the API function.
+- **Invalidation:** Invalidate relevant keys in mutation `onSuccess`.
+- **Pagination:** Include `page` and filters in the query key.
+
+## Bans
+
+- `useQuery` inside components (Custom hooks are mandatory).
+- Manual string query keys.
+- Using API responses without validation.
+- Ignoring Loading/Error states.
+
+## Correct Implementation
+
+<example>
+// features/skills/api/query-keys.ts
+export const skillKeys = {
+  all: ['skills'] as const,
+  lists: () => [...skillKeys.all, 'list'] as const,
+  list: (filters: object) => [...skillKeys.lists(), { filters }] as const,
+  details: () => [...skillKeys.all, 'detail'] as const,
+  detail: (id: string) => [...skillKeys.details(), id] as const,
+};
+
+// features/skills/hooks/use-get-skills.ts
+export const useGetSkills = (filters: object) =>
+  useQuery({
+    queryKey: skillKeys.list(filters),
+    queryFn: ({ signal }) => getSkills(filters, signal),
+  });
+</example>
+
+## Incorrect Implementation
+
+<incorrect-example>
+```tsx
+useQuery({ queryKey: ["posts"], queryFn: () => axios.get("/posts") });
+```
+</incorrect-example>

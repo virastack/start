@@ -1,12 +1,18 @@
 import { QueryClient } from "@tanstack/react-query";
 
-export const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 60_000,
-      gcTime: 5 * 60_000,
-      retry: 1,
-      refetchOnWindowFocus: false
-    }
-  }
-});
+/**
+ * Creates a new QueryClient with sane defaults.
+ * A factory (instead of a singleton) avoids sharing cache across requests
+ * in server contexts and across users in a serverless environment.
+ */
+export function makeQueryClient() {
+  return new QueryClient({
+    defaultOptions: {
+      queries: {
+        staleTime: 60 * 1000,
+        refetchOnWindowFocus: false,
+        retry: 1,
+      },
+    },
+  });
+}

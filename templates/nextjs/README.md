@@ -1,242 +1,349 @@
 <div align="center">
-  <img src="./public/nextjs.jpg" alt="Vira Stack Next.js Boilerplate" />
+
+# ViraStack Start (Next.js)
+
+**The Next.js boilerplate that feels effortless.**
+
+Next.js 16 · React 19 · Tailwind CSS 4 · Base UI · TypeScript strict · Agent-ready
+
+[![CI](https://img.shields.io/badge/CI-GitHub%20Actions-2088FF?logo=githubactions&logoColor=white)](.github/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Node](https://img.shields.io/badge/node-%3E%3D20.9-339933?logo=node.js&logoColor=white)](package.json)
+[![pnpm](https://img.shields.io/badge/pnpm-10.19-F69220?logo=pnpm&logoColor=white)](package.json)
+
 </div>
 
-<br />
+---
 
-<div align="center">
-  <img src="https://img.shields.io/badge/Next.js-000?logo=nextdotjs&logoColor=white" alt="Next.js" />
-  <img src="https://img.shields.io/badge/React-20232A?logo=react&logoColor=61DAFB" alt="React" />
-  <img src="https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white" alt="TypeScript" />
-  <img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?logo=tailwindcss&logoColor=white" alt="Tailwind CSS" />
-  <img src="https://img.shields.io/badge/TanStack_Query-FF4154?logo=reactquery&logoColor=white" alt="TanStack Query" />
-  <img src="https://img.shields.io/badge/Zustand-3B82F6?logo=react&logoColor=white" alt="Zustand" />
-</div>
+A production-grade starting point for Next.js apps — opinionated where it matters (architecture, types, DX) and unopinionated where it shouldn't be (styling is 100% yours via Tailwind + design tokens). Built for teams and AI coding agents to move fast without accumulating debt.
 
-<br />
+## Table of contents
 
-# ViraStack Next.js Boilerplate
+- [Why this boilerplate](#why-this-boilerplate)
+- [Tech stack](#tech-stack)
+- [Getting started](#getting-started)
+- [Scripts](#scripts)
+- [Project structure](#project-structure)
+- [Import aliases](#import-aliases)
+- [Environment variables](#environment-variables)
+- [Styling & design tokens](#styling--design-tokens)
+- [State management](#state-management)
+- [Data fetching](#data-fetching)
+- [Forms & validation](#forms--validation)
+- [UI components (Base UI)](#ui-components-base-ui)
+- [Quality gates](#quality-gates)
+- [Git hooks](#git-hooks)
+- [CI/CD](#cicd)
+- [Versioning & releases](#versioning--releases)
+- [ViraStack AI](#virastack-ai)
+- [SEO](#seo)
+- [Deployment](#deployment)
+- [FAQ](#faq)
 
-A production-ready **Next.js 16** boilerplate designed for scalability, performance, and developer happiness.
+## Why this boilerplate
 
-## Features
+Most Next.js starters either ship too little (just the framework defaults) or too much (opinionated UI kits you have to fight). This one gives you:
 
-- [Next.js 16](https://nextjs.org/) and [React 19](https://react.dev/) with App Router and concurrent rendering
-- [TypeScript 5](https://www.typescriptlang.org/) for full type safety
-- [Tailwind CSS v4](https://tailwindcss.com/) for scalable and fast styling
-- [shadcn/ui](https://ui.shadcn.com/) components for fully accessible, customizable, and owned UI primitives
-- [TanStack Query 5](https://tanstack.com/query/latest) for data fetching and caching
-- [Zustand](https://zustand-demo.pmnd.rs) for lightweight global state management
-- [Zod](https://zod.dev/) + [@t3-oss/env-nextjs](https://env.t3.gg) for runtime validation
-- [next-intl](https://next-intl-docs.vercel.app) for internationalization
-- [Next Themes](https://github.com/pacocoursey/next-themes) for dynamic light/dark modes
-- [Lucide](https://lucide.dev) icons and [Sonner](https://sonner.emilkowal.ski) for notifications
-- [Google Analytics](https://analytics.google.com/) integration
-- [ESLint 9](https://eslint.org/), [Prettier 3](https://prettier.io/), [Husky](https://github.com/typicode/husky), [lint-staged](https://github.com/okonet/lint-staged), and [Knip](https://knip.dev) for code quality
-- SEO-ready with metadata, sitemap, and robots.txt generation
-- **Error Handling**: Built-in `error.tsx` and `global-error.tsx` with i18n support and graceful degradation
-- **AI-ready**: `llms.txt` & `llms-full.txt` in `/public` plus `.cursor/rules` for LLM context and agent collaboration
-- Bundler Analyzer
-- Absolute Imports using `@` prefix
-- Lighthouse Score: `100`
+- **A real architecture** — feature-sliced folders (`features/`, `components/`, `hooks/`, `stores/`, `schemas/`) instead of a single `components` dump.
+- **A fully-typed foundation** — `strict` + `noUncheckedIndexedAccess` TypeScript, Zod-validated env vars, typed API errors.
+- **Unstyled-first UI** — [Base UI](https://base-ui.com) primitives styled with Tailwind CSS 4 + CVA, so you own every pixel.
+- **Zero mystery state** — Zustand for client state, TanStack Query for server state, `nuqs` for URL state. No prop-drilling, no global grab-bag.
+- **Agent-ready by default** — ViraStack AI layer: Cursor rules, `AGENTS.md`, `llms.txt`, and curated agent skills so AI coding agents produce code that matches the codebase's conventions instead of inventing their own.
+- **CI-enforced quality** — lint, typecheck, dead-code detection, and build all run on every push and are enforced locally via git hooks before they ever reach CI.
 
-## Built with @virastack/ai
+## Tech stack
 
-This boilerplate is designed and powered by [@virastack/ai](https://github.com/virastack/ai), an AI-native architecture kit for modern React. The governance layer that ships with this boilerplate—`.cursor/rules`, `docs/`, and `AGENTS.md`—is derived from `@virastack/ai` and is included by default; no extra setup is required.
+| Layer               | Choice                                                                                        |
+| ------------------- | --------------------------------------------------------------------------------------------- |
+| Framework           | [Next.js 16](https://nextjs.org/) (App Router, Turbopack)                                     |
+| UI runtime          | [React 19](https://react.dev/) + React Compiler                                               |
+| Styling             | [Tailwind CSS 4](https://tailwindcss.com/) + shadcn-style CSS variable tokens                 |
+| Components          | [Base UI](https://base-ui.com/) (unstyled, accessible primitives) + [CVA](https://cva.style/) |
+| Animation           | [Framer Motion](https://motion.dev/)                                                          |
+| Icons               | [Lucide React](https://lucide.dev/)                                                           |
+| Notifications       | [Sonner](https://sonner.emilkowal.ski/)                                                       |
+| Theming             | [next-themes](https://github.com/pacocoursey/next-themes)                                     |
+| Client state        | [Zustand](https://zustand.docs.pmnd.rs/)                                                      |
+| Server state        | [TanStack Query v5](https://tanstack.com/query)                                               |
+| URL state           | [nuqs](https://nuqs.47ng.com/)                                                                |
+| Forms               | [React Hook Form](https://react-hook-form.com/) + [Zod](https://zod.dev/)                     |
+| HTTP                | Native `fetch` + a typed wrapper (no Axios)                                                   |
+| Linting/formatting  | ESLint 9 (flat config) + Prettier 3                                                           |
+| Dead-code detection | [Knip](https://knip.dev/)                                                                     |
+| Git hooks           | Husky + lint-staged + Commitlint                                                              |
+| Versioning          | [Changesets](https://github.com/changesets/changesets)                                        |
+| CI                  | GitHub Actions                                                                                |
+| Package manager     | [pnpm](https://pnpm.io/)                                                                      |
 
-## AI-Ready Architecture
+## Getting started
 
-This boilerplate is fully aligned with 2026 AI-driven development standards. It is built on [@virastack/ai](https://github.com/virastack/ai) (see **Built with @virastack/ai** above). So that AI agents (Cursor, Windsurf, etc.) can understand the project in seconds, it includes the following optimizations:
-
-- **llms.txt & llms-full.txt**: These files live in the `/public` directory and provide LLMs with high-quality context about the project’s architecture and tech stack.
-- **.cursor/rules**: Project-specific rules ensure that when coding with AI assistance, the project's architectural conventions stay consistent.
-
-## Why No Auth or Testing?
-
-This boilerplate aims to stay minimalist and lightweight instead of shipping an “everything included” bundle. Unlike many boilerplates, we deliberately omit Auth and Testing layers:
-
-- **Flexibility**: Every project has different needs for Auth (Clerk, Auth.js, etc.) or Testing (Vitest, Playwright). This boilerplate does not lock you into one choice; it gives you a clean foundation.
-- **Zero bloat**: The project stays lean and avoids dependencies you may never use.
-- **Fast start**: Skip unnecessary setup and focus on business logic from day one.
-
-## Getting Started
-
-To run this project locally, follow the steps below.
-
-### Requirements
-
-- Node.js 22+ and npm (or pnpm/yarn)
-
-### Installation
+**Prerequisites:** Node.js `>=20.9`, pnpm `10.x` (enforced via `packageManager`).
 
 ```bash
-git clone --depth=1 https://github.com/virastack/nextjs-boilerplate my-project
-cd my-project
-npm install
-npm run dev
+pnpm install
+cp .env.example .env.local
+pnpm dev
 ```
 
-Open http://localhost:3000 in your browser.
+Open [http://localhost:3000](http://localhost:3000). The home page is a live playground demoing every part of the stack (theme toggle, Base UI dialog/tabs, Zustand counter, TanStack Query fetch, Zod-validated form).
 
-### Environment Variables
+## Scripts
 
-The project uses some variables validated at runtime. Create a `.env` file in the root and define at least the following:
-
-```env
-NEXT_PUBLIC_SITE_URL=https://localhost:3000
-NEXT_PUBLIC_API_URL=https://api.example.com
-NEXT_PUBLIC_GA_ID=G-XXXXXXXXXX
-```
-
-The variable schema is defined in `src/env.ts`.
-
-## Customization
-
-You can quickly tailor the Next.js Boilerplate to your needs by searching the project for `FIXME:` tags.
-
-- `.env.example`: runtime environment variables
-- `src/env.ts`: environment variables schema (required/optional fields)
-- `src/app/robots.ts`: Robots.txt configuration for search engines
-- `src/app/sitemap.ts`: Dynamic sitemap generation for SEO
-- `src/config/site.config.ts`: site name, description, URL, social accounts, default locales
-- `src/config/seo.config.ts`: Metadata-based SEO settings (title, description, Open Graph, Twitter)
-- `src/constants/i18n.constants.ts`: Localization settings (supported and default locales)
-- `src/lib/api.ts`: Axios instance and request helpers based on `NEXT_PUBLIC_API_URL`
+| Script                   | Description                                         |
+| ------------------------ | --------------------------------------------------- |
+| `pnpm dev`               | Start the dev server (Turbopack)                    |
+| `pnpm build`             | Production build                                    |
+| `pnpm start`             | Serve the production build                          |
+| `pnpm analyze`           | Build with the bundle analyzer enabled              |
+| `pnpm clean`             | Remove the `.next` build output                     |
+| `pnpm lint`              | Lint with ESLint                                    |
+| `pnpm lint:fix`          | Lint + auto-fix + format                            |
+| `pnpm lint:ci`           | Lint with zero warnings + format check (used in CI) |
+| `pnpm format`            | Format all files with Prettier                      |
+| `pnpm format:check`      | Check formatting without writing                    |
+| `pnpm typecheck`         | Type-check with `tsc --noEmit`                      |
+| `pnpm knip`              | Find unused files, exports, and dependencies        |
+| `pnpm changeset`         | Record a changeset for your next release            |
+| `pnpm changeset:version` | Bump versions from pending changesets               |
+| `pnpm changeset:publish` | Publish a new version                               |
 
 ## Project structure
 
 ```
-├── public/                             # Public assets (llms.txt, llms-full.txt, static files)
-├── src/
-│   ├── app/                            # App Router with locale support
-│   ├── assets/                         # Static and vector assets
-│   ├── components/                     # UI and shared components
-│   │   ├── icons                       # Svg icons
-│   │   ├── layout                      # Page structure (header, footer, sidebar)
-│   │   ├── shared                      # Shared domain components
-│   │   └── ui                          # Atomic and reusable UI elements
-│   ├── config/                         # Site and SEO configurations
-│   ├── constants/                      # Global constants (i18n, date, etc.)
-│   ├── features/                       # Feature-based modules
-│   ├── hooks/                          # Custom React hooks
-│   ├── i18n/                           # next-intl configurations
-│   ├── lib/                            # Utilities and API layer
-│   ├── messages/                       # Translation files (JSON)
-│   ├── providers/                      # App-wide providers (Theme, Query, Intl)
-│   ├── schemas/                        # Zod validation schemas
-│   ├── stores/                         # Application-wide state management
-│   ├── styles/                         # Base styling and Tailwind setup
-│   ├── types/                          # TypeScript types and interfaces
-│   └── env.ts                          # Environment validation
-├── .prettierrc                         # Prettier setup with Tailwind and import sorting
-├── next.config.ts                      # Next.js configuration
-└── tsconfig.json                       # TypeScript configuration
+src/
+├── app/                  # Next.js App Router (routes, layouts, metadata)
+│   ├── layout.tsx        # Root layout — fonts, Providers, nuqs adapter
+│   ├── page.tsx          # Home page
+│   ├── loading.tsx       # Route-level loading UI
+│   ├── error.tsx         # Route-level error boundary
+│   ├── global-error.tsx  # Root error boundary
+│   ├── not-found.tsx     # 404 page
+│   ├── sitemap.ts        # Sitemap generation
+│   └── robots.ts         # robots.txt generation
+├── features/             # Feature slices (self-contained UI + logic)
+│   └── landing/          # Example: Hero, Playground, demo components
+├── components/
+│   ├── ui/               # Base UI wrappers (Button, Input, Dialog, Tabs, …)
+│   ├── layout/            # Header, Footer
+│   └── shared/            # Cross-feature components (ThemeToggle, …)
+├── hooks/                # Reusable hooks (TanStack Query hooks, etc.)
+├── stores/               # Zustand stores
+├── schemas/              # Zod schemas (forms, API payloads)
+├── providers/            # ThemeProvider, QueryProvider, Providers (composed)
+├── lib/                  # utils (cn), api.ts (fetch wrapper), query-client.ts
+├── config/               # site.config.ts, seo.config.ts
+├── constants/            # App-wide constants (nav links, etc.)
+├── data/                 # Static/typed data used by demos
+├── helpers/              # Small pure utility functions (formatDate, …)
+├── types/                # Shared TypeScript types
+├── styles/               # tailwind.css — design tokens & global styles
+└── env.ts                # Zod-validated, type-safe environment variables
 ```
 
-## Tips & Recommendations
+Each folder that's imported via a short alias (see below) has an `index.ts` barrel — this keeps import paths short and lets Knip correctly identify unused exports.
 
-- **Cursor rules (for Cursor users)**: This repository centralizes AI/editor collaboration rules in `.cursor/rules`. For AI agents, see also **AI-Ready Architecture** above and the `llms.txt` / `llms-full.txt` files in `/public`. Keep rules aligned with the conventions in this README (naming, structure, types, a11y, styling).
+## Import aliases
 
-- **Cookies (server-side)**: Use Next.js App Router APIs for cookies.
-  - `cookies()` from `next/headers` (read/write in server components/actions)
-  - `NextResponse.cookies.set` in route handlers/middleware
-  - Docs: `https://nextjs.org/docs/app/api-reference/functions/cookies`
+Defined in `tsconfig.json`:
 
-- **Helpers (formatting & slug)**:
-  - Currency/number/date formatting via `next-intl`:
-    - Client: `useFormatter()`
-    - Server: `getFormatter()`
-  - Slug generation: `@sindresorhus/slugify`
-
-- **Useful hooks (`usehooks-ts`)**: Recommended utilities for common needs
-  - `useLocalStorage`, `useSessionStorage`
-  - `useMediaQuery`
-  - `useDebounceValue`
-  - `useOnClickOutside`
-  - `useCopyToClipboard`
-
-### Imports & Aliases
-
-- Prefer short aliases with barrel exports for consistency and readability:
-  - `@/ui`, `@/hooks`, `@/data`, `@/schemas`, `@/layout`
-- Example:
+| Alias       | Resolves to             |
+| ----------- | ----------------------- |
+| `@/*`       | `src/*`                 |
+| `@/ui`      | `src/components/ui`     |
+| `@/layout`  | `src/components/layout` |
+| `@/hooks`   | `src/hooks`             |
+| `@/data`    | `src/data`              |
+| `@/schemas` | `src/schemas`           |
 
 ```ts
+import { newsletterSchema } from "@/schemas";
+
 import { useUsers } from "@/hooks";
 
-import { Button } from "@/ui";
+import { Button, Dialog } from "@/ui";
 ```
 
-- Longer forms like `@/components/ui` are supported but the short aliases above are recommended.
+## Environment variables
 
-## Naming Conventions
-
-The following naming conventions are recommended for the project.
-
-| Type                               | Example                              | Style                         |
-| ---------------------------------- | ------------------------------------ | ----------------------------- |
-| Folders & base files               | `locale-switcher`, `query-client.ts` | kebab-case                    |
-| Components (widgets/layouts/pages) | `UserList.tsx`                       | PascalCase                    |
-| UI elements                        | `button.tsx`                         | kebab-case                    |
-| Helper / util files                | `format-currency.ts`                 | kebab-case                    |
-| Hook files                         | `use-users.ts`                       | kebab-case (prefix `use-`)    |
-| Hook functions                     | `useUsers`                           | camelCase (prefix `use`)      |
-| Data files                         | `user.data.ts`                       | kebab-case                    |
-| Store files                        | `counter.store.ts`                   | kebab-case                    |
-| Icons                              | `ReactIcon`                          | PascalCase (suffix `Icon`)    |
-| Types & interfaces                 | `User`, `SiteConfig`                 | PascalCase (no `Type` suffix) |
-| Type files                         | `user.types.ts`                      | kebab-case                    |
-| Constants                          | `i18n.constants.ts`                  | kebab-case                    |
-
-## Useful commands
-
-### Development
-
-- `npm run dev`: starts the development server
-- `npm run build`: production build
-- `npm run start`: starts the production server
-- `npm run clean`: cleans the `.next` directory
-
-### Code quality and validation
-
-- `npm run lint`: checks lint errors
-- `npm run lint:fix`: auto-fixes fixable lint issues and formats
-- `npm run lint:ci`: runs lint in CI mode (no warnings allowed) and checks formatting
-- `npm run format`: formats with Prettier
-- `npm run format:check`: checks formatting
-- `npm run typecheck`: verifies type safety
-- `npm run knip`: analyzes unused dependencies and files
-
-### Git hooks
-
-- `npm run prepare`: sets up git hooks via Husky
-
-### Bundle Analyzer
-
-To analyze build outputs:
-
-- `npm run analyze`: analyzes bundle sizes and opens the report
-
-### Conventional Commits
-
-This project enforces the Conventional Commits specification. All commit messages must follow the standard. You can use the interactive CLI:
+Environment variables are validated at startup with Zod in [`src/env.ts`](src/env.ts) — the app fails fast with a clear error instead of silently reading `undefined`. Client-exposed variables must be prefixed with `NEXT_PUBLIC_`.
 
 ```bash
-npm run commit
+cp .env.example .env.local
 ```
 
-Benefits include automatic release notes and semantic versioning based on commit types.
+```env
+NEXT_PUBLIC_APP_URL="http://localhost:3000"
+NEXT_PUBLIC_APP_NAME="ViraStack"
+```
 
-## Explore the ViraStack Ecosystem
+Import the validated, typed object anywhere instead of touching `process.env` directly:
 
-Discover all ViraStack tools, libraries, and boilerplates at [**virastack.com**](https://virastack.com).
+```ts
+import { env } from "@/env";
 
-## License
+env.NEXT_PUBLIC_APP_URL; // string, guaranteed valid
+```
 
-Licensed under the <a href="https://github.com/virastack/nextjs-boilerplate/blob/main/LICENSE">MIT License</a>.
+## Styling & design tokens
 
-## Maintainer
+Tailwind CSS 4 is configured CSS-first in [`src/styles/tailwind.css`](src/styles/tailwind.css) using shadcn-style CSS variables (`--background`, `--foreground`, `--primary`, `--radius`, …) so the entire palette can be re-themed by editing one file. Dark mode is a `.dark` class toggled by `next-themes`, with no flash-of-wrong-theme thanks to `suppressHydrationWarning` + the theme script injected by `ThemeProvider`.
 
-A project by [**Ömer Gülçiçek**](https://omergulcicek.com)
+```ts
+import { cn } from "@/lib/utils";
 
-[![Follow Ömer Gülçiçek](https://img.shields.io/github/followers/omergulcicek?label=Follow&style=social)](https://github.com/omergulcicek)
+<div className={cn("rounded-md border", isActive && "border-primary")} />
+```
+
+## State management
+
+Three kinds of state, three dedicated tools — no mixing:
+
+- **Client state** (`src/stores/`) — Zustand. See `counter.store.ts` for the pattern.
+- **Server state** (`src/hooks/`) — TanStack Query. See `use-users.ts`; queries are cached, deduped, and retried automatically via the shared `QueryClient` in `src/lib/query-client.ts`.
+- **URL state** — `nuqs`. See `Playground.tsx`'s tab state — it's shareable, bookmarkable, and survives a refresh.
+
+## Data fetching
+
+No Axios — a ~60-line native `fetch` wrapper in [`src/lib/api.ts`](src/lib/api.ts) provides:
+
+- Automatic JSON parsing & `Content-Type` headers
+- A typed `ApiError` (with `status` and `data`) thrown on non-2xx responses
+- Lightweight retry support
+- `api.get/post/put/patch/delete` helpers
+
+```ts
+import { api, ApiError } from "@/lib/api";
+
+try {
+  const users = await api.get<User[]>("/users");
+} catch (error) {
+  if (error instanceof ApiError) {
+    // error.status, error.data
+  }
+}
+```
+
+Pair it with TanStack Query hooks for caching, loading, and error states out of the box.
+
+## Forms & validation
+
+React Hook Form + Zod, wired through `@hookform/resolvers`. Because Base UI's `Input` is a controlled `Field.Control` rather than a plain `<input>`, form fields use RHF's `Controller` (not `register()`) to keep value/onChange/ref in sync — see [`src/features/landing/NewsletterForm.tsx`](src/features/landing/NewsletterForm.tsx) for the reference implementation. Forms set `noValidate` so Zod (not the browser) owns 100% of the validation UX.
+
+```tsx
+const {
+  control,
+  handleSubmit,
+  formState: { errors },
+} = useForm({
+  resolver: zodResolver(newsletterSchema),
+});
+
+<Controller
+  control={control}
+  name="email"
+  render={({ field }) => <Input {...field} aria-invalid={!!errors.email} />}
+/>;
+```
+
+## UI components (Base UI)
+
+`src/components/ui/` wraps [Base UI](https://base-ui.com) primitives with Tailwind + CVA variants — Base UI ships zero styles by design, so every component here is fully yours to restyle. Two Base UI specifics worth knowing:
+
+- **`render` prop** — polymorphic rendering (e.g. render a `Button` as a `next/link`).
+- **`nativeButton={false}`** — required whenever a `Button` renders as something other than a native `<button>` (a link, a `DialogTrigger`, etc.), or Base UI logs a console warning.
+
+```tsx
+<Button render={<Link href="/docs" />} nativeButton={false}>
+  Read the docs
+</Button>
+```
+
+## Quality gates
+
+| Tool                       | Purpose                                                                                                                               |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| **ESLint 9** (flat config) | `eslint-config-next` + `no-unused-vars` + `no-console`                                                                                |
+| **Prettier 3**             | Formatting, with `@ianvs/prettier-plugin-sort-imports` (deterministic import order) and `prettier-plugin-tailwindcss` (class sorting) |
+| **TypeScript**             | `strict: true`, `noUncheckedIndexedAccess: true` — no implicit `any`, no silently-undefined array/object access                       |
+| **Knip**                   | Flags unused files, exports, and dependencies (`pnpm knip`)                                                                           |
+
+Run everything at once before pushing:
+
+```bash
+pnpm lint:ci && pnpm typecheck && pnpm knip && pnpm build
+```
+
+## Git hooks
+
+Configured via Husky and run automatically:
+
+- **`pre-commit`** — `lint-staged` (ESLint + Prettier on staged files only)
+- **`commit-msg`** — Commitlint, enforcing [Conventional Commits](https://www.conventionalcommits.org/) (`feat:`, `fix:`, `chore:`, …)
+- **`pre-push`** — `typecheck` + `lint:ci`, so broken code never reaches the remote
+
+## CI/CD
+
+[`.github/workflows/ci.yml`](.github/workflows/ci.yml) runs on every push and pull request: install → lint → typecheck → knip → build. All four must pass before merging.
+
+## Versioning & releases
+
+This boilerplate is versioned with [Changesets](https://github.com/changesets/changesets):
+
+```bash
+pnpm changeset          # describe your change
+pnpm changeset:version  # bump package.json + write CHANGELOG.md
+pnpm changeset:publish  # publish
+```
+
+## ViraStack AI
+
+A pre-configured context layer so AI coding agents produce code that matches this codebase — not generic boilerplate.
+
+| File | Purpose | Works with |
+| :--- | :--- | :--- |
+| `AGENTS.md` | Agent operating guide | All agents |
+| `CLAUDE.md` | Claude Code entry point | Claude Code |
+| `.cursor/rules/` | Scoped coding rules | Cursor (auto), others (via `AGENTS.md`) |
+| `public/llms.txt` | Machine-readable project summary | All agents |
+| `.agents/skills/` | Design-taste skills (`emil-design-eng`, `make-interfaces-feel-better`) | Cursor, Claude Code |
+
+Install or update rules via [`@virastack/ai`](https://www.npmjs.com/package/@virastack/ai):
+
+```bash
+npx @virastack/ai init
+```
+
+## SEO
+
+- Centralized metadata via [`src/config/seo.config.ts`](src/config/seo.config.ts) and the Next.js Metadata API in `layout.tsx`.
+- `src/app/sitemap.ts` and `src/app/robots.ts` generate `/sitemap.xml` and `/robots.txt` from `src/config/site.config.ts` — update the site URL there once and both stay in sync.
+
+## Deployment
+
+Optimized out of the box for [Vercel](https://vercel.com/):
+
+```bash
+pnpm build
+pnpm start
+```
+
+Set the same variables from `.env.example` in your hosting provider's environment settings. `pnpm analyze` (backed by `@next/bundle-analyzer`) helps you keep an eye on bundle size before shipping.
+
+## FAQ
+
+**Why Base UI instead of Radix or shadcn/ui?**
+Base UI is the evolution of Radix (built by the same core contributors, now under the MUI org) with a cleaner API and first-class support for the `render` prop pattern used throughout this codebase. You still get the "own your styles" philosophy of shadcn/ui — the primitives here are copy-in-your-repo components, not a black-box dependency.
+
+**Why not Axios?**
+Native `fetch` covers everything Axios does for a typical app (interceptors, JSON handling, error typing) once wrapped, without adding ~15 kB to the client bundle.
+
+**Can I remove the landing page demo?**
+Yes — `src/features/landing/` and the demo wiring in `src/app/page.tsx` exist purely to showcase the stack. Delete the feature folder, replace `page.tsx`, and keep everything else (config, providers, `lib/`, `.cursor/rules/`).
+
+---
+
+<div align="center">
+
+Built by <a href="https://omergulcicek.com">Ömer Gülçiçek</a> · <a href="LICENSE">MIT Licensed</a>
+
+</div>

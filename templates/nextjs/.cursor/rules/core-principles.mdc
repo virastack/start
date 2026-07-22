@@ -7,17 +7,16 @@ alwaysApply: true
 
 ## Constraints
 
-- **INTENTIONAL_TODO Rule:** Usage is ONLY permitted for non-functional placeholders (e.g., temporary mock UI, future logging). 
+- **INTENTIONAL_TODO Rule:** Usage is ONLY permitted for non-functional placeholders (e.g., temporary mock UI, future logging).
 - **Business Integrity:** Forbidden to use `INTENTIONAL_TODO` for business logic, error handling, or API integrations.
 - **Pseudo-code:** Forbidden. Provide working TypeScript/React code.
 - **Reference:** Do not say "Usually done like this"; link to repo rules.
-- **Validation:** Do not deliver without passing `pnpm check-types` and `pnpm lint`.
+- **Validation:** Do not deliver without passing `pnpm typecheck` and `pnpm lint`.
 - **Search First:** Analyze existing patterns before coding.
 - **Minimal Intervention:** Modify only necessary areas.
 - **Source of Truth:** Reference the codebase. Correct it if erroneous.
 - **Boy Scout:** Clean unused imports, `console.log`, and dead code.
-- **Naming:** `kebab-case` for folders/non-component files; `PascalCase` for React components. File type suffixes: `*.types.ts`, `*.constants.ts`, `*.config.ts`, `*.test.ts`, `*.spec.ts`, `*.stories.tsx`, `*.schema.ts`, `*.api.ts`, `*.store.ts` (base name in kebab-case).
-- **Exports:** Group exports with `index.ts`.
+- **Exports:** Group exports with `index.ts` barrels (see `naming-conventions.mdc`).
 - **No Silent Failures:** Do not swallow errors. Manage `try/catch` blocks.
 - **Secret Protection:** Do not log `.env` content.
 - **Dependency:** Obtain approval for new packages.
@@ -30,18 +29,18 @@ alwaysApply: true
 - Logging secrets.
 - Out-of-scope refactoring.
 - `// ...existing code` (Provide full blocks).
-- Standard `TODO` or `FIXME` comments.
+- Standard `TODO` or `FIXME` comments (except pre-existing `FIXME:` customization markers).
 - Using `INTENTIONAL_TODO` to skip core logic implementation.
-- Parent-relative imports (`../`, `../../`). Use path aliases only.
+- Parent-relative imports (`../`, `../../`). Use path aliases only (`@/*`).
 
 ## Correct Implementation
 
 <example>
-```js
+```ts
 try {
   process(data);
 } catch (error) {
-  throw new ProcessingError({ cause: error });
+  throw new ApiError("Processing failed", 500, error);
 }
 ```
 </example>
@@ -49,7 +48,7 @@ try {
 ## Incorrect Implementation
 
 <incorrect-example>
-```js
+```ts
 try { process(data); } catch (e) {}
 ```
 </incorrect-example>

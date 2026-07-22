@@ -1,0 +1,91 @@
+---
+description: Next.js 16 App Router Standards & Constraints
+globs: src/app/**/{page,layout,loading,error,not-found}.tsx
+alwaysApply: false
+---
+# Next.js 16 App Router Constitution
+
+## Constraints
+
+- **Server-First Architecture:** All components in `src/app` MUST be Server Components (RSC) by default.
+- **Client Component Usage:** The `"use client"` directive is strictly limited to leaf-node components that require interactivity (hooks, events) or Browser APIs.
+- **Feature Delegation:** `src/app` is strictly for routing/layout. All business logic, UI components, and domain hooks MUST reside in `src/features`.
+- **Server Actions:** All mutations MUST use Server Actions defined in dedicated `actions.ts` files within `src/features`. Actions MUST call the API layer only; direct database access inside actions is forbidden.
+- **i18n Implementation:** Use `next-intl` for translations. Follow the patterns defined in `i18n.mdc`.
+- **Metadata:** SEO metadata MUST be defined using the Metadata API in `page.tsx` or `layout.tsx`.
+- **Streaming:** Use `loading.tsx` for route-level async states. Use `<Suspense>` for granular feature-level hydration.
+- **CSRF Protection:** Verify Origin/Referer headers in Server Actions. Use `action.bind` to lock sensitive IDs on the server-side.
+- **Secret Isolation:** Use the `server-only` package in API and database files to prevent accidental leakage to the client.
+
+## Bans
+
+- **Inline Server Actions:** Defining Server Actions inside components or pages is FORBIDDEN.
+- **Client-Side Data Fetching in Effects:** Using `useEffect` for data fetching is FORBIDDEN. Use TanStack Query or RSC.
+- **Logic in Route Files:** Implementing complex logic directly in `page.tsx` or `layout.tsx` is FORBIDDEN.
+- **Manual Head Management:** Using `head.tsx` or manual `<meta>` tags is FORBIDDEN.
+- **"use client" at Root:** Marking `page.tsx` or `layout.tsx` as `"use client"` is FORBIDDEN. Wrap interactive logic in feature components instead.
+- **Raw Serialization:** Forbidden to pass raw database models or sensitive user data directly from RSC to Client Components.
+
+## Correct Implementation
+
+<example>
+// src/app/dashboard/page.tsx
+import { DashboardFeature } from "@/features/dashboard";
+import { getDashboardData } from "@/features/dashboard/api";
+import { getTranslations } from "next-intl/server";
+
+export async function generateMetadata() {
+  const t = await getTranslations("dashboard");
+  return { title: t("title") };
+}
+
+export default async function DashboardPage() {
+  const data = await getDashboardData();
+
+  return (
+    <main>
+      <DashboardFeature initialData={data} />
+    </main>
+  );
+}
+</example>
+
+<example>
+// src/features/auth/actions/login.ts
+"use server";
+
+import { loginSchema } from "@/features/auth/schemas/login-schema";
+import { api } from "@/lib/api";
+
+export async function loginAction(formData: FormData) {
+  const validated = loginSchema.parse(Object.fromEntries(formData));
+  return await api.post("/auth/login", validated);
+}
+</example>
+
+## Incorrect Implementation
+
+<incorrect-example>
+// BAN: "use client" on page level and useEffect fetching
+"use client"; 
+
+export default function Page() {
+  const [data, setData] = useState(null);
+  useEffect(() => {
+    fetch("/api/data").then(res => res.json()).then(setData);
+  }, []);
+
+  return <div>{data?.name}</div>;
+}
+</incorrect-example>
+
+<incorrect-example>
+// BAN: Inline server action
+export default function Form() {
+  async function handle() {
+    "use server";
+    // database call
+  }
+  return <form action={handle}>...</form>;
+}
+</incorrect-example>

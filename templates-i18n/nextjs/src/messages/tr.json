@@ -1,6 +1,6 @@
 {
   "Dashboard": {
-    "title": "ViraStack - Next.js Boilerplate",
+    "title": "ViraStack Start",
     "description": "Modern Next.js projeleri için açık kaynak bir başlangıç şablonu. <react>React</react>, <typescript>TypeScript</typescript>, <tailwind>Tailwind CSS</tailwind> ve <tanstack>TanStack Query</tanstack> ile gelir; yeniden kullanılabilir bileşenler ve yardımcı araçlarla geliştirmeyi hızlandırır.",
     "starOnGithub": "GitHub'da destekle",
     "deployToVercel": "Vercel'e deploy et",

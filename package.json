@@ -1,0 +1,55 @@
+{
+  "name": "virastack",
+  "version": "0.1.1",
+  "description": "Scaffold new projects and add tools from the ViraStack ecosystem with a single command.",
+  "author": {
+    "name": "Ömer Gülçiçek (ViraStack)",
+    "email": "iletisim@omergulcicek.com",
+    "url": "https://omergulcicek.com"
+  },
+  "license": "MIT",
+  "homepage": "https://virastack.com",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/virastack/start.git"
+  },
+  "bugs": {
+    "url": "https://github.com/virastack/start/issues"
+  },
+  "type": "module",
+  "engines": {
+    "node": ">=18.17.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "bin": {
+    "virastack": "./bin/virastack.js"
+  },
+  "files": [
+    "bin",
+    "src",
+    "templates"
+  ],
+  "scripts": {
+    "start": "node ./bin/virastack.js"
+  },
+  "keywords": [
+    "virastack",
+    "start",
+    "cli",
+    "create-virastack",
+    "scaffolding",
+    "boilerplate",
+    "nextjs",
+    "tanstack",
+    "react",
+    "typescript",
+    "dx"
+  ],
+  "dependencies": {
+    "@clack/prompts": "^1.7.0",
+    "cross-spawn": "^7.0.6",
+    "picocolors": "^1.1.1"
+  }
+}

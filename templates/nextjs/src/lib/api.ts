@@ -1,40 +1,97 @@
-import axios, { AxiosError, AxiosRequestConfig } from "axios";
+/**
+ * Lightweight native `fetch` wrapper.
+ *
+ * Zero external HTTP dependencies (no axios/ofetch) so it stays 100%
+ * compatible with Next.js `fetch` caching/revalidation (`cache`, `next.revalidate`, `next.tags`).
+ */
 
-import { env } from "@/env";
+export class ApiError extends Error {
+  readonly status: number;
+  readonly data: unknown;
 
-// FIXME: Set your API base URL and global headers
-export const api = axios.create({
-  baseURL: env.NEXT_PUBLIC_API_URL,
-  timeout: 10_000,
-  headers: {
-    Accept: "application/json"
+  constructor(message: string, status: number, data: unknown) {
+    super(message);
+    this.name = "ApiError";
+    this.status = status;
+    this.data = data;
   }
-});
+}
 
-api.interceptors.request.use((config) => {
-  // FIXME: Inject your auth token/header if required
-  // const token = getToken();
-  // if (token) config.headers.Authorization = `Bearer ${token}`;
-  return config;
-});
+type RequestOptions = Omit<RequestInit, "body"> & {
+  body?: unknown;
+  retry?: number;
+  retryDelayMs?: number;
+};
 
-api.interceptors.response.use(
-  (res) => res,
-  (err) => {
-    if (axios.isAxiosError(err)) return Promise.reject(err);
+const DEFAULT_RETRY = 0;
+const DEFAULT_RETRY_DELAY_MS = 300;
 
-    return Promise.reject(new AxiosError("Bilinmeyen hata"));
+function buildHeaders(init?: HeadersInit): Headers {
+  const headers = new Headers(init);
+
+  if (!headers.has("Content-Type")) {
+    headers.set("Content-Type", "application/json");
   }
-);
 
-type Cfg = AxiosRequestConfig & { signal?: AbortSignal };
+  // FIXME: attach auth token once an auth solution is chosen, e.g.:
+  // const token = await getAuthToken();
+  // if (token) headers.set("Authorization", `Bearer ${token}`);
 
-export const get = async <T>(url: string, config?: Cfg) => (await api.get<T>(url, config)).data;
+  return headers;
+}
 
-export const post = async <T, B = unknown>(url: string, body?: B, config?: Cfg) =>
-  (await api.post<T>(url, body, config)).data;
+async function parseResponse<T>(response: Response): Promise<T> {
+  const contentType = response.headers.get("content-type") ?? "";
+  const isJson = contentType.includes("application/json");
+  const payload = isJson ? await response.json() : await response.text();
 
-export const put = async <T, B = unknown>(url: string, body?: B, config?: Cfg) =>
-  (await api.put<T>(url, body, config)).data;
+  if (!response.ok) {
+    throw new ApiError(`Request failed with status ${response.status}`, response.status, payload);
+  }
 
-export const del = async <T>(url: string, config?: Cfg) => (await api.delete<T>(url, config)).data;
+  return payload as T;
+}
+
+async function sleep(ms: number) {
+  await new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+async function request<T>(url: string, options: RequestOptions = {}): Promise<T> {
+  const { body, retry = DEFAULT_RETRY, retryDelayMs = DEFAULT_RETRY_DELAY_MS, ...rest } = options;
+
+  let attempt = 0;
+
+  while (true) {
+    try {
+      const response = await fetch(url, {
+        ...rest,
+        headers: buildHeaders(rest.headers),
+        body: body !== undefined ? JSON.stringify(body) : undefined,
+      });
+
+      return await parseResponse<T>(response);
+    } catch (error) {
+      const isLastAttempt = attempt >= retry;
+      const isServerOrNetworkError = !(error instanceof ApiError) || error.status >= 500;
+
+      if (isLastAttempt || !isServerOrNetworkError) {
+        throw error;
+      }
+
+      attempt += 1;
+      await sleep(retryDelayMs * attempt);
+    }
+  }
+}
+
+export const api = {
+  get: <T>(url: string, options?: RequestOptions) => request<T>(url, { ...options, method: "GET" }),
+  post: <T>(url: string, body?: unknown, options?: RequestOptions) =>
+    request<T>(url, { ...options, method: "POST", body }),
+  put: <T>(url: string, body?: unknown, options?: RequestOptions) =>
+    request<T>(url, { ...options, method: "PUT", body }),
+  patch: <T>(url: string, body?: unknown, options?: RequestOptions) =>
+    request<T>(url, { ...options, method: "PATCH", body }),
+  delete: <T>(url: string, options?: RequestOptions) =>
+    request<T>(url, { ...options, method: "DELETE" }),
+};

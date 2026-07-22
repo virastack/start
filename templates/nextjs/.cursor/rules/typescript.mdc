@@ -8,9 +8,9 @@ alwaysApply: false
 
 ## Constraints
 
-- **Zod-First:** Write Zod schemas for API/Domain contracts. Derive types via `z.infer`.
-- **Strict:** Operate in `strict: true` mode.
-- **Arrays:** Use `T[]`. Use `Array<T>` only for nested types.
+- **Zod-First:** Write Zod schemas for API/domain contracts. Derive types via `z.infer`.
+- **Strict:** Operate in `strict: true` + `noUncheckedIndexedAccess: true` mode (see `tsconfig.json`).
+- **Arrays:** Use `T[]`. Use `Array<T>` only for nested/generic types.
 - **Enums:** Use `z.enum` or `as const` objects. Native `enum` is forbidden.
 - **Immutability:** Use `readonly` or `as const`.
 - **Return Types:** Explicitly define return types for exported functions.
@@ -20,19 +20,17 @@ alwaysApply: false
 
 - `any`.
 - `as Type` (except in tests).
-- `!` (Non-null assertion).
-- Using Interface and Type simultaneously.
+- `!` (non-null assertion).
+- Using `interface` and `type` simultaneously for the same concept — prefer `type`.
 - `I` or `T` prefixes (`IUser`).
-- Type soup (`Pick<Omit<Partial<...>>>`).
-- Type soup (Pick<Omit<Partial<...>>> nesting > 2). 
-  Exception: Deriving Form schemas from API schemas using Zod's `.pick()`, `.omit()`, or `.extend()` is encouraged to maintain SSOT.
+- Type soup (`Pick<Omit<Partial<...>>>` nesting > 2). Exception: deriving form schemas from API schemas via Zod's `.pick()`/`.omit()`/`.extend()` is encouraged to maintain a single source of truth.
 
 ## Correct Implementation
 
 <example>
 ```ts
-const UserSchema = z.object({ id: z.string() });
-type User = z.infer<typeof UserSchema>;
+const userSchema = z.object({ id: z.string() });
+type User = z.infer<typeof userSchema>;
 ```
 </example>
 

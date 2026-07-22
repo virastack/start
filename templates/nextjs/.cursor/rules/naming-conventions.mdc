@@ -1,0 +1,56 @@
+---
+description: "USE WHEN: Naming files/folders, choosing import paths, or deciding between named/barrel exports."
+alwaysApply: true
+---
+
+# Naming Conventions & Import Aliases
+
+These are **mandatory rules**, not suggestions. AI agents and contributors MUST follow this table exactly.
+
+## Constraints
+
+| Type | Example | Style |
+| :--- | :--- | :--- |
+| Folders & base files | `locale-switcher`, `query-client.ts` | kebab-case |
+| Component (widget/layout/page) | `UserList.tsx` | PascalCase |
+| UI primitives (`components/ui`) | `button.tsx` | kebab-case |
+| Helper / util files | `format-date.ts` | kebab-case |
+| Hook files | `use-users.ts` | kebab-case (`use-` prefix) |
+| Hook functions | `useUsers` | camelCase (`use` prefix) |
+| Data files | `stack.data.ts` | kebab-case |
+| Store files | `counter.store.ts` | kebab-case |
+| Icons | `ReactIcon` | PascalCase (`Icon` suffix) |
+| Types & interfaces | `User`, `SiteConfig` | PascalCase (no `Type` suffix) |
+| Type files | `site-config.types.ts` | kebab-case |
+| Constants | `nav.constants.ts` | kebab-case |
+| Schema files | `newsletter.schema.ts` | kebab-case |
+
+- **Short aliases:** Prefer `@/ui`, `@/hooks`, `@/data`, `@/schemas`, `@/layout` over the long form (`@/components/ui`). Both resolve identically via `tsconfig.json` paths, but short aliases are the house style.
+- **Barrel exports:** Every folder that is imported from elsewhere MUST expose an `index.ts` re-exporting its public API.
+- **Named exports only:** No default exports for components, hooks, stores, or utilities (Next.js `page.tsx`/`layout.tsx`/etc. are the only exception, since the framework requires default exports there).
+
+## Bans
+
+- Long-form imports when a short alias exists (`@/components/ui/button` when `@/ui` is available).
+- Relative parent imports (`../../lib/utils`).
+- `IUser`/`TUser` style prefixes.
+- Default exports outside of Next.js special files.
+
+## Correct Implementation
+
+<example>
+```ts
+import { useUsers } from "@/hooks";
+import { Button, Input } from "@/ui";
+import { NAV_LINKS } from "@/constants";
+```
+</example>
+
+## Incorrect Implementation
+
+<incorrect-example>
+```ts
+import { useUsers } from "../../../hooks/use-users";
+import Button from "@/components/ui/button";
+```
+</incorrect-example>

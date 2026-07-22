@@ -1,0 +1,46 @@
+---
+description: "USE WHEN: Defining TypeScript types, Zod schemas, and generic constraints for type safety."
+globs: "**/*.{ts,tsx}"
+alwaysApply: false
+---
+
+# TypeScript
+
+## Constraints
+
+- **Zod-First:** Write Zod schemas for API/Domain contracts. Derive types via `z.infer`.
+- **Strict:** Operate in `strict: true` mode.
+- **Arrays:** Use `T[]`. Use `Array<T>` only for nested types.
+- **Enums:** Use `z.enum` or `as const` objects. Native `enum` is forbidden.
+- **Immutability:** Use `readonly` or `as const`.
+- **Return Types:** Explicitly define return types for exported functions.
+- **Generics:** Use constraints (`T extends object`).
+
+## Bans
+
+- `any`.
+- `as Type` (except in tests).
+- `!` (Non-null assertion).
+- Using Interface and Type simultaneously.
+- `I` or `T` prefixes (`IUser`).
+- Type soup (`Pick<Omit<Partial<...>>>`).
+- Type soup (Pick<Omit<Partial<...>>> nesting > 2). 
+  Exception: Deriving Form schemas from API schemas using Zod's `.pick()`, `.omit()`, or `.extend()` is encouraged to maintain SSOT.
+
+## Correct Implementation
+
+<example>
+```ts
+const UserSchema = z.object({ id: z.string() });
+type User = z.infer<typeof UserSchema>;
+```
+</example>
+
+## Incorrect Implementation
+
+<incorrect-example>
+```ts
+interface IUser { id: any; }
+const user = data as User;
+```
+</incorrect-example>

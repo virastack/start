@@ -1,25 +1,15 @@
 import type { SiteConfig } from "@/types/site-config.types";
-import { DEFAULT_LOCALE } from "@/constants/i18n.constants";
 import { env } from "@/env";
 
-// FIXME: Update site branding, default locale, theme color, social links, languages and OG image
+// FIXME: replace with your own site metadata.
 export const siteConfig: SiteConfig = {
-  name: "ViraStack - Next.js Boilerplate",
-  description: "Production-ready Next.js 16+ starter built with Tailwind CSS 4 and TypeScript.",
-  url: env.NEXT_PUBLIC_SITE_URL,
-  author: "Ömer Gülçiçek",
-  locale: DEFAULT_LOCALE,
-  themeColor: "#ffffff",
-  keywords: ["nextjs", "typescript", "tailwindcss", "boilerplate", "starter"],
-  social: {
-    twitter: "@omergulcicek",
-    github: "omergulcicek",
-    linkedin: "omergulcicek"
+  name: env.NEXT_PUBLIC_APP_NAME,
+  description:
+    "Premium Next.js boilerplate built for scalable UI/UX, clean architecture, and agent-ready developer experience.",
+  url: env.NEXT_PUBLIC_APP_URL,
+  ogImage: `${env.NEXT_PUBLIC_APP_URL}/og.png`,
+  links: {
+    github: "https://github.com/virastack/nextjs-boilerplate",
+    twitter: "https://x.com/virastack",
   },
-  ogImage: "/og.jpg",
-  languages: {
-    tr: "/tr",
-    en: "/en",
-    "x-default": "/en"
-  }
-} as const;
+};

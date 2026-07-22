@@ -1,4 +1,10 @@
 {
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+  "typescript.tsdk": "node_modules/typescript/lib",
   "files.exclude": {
     "**/.git": true,
     "**/.svn": true,
@@ -7,7 +13,6 @@
     "**/Thumbs.db": true,
     "**/.cache": true,
     "**/.next": true,
-    "**/.parcel-cache": true,
     "**/build": true,
     "**/dist": true,
     "**/node_modules": true

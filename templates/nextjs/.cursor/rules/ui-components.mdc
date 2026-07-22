@@ -1,38 +1,56 @@
 ---
-description: "USE WHEN: Building UI components, structuring layouts, and applying styles using Tailwind CSS."
-globs: "src/components/**/*.{ts,tsx},src/features/**/components/**/*.{ts,tsx}"
+description: "USE WHEN: Building UI components, structuring layouts, and applying styles using Tailwind CSS + Base UI."
+globs: "src/components/**/*.{ts,tsx},src/features/**/*.{ts,tsx}"
 alwaysApply: false
 ---
 
 # UI Components
 
 ## Constraints
-- **Hierarchy:** Organize by `ui` (stateless), `shared` (common), and `feature` (domain logic).
-- **Atomic:** Keep `src/components/ui` pure; forbid API/Store dependencies.
-- **Separation:** Separate data (container) from UI (presentation).
+
+- **Hierarchy:** Organize by `ui` (stateless primitives, Base UI-backed), `shared` (common, cross-feature), and `features/*` (domain logic).
+- **Atomic:** Keep `src/components/ui` pure; forbid API/Store dependencies inside it.
+- **Separation:** Separate data (container/feature) from UI (presentation/`ui`, `shared`).
 - **Composition:** Prefer children-based composition over large prop objects.
+- **Base UI Composition:** Base UI components are unstyled and compound (`Dialog.Root`, `Dialog.Trigger`, `Dialog.Popup`, ...). To make any element the trigger/anchor, use the `render` prop with a `ReactElement` — Base UI has no `asChild` (that is a Radix-only concept).
+- **`Button` + `render`:** `@/ui` `Button` assumes it renders a native `<button>` (`nativeButton` defaults to `true`). When rendering it as a non-button element (`<a>`, `next/link`, `Dialog.Trigger`, ...) via the `render` prop, always pass `nativeButton={false}` — otherwise Base UI logs an accessibility warning.
+- **Base UI Animation:** Animate open/close state via `data-[open]`, `data-[closed]`, `data-[starting-style]`, `data-[ending-style]` Tailwind arbitrary variants (see `dialog.tsx`, `tabs.tsx`). Do not reach for JS animation libraries for simple open/close transitions.
+- **Variants:** Use `class-variance-authority` (`cva`) for components with visual variants (see `button.tsx`).
 - **States:** Implement Skeleton (matching dimensions), EmptyState, and ErrorState for data-driven parts.
 - **UX:** Avoid empty screens; always provide meaningful states.
-- **Styling:** Use Tailwind CSS, `cn()`, and Design Tokens. No Hex/RGB or arbitrary values (use Tailwind scale strictly)
+- **Styling:** Use Tailwind CSS, `cn()`, and the design tokens defined in `src/styles/tailwind.css`. No hex/RGB or arbitrary values — use the Tailwind scale strictly.
 - **A11y:** Enforce semantic HTML, `aria` attributes, and keyboard accessibility.
-- **Exports:** Use Named exports only.
+- **Exports:** Named exports only, re-exported through the folder's `index.ts` barrel.
 
 ## Bans
+
 - **AI Aesthetic:** Default purple/indigo palettes, excessive gradients, overuse of `rounded-2xl`, generic card/grid layouts.
-- **Magic Numbers:** Arbitrary values (e.g., `p-[13px]`); use Tailwind’s spacing scale strictly.
+- **Magic Numbers:** Arbitrary values (e.g., `p-[13px]`); use Tailwind's spacing scale strictly.
 - **UX/A11y:** `div` soup, "Lorem Ipsum", or `onClick` on non-interactive elements without keyboard support.
-- **Logic:** Default exports or data fetching inside atomic components.
+- **Logic:** Default exports or data fetching inside atomic (`ui`) components.
+- **`asChild`:** Does not exist on Base UI. Use `render={<Element />}` instead.
 
 ## Correct Implementation
 
 <example>
 ```tsx
-export const Card = ({ title, children }: { title: string; children: React.ReactNode }) => (
-  <section className={cn("p-4 md:p-6", "bg-surface border rounded-md")}>
-    <h3 className="text-base font-semibold">{title}</h3>
-    <div className="mt-4">{children}</div>
-  </section>
-);
+export function Card({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <section className={cn("rounded-md border p-4 md:p-6")}>
+      <h3 className="text-base font-semibold">{title}</h3>
+      <div className="mt-4">{children}</div>
+    </section>
+  );
+}
+```
+</example>
+
+<example>
+```tsx
+<Dialog>
+  <DialogTrigger render={<Button size="lg" />}>Open</DialogTrigger>
+  <DialogContent>...</DialogContent>
+</Dialog>
 ```
 </example>
 
@@ -42,14 +60,23 @@ export const Card = ({ title, children }: { title: string; children: React.React
 ```tsx
 export default function ActionButton({ label }: { label: string }) {
   return (
-    <div 
-      style={{ backgroundColor: '#6366f1' }}
+    <div
+      style={{ backgroundColor: "#6366f1" }}
       className="rounded-2xl p-[11px] shadow-2xl"
-      onClick={() => console.log('clicked')}
+      onClick={() => console.log("clicked")}
     >
       <span>{label}</span>
     </div>
   );
 }
+```
+</incorrect-example>
+
+<incorrect-example>
+```tsx
+{/* BAN: asChild does not exist on Base UI */}
+<Dialog.Trigger asChild>
+  <Button size="lg">Open</Button>
+</Dialog.Trigger>
 ```
 </incorrect-example>

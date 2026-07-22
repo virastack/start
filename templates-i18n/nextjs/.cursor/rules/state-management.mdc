@@ -1,0 +1,42 @@
+---
+description: "USE WHEN: Managing global client state with Zustand and handling client-side state logic."
+globs: "src/stores/**/*.ts,src/features/**/stores/**/*.ts"
+alwaysApply: false
+---
+
+# State Management
+
+## Constraints
+
+- **Library:** Use `Zustand` for client state.
+- **Scope:** Define Global state in `src/stores`, Feature state in `src/features/[feature]/stores`.
+- **Selectors:** Always consume state via selectors (`useStore(s => s.val)`).
+- **SSR:** Guarantee client-side rendering with `useHydrated`.
+- **Persistence:** Configure `onRehydrateStorage` when using `persist` middleware.
+- **Server State:** Use TanStack Query. Do not store server data in the global store.
+
+## Bans
+
+- Passing store data via props.
+- Storing high-frequency state (e.g., inputs) in the store.
+- Executing side-effects (API calls) inside the store.
+- Accessing `window`/`localStorage` during initialization.
+- Returning the entire store without selectors.
+
+## Correct Implementation
+
+<example>
+```ts
+const user = useUserStore((s) => s.user);
+const isHydrated = useHydrated();
+```
+</example>
+
+## Incorrect Implementation
+
+<incorrect-example>
+```ts
+const { user } = useUserStore(); // Missing selector
+const store = create(() => ({ data: localStorage.getItem("x") })); // SSR Error
+```
+</incorrect-example>

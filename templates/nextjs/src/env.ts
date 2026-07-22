@@ -1,18 +1,41 @@
-import { createEnv } from "@t3-oss/env-nextjs";
 import { z } from "zod";
 
-// FIXME: Configure environment variables for your project (site URL, API URL, analytics ID)
-export const env = createEnv({
-  client: {
-    NEXT_PUBLIC_SITE_URL: z.string().url(),
-    NEXT_PUBLIC_API_URL: z.string().url(),
-    NEXT_PUBLIC_GITHUB_URL: z.string().url(),
-    NEXT_PUBLIC_GA_ID: z.string().optional()
-  },
-  runtimeEnv: {
-    NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL,
-    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
-    NEXT_PUBLIC_GITHUB_URL: process.env.NEXT_PUBLIC_GITHUB_URL,
-    NEXT_PUBLIC_GA_ID: process.env.NEXT_PUBLIC_GA_ID
-  }
+/**
+ * Type-safe environment variable schema.
+ *
+ * Server-only variables MUST NOT be prefixed with `NEXT_PUBLIC_`.
+ * Client-exposed variables MUST be prefixed with `NEXT_PUBLIC_` and
+ * explicitly re-read via `process.env.NEXT_PUBLIC_*` at usage sites
+ * (Next.js inlines these at build time; dynamic access does not work).
+ */
+const serverSchema = z.object({
+  NODE_ENV: z.enum(["development", "production", "test"]).default("development"),
 });
+
+const clientSchema = z.object({
+  NEXT_PUBLIC_APP_URL: z.string().url().default("http://localhost:3000"),
+  NEXT_PUBLIC_APP_NAME: z.string().default("ViraStack"),
+});
+
+const serverParsed = serverSchema.safeParse({
+  NODE_ENV: process.env.NODE_ENV,
+});
+
+const clientParsed = clientSchema.safeParse({
+  NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
+  NEXT_PUBLIC_APP_NAME: process.env.NEXT_PUBLIC_APP_NAME,
+});
+
+if (!serverParsed.success || !clientParsed.success) {
+  console.error(
+    "❌ Invalid environment variables:",
+    serverParsed.error?.flatten().fieldErrors,
+    clientParsed.error?.flatten().fieldErrors,
+  );
+  throw new Error("Invalid environment variables. Check src/env.ts");
+}
+
+export const env = {
+  ...serverParsed.data,
+  ...clientParsed.data,
+};

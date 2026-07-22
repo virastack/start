@@ -1,6 +1,6 @@
 ---
 description: "USE WHEN: Managing server state, fetching data, and handling mutations with TanStack Query."
-globs: "src/features/**/api/*.{ts,tsx},src/features/**/hooks/*.{ts,tsx},src/providers/query-provider.tsx"
+globs: "src/features/**/api/*.{ts,tsx},src/features/**/hooks/*.{ts,tsx},src/hooks/**/*.{ts,tsx}"
 alwaysApply: false
 ---
 
@@ -8,44 +8,46 @@ alwaysApply: false
 
 ## Constraints
 
-- **Structure:** Use Query Key Factory (`src/features/[feature]/api/query-keys.ts`).
-- **Hooks:** Create custom hooks for every query/mutation.
-- **Keys:** Use `as const`. Establish hierarchical structure (all -> lists -> details).
-- **Signal:** Pass `AbortSignal` to the API function.
+- **Structure:** Use a query key factory (`features/[feature]/api/query-keys.ts`) for anything beyond a single static key.
+- **Hooks:** Create a custom hook for every query/mutation (`use-users.ts` → `useUsers`).
+- **Keys:** Use `as const`. Establish a hierarchical structure (all → lists → details).
 - **Invalidation:** Invalidate relevant keys in mutation `onSuccess`.
 - **Pagination:** Include `page` and filters in the query key.
+- **Defaults:** Rely on the shared `makeQueryClient()` (`src/lib/query-client.ts`) defaults; only override per-query when there's a concrete reason.
 
 ## Bans
 
-- `useQuery` inside components (Custom hooks are mandatory).
-- Manual string query keys.
+- `useQuery`/`useMutation` called directly inside page/feature components — custom hooks are mandatory.
+- Manual string query keys (no factory).
 - Using API responses without validation.
-- Ignoring Loading/Error states.
+- Ignoring loading/error states in the UI.
 
 ## Correct Implementation
 
 <example>
+```ts
 // features/skills/api/query-keys.ts
 export const skillKeys = {
-  all: ['skills'] as const,
-  lists: () => [...skillKeys.all, 'list'] as const,
+  all: ["skills"] as const,
+  lists: () => [...skillKeys.all, "list"] as const,
   list: (filters: object) => [...skillKeys.lists(), { filters }] as const,
-  details: () => [...skillKeys.all, 'detail'] as const,
+  details: () => [...skillKeys.all, "detail"] as const,
   detail: (id: string) => [...skillKeys.details(), id] as const,
 };
 
-// features/skills/hooks/use-get-skills.ts
-export const useGetSkills = (filters: object) =>
+// features/skills/hooks/use-skills.ts
+export const useSkills = (filters: object) =>
   useQuery({
     queryKey: skillKeys.list(filters),
-    queryFn: ({ signal }) => getSkills(filters, signal),
+    queryFn: () => getSkills(filters),
   });
+```
 </example>
 
 ## Incorrect Implementation
 
 <incorrect-example>
 ```tsx
-useQuery({ queryKey: ["posts"], queryFn: () => axios.get("/posts") });
+useQuery({ queryKey: ["posts"], queryFn: () => fetch("/posts") });
 ```
 </incorrect-example>
