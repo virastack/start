@@ -1,11 +1,9 @@
 import type { MetadataRoute } from "next";
 
-import { env } from "@/env";
-
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: env.NEXT_PUBLIC_APP_NAME,
-    short_name: env.NEXT_PUBLIC_APP_NAME,
+    name: "ViraStack Start",
+    short_name: "ViraStack Start",
     description: "Premium, agent-ready Next.js boilerplate.",
     start_url: "/",
     display: "standalone",
@@ -13,9 +11,9 @@ export default function manifest(): MetadataRoute.Manifest {
     theme_color: "#ffffff",
     icons: [
       {
-        src: "/favicon.ico",
+        src: "/virastack.svg",
         sizes: "any",
-        type: "image/x-icon",
+        type: "image/svg+xml",
       },
     ],
   };

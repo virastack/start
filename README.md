@@ -25,13 +25,13 @@ Scaffold new projects and add tools from the [ViraStack](https://virastack.com) 
 npx virastack
 ```
 
-Ask the questions in Turkish instead:
+Turkish prompts:
 
 ```bash
 npx virastack --tr
 ```
 
-Add a single ViraStack tool to an existing project:
+Add a ViraStack tool to an existing project:
 
 ```bash
 npx virastack add mask
@@ -41,67 +41,58 @@ npx virastack add ai
 
 ## What it asks
 
-`npx virastack` walks you through four short questions and then does the rest itself:
+1. **Project name** — a folder name, or `.` for the current directory.
+2. **Template** — Next.js App Router (TanStack Start coming soon).
+3. **Multi-language (i18n)** — standard template from `templates/`, or `next-intl` variant from `templates-i18n/`.
+4. **ViraStack tools** — optional `@virastack/mask`, `@virastack/password`, `@virastack/ai`.
 
-1. **Project name** — type a name, or `.` to scaffold into the current directory.
-2. **Template** — `Next.js App Router` today, `TanStack Start` coming soon.
-3. **Multi-language (i18n)** — say no to scaffold from `templates/`, or yes to scaffold from the `next-intl`-powered `templates-i18n/` variant.
-4. **ViraStack tools** — pick any of `@virastack/mask`, `@virastack/password`, `@virastack/ai` (or none).
+No package manager prompt: the CLI detects whichever one you invoked it with (npm, pnpm, yarn, or bun) and runs install automatically.
 
-There's no package manager prompt and no "install now?" prompt on purpose: the CLI detects the package manager you invoked it with (npm, pnpm, yarn, or bun) and installs dependencies automatically, the same way `create-next-app` does.
+## Repository structure
+
+```
+start/
+├── bin/                  # CLI entry point
+├── src/                  # Commands, prompts, utilities
+├── templates/
+│   ├── nextjs/           # Next.js boilerplate
+│   └── tanstack/         # TanStack Start (coming soon)
+└── templates-i18n/
+    ├── nextjs/           # Next.js + next-intl
+    └── tanstack/         # TanStack Start + i18n (coming soon)
+```
+
+Scaffolded Next.js projects include a pre-configured [**ViraStack AI**](https://github.com/virastack/ai) layer (`AGENTS.md`, `.cursor/rules`, design skills).
 
 ## Commands
 
 | Command | Description |
 | :--- | :--- |
-| `npx virastack` / `npx virastack init` | Interactive project scaffolding. |
-| `npx virastack add <tool>` | Add `mask`, `password`, or `ai` to the project in the current directory. |
+| `npx virastack` / `npx virastack init` | Interactive project scaffolding |
+| `npx virastack add <tool>` | Add `mask`, `password`, or `ai` to the current directory |
 
 ## Options
 
 | Flag | Description |
 | :--- | :--- |
-| `--tr` | Ask every question in Turkish instead of English. |
-| `--telemetry-disable` | Permanently disable anonymous usage tracking on this machine. |
-| `-v`, `--version` | Print the installed CLI version. |
-| `-h`, `--help` | Show usage information. |
+| `--tr` | Turkish prompts |
+| `--telemetry-disable` | Permanently disable anonymous usage tracking |
+| `-v`, `--version` | Print CLI version |
+| `-h`, `--help` | Show usage |
 
 ## Telemetry
 
-ViraStack Start sends a small, anonymous event (selected template, i18n choice, selected tools, package manager, CLI/Node version) whenever a project is created or a tool is added. It never collects your project name, file paths, or any other personal data.
+Anonymous events (template, i18n choice, tools, package manager, CLI version) are sent on create/add. No project names or file paths are collected.
 
-You'll see a one-time notice the first time you run the CLI. To opt out permanently:
-
-```bash
-npx virastack --telemetry-disable
-```
-
-or set an environment variable (respected on every run, CI-friendly):
-
-```bash
-export VIRASTACK_TELEMETRY_DISABLED=1
-# or the community standard:
-export DO_NOT_TRACK=1
-```
-
-## Tips & Recommendations
-
-- **Tailwind CSS v4 Upgrades:** If you see IntelliSense warnings about canonical classes (e.g., `suggestCanonicalClasses`), this means you're using older v3 syntax. You can automatically fix these across your entire project by running the official upgrade tool:
-  ```bash
-  npx @tailwindcss/upgrade
-  ```
-- **Slug / URL generation:** Building a blog, CMS, or any route that needs URL-safe slugs? The CLI doesn't ask about this on purpose (too niche for the setup flow). Install [`@sindresorhus/slugify`](https://github.com/sindresorhus/slugify) (MIT licensed) yourself when you need it:
-  ```bash
-  npm install @sindresorhus/slugify
-  ```
+Opt out: `npx virastack --telemetry-disable` or set `VIRASTACK_TELEMETRY_DISABLED=1` / `DO_NOT_TRACK=1`.
 
 ## Explore the ViraStack Ecosystem
 
-Discover all ViraStack tools, libraries, and boilerplates at [**virastack.com**](https://virastack.com).
+Discover all tools and libraries at [**virastack.com**](https://virastack.com).
 
 ## License
 
-Licensed under the <a href="https://github.com/virastack/start/blob/main/LICENSE">MIT License</a>.
+Licensed under the [MIT License](LICENSE).
 
 ## Maintainer
 

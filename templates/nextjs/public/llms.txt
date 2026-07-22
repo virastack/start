@@ -14,46 +14,47 @@ Built on the App Router with modern Next.js patterns: Server/Client Components, 
 - ViraStack AI: `llms.txt` (this file), `AGENTS.md`, `CLAUDE.md`, `.cursor/rules/*.mdc`, `.agents/skills/*`
 
 ## Docs
-- [Repository (GitHub)](https://github.com/virastack/nextjs-boilerplate): Source code and issues
-- [README](https://github.com/virastack/nextjs-boilerplate/blob/main/README.md): Features, structure, and conventions
+- [Repository (GitHub)](https://github.com/virastack/start): CLI and templates
+- [README](https://github.com/virastack/start/tree/main/templates/nextjs): Features, structure, and conventions
 
 ## Key Files & Entry Points
-- [`src/app/layout.tsx`](https://github.com/virastack/nextjs-boilerplate/blob/main/src/app/layout.tsx): Root layout, fonts, providers
-- [`src/app/page.tsx`](https://github.com/virastack/nextjs-boilerplate/blob/main/src/app/page.tsx): Home page
-- [`src/app/loading.tsx`](https://github.com/virastack/nextjs-boilerplate/blob/main/src/app/loading.tsx): Route-level skeleton
-- [`src/app/error.tsx`](https://github.com/virastack/nextjs-boilerplate/blob/main/src/app/error.tsx): Route-level error boundary
-- [`src/app/not-found.tsx`](https://github.com/virastack/nextjs-boilerplate/blob/main/src/app/not-found.tsx): 404 boundary
-- [`src/app/global-error.tsx`](https://github.com/virastack/nextjs-boilerplate/blob/main/src/app/global-error.tsx): Root error boundary
-- [`src/app/robots.ts`](https://github.com/virastack/nextjs-boilerplate/blob/main/src/app/robots.ts): Robots configuration
-- [`src/app/sitemap.ts`](https://github.com/virastack/nextjs-boilerplate/blob/main/src/app/sitemap.ts): Sitemap generation
-- [`src/env.ts`](https://github.com/virastack/nextjs-boilerplate/blob/main/src/env.ts): Zod-validated environment schema
-- [`src/config/site.config.ts`](https://github.com/virastack/nextjs-boilerplate/blob/main/src/config/site.config.ts): Site config (name, URL, links)
-- [`src/config/seo.config.ts`](https://github.com/virastack/nextjs-boilerplate/blob/main/src/config/seo.config.ts): Default Metadata object
-- [`src/lib/api.ts`](https://github.com/virastack/nextjs-boilerplate/blob/main/src/lib/api.ts): Native `fetch` wrapper with retry & typed errors
-- [`src/providers/Providers.tsx`](https://github.com/virastack/nextjs-boilerplate/blob/main/src/providers/Providers.tsx): App-wide providers (Theme, Query, Toaster)
+- [`src/app/layout.tsx`](https://github.com/virastack/start/blob/main/templates/nextjs/src/app/layout.tsx): Root layout, fonts, providers
+- [`src/app/page.tsx`](https://github.com/virastack/start/blob/main/templates/nextjs/src/app/page.tsx): Home page
+- [`src/app/loading.tsx`](https://github.com/virastack/start/blob/main/templates/nextjs/src/app/loading.tsx): Route-level skeleton
+- [`src/app/error.tsx`](https://github.com/virastack/start/blob/main/templates/nextjs/src/app/error.tsx): Route-level error boundary
+- [`src/app/not-found.tsx`](https://github.com/virastack/start/blob/main/templates/nextjs/src/app/not-found.tsx): 404 boundary
+- [`src/app/global-error.tsx`](https://github.com/virastack/start/blob/main/templates/nextjs/src/app/global-error.tsx): Root error boundary
+- [`src/app/robots.ts`](https://github.com/virastack/start/blob/main/templates/nextjs/src/app/robots.ts): Robots configuration
+- [`src/app/sitemap.ts`](https://github.com/virastack/start/blob/main/templates/nextjs/src/app/sitemap.ts): Sitemap generation
+- [`src/env.ts`](https://github.com/virastack/start/blob/main/templates/nextjs/src/env.ts): Zod-validated environment schema
+- [`src/config/site.config.ts`](https://github.com/virastack/start/blob/main/templates/nextjs/src/config/site.config.ts): Site config (name, URL, links)
+- [`src/config/seo.config.ts`](https://github.com/virastack/start/blob/main/templates/nextjs/src/config/seo.config.ts): Default Metadata object
+- [`src/lib/api.ts`](https://github.com/virastack/start/blob/main/templates/nextjs/src/lib/api.ts): Native `fetch` wrapper with retry & typed errors
+- [`src/providers/Providers.tsx`](https://github.com/virastack/start/blob/main/templates/nextjs/src/providers/Providers.tsx): App-wide providers (Theme, Query, Toaster)
 
 ## Data Fetching & State
-- [`src/hooks/use-users.ts`](https://github.com/virastack/nextjs-boilerplate/blob/main/src/hooks/use-users.ts): Example TanStack Query hook
-- [`src/stores/counter.store.ts`](https://github.com/virastack/nextjs-boilerplate/blob/main/src/stores/counter.store.ts): Example Zustand store
-- [`src/lib/query-client.ts`](https://github.com/virastack/nextjs-boilerplate/blob/main/src/lib/query-client.ts): QueryClient factory & defaults
-- [`src/features/landing/Playground.tsx`](https://github.com/virastack/nextjs-boilerplate/blob/main/src/features/landing/Playground.tsx): `nuqs` URL state + Base UI Tabs demo
+- [`src/hooks/use-users.ts`](https://github.com/virastack/start/blob/main/templates/nextjs/src/hooks/use-users.ts): Example TanStack Query hook
+- [`src/stores/counter.store.ts`](https://github.com/virastack/start/blob/main/templates/nextjs/src/stores/counter.store.ts): Example Zustand store
+- [`src/lib/query-client.ts`](https://github.com/virastack/start/blob/main/templates/nextjs/src/lib/query-client.ts): QueryClient factory & defaults
+- [`src/features/landing/UsersDemo.tsx`](https://github.com/virastack/start/blob/main/templates/nextjs/src/features/landing/UsersDemo.tsx): `nuqs` search-param state demo
+- [`src/features/landing/Playground.tsx`](https://github.com/virastack/start/blob/main/templates/nextjs/src/features/landing/Playground.tsx): Landing showcase (TanStack Query, Zustand, forms)
 
 ## UI & Design System
-- [`src/components/ui`](https://github.com/virastack/nextjs-boilerplate/tree/main/src/components/ui): Base UI-backed primitives (Button, Input, Dialog, Tabs, Skeleton, Label)
-- [`src/components/layout`](https://github.com/virastack/nextjs-boilerplate/tree/main/src/components/layout): Header/Footer
-- [`src/components/shared`](https://github.com/virastack/nextjs-boilerplate/tree/main/src/components/shared): Cross-feature components (ThemeToggle)
-- [`src/features/landing`](https://github.com/virastack/nextjs-boilerplate/tree/main/src/features/landing): Home page feature slice
-- [`src/styles/tailwind.css`](https://github.com/virastack/nextjs-boilerplate/blob/main/src/styles/tailwind.css): Tailwind v4 entry + design tokens
+- [`src/components/ui`](https://github.com/virastack/start/tree/main/templates/nextjs/src/components/ui): Base UI-backed primitives (Button, Input, Dialog, Tabs, Skeleton, Label)
+- [`src/components/layout`](https://github.com/virastack/start/tree/main/templates/nextjs/src/components/layout): Header/Footer
+- [`src/components/shared`](https://github.com/virastack/start/tree/main/templates/nextjs/src/components/shared): Cross-feature components (ThemeToggle)
+- [`src/features/landing`](https://github.com/virastack/start/tree/main/templates/nextjs/src/features/landing): Home page feature slice
+- [`src/styles/tailwind.css`](https://github.com/virastack/start/blob/main/templates/nextjs/src/styles/tailwind.css): Tailwind v4 entry + design tokens
 
 ## Customization & Imports
 - Search the project for `FIXME:` to find customization points (env, next.config images, site config, OG image).
 - Prefer short path aliases: `@/ui`, `@/hooks`, `@/data`, `@/schemas`, `@/layout` over long forms.
 
 ## ViraStack AI
-- [`AGENTS.md`](https://github.com/virastack/nextjs-boilerplate/blob/main/AGENTS.md): Agent operating guide (all agents)
-- [`CLAUDE.md`](https://github.com/virastack/nextjs-boilerplate/blob/main/CLAUDE.md): Claude Code entry point
-- [`.cursor/rules`](https://github.com/virastack/nextjs-boilerplate/tree/main/.cursor/rules): Scoped coding rules (Cursor auto-loads; others read via AGENTS.md)
-- [`.agents/skills`](https://github.com/virastack/nextjs-boilerplate/tree/main/.agents/skills): `emil-design-eng` and `make-interfaces-feel-better` design-taste skills
+- [`AGENTS.md`](https://github.com/virastack/start/blob/main/templates/nextjs/AGENTS.md): Agent operating guide (all agents)
+- [`CLAUDE.md`](https://github.com/virastack/start/blob/main/templates/nextjs/CLAUDE.md): Claude Code entry point
+- [`.cursor/rules`](https://github.com/virastack/start/tree/main/templates/nextjs/.cursor/rules): Scoped coding rules (Cursor auto-loads; others read via AGENTS.md)
+- [`.agents/skills`](https://github.com/virastack/start/tree/main/templates/nextjs/.agents/skills): `emil-design-eng` and `make-interfaces-feel-better` design-taste skills
 
 ## External References
 - [Next.js 16 Docs](https://nextjs.org/docs): App Router, Server/Client Components, routing, metadata, images, fonts

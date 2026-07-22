@@ -30,5 +30,8 @@ export const seoConfig: Metadata = {
     site: siteConfig.social.twitter,
     creator: siteConfig.social.twitter,
     images: [siteConfig.ogImage]
-  }
+  },
+  icons: {
+    icon: "/virastack.svg",
+  },
 };
