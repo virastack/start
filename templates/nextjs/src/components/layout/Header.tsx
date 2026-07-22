@@ -10,9 +10,12 @@ export function Header() {
   return (
     <header className="sticky top-0 z-40 border-b border-border/60 bg-background/80 backdrop-blur-sm">
       <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-6">
-        <Link href="/" className="flex items-center gap-2 text-sm font-semibold tracking-tight">
+        <Link href="/" className="flex items-center gap-2 tracking-tight">
           <Image src="/logo.png" alt="ViraStack Logo" width={24} height={24} className="h-6 w-6" />
-          {siteConfig.name}
+          <span className="text-lg">
+            <span className="font-black text-primary">ViraStack</span>{" "}
+            <span className="font-medium italic text-teal-500">Start</span>
+          </span>
         </Link>
         <nav className="flex items-center gap-4">
           {NAV_LINKS.map((link) => (
