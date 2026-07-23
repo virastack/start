@@ -11,9 +11,15 @@ Next.js 16 · React 19 · Tailwind CSS 4 · Base UI · TypeScript strict · Agen
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Node](https://img.shields.io/badge/node-%3E%3D20.9-339933?logo=node.js&logoColor=white)](package.json)
 
+<br />
+
+![ViraStack Start - Next.js](./assets/virastack-nextjs.png)
+
 </div>
 
 ---
+
+**Contents:** [Features](#features) · [Getting started](#getting-started) · [Scripts](#scripts) · [Project structure](#project-structure) · [ViraStack AI](#virastack-ai) · [Deployment](#deployment)
 
 Production-grade Next.js starter with feature-sliced architecture, strict TypeScript, and a pre-configured [**ViraStack AI**](https://github.com/virastack/ai) layer — so you and your coding agents ship consistent code from day one.
 
@@ -31,13 +37,13 @@ Production-grade Next.js starter with feature-sliced architecture, strict TypeSc
 
 **Prerequisites:** Node.js `>=20.9`
 
-```bash
-npm install
-cp .env.example .env.local
-npm run dev
-```
+If you created this project with [`npx virastack`](https://github.com/virastack/start), dependencies are already installed. Otherwise:
 
-Use `pnpm`, `yarn`, or `bun` if you prefer — all scripts work the same.
+```bash
+pnpm install   # or npm / yarn / bun
+cp .env.example .env.local
+pnpm dev
+```
 
 Open [http://localhost:3000](http://localhost:3000). The landing page demos the stack: theme toggle, TanStack Query user list, Zustand cart, Zod-validated project form, and `nuqs` search state in `UsersDemo`.
 
@@ -53,7 +59,6 @@ Open [http://localhost:3000](http://localhost:3000). The landing page demos the 
 | `format` / `format:check` | Prettier |
 | `typecheck` | `tsc --noEmit` |
 | `knip` | Find unused files, exports, and dependencies |
-| `changeset` / `changeset:version` / `changeset:publish` | Changesets release workflow |
 
 ## Project structure
 
@@ -110,10 +115,14 @@ Install or refresh rules: `npx @virastack/ai init`
 
 Optimized for [Vercel](https://vercel.com/). Set variables from `.env.example` in your hosting provider. Run `analyze` before shipping to keep bundle size in check.
 
+## Contributing
+
+Ideas and bug reports welcome — open an [issue](https://github.com/virastack/start/issues).
+
 ---
 
 <div align="center">
 
-Built by <a href="https://omergulcicek.com">Ömer Gülçiçek</a> · <a href="LICENSE">MIT Licensed</a>
+Bootstrapped with [**ViraStack Start**](https://github.com/virastack/start) · Built by <a href="https://omergulcicek.com">Ömer Gülçiçek</a> · <a href="LICENSE">MIT Licensed</a>
 
 </div>

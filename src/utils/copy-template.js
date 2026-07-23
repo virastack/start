@@ -12,6 +12,7 @@ const IGNORED_ENTRIES = new Set([
   "yarn.lock",
   "bun.lockb",
   ".gitkeep",
+  "assets",
 ]);
 
 export async function copyTemplate(srcDir, destDir) {

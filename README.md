@@ -2,15 +2,31 @@
 
 # ViraStack Start
 
-Scaffold new projects and add tools from the [ViraStack](https://virastack.com) ecosystem with a single command.
+**One command. Production-ready stack.**
+
+Scaffold new projects and add tools from the [ViraStack](https://virastack.com) ecosystem.
 
 [![ViraStack Start](https://img.shields.io/badge/ViraStack-Start-%2300bba7)](https://virastack.com)
 [![npm version](https://img.shields.io/npm/v/virastack)](https://www.npmjs.com/package/virastack)
 [![npm downloads](https://img.shields.io/npm/dt/virastack)](https://www.npmjs.com/package/virastack)
 
+<br />
+
+![ViraStack Start](./assets/virastack-start.png)
+
 </div>
 
 ---
+
+## Who is this for?
+
+- Teams that want a consistent Next.js (and soon TanStack Start) foundation
+- Developers who want AI rules, architecture, and tooling ready on day one
+- Anyone bootstrapping a new product without reinventing the stack
+
+## Prerequisites
+
+- Node.js `>=18.17`
 
 ## Quick Start
 
@@ -62,6 +78,10 @@ Scaffolded Next.js projects include a pre-configured [**ViraStack AI**](https://
 To understand which tools and templates are preferred by the community, ViraStack collects strictly anonymous usage data (template, i18n choice, selected tools, package manager, and CLI version). Absolutely no personal data, project names, or file paths are collected.
 
 Opt out anytime: `npx virastack --telemetry-disable`
+
+## Contributing
+
+Ideas and bug reports are welcome — open an [issue](https://github.com/virastack/start/issues).
 
 ## Explore the ViraStack Ecosystem
 
