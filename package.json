@@ -1,6 +1,6 @@
 {
   "name": "virastack",
-  "version": "0.1.1",
+  "version": "0.1.0",
   "description": "Scaffold new projects and add tools from the ViraStack ecosystem with a single command.",
   "author": {
     "name": "Ömer Gülçiçek (ViraStack)",
@@ -29,7 +29,8 @@
   "files": [
     "bin",
     "src",
-    "templates"
+    "templates",
+    "templates-i18n"
   ],
   "scripts": {
     "start": "node ./bin/virastack.js"

@@ -49,6 +49,8 @@ const dictionaries = {
     "scaffold.installDone": "Dependencies installed.",
     "scaffold.installFailed":
       "Failed to install dependencies. Run install manually.",
+    "scaffold.offline":
+      "You appear to be offline. Skipping dependency install and AI setup — run them manually when you're back online.",
     "scaffold.aiInit": "Configuring ViraStack AI rules...",
     "scaffold.aiInitDone": "🤖 ViraStack AI agent rules successfully integrated.",
     "scaffold.aiInitFailed":
@@ -124,6 +126,8 @@ Options:
     "scaffold.installDone": "Bağımlılıklar kuruldu.",
     "scaffold.installFailed":
       "Bağımlılıklar kurulamadı. Kurulumu manuel olarak çalıştırın.",
+    "scaffold.offline":
+      "İnternet bağlantısı yok gibi görünüyor. Bağımlılık kurulumu ve AI yapılandırması atlandı — çevrimiçi olduğunuzda manuel çalıştırın.",
     "scaffold.aiInit": "ViraStack AI kuralları yapılandırılıyor...",
     "scaffold.aiInitDone": "🤖 ViraStack AI ajan kuralları projeye başarıyla entegre edildi.",
     "scaffold.aiInitFailed":

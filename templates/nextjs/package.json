@@ -1,6 +1,6 @@
 {
   "name": "virastack",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "private": true,
   "description": "Premium Next.js 16 + React 19 + Tailwind CSS 4 boilerplate focused on clean architecture, UI/UX, and agent-ready developer experience.",
   "author": {
@@ -11,7 +11,7 @@
   "license": "MIT",
   "virastack": {
     "template": "nextjs",
-    "version": "1.0.0",
+    "version": "0.1.0",
     "url": "https://virastack.com"
   },
   "homepage": "https://virastack.com",

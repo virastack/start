@@ -1,18 +1,19 @@
-import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import * as p from "@clack/prompts";
 import pc from "picocolors";
 
-import { t } from "../i18n.js";
+import { t, getLocale } from "../i18n.js";
 import { copyTemplate, dirHasFiles, isDirEmpty } from "../utils/copy-template.js";
 import { runCommand } from "../utils/exec.js";
 import { initGitRepo } from "../utils/git.js";
+import { isOnline } from "../utils/is-online.js";
 import { detectPackageManager, getInstallArgs, getRunDevCommand } from "../utils/package-manager.js";
 import { trackEvent, isTelemetryDisabled, hasSeenTelemetryNotice, markTelemetryNoticeShown } from "../utils/telemetry.js";
 import { TOOLS } from "../utils/tools.js";
 import { setupEnvFile } from "../utils/setup-env.js";
 import { updatePackageJson } from "../utils/update-package-json.js";
+import { updateReadme } from "../utils/update-readme.js";
 import { validateProjectName } from "../utils/validate-project-name.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -25,7 +26,7 @@ function cancelAndExit() {
 }
 
 export async function runInit() {
-  console.log();
+  console.clear();
   p.intro(pc.bgMagenta(pc.black(" ViraStack ")));
 
   if (!(await isTelemetryDisabled()) && !(await hasSeenTelemetryNotice())) {
@@ -116,6 +117,7 @@ export async function runInit() {
   scaffoldSpinner.start(t("scaffold.copying"));
   await copyTemplate(templateSourceDir, targetDir);
   await updatePackageJson(targetDir, { projectName, tools });
+  await updateReadme(targetDir, projectName);
   await setupEnvFile(targetDir);
   scaffoldSpinner.stop(t("scaffold.copyDone"));
 
@@ -126,25 +128,31 @@ export async function runInit() {
     gitInitialized ? t("scaffold.gitInitDone") : t("scaffold.gitInitSkipped"),
   );
 
-  const installSpinner = p.spinner();
-  installSpinner.start(t("scaffold.installing", { pm: packageManager }));
-  try {
-    await runCommand(packageManager, getInstallArgs(), { cwd: targetDir });
-    installSpinner.stop(t("scaffold.installDone"));
-  } catch (error) {
-    installSpinner.stop(t("scaffold.installFailed"));
-    p.log.error(String(error?.message ?? error));
-  }
+  const online = await isOnline();
 
-  const aiSpinner = p.spinner();
-  aiSpinner.start(t("scaffold.aiInit"));
-  try {
-    const args = ["--yes", "@virastack/ai", "init", "--force"];
-    if (getLocale() === "tr") args.push("--tr");
-    await runCommand("npx", args, { cwd: targetDir });
-    aiSpinner.stop(t("scaffold.aiInitDone"));
-  } catch (err) {
-    aiSpinner.stop(t("scaffold.aiInitFailed"));
+  if (!online) {
+    p.log.warn(t("scaffold.offline"));
+  } else {
+    const installSpinner = p.spinner();
+    installSpinner.start(t("scaffold.installing", { pm: packageManager }));
+    try {
+      await runCommand(packageManager, getInstallArgs(), { cwd: targetDir });
+      installSpinner.stop(t("scaffold.installDone"));
+    } catch (error) {
+      installSpinner.stop(t("scaffold.installFailed"));
+      p.log.error(String(error?.message ?? error));
+    }
+
+    const aiSpinner = p.spinner();
+    aiSpinner.start(t("scaffold.aiInit"));
+    try {
+      const args = ["--yes", "@virastack/ai", "init", "--force"];
+      if (getLocale() === "tr") args.push("--tr");
+      await runCommand("npx", args, { cwd: targetDir });
+      aiSpinner.stop(t("scaffold.aiInitDone"));
+    } catch {
+      aiSpinner.stop(t("scaffold.aiInitFailed"));
+    }
   }
 
   await trackEvent("create", { template, i18n: wantsI18n, tools, packageManager });
