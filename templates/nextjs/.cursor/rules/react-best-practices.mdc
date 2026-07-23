@@ -1,6 +1,6 @@
 ---
 description: "USE WHEN: Designing React components, implementing hooks, and managing component lifecycles."
-globs: "src/components/**/*.{ts,tsx},src/hooks/**/*.{ts,tsx},src/features/**/*.{ts,tsx}"
+globs: "src/components/**/*.{ts,tsx},src/hooks/**/*.{ts,tsx}"
 alwaysApply: false
 ---
 
@@ -8,29 +8,30 @@ alwaysApply: false
 
 ## Constraints
 
-- **SRP:** Keep components small (max ~200 lines).
-- **Composition:** Use `children` or slots instead of prop drilling.
-- **Naming:** `PascalCase` for components, `useCamelCase` for hooks (see `naming-conventions.mdc`).
-- **Hooks:** Move business logic to custom hooks (`src/hooks` or `features/[feature]/hooks`).
+- **SRP:** Keep components small (max 200 lines).
+- **Composition:** Use `children` or `slots` instead of prop drilling.
+- **Naming:** Use `PascalCase` for components, `useCamelCase` for hooks.
+- **Hooks:** Move business logic to custom hooks.
 - **State:** Lift state to the nearest common ancestor.
-- **Updates:** Use `setState((prev) => ...)` for state updates that depend on the previous value.
-- **Effects:** Use `useEffect` as a last resort. Prefer event handlers, derived state, or `useMemo`.
+- **Updates:** Use `setState(prev => ...)` for state updates.
+- **Effects:** Use `useEffect` as a last resort. Prefer event handlers or `useMemo`.
 - **Keys:** Use stable IDs for lists (index is forbidden).
 
 ## Bans
 
-- Prop drilling (> 2 levels).
+- Prop drilling (>2 levels).
 - Class components.
-- Incomplete `useEffect`/`useMemo`/`useCallback` dependency arrays.
-- Syncing props to state via `useEffect` (use derived state instead).
-- Heavy computations during render (memoize instead).
-- Data fetching inside components with `useEffect` (violates `nextjs.mdc`/`tanstack-query.mdc` — use RSC or TanStack Query).
+- Incomplete dependency arrays.
+- Syncing props to state (use Derived state).
+- Heavy computations during render.
+- Data fetching inside components (violation of API rules).
 
 ## Correct Implementation
 
 <example>
 ```tsx
-const total = useMemo(() => items.reduce((sum, item) => sum + item.price, 0), [items]);
+const stableHandler = useEvent(handler);
+useEffect(() => { stableHandler(data); }, [data]);
 ```
 </example>
 
@@ -38,7 +39,7 @@ const total = useMemo(() => items.reduce((sum, item) => sum + item.price, 0), [i
 
 <incorrect-example>
 ```tsx
-useEffect(() => { fetchData(); }, []); // Fetching inside a component effect — forbidden
-useEffect(() => { setVal(props.val); }, [props.val]); // Syncing props to state — forbidden
+useEffect(() => { fetchData(); }, []); // Fetching forbidden
+useEffect(() => { setVal(props.val); }, [props.val]); // Sync forbidden
 ```
 </incorrect-example>

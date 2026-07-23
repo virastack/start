@@ -9,26 +9,29 @@ alwaysApply: false
 ## Constraints
 
 - **Library:** Use `Zustand` for client state.
-- **Scope:** Define global state in `src/stores`, feature state in `src/features/[feature]/stores`.
-- **Selectors:** Always consume state via selectors (`useStore((s) => s.value)`).
-- **Persistence:** Configure `onRehydrateStorage` when using the `persist` middleware.
+- **Scope:** Define Global state in `src/stores`, Feature state in `src/features/[feature]/stores`.
+- **Selectors:** Always consume state via selectors (`useStore(s => s.val)`).
+- **SSR:** Guarantee client-side rendering with `useHydrated`.
+- **Persistence:** Configure `onRehydrateStorage` when using `persist` middleware.
 - **Server State:** Use TanStack Query. Do not store server data in the global store.
-- **URL State:** Use `nuqs` (`useQueryState`) for state that should be shareable/bookmarkable via the URL (filters, active tab, pagination) instead of Zustand.
+- **URL State (Pagination, Filters):** Always store shareable state (like pagination, filters, sorting) in the URL search parameters, NOT in the global store.
+  - **CRITICAL CHECK:** First, check `package.json`. If `nuqs` is installed, you MUST use `nuqs` (`useQueryState`, `useQueryStates`) for URL state management.
+  - If `nuqs` is NOT installed, use the framework's native URL search parameter hooks (e.g., `useSearchParams` in Next.js).
 
 ## Bans
 
 - Passing store data via props.
-- Storing high-frequency state (e.g., text inputs) in the store.
+- Storing high-frequency state (e.g., inputs) in the store.
 - Executing side-effects (API calls) inside the store.
-- Accessing `window`/`localStorage` during store initialization (breaks SSR).
-- Returning the entire store without a selector.
+- Accessing `window`/`localStorage` during initialization.
+- Returning the entire store without selectors.
 
 ## Correct Implementation
 
 <example>
 ```ts
-const count = useCounterStore((s) => s.count);
-const increment = useCounterStore((s) => s.increment);
+const user = useUserStore((s) => s.user);
+const isHydrated = useHydrated();
 ```
 </example>
 
@@ -36,7 +39,7 @@ const increment = useCounterStore((s) => s.increment);
 
 <incorrect-example>
 ```ts
-const store = useCounterStore(); // Missing selector
-const bad = create(() => ({ data: localStorage.getItem("x") })); // SSR error
+const { user } = useUserStore(); // Missing selector
+const store = create(() => ({ data: localStorage.getItem("x") })); // SSR Error
 ```
 </incorrect-example>

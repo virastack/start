@@ -49,10 +49,10 @@ const dictionaries = {
     "scaffold.installDone": "Dependencies installed.",
     "scaffold.installFailed":
       "Failed to install dependencies. Run install manually.",
-    "scaffold.aiInit": "Applying @virastack/ai rules...",
-    "scaffold.aiInitDone": "@virastack/ai rules applied.",
+    "scaffold.aiInit": "Configuring ViraStack AI rules...",
+    "scaffold.aiInitDone": "🤖 ViraStack AI agent rules successfully integrated.",
     "scaffold.aiInitFailed":
-      'Could not apply @virastack/ai rules automatically. Run "npx @virastack/ai init" manually.',
+      "Failed to configure ViraStack AI rules.",
 
     "done.title": "You're all set!",
     "done.cd": "  cd {dir}",
@@ -124,10 +124,10 @@ Options:
     "scaffold.installDone": "Bağımlılıklar kuruldu.",
     "scaffold.installFailed":
       "Bağımlılıklar kurulamadı. Kurulumu manuel olarak çalıştırın.",
-    "scaffold.aiInit": "@virastack/ai kuralları uygulanıyor...",
-    "scaffold.aiInitDone": "@virastack/ai kuralları uygulandı.",
+    "scaffold.aiInit": "ViraStack AI kuralları yapılandırılıyor...",
+    "scaffold.aiInitDone": "🤖 ViraStack AI ajan kuralları projeye başarıyla entegre edildi.",
     "scaffold.aiInitFailed":
-      '@virastack/ai kuralları otomatik uygulanamadı. "npx @virastack/ai init" komutunu manuel çalıştırın.',
+      "ViraStack AI kuralları yapılandırılamadı.",
 
     "done.title": "Her şey hazır!",
     "done.cd": "  cd {dir}",

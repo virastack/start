@@ -1,3 +1,4 @@
+import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import * as p from "@clack/prompts";
@@ -97,7 +98,7 @@ export async function runInit() {
   const tools = await p.multiselect({
     message: t("tools.message"),
     required: false,
-    options: TOOLS.map((tool) => ({
+    options: TOOLS.filter(t => !t.hiddenFromInit).map((tool) => ({
       value: tool.id,
       label: t(`tools.${tool.id}.label`),
       hint: t(`tools.${tool.id}.hint`),
@@ -135,15 +136,15 @@ export async function runInit() {
     p.log.error(String(error?.message ?? error));
   }
 
-  if (tools.includes("ai")) {
-    const aiSpinner = p.spinner();
-    aiSpinner.start(t("scaffold.aiInit"));
-    try {
-      await runCommand("npx", ["--yes", "@virastack/ai", "init"], { cwd: targetDir });
-      aiSpinner.stop(t("scaffold.aiInitDone"));
-    } catch {
-      aiSpinner.stop(t("scaffold.aiInitFailed"));
-    }
+  const aiSpinner = p.spinner();
+  aiSpinner.start(t("scaffold.aiInit"));
+  try {
+    const args = ["--yes", "@virastack/ai", "init", "--force"];
+    if (getLocale() === "tr") args.push("--tr");
+    await runCommand("npx", args, { cwd: targetDir });
+    aiSpinner.stop(t("scaffold.aiInitDone"));
+  } catch (err) {
+    aiSpinner.stop(t("scaffold.aiInitFailed"));
   }
 
   await trackEvent("create", { template, i18n: wantsI18n, tools, packageManager });

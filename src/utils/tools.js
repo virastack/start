@@ -22,6 +22,7 @@ export const TOOLS = [
     id: "ai",
     package: "@virastack/ai",
     kind: "postinstall-cli",
+    hiddenFromInit: true,
   },
 ];
 

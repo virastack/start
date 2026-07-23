@@ -5,14 +5,6 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import { NextjsIcon, ReactIcon, TailwindIcon } from "@/features/landing/icons";
 
 export function Hero() {
@@ -69,23 +61,10 @@ export function Hero() {
         transition={{ duration: 0.5, delay: 0.15 }}
         className="flex flex-wrap items-center justify-center gap-3 mt-2"
       >
-        <Dialog>
-          <DialogTrigger render={<Button className="group" />}>
-            Quick start
-            <ArrowRightIcon className="size-4 transition-transform duration-200 group-hover:translate-x-0.5" />
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Get started in under a minute</DialogTitle>
-              <DialogDescription>
-                Clone the template, install dependencies, and start the dev server.
-              </DialogDescription>
-            </DialogHeader>
-            <pre className="overflow-x-auto rounded-md bg-muted p-4 text-sm">
-              <code>{`pnpm install\npnpm dev`}</code>
-            </pre>
-          </DialogContent>
-        </Dialog>
+        <Button nativeButton={false} render={<Link href="https://github.com/virastack/nextjs-boilerplate#getting-started" target="_blank" />} className="group">
+          Quick start
+          <ArrowRightIcon className="size-4 transition-transform duration-200 group-hover:translate-x-0.5" />
+        </Button>
 
         <Button variant="outline" nativeButton={false} render={<Link href="https://github.com/virastack/nextjs-boilerplate" target="_blank" />} className="gap-2">
           <svg viewBox="0 0 24 24" fill="currentColor" className="size-4">

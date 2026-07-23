@@ -36,40 +36,26 @@ Add a ViraStack tool to an existing project:
 ```bash
 npx virastack add mask
 npx virastack add password
-npx virastack add ai
 ```
 
 ## What it asks
 
 1. **Project name** — a folder name, or `.` for the current directory.
 2. **Template** — Next.js App Router (TanStack Start coming soon).
-3. **Multi-language (i18n)** — standard template from `templates/`, or `next-intl` variant from `templates-i18n/`.
-4. **ViraStack tools** — optional `@virastack/mask`, `@virastack/password`, `@virastack/ai`.
+3. **Multi-language (i18n)** — Choose whether you need built-in internationalization support.
+4. **ViraStack tools** — optional `@virastack/mask`, `@virastack/password`.
 
 No package manager prompt: the CLI detects whichever one you invoked it with (npm, pnpm, yarn, or bun) and runs install automatically.
 
-## Repository structure
+Scaffolded Next.js projects include a pre-configured [**ViraStack AI**](https://github.com/virastack/ai) layer (architecture & rules), alongside specialized design skills from **Emil** (UI/shadcn) and **Jakub** (Animations/Framer).
 
-```
-start/
-├── bin/                  # CLI entry point
-├── src/                  # Commands, prompts, utilities
-├── templates/
-│   ├── nextjs/           # Next.js boilerplate
-│   └── tanstack/         # TanStack Start (coming soon)
-└── templates-i18n/
-    ├── nextjs/           # Next.js + next-intl
-    └── tanstack/         # TanStack Start + i18n (coming soon)
-```
+## Tools
 
-Scaffolded Next.js projects include a pre-configured [**ViraStack AI**](https://github.com/virastack/ai) layer (`AGENTS.md`, `.cursor/rules`, design skills).
-
-## Commands
-
-| Command | Description |
+| Tool | Description |
 | :--- | :--- |
-| `npx virastack` / `npx virastack init` | Interactive project scaffolding |
-| `npx virastack add <tool>` | Add `mask`, `password`, or `ai` to the current directory |
+| `@virastack/mask` | Input masking and formatting (Phone, IBAN, etc.) |
+| `@virastack/password` | Password strength indicator and validation |
+| `@virastack/ai` | Pre-configured AI layer for Cursor (included in templates by default) |
 
 ## Options
 

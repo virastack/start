@@ -7,16 +7,24 @@ alwaysApply: true
 
 ## Constraints
 
-- **INTENTIONAL_TODO Rule:** Usage is ONLY permitted for non-functional placeholders (e.g., temporary mock UI, future logging).
+- **INTENTIONAL_TODO Rule:** Usage is ONLY permitted for non-functional placeholders (e.g., temporary mock UI, future logging). 
 - **Business Integrity:** Forbidden to use `INTENTIONAL_TODO` for business logic, error handling, or API integrations.
 - **Pseudo-code:** Forbidden. Provide working TypeScript/React code.
 - **Reference:** Do not say "Usually done like this"; link to repo rules.
-- **Validation:** Do not deliver without passing `pnpm typecheck` and `pnpm lint`.
+- **Validation:** Do not deliver without passing `pnpm check-types` and `pnpm lint`.
 - **Search First:** Analyze existing patterns before coding.
 - **Minimal Intervention:** Modify only necessary areas.
 - **Source of Truth:** Reference the codebase. Correct it if erroneous.
 - **Boy Scout:** Clean unused imports, `console.log`, and dead code.
-- **Exports:** Group exports with `index.ts` barrels (see `naming-conventions.mdc`).
+- **Naming Conventions (STRICT):**
+  - Folders & core files: `kebab-case` (e.g., `locale-switcher`, `query-client.ts`)
+  - Components: `PascalCase` (e.g., `UserList.tsx`)
+  - UI Elements: `kebab-case` (e.g., `button.tsx`)
+  - Hooks: `use-users.ts` (file), `useUsers` (function)
+  - Types/Interfaces: `PascalCase` without 'Type' suffix (e.g., `User`, `SiteConfig`)
+  - Suffixes: `*.data.ts`, `*.store.ts`, `*.types.ts`, `*.constants.ts` (base name in kebab-case).
+- **Imports & Aliases:** Use short aliases and barrel exports (`index.ts`). Prefer `@/ui`, `@/hooks`, `@/data`, `@/schemas`, `@/layout`. Avoid long paths like `@/components/ui`.
+- **Exports:** Group exports with `index.ts`.
 - **No Silent Failures:** Do not swallow errors. Manage `try/catch` blocks.
 - **Secret Protection:** Do not log `.env` content.
 - **Dependency:** Obtain approval for new packages.
@@ -29,18 +37,18 @@ alwaysApply: true
 - Logging secrets.
 - Out-of-scope refactoring.
 - `// ...existing code` (Provide full blocks).
-- Standard `TODO` or `FIXME` comments (except pre-existing `FIXME:` customization markers).
+- Standard `TODO` or `FIXME` comments.
 - Using `INTENTIONAL_TODO` to skip core logic implementation.
-- Parent-relative imports (`../`, `../../`). Use path aliases only (`@/*`).
+- Parent-relative imports (`../`, `../../`). Use path aliases only.
 
 ## Correct Implementation
 
 <example>
-```ts
+```js
 try {
   process(data);
 } catch (error) {
-  throw new ApiError("Processing failed", 500, error);
+  throw new ProcessingError({ cause: error });
 }
 ```
 </example>
@@ -48,7 +56,7 @@ try {
 ## Incorrect Implementation
 
 <incorrect-example>
-```ts
+```js
 try { process(data); } catch (e) {}
 ```
 </incorrect-example>

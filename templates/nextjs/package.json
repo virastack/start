@@ -1,5 +1,5 @@
 {
-  "name": "@virastack/nextjs-boilerplate",
+  "name": "virastack",
   "version": "1.0.0",
   "private": true,
   "description": "Premium Next.js 16 + React 19 + Tailwind CSS 4 boilerplate focused on clean architecture, UI/UX, and agent-ready developer experience.",
@@ -9,6 +9,11 @@
     "url": "https://omergulcicek.com"
   },
   "license": "MIT",
+  "virastack": {
+    "template": "nextjs",
+    "version": "1.0.0",
+    "url": "https://virastack.com"
+  },
   "homepage": "https://virastack.com",
   "repository": {
     "type": "git",
@@ -93,7 +98,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "@virastack/ai": "^1.1.1",
+    "@virastack/ai": "^1.2.0",
     "babel-plugin-react-compiler": "1.0.0",
     "cross-env": "^10.1.0",
     "eslint": "^9",

@@ -3,7 +3,7 @@ import { promises as fs } from "node:fs";
 import * as p from "@clack/prompts";
 import pc from "picocolors";
 
-import { t } from "../i18n.js";
+import { t, getLocale } from "../i18n.js";
 import { runCommand } from "../utils/exec.js";
 import { detectPackageManager, getAddArgs } from "../utils/package-manager.js";
 import { trackEvent } from "../utils/telemetry.js";
@@ -49,7 +49,9 @@ export async function runAdd(toolId) {
     if (tool.kind === "dependency") {
       await runCommand(packageManager, getAddArgs(packageManager, [tool.package]), { cwd });
     } else {
-      await runCommand("npx", ["--yes", tool.package, "init"], { cwd });
+      const args = ["--yes", tool.package, "init", "--force"];
+      if (getLocale() === "tr") args.push("--tr");
+      await runCommand("npx", args, { cwd });
     }
     spinner.stop(t("add.done", { pkg: tool.package }));
   } catch (error) {
@@ -59,6 +61,4 @@ export async function runAdd(toolId) {
   }
 
   await trackEvent("add", { tool: tool.id, packageManager });
-
-  p.outro(t("done.title"));
 }
