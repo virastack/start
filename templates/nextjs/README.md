@@ -1,5 +1,7 @@
 <div align="center">
 
+![ViraStack Start - Next.js](./assets/virastack-nextjs.png)
+
 # ViraStack Start (Next.js)
 
 **The Next.js boilerplate that feels effortless.**
@@ -10,10 +12,6 @@ Next.js 16 · React 19 · Tailwind CSS 4 · Base UI · TypeScript strict · Agen
 [![CI](https://img.shields.io/badge/CI-GitHub%20Actions-2088FF?logo=githubactions&logoColor=white)](.github/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Node](https://img.shields.io/badge/node-%3E%3D20.9-339933?logo=node.js&logoColor=white)](package.json)
-
-<br />
-
-![ViraStack Start - Next.js](./assets/virastack-nextjs.png)
 
 </div>
 

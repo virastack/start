@@ -1,5 +1,7 @@
 <div align="center">
 
+![ViraStack Start](./assets/virastack-start.png)
+
 # ViraStack Start
 
 **One command. Production-ready stack.**
@@ -9,10 +11,6 @@ Scaffold new projects and add tools from the [ViraStack](https://virastack.com) 
 [![ViraStack Start](https://img.shields.io/badge/ViraStack-Start-%2300bba7)](https://virastack.com)
 [![npm version](https://img.shields.io/npm/v/virastack)](https://www.npmjs.com/package/virastack)
 [![npm downloads](https://img.shields.io/npm/dt/virastack)](https://www.npmjs.com/package/virastack)
-
-<br />
-
-![ViraStack Start](./assets/virastack-start.png)
 
 </div>
 
