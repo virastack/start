@@ -1,5 +1,5 @@
 import { Footer, Header } from "@/components/layout";
-import { Hero, Playground } from "@/features/landing";
+import { Features, Hero, Showcase } from "@/features/landing";
 
 export default function HomePage() {
   return (
@@ -7,7 +7,8 @@ export default function HomePage() {
       <Header />
       <main className="flex-1">
         <Hero />
-        <Playground />
+        <Features />
+        <Showcase />
       </main>
       <Footer />
     </>

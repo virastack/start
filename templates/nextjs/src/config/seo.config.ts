@@ -8,7 +8,8 @@ export const defaultMetadata: Metadata = {
     default: "ViraStack Start",
     template: `%s · ViraStack Start`,
   },
-  description: "Modern, open-source Next.js starter template by ViraStack. Includes React 19, Tailwind CSS 4, TanStack Query, and clean architecture.",
+  description:
+    "Modern, open-source Next.js starter template by ViraStack. Includes React 19, Tailwind CSS 4, TanStack Query, and clean architecture.",
   keywords: ["Next.js", "React", "TypeScript", "Tailwind CSS", "ViraStack", "Boilerplate"],
   authors: [{ name: "ViraStack", url: siteConfig.url }],
   creator: "ViraStack",

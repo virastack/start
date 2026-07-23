@@ -14,7 +14,7 @@ export function Header() {
           <Image src="/logo.png" alt="ViraStack Logo" width={24} height={24} className="h-6 w-6" />
           <span className="text-lg">
             <span className="font-black text-primary">ViraStack</span>{" "}
-            <span className="font-medium italic text-teal-500">Start</span>
+            <span className="font-medium text-teal-500 italic">Start</span>
           </span>
         </Link>
         <nav className="flex items-center gap-4">

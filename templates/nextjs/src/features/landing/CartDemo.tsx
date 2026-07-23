@@ -28,17 +28,36 @@ export function CartDemo() {
         </div>
       </div>
 
-      <div className="flex items-center justify-between mt-2">
+      <div className="mt-2 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <Button variant="outline" size="icon" className="h-8 w-8 rounded-full" aria-label="Decrement" onClick={decrement} disabled={count === 0}>
+          <Button
+            variant="outline"
+            size="icon"
+            className="h-8 w-8 rounded-full"
+            aria-label="Decrement"
+            onClick={decrement}
+            disabled={count === 0}
+          >
             <MinusIcon className="size-4" />
           </Button>
           <span className="w-6 text-center font-medium tabular-nums">{count}</span>
-          <Button variant="outline" size="icon" className="h-8 w-8 rounded-full" aria-label="Increment" onClick={increment}>
+          <Button
+            variant="outline"
+            size="icon"
+            className="h-8 w-8 rounded-full"
+            aria-label="Increment"
+            onClick={increment}
+          >
             <PlusIcon className="size-4" />
           </Button>
         </div>
-        <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-destructive gap-1.5 h-8 px-2" onClick={reset} disabled={count === 0}>
+        <Button
+          variant="ghost"
+          size="sm"
+          className="h-8 gap-1.5 px-2 text-muted-foreground hover:text-destructive"
+          onClick={reset}
+          disabled={count === 0}
+        >
           <Trash2Icon className="size-3.5" />
           <span className="text-xs">Clear</span>
         </Button>

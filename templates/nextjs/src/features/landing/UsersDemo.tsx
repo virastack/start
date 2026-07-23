@@ -1,35 +1,42 @@
 "use client";
 
 import type { ReactNode } from "react";
+
 import { RefreshCwIcon, SearchIcon } from "lucide-react";
-import { useQueryState, parseAsString } from "nuqs";
+import { parseAsString, useQueryState } from "nuqs";
 
 import { ApiError } from "@/lib/api";
 
 import { useUsers } from "@/hooks";
 
 import {
-  Skeleton,
   Avatar,
   AvatarFallback,
+  Button,
+  Input,
+  Skeleton,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
-  Button,
-  Input,
 } from "@/components/ui";
 
 function getInitials(name: string) {
-  const parts = name.trim().split(/\s+/);
+  const parts = name.trim().split(/\s+/).filter(Boolean);
+  const first = parts[0];
+  const last = parts[parts.length - 1];
 
-  if (parts.length === 1) {
-    return parts[0].charAt(0).toUpperCase();
+  if (!first) {
+    return "?";
   }
 
-  return `${parts[0].charAt(0)}${parts[parts.length - 1].charAt(0)}`.toUpperCase();
+  if (!last || parts.length === 1) {
+    return first.charAt(0).toUpperCase();
+  }
+
+  return `${first.charAt(0)}${last.charAt(0)}`.toUpperCase();
 }
 
 /**
@@ -49,8 +56,9 @@ export function UsersDemo() {
   const header = (
     <div className="mb-4">
       <h4 className="text-base font-semibold text-foreground md:text-lg">Recent Users</h4>
-      <p className="mt-1 text-sm text-muted-foreground text-pretty">
-        Fetch and cache data with <span className="font-semibold text-foreground">TanStack Query</span>, synced to the URL via{" "}
+      <p className="mt-1 text-sm text-pretty text-muted-foreground">
+        Fetch and cache data with{" "}
+        <span className="font-semibold text-foreground">TanStack Query</span>, synced to the URL via{" "}
         <span className="font-semibold text-foreground">nuqs</span>.
       </p>
     </div>
@@ -58,8 +66,8 @@ export function UsersDemo() {
 
   const toolbar = (
     <div className="mb-3 flex items-center justify-between gap-2">
-      <div className="relative min-w-0 w-full max-w-[200px]">
-        <SearchIcon className="absolute left-2.5 top-1/2 size-3.5 -translate-y-1/2 text-muted-foreground" />
+      <div className="relative w-full max-w-[200px] min-w-0">
+        <SearchIcon className="absolute top-1/2 left-2.5 size-3.5 -translate-y-1/2 text-muted-foreground" />
         <Input
           type="search"
           placeholder="Search users..."
@@ -183,7 +191,7 @@ export function UsersDemo() {
                     </div>
                   </TableCell>
                   <TableCell className="px-3 py-2.5 text-right">
-                    <span className="inline-flex items-center rounded-md bg-emerald-500/10 px-2 py-0.5 text-[11px] font-medium text-emerald-600 ring-1 ring-inset ring-emerald-500/20 dark:text-emerald-400">
+                    <span className="inline-flex items-center rounded-md bg-emerald-500/10 px-2 py-0.5 text-[11px] font-medium text-emerald-600 ring-1 ring-emerald-500/20 ring-inset dark:text-emerald-400">
                       Active
                     </span>
                   </TableCell>

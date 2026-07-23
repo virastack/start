@@ -6,7 +6,7 @@ const config = {
   ],
   project: ["src/**/*.{ts,tsx,js,jsx}"],
   ignore: ["src/components/ui/**"],
-  ignoreDependencies: ["tailwindcss", "tw-animate-css"],
+  ignoreDependencies: ["tailwindcss", "tw-animate-css", "@virastack/ai"],
   rules: {
     dependencies: "error",
     exports: "warn",

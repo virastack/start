@@ -67,31 +67,31 @@ pnpm install   # or npm / yarn / bun
 pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000). The landing page is the in-repo playground: theme toggle, TanStack Query user list, Zustand cart, Zod-validated project form, and `nuqs` search state in `UsersDemo`.
+Open [http://localhost:3000](http://localhost:3000). The landing page demos the stack across `Hero`, `Features`, and `Showcase`: theme toggle, TanStack Query user list, Zustand cart, Zod-validated project form, and `nuqs` search state.
 
 ## Environment variables
 
 Validated in `src/env.ts`. Scaffolded projects already have `.env.local`.
 
-| Variable | Scope | Description |
-| :--- | :--- | :--- |
-| `NEXT_PUBLIC_APP_URL` | Public | Canonical app URL (default `http://localhost:3000`) |
+| Variable               | Scope  | Description                                                   |
+| :--------------------- | :----- | :------------------------------------------------------------ |
+| `NEXT_PUBLIC_APP_URL`  | Public | Canonical app URL (default `http://localhost:3000`)           |
 | `NEXT_PUBLIC_APP_NAME` | Public | Product name shown in UI/metadata (default `ViraStack Start`) |
 
 `NODE_ENV` is set by Next.js — do not define it manually. Add new vars in both `.env.example` and `src/env.ts`.
 
 ## Scripts
 
-| Script | Description |
-| :--- | :--- |
-| `dev` | Start the dev server (Turbopack) |
-| `build` | Production build |
-| `start` | Serve the production build |
-| `analyze` | Build with bundle analyzer |
-| `lint` / `lint:fix` / `lint:ci` | ESLint (+ format check in CI) |
-| `format` / `format:check` | Prettier |
-| `typecheck` | `tsc --noEmit` |
-| `knip` | Find unused files, exports, and dependencies |
+| Script                          | Description                                  |
+| :------------------------------ | :------------------------------------------- |
+| `dev`                           | Start the dev server (Turbopack)             |
+| `build`                         | Production build                             |
+| `start`                         | Serve the production build                   |
+| `analyze`                       | Build with bundle analyzer                   |
+| `lint` / `lint:fix` / `lint:ci` | ESLint (+ format check in CI)                |
+| `format` / `format:check`       | Prettier                                     |
+| `typecheck`                     | `tsc --noEmit`                               |
+| `knip`                          | Find unused files, exports, and dependencies |
 
 CI runs the same gates: typecheck → lint → knip → build (see `.github/workflows/ci.yml`).
 
@@ -130,7 +130,7 @@ src/
 └── env.ts
 ```
 
-The bundled `landing` feature is a flat demo (`Hero`, `Playground` with showcase sections). New features should follow the full tree above.
+The bundled `landing` feature is a flat demo (`Hero`, `Features`, `Showcase`). New features should follow the full tree above.
 
 **Rules of thumb**
 
@@ -144,13 +144,13 @@ See [`docs/architecture-guide.md`](docs/architecture-guide.md) for placement rul
 
 Search the repo for `FIXME:` to find the first things to own:
 
-| File | What to change |
-| :--- | :--- |
-| `src/config/site.config.ts` | Site name, description, metadata |
-| `next.config.ts` | Remote image domains and Next.js options |
-| `src/lib/api.ts` | Auth header / API client wiring |
-| `src/env.ts` + `.env.example` | New environment variables |
-| `public/` | Favicon and static assets |
+| File                          | What to change                           |
+| :---------------------------- | :--------------------------------------- |
+| `src/config/site.config.ts`   | Site name, description, metadata         |
+| `next.config.ts`              | Remote image domains and Next.js options |
+| `src/lib/api.ts`              | Auth header / API client wiring          |
+| `src/env.ts` + `.env.example` | New environment variables                |
+| `public/`                     | Favicon and static assets                |
 
 You own every file — trim demos, rename features, keep only what you need.
 
@@ -158,13 +158,13 @@ You own every file — trim demos, rename features, keep only what you need.
 
 Developed with [**ViraStack AI**](https://github.com/virastack/ai) — an AI-native architecture kit that ships agent context into every project:
 
-| File | Purpose |
-| :--- | :--- |
-| `AGENTS.md` | Agent operating guide |
-| `CLAUDE.md` | Claude Code entry point |
-| `.cursor/rules/` | Scoped coding rules |
+| File              | Purpose                          |
+| :---------------- | :------------------------------- |
+| `AGENTS.md`       | Agent operating guide            |
+| `CLAUDE.md`       | Claude Code entry point          |
+| `.cursor/rules/`  | Scoped coding rules              |
 | `public/llms.txt` | Machine-readable project summary |
-| `.agents/skills/` | Design-taste skills |
+| `.agents/skills/` | Design-taste skills              |
 
 Install or refresh rules: `npx @virastack/ai init`
 
@@ -188,7 +188,7 @@ Optimized for [Vercel](https://vercel.com/):
 
 Ideas and bug reports welcome — open an [issue](https://github.com/virastack/start/issues).
 
-PRs that improve DX, architecture docs, or the landing playground are especially appreciated.
+PRs that improve DX, architecture docs, or the landing showcase are especially appreciated.
 
 ---
 

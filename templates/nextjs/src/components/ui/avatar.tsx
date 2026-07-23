@@ -15,19 +15,20 @@ Avatar.displayName = "Avatar";
 
 const AvatarImage = React.forwardRef<
   HTMLImageElement,
-  React.ImgHTMLAttributes<HTMLImageElement> & { onLoadingStatusChange?: (status: "loading" | "loaded" | "error") => void }
->(({ className, src, ...props }, ref) => {
+  React.ImgHTMLAttributes<HTMLImageElement> & {
+    onLoadingStatusChange?: (status: "loading" | "loaded" | "error") => void;
+  }
+>(({ className, src, alt = "", ...props }, ref) => {
   const [status, setStatus] = React.useState<"loading" | "loaded" | "error">("loading");
 
   return (
+    // Avatar primitives accept arbitrary remote URLs; next/image needs a configured domain list.
+    // eslint-disable-next-line @next/next/no-img-element -- intentional for flexible avatar sources
     <img
       ref={ref}
       src={src}
-      className={cn(
-        "aspect-square h-full w-full",
-        status !== "loaded" && "hidden",
-        className
-      )}
+      alt={alt}
+      className={cn("aspect-square h-full w-full", status !== "loaded" && "hidden", className)}
       onLoad={() => setStatus("loaded")}
       onError={() => setStatus("error")}
       {...props}

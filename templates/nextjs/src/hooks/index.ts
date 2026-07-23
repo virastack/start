@@ -1,1 +1,1 @@
-export { useUsers, type User } from "@/hooks/use-users";
+export { useUsers } from "@/hooks/use-users";
