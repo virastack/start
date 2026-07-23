@@ -11,12 +11,14 @@ Next.js 16 · React 19 · Tailwind CSS 4 · Base UI · TypeScript strict · Agen
 [![npm downloads](https://img.shields.io/npm/dt/virastack)](https://www.npmjs.com/package/virastack)
 [![Node](https://img.shields.io/badge/node-%3E%3D20.9-339933?logo=node.js&logoColor=white)](package.json)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![CI](https://img.shields.io/badge/CI-GitHub%20Actions-2088FF?logo=githubactions&logoColor=white)](.github/workflows/ci.yml)
+[![CI](https://github.com/virastack/start/actions/workflows/ci.yml/badge.svg)](https://github.com/virastack/start/actions/workflows/ci.yml)
 [![X @virastack](https://img.shields.io/badge/X-@virastack-black?logo=x)](https://x.com/virastack)
 
 ---
 
-**Contents:** [Why](#why-virastack) · [Features](#features) · [Getting started](#getting-started) · [Environment](#environment-variables) · [Scripts](#scripts) · [Project structure](#project-structure) · [Customization](#customization) · [ViraStack AI](#virastack-ai) · [Deployment](#deployment) · [Contributing](#contributing)
+**Docs:** [See the docs](https://www.virastack.com/nextjs-boilerplate/)
+
+**Contents:** [Why](#why-virastack) · [Features](#features) · [Getting started](#getting-started) · [Environment](#environment-variables) · [Scripts](#scripts) · [Project structure](#project-structure) · [Customization](#customization) · [ViraStack AI](#virastack-ai) · [Deployment](#deployment)
 
 Production-grade Next.js starter with feature-sliced architecture, strict TypeScript, and a pre-configured [**ViraStack AI**](https://github.com/virastack/ai) layer — so you and your coding agents ship consistent code from day one.
 
