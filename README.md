@@ -1,18 +1,23 @@
-<div align="center">
+<p align="center">
+  <img src="./assets/virastack-start.png" alt="ViraStack Start" />
+</p>
 
-![ViraStack Start](./assets/virastack-start.png)
+<h1 align="center">ViraStack Start</h1>
 
-# ViraStack Start
+<p align="center"><strong>One command. Production-ready stack.</strong></p>
 
-**One command. Production-ready stack.**
+<p align="center">
+  Scaffold new projects and add tools from the <a href="https://virastack.com">ViraStack</a> ecosystem.
+</p>
 
-Scaffold new projects and add tools from the [ViraStack](https://virastack.com) ecosystem.
-
-[![ViraStack Start](https://img.shields.io/badge/ViraStack-Start-%2300bba7)](https://virastack.com)
-[![npm version](https://img.shields.io/npm/v/virastack)](https://www.npmjs.com/package/virastack)
-[![npm downloads](https://img.shields.io/npm/dt/virastack)](https://www.npmjs.com/package/virastack)
-
-</div>
+<p align="center">
+  <a href="https://virastack.com"><img src="https://img.shields.io/badge/ViraStack-Start-%2300bba7" alt="ViraStack Start" /></a>
+  <a href="https://www.npmjs.com/package/virastack"><img src="https://img.shields.io/npm/v/virastack" alt="npm version" /></a>
+  <a href="https://www.npmjs.com/package/virastack"><img src="https://img.shields.io/npm/dt/virastack" alt="npm downloads" /></a>
+  <a href="package.json"><img src="https://img.shields.io/badge/node-%3E%3D18.17-339933?logo=node.js&logoColor=white" alt="Node" /></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT" /></a>
+  <a href="https://x.com/virastack"><img src="https://img.shields.io/badge/X-@virastack-black?logo=x" alt="X @virastack" /></a>
+</p>
 
 ---
 
