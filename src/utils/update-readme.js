@@ -16,12 +16,7 @@ export async function updateReadme(targetDir, projectName) {
   }
 
   let updated = content
-    .replace(/<h1\b[^>]*>.*?<\/h1>/is, `<h1 align="center">${projectName}</h1>`)
     .replace(/^#\s+.+$/m, `# ${projectName}`)
-    .replace(
-      /<p align="center">\s*<img[^>]*src="\.\/assets\/[^"]*"[^>]*\s*\/?>\s*<\/p>\n*/i,
-      "",
-    )
     .replace(/^!\[.*?\]\(\.\/assets\/.*?\)\n*/m, "");
 
   if (updated === content) return;

@@ -1,24 +1,18 @@
-<p align="center">
-  <img src="./assets/virastack-nextjs.png" alt="ViraStack Next.js" />
-</p>
+![ViraStack Next.js](./assets/virastack-nextjs.png)
 
-<h1 align="center">ViraStack - Next.js Boilerplate</h1>
+# ViraStack - Next.js Boilerplate
 
-<p align="center"><strong>The Next.js boilerplate that feels effortless.</strong></p>
+**The Next.js boilerplate that feels effortless.**
 
-<p align="center">
-  Next.js 16 · React 19 · Tailwind CSS 4 · Base UI · TypeScript strict · Agent-ready
-</p>
+Next.js 16 · React 19 · Tailwind CSS 4 · Base UI · TypeScript strict · Agent-ready
 
-<p align="center">
-  <a href="https://virastack.com"><img src="https://img.shields.io/badge/ViraStack-Next.js-%2300bba7" alt="ViraStack Next.js" /></a>
-  <a href="https://www.npmjs.com/package/virastack"><img src="https://img.shields.io/npm/v/virastack" alt="npm version" /></a>
-  <a href="https://www.npmjs.com/package/virastack"><img src="https://img.shields.io/npm/dt/virastack" alt="npm downloads" /></a>
-  <a href="package.json"><img src="https://img.shields.io/badge/node-%3E%3D20.9-339933?logo=node.js&logoColor=white" alt="Node" /></a>
-  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT" /></a>
-  <a href="https://x.com/virastack"><img src="https://img.shields.io/badge/X-@virastack-black?logo=x" alt="X @virastack" /></a>
-  <a href=".github/workflows/ci.yml"><img src="https://img.shields.io/badge/CI-GitHub%20Actions-2088FF?logo=githubactions&logoColor=white" alt="CI" /></a>
-</p>
+[![ViraStack Next.js](https://img.shields.io/badge/ViraStack-Next.js-%2300bba7)](https://virastack.com)
+[![npm version](https://img.shields.io/npm/v/virastack)](https://www.npmjs.com/package/virastack)
+[![npm downloads](https://img.shields.io/npm/dt/virastack)](https://www.npmjs.com/package/virastack)
+[![Node](https://img.shields.io/badge/node-%3E%3D20.9-339933?logo=node.js&logoColor=white)](package.json)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![CI](https://img.shields.io/badge/CI-GitHub%20Actions-2088FF?logo=githubactions&logoColor=white)](.github/workflows/ci.yml)
+[![X @virastack](https://img.shields.io/badge/X-@virastack-black?logo=x)](https://x.com/virastack)
 
 ---
 
