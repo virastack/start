@@ -52,21 +52,16 @@ Production-grade Next.js starter with feature-sliced architecture, strict TypeSc
 
 ```bash
 npx virastack
-```
-
-Dependencies are installed for you. Then:
-
-```bash
 cd your-project
-cp .env.example .env.local
 pnpm dev
 ```
+
+The CLI installs dependencies and seeds `.env.local` from `.env.example` automatically.
 
 ### Use this template directly
 
 ```bash
 pnpm install   # or npm / yarn / bun
-cp .env.example .env.local
 pnpm dev
 ```
 
@@ -74,7 +69,7 @@ Open [http://localhost:3000](http://localhost:3000). The landing page is the in-
 
 ## Environment variables
 
-Copy `.env.example` → `.env.local`. Values are validated in `src/env.ts`.
+Validated in `src/env.ts`. Scaffolded projects already have `.env.local`.
 
 | Variable | Scope | Description |
 | :--- | :--- | :--- |
@@ -95,13 +90,6 @@ Copy `.env.example` → `.env.local`. Values are validated in `src/env.ts`.
 | `format` / `format:check` | Prettier |
 | `typecheck` | `tsc --noEmit` |
 | `knip` | Find unused files, exports, and dependencies |
-
-**Daily DX**
-
-```bash
-pnpm typecheck && pnpm lint && pnpm knip   # before a PR
-pnpm analyze                              # before shipping bundle-sensitive work
-```
 
 CI runs the same gates: typecheck → lint → knip → build (see `.github/workflows/ci.yml`).
 
