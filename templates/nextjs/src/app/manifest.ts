@@ -1,19 +1,21 @@
 import type { MetadataRoute } from "next";
 
+import { siteConfig } from "@/config/site.config";
+
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "ViraStack Start",
-    short_name: "ViraStack Start",
-    description: "Premium, agent-ready Next.js boilerplate.",
+    name: siteConfig.name,
+    short_name: siteConfig.name,
+    description: siteConfig.description,
     start_url: "/",
     display: "standalone",
     background_color: "#ffffff",
     theme_color: "#ffffff",
     icons: [
       {
-        src: "/virastack.svg",
-        sizes: "any",
-        type: "image/svg+xml",
+        src: "/logo.webp",
+        sizes: "96x96",
+        type: "image/webp",
       },
     ],
   };

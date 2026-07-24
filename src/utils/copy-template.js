@@ -7,20 +7,41 @@ import path from "node:path";
 const IGNORED_ENTRIES = new Set([
   ".git",
   "node_modules",
+  ".next",
+  "out",
+  "dist",
+  "build",
+  "coverage",
+  ".vercel",
+  ".turbo",
+  ".eslintcache",
+  ".knip",
+  ".DS_Store",
+  "Thumbs.db",
   "pnpm-lock.yaml",
   "package-lock.json",
   "yarn.lock",
+  "bun.lock",
   "bun.lockb",
   ".gitkeep",
   "assets",
 ]);
+
+export function shouldIgnore(name) {
+  if (IGNORED_ENTRIES.has(name)) return true;
+  // Keep .env.example; skip local/secret env files and editor dumps.
+  if (name.startsWith(".env") && name !== ".env.example") return true;
+  if (name.endsWith(".tsbuildinfo")) return true;
+  if (name.endsWith(".log")) return true;
+  return false;
+}
 
 export async function copyTemplate(srcDir, destDir) {
   await fs.mkdir(destDir, { recursive: true });
   const entries = await fs.readdir(srcDir, { withFileTypes: true });
 
   for (const entry of entries) {
-    if (IGNORED_ENTRIES.has(entry.name)) continue;
+    if (shouldIgnore(entry.name)) continue;
 
     const srcPath = path.join(srcDir, entry.name);
     const destPath = path.join(destDir, entry.name);

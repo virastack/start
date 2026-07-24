@@ -1,1 +1,5 @@
-export { NAV_LINKS } from "@/constants/nav.constants";
+/**
+ * Shared constants promoted out of features (Rule of Three).
+ * Feature-scoped constants live under `src/features/[feature]/constants`.
+ */
+export {};

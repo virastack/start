@@ -11,11 +11,12 @@ alwaysApply: false
 * **Location:** Place all HTTP calls under `features/[feature]/api`.
 * **Validation:** Use Zod for input/output validation when data is external or untrusted. Parse responses before they reach UI or state.
 * **Return Type:** Return typed data, not raw responses.
-* **Error Handling:** Normalize all API errors to a consistent `AppError` format (`code`, `message`) before throwing.
-* **HTTP Client Strategy:** 
+* **Error Handling:** Normalize HTTP failures to a consistent `ApiError` (`message`, `status`, `data`) before throwing.
+* **HTTP Client Strategy:**
   - **CRITICAL CHECK:** Check `package.json` to determine the project's HTTP client.
-  - If `axios` is installed, use a centralized `axios` instance (e.g., `src/lib/api.ts`).
-  - If `axios` is NOT installed, use a centralized native `fetch` wrapper (e.g., `src/lib/api.ts`).
+  - **Default (ViraStack):** Prefer a centralized native `fetch` wrapper (e.g., `src/lib/api.ts`) when `axios` is not installed.
+  - If `axios` is installed, use a centralized `axios` instance (e.g., `src/lib/api.ts`) instead.
+  - Match the wrapper's return shape: fetch wrappers typically return `T` directly; axios returns `{ data }`.
 * **Interceptors:** Handle cross-cutting concerns (auth, headers, JSON parsing, retries) within the centralized client/wrapper.
 * **Naming:** `verb-entity.api.ts` (e.g., `get-users.api.ts`). Function: `getUsers`.
 * **SSR Safety:** Use only whitelisted internal URLs or absolute paths for server-to-server calls to prevent SSRF.
@@ -31,8 +32,19 @@ alwaysApply: false
 
 <example>
 ```ts
+// Native fetch wrapper (default when axios is not installed)
 export const getUsers = async (): Promise<User[]> => {
-  const { data } = await api.get("/users");
+  const data = await api.get<User[]>("/users");
+  return UserSchema.array().parse(data);
+};
+```
+</example>
+
+<example>
+```ts
+// Axios instance (only when axios is in package.json)
+export const getUsers = async (): Promise<User[]> => {
+  const { data } = await api.get<User[]>("/users");
   return UserSchema.array().parse(data);
 };
 ```
@@ -42,6 +54,8 @@ export const getUsers = async (): Promise<User[]> => {
 
 <incorrect-example>
 ```tsx
-useEffect(() => { axios.get("/users"); }, []);
+useEffect(() => {
+  fetch("/users").then((res) => res.json());
+}, []);
 ```
 </incorrect-example>

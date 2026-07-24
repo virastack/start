@@ -67,7 +67,7 @@ pnpm install   # or npm / yarn / bun
 pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000). The landing page demos the stack across `Hero`, `Features`, and `Showcase`: theme toggle, TanStack Query user list, Zustand cart, Zod-validated project form, and `nuqs` search state.
+Open [http://localhost:3000](http://localhost:3000). The home route renders `LandingPage` from `src/features/landing` — a full demo of the stack (theme toggle, TanStack Query, Zustand, Zod forms, nuqs). Delete that feature when you are ready to build.
 
 ## Environment variables
 
@@ -101,36 +101,42 @@ CI runs the same gates: typecheck → lint → knip → build (see `.github/work
 src/
 ├── app/                  # Routes, layouts, metadata (App Router only)
 ├── features/
-│   └── [feature]/
+│   └── landing/          # Demo feature (canonical folder layout)
 │       ├── api/
-│       ├── components/
+│       ├── components/   # Hero, Features, Showcase, demos, LandingPage
 │       ├── constants/
 │       ├── data/
 │       ├── helpers/
 │       ├── hooks/
+│       ├── icons/        # Brand SVGs used only by the landing demo
 │       ├── schemas/
 │       ├── stores/
 │       ├── types/
 │       └── index.ts
 ├── components/
 │   ├── ui/               # Base UI primitives (Button, Dialog, Tabs, …)
-│   ├── layout/           # Header, Footer
+│   ├── layout/           # Header, Footer (reusable chrome)
 │   └── shared/           # Cross-feature components (ThemeToggle, …)
-├── hooks/
+├── hooks/                # Shared hooks (promote via Rule of Three)
 ├── stores/
 ├── schemas/
 ├── providers/
 ├── lib/                  # api.ts, query-client.ts, utils
 ├── config/
 ├── constants/
-├── data/
 ├── helpers/
 ├── types/
 ├── styles/
 └── env.ts
 ```
 
-The bundled `landing` feature is a flat demo (`Hero`, `Features`, `Showcase`). New features should follow the full tree above.
+The bundled `landing` feature follows the ViraStack AI feature tree and is meant to be deleted when you start building.
+
+**Quick start (strip the demo)**
+
+1. Delete `src/features/landing`
+2. Replace `src/app/page.tsx` with your own page
+3. Keep `components/layout` Header/Footer if you still want site chrome — pass `links` only when you need nav items
 
 **Rules of thumb**
 

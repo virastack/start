@@ -18,7 +18,7 @@
   },
   "type": "module",
   "engines": {
-    "node": ">=18.17.0"
+    "node": ">=20.9.0"
   },
   "publishConfig": {
     "access": "public"
@@ -30,10 +30,13 @@
     "bin",
     "src",
     "templates",
-    "templates-i18n"
+    "templates-i18n",
+    "!src/**/*.test.js"
   ],
   "scripts": {
-    "start": "node ./bin/virastack.js"
+    "start": "node ./bin/virastack.js",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "keywords": [
     "virastack",
@@ -52,5 +55,8 @@
     "@clack/prompts": "^1.7.0",
     "cross-spawn": "^7.0.6",
     "picocolors": "^1.1.1"
+  },
+  "devDependencies": {
+    "vitest": "^3.2.7"
   }
 }

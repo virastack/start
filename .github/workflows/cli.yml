@@ -1,0 +1,59 @@
+name: CLI
+
+on:
+  push:
+    branches: [main, master]
+    paths:
+      - "bin/**"
+      - "src/**"
+      - "package.json"
+      - "package-lock.json"
+      - "templates/**"
+      - "templates-i18n/**"
+      - ".github/workflows/cli.yml"
+  pull_request:
+    branches: [main, master]
+    paths:
+      - "bin/**"
+      - "src/**"
+      - "package.json"
+      - "package-lock.json"
+      - "templates/**"
+      - "templates-i18n/**"
+      - ".github/workflows/cli.yml"
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install CLI dependencies
+        run: npm ci
+
+      - name: Unit tests
+        run: npm test
+
+      - name: Syntax check
+        run: node --check bin/virastack.js
+
+      - name: Help / version
+        run: |
+          node bin/virastack.js --help
+          node bin/virastack.js --version
+
+      - name: Non-interactive scaffold (skip install)
+        run: |
+          node bin/virastack.js init cli-smoke-app --yes --skip-install --telemetry-disable --no-i18n
+          test -f cli-smoke-app/package.json
+          test -f cli-smoke-app/.env.local
+          test ! -d cli-smoke-app/.next
+          test ! -d cli-smoke-app/node_modules

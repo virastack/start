@@ -15,6 +15,8 @@ const dictionaries = {
       'Please enter a project name, or "." to use the current directory.',
     "projectName.errorInvalid":
       "Please enter a valid npm package name (lowercase letters, numbers, dashes).",
+    "projectName.errorNonInteractive":
+      "Project name is required in non-interactive mode. Pass a name, use --name, or \".\".",
     "projectName.confirmNonEmptyDir":
       'Directory "{dir}" is not empty. Continue anyway?',
 
@@ -25,6 +27,8 @@ const dictionaries = {
     "template.tanstack.hint": "Coming soon",
     "template.tanstack.notReady":
       "The TanStack Start template isn't ready yet. Using Next.js instead.",
+    "template.errorInvalid":
+      'Unknown template "{template}". Available templates: nextjs, tanstack.',
 
     "i18n.message": "Would you like multi-language (i18n) support?",
     "i18n.active": "Yes",
@@ -48,16 +52,25 @@ const dictionaries = {
     "scaffold.installing": "Installing dependencies with {pm}...",
     "scaffold.installDone": "Dependencies installed.",
     "scaffold.installFailed":
-      "Failed to install dependencies. Run install manually.",
+      "Failed to install dependencies.",
+    "scaffold.skipInstall":
+      "Skipping dependency install (--skip-install).",
     "scaffold.offline":
       "You appear to be offline. Skipping dependency install and AI setup — run them manually when you're back online.",
     "scaffold.aiInit": "Configuring ViraStack AI rules...",
     "scaffold.aiInitDone": "🤖 ViraStack AI agent rules successfully integrated.",
     "scaffold.aiInitFailed":
       "Failed to configure ViraStack AI rules.",
+    "scaffold.aiInitSkipped":
+      "Skipping AI setup because dependency install failed.",
 
     "done.title": "You're all set!",
+    "done.partialTitle": "Project files are ready — finish setup manually:",
+    "done.installFailedNote":
+      "Dependency install failed. The project was created, but you need to install packages before running it.",
     "done.cd": "  cd {dir}",
+    "done.manualInstall": "  {cmd}",
+    "done.manualAi": "  {cmd}",
     "done.dev": "  {cmd}",
 
     "add.toolMissing": "Please specify a tool to add. Available tools: {list}.",
@@ -68,17 +81,28 @@ const dictionaries = {
     "add.installFailed": "Failed to add {pkg}.",
 
     help: `Usage:
-  npx virastack [init]        Scaffold a new project (interactive)
-  npx virastack add <tool>    Add a ViraStack tool to an existing project
+  npx virastack [init] [name]   Scaffold a new project
+  npx virastack add <tool>      Add a ViraStack tool to an existing project
 
 Tools:
   mask, password, ai
 
 Options:
+  --name <name>         Project name (or pass as positional arg / ".")
+  --template <name>     Template: nextjs | tanstack
+  --tools <list>        Comma-separated tools (e.g. mask,password)
+  --i18n / --no-i18n    Enable or disable the i18n template
+  --yes, -y             Non-interactive mode (use flags/defaults)
+  --skip-install        Scaffold files only; skip install + AI setup
   --tr                  Ask questions in Turkish
   --telemetry-disable   Disable anonymous usage tracking
   -v, --version         Print the version
-  -h, --help            Show this help message`,
+  -h, --help            Show this help message
+
+Examples:
+  npx virastack
+  npx virastack my-app --yes
+  npx virastack init my-app --template nextjs --tools mask --yes`,
   },
 
   tr: {
@@ -92,6 +116,8 @@ Options:
       'Lütfen bir proje adı girin, ya da mevcut dizini kullanmak için "." yazın.',
     "projectName.errorInvalid":
       "Lütfen geçerli bir npm paket adı girin (küçük harf, rakam, tire).",
+    "projectName.errorNonInteractive":
+      'İnteraktif olmayan modda proje adı zorunlu. Bir ad, --name veya "." verin.',
     "projectName.confirmNonEmptyDir":
       '"{dir}" dizini boş değil. Devam edilsin mi?',
 
@@ -102,6 +128,8 @@ Options:
     "template.tanstack.hint": "Yakında",
     "template.tanstack.notReady":
       "TanStack Start şablonu henüz hazır değil. Next.js kullanılacak.",
+    "template.errorInvalid":
+      'Bilinmeyen şablon "{template}". Kullanılabilir şablonlar: nextjs, tanstack.',
 
     "i18n.message": "Çoklu dil (i18n) desteği ister misiniz?",
     "i18n.active": "Evet",
@@ -125,16 +153,25 @@ Options:
     "scaffold.installing": "Bağımlılıklar {pm} ile kuruluyor...",
     "scaffold.installDone": "Bağımlılıklar kuruldu.",
     "scaffold.installFailed":
-      "Bağımlılıklar kurulamadı. Kurulumu manuel olarak çalıştırın.",
+      "Bağımlılıklar kurulamadı.",
+    "scaffold.skipInstall":
+      "Bağımlılık kurulumu atlanıyor (--skip-install).",
     "scaffold.offline":
       "İnternet bağlantısı yok gibi görünüyor. Bağımlılık kurulumu ve AI yapılandırması atlandı — çevrimiçi olduğunuzda manuel çalıştırın.",
     "scaffold.aiInit": "ViraStack AI kuralları yapılandırılıyor...",
     "scaffold.aiInitDone": "🤖 ViraStack AI ajan kuralları projeye başarıyla entegre edildi.",
     "scaffold.aiInitFailed":
       "ViraStack AI kuralları yapılandırılamadı.",
+    "scaffold.aiInitSkipped":
+      "Bağımlılık kurulumu başarısız olduğu için AI yapılandırması atlandı.",
 
     "done.title": "Her şey hazır!",
+    "done.partialTitle": "Proje dosyaları hazır — kurulumu manuel tamamlayın:",
+    "done.installFailedNote":
+      "Bağımlılık kurulumu başarısız. Proje oluşturuldu, ancak çalıştırmadan önce paketleri kurmanız gerekiyor.",
     "done.cd": "  cd {dir}",
+    "done.manualInstall": "  {cmd}",
+    "done.manualAi": "  {cmd}",
     "done.dev": "  {cmd}",
 
     "add.toolMissing":
@@ -146,17 +183,28 @@ Options:
     "add.installFailed": "{pkg} eklenemedi.",
 
     help: `Kullanım:
-  npx virastack [init]        İnteraktif olarak yeni bir proje oluştur
-  npx virastack add <araç>    Mevcut projeye bir ViraStack aracı ekle
+  npx virastack [init] [ad]     Yeni bir proje oluştur
+  npx virastack add <araç>      Mevcut projeye bir ViraStack aracı ekle
 
 Araçlar:
   mask, password, ai
 
 Seçenekler:
+  --name <ad>           Proje adı (veya positional arg / ".")
+  --template <ad>       Şablon: nextjs | tanstack
+  --tools <liste>       Virgülle ayrılmış araçlar (örn. mask,password)
+  --i18n / --no-i18n    i18n şablonunu aç / kapat
+  --yes, -y             İnteraktif olmayan mod (flag/varsayılanlar)
+  --skip-install        Sadece dosyaları oluştur; kurulum + AI atla
   --tr                  Soruları Türkçe sor
   --telemetry-disable   Anonim kullanım verisi toplamayı kapat
   -v, --version         Sürümü göster
-  -h, --help            Bu yardım mesajını göster`,
+  -h, --help            Bu yardım mesajını göster
+
+Örnekler:
+  npx virastack
+  npx virastack my-app --yes
+  npx virastack init my-app --template nextjs --tools mask --yes`,
   },
 };
 

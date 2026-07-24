@@ -9,7 +9,7 @@ Scaffold new projects and add tools from the [ViraStack](https://virastack.com) 
 [![ViraStack Start](https://img.shields.io/badge/ViraStack-Start-%2300bba7)](https://virastack.com)
 [![npm version](https://img.shields.io/npm/v/virastack)](https://www.npmjs.com/package/virastack)
 [![npm downloads](https://img.shields.io/npm/dt/virastack)](https://www.npmjs.com/package/virastack)
-[![Node](https://img.shields.io/badge/node-%3E%3D18.17-339933?logo=node.js&logoColor=white)](package.json)
+[![Node](https://img.shields.io/badge/node-%3E%3D20.9-339933?logo=node.js&logoColor=white)](package.json)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![X @virastack](https://img.shields.io/badge/X-@virastack-black?logo=x)](https://x.com/virastack)
 
@@ -23,7 +23,7 @@ Scaffold new projects and add tools from the [ViraStack](https://virastack.com) 
 
 ## Prerequisites
 
-- Node.js `>=18.17`
+- Node.js `>=20.9`
 
 ## Quick Start
 
@@ -35,6 +35,14 @@ Turkish prompts:
 
 ```bash
 npx virastack --tr
+```
+
+Non-interactive (CI / scripts):
+
+```bash
+npx virastack my-app --yes
+npx virastack init my-app --template nextjs --tools mask,password --yes
+npx virastack my-app --yes --skip-install
 ```
 
 Add a ViraStack tool to an existing project:
@@ -65,6 +73,12 @@ Scaffolded Next.js projects include a pre-configured [**ViraStack AI**](https://
 
 | Flag | Description |
 | :--- | :--- |
+| `--name <name>` | Project name (or pass as positional / `.`) |
+| `--template <name>` | `nextjs` or `tanstack` |
+| `--tools <list>` | Comma-separated tools (`mask,password`) |
+| `--i18n` / `--no-i18n` | Enable or disable the i18n template |
+| `--yes`, `-y` | Non-interactive mode (flags + defaults) |
+| `--skip-install` | Scaffold files only; skip install + AI setup |
 | `--tr` | Turkish prompts |
 | `--telemetry-disable` | Permanently disable anonymous usage tracking |
 | `-v`, `--version` | Print CLI version |

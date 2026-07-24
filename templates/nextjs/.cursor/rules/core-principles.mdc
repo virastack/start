@@ -11,7 +11,7 @@ alwaysApply: true
 - **Business Integrity:** Forbidden to use `INTENTIONAL_TODO` for business logic, error handling, or API integrations.
 - **Pseudo-code:** Forbidden. Provide working TypeScript/React code.
 - **Reference:** Do not say "Usually done like this"; link to repo rules.
-- **Validation:** Do not deliver without passing `pnpm check-types` and `pnpm lint`.
+- **Validation:** Do not deliver without passing `pnpm typecheck` and `pnpm lint`.
 - **Search First:** Analyze existing patterns before coding.
 - **Minimal Intervention:** Modify only necessary areas.
 - **Source of Truth:** Reference the codebase. Correct it if erroneous.

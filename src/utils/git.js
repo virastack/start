@@ -21,7 +21,7 @@ export async function initGitRepo(dir) {
   try {
     await runCommand("git", ["init"], { cwd: dir });
     await runCommand("git", ["add", "-A"], { cwd: dir });
-    await runCommand("git", ["commit", "-m", "chore: initial commit from create-virastack"], {
+    await runCommand("git", ["commit", "-m", "chore: initial commit from virastack"], {
       cwd: dir,
       env: {
         ...process.env,

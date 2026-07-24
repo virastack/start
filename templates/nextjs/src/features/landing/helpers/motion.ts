@@ -1,5 +1,3 @@
-import type { Variants } from "framer-motion";
-
 export const fadeInUp = {
   hidden: { opacity: 0, y: 12, filter: "blur(4px)" },
   visible: {
@@ -8,14 +6,14 @@ export const fadeInUp = {
     filter: "blur(0px)",
     transition: { duration: 0.4, ease: "easeOut" as const },
   },
-} satisfies Variants;
+} as const;
 
 export const staggerContainer = {
   hidden: {},
   visible: {
     transition: { staggerChildren: 0.1 },
   },
-} satisfies Variants;
+} as const;
 
 export const viewport = { once: true, margin: "-80px" as const };
 

@@ -1,0 +1,86 @@
+---
+description: TanStack Start Routing, Loaders, and Server Functions Standards
+globs: src/routes/**/*.{ts,tsx}
+alwaysApply: false
+---
+# TanStack Start Constitution
+
+## Constraints
+
+- **Route Definition:** Always use `createFileRoute`. Path MUST strictly match the file system location.
+- **Component Scope:** Keep route files thin. Only orchestrate routing and data. Move UI and business logic to `src/features`.
+- **Nested Layouts:** Use the `<Outlet />` component in parent routes to render child routes. If a route has children, the parent component MUST render `<Outlet />`.
+- **Data Loading:** Fetch all route-level data in `loader`. Consume via `Route.useLoaderData` or `useSuspenseQuery`.
+- **Guards:** Put auth, redirects, and preconditions in `beforeLoad`.
+- **Hydration:** Rely on loader prefetching for data hydration. Do not use Next.js-specific patterns like manual dehydration.
+- **Server Functions:** Wrap all backend-only logic in standalone `serverFn`. Functions MUST act as a bridge to the API layer; keep database orchestration and business logic inside src/features/api or helpers.
+- **Search Params:** Validate all search params with `validateSearch` using a Zod schema. Never trust raw search values.
+- **i18n Implementation:** Use `paraglide-js` for translations. Follow the patterns defined in `i18n.mdc`.
+- **Error Handling:** Provide `errorComponent` for failure states. Handle expected errors in the loader.
+- **Loading UI:** Provide `pendingComponent` for async states when needed.
+- **Not Found:** Provide `notFoundComponent` for missing resources.
+- **Head/SEO:** Define metadata with the `head` property. Keep it deterministic and typed.
+- **Sync:** Ensure route paths are kept in sync via `tsr watch` command.
+- **Guard Security:** Enforce session and permission checks within `beforeLoad` or dedicated middleware before `serverFn` execution.
+
+## Bans
+
+- **Client-Side Fetching:** Fetching data inside the component body via `useEffect` or `useQuery` (without loader prefetch) is FORBIDDEN.
+- **Inline serverFn:** Defining `serverFn` inside a component or route definition is FORBIDDEN. They MUST be exported as standalone constants.
+- **Next.js Conventions:** Using `"use server"` directives, `page.tsx` naming, or Next.js-specific hooks (`useRouter` from next/navigation) is STRICTLY FORBIDDEN.
+- **Untyped Routes:** Navigating via string paths without type-safety (using `Link` or `Maps` without the `to` property pointing to a valid route) is FORBIDDEN.
+- **Insecure Env Vars:** Forbidden to store secrets or private keys in environment variables with `VITE_` prefixes.
+
+## Correct Implementation
+
+<example>
+// src/routes/posts/$postId.tsx
+import { createFileRoute } from '@tanstack/react-router';
+import { PostFeature } from '@/features/posts';
+import { getPostById } from '@/features/posts/api';
+
+export const Route = createFileRoute('/posts/$postId')({
+  loader: ({ params }) => getPostById(params.postId),
+  component: PostPage,
+});
+
+function PostPage() {
+  const post = Route.useLoaderData();
+  return <PostFeature post={post} />;
+}
+</example>
+
+<example>
+// src/features/auth/api/auth-actions.ts (Standalone serverFn)
+import { createServerFn } from '@tanstack/start';
+import { z } from 'zod';
+
+export const loginFn = createServerFn({ method: 'POST' })
+  .validator(z.object({ email: z.string().email() }))
+  .handler(async ({ data }) => {
+    // Server-side logic here
+    return { success: true };
+  });
+</example>
+
+## Incorrect Implementation
+
+<incorrect-example>
+// BAN: Data fetching inside component without loader
+export const Route = createFileRoute('/dashboard')({
+  component: () => {
+    const { data } = useQuery({ queryKey: ['dash'], queryFn: fetchDash }); 
+    return <div>{data.name}</div>;
+  }
+});
+</incorrect-example>
+
+<incorrect-example>
+// BAN: Inline Next.js style server action
+export const Route = createFileRoute('/login')({
+  component: () => {
+    async function action() { "use server"; ... } 
+    return <form action={action}>...</form>;
+  }
+});
+</incorrect-example>

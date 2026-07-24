@@ -2,9 +2,8 @@
 
 import { MinusIcon, PlusIcon, ShirtIcon, Trash2Icon } from "lucide-react";
 
-import { useCounterStore } from "@/stores";
-
 import { Button } from "@/components/ui/button";
+import { useCounterStore } from "@/features/landing/stores";
 
 /**
  * Demonstrates global client state with Zustand via a mini cart UI.
@@ -13,7 +12,7 @@ export function CartDemo() {
   const { count, increment, decrement, reset } = useCounterStore();
 
   return (
-    <div className="flex flex-col gap-4 py-2">
+    <div className="flex flex-col gap-4">
       <div className="flex items-center gap-4 rounded-xl border border-border/50 bg-background/50 p-3">
         <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
           <ShirtIcon className="size-6" />
@@ -28,7 +27,7 @@ export function CartDemo() {
         </div>
       </div>
 
-      <div className="mt-2 flex items-center justify-between">
+      <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Button
             variant="outline"

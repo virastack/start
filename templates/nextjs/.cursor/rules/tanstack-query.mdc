@@ -46,6 +46,6 @@ export const useGetSkills = (filters: object) =>
 
 <incorrect-example>
 ```tsx
-useQuery({ queryKey: ["posts"], queryFn: () => axios.get("/posts") });
+useQuery({ queryKey: ["posts"], queryFn: () => api.get("/posts") });
 ```
 </incorrect-example>

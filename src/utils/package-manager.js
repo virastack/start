@@ -20,6 +20,14 @@ export function getAddArgs(pm, packages) {
   return pm === "npm" ? ["install", ...packages] : ["add", ...packages];
 }
 
+export function getInstallCommand(pm) {
+  return pm === "npm" ? "npm install" : `${pm} install`;
+}
+
 export function getRunDevCommand(pm) {
   return pm === "npm" ? "npm run dev" : `${pm} dev`;
+}
+
+export function getAiInitCommand() {
+  return "npx --yes @virastack/ai init --force";
 }

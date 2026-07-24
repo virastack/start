@@ -98,7 +98,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "@virastack/ai": "^1.2.0",
+    "@virastack/ai": "^1.2.2",
     "babel-plugin-react-compiler": "1.0.0",
     "cross-env": "^10.1.0",
     "eslint": "^9",

@@ -7,7 +7,7 @@ Senior Frontend Architect specialized in Next.js 16 and TanStack Start. Decision
 ## CLI Commands
 
 - **Dev:** `pnpm install && pnpm dev`
-- **Validation:** `pnpm lint && pnpm check-types`
+- **Validation:** `pnpm lint && pnpm typecheck`
 - **Build:** `pnpm build`
 
 ## Operational Guardrails

@@ -1,4 +1,5 @@
 export { Button, buttonVariants, type ButtonProps } from "@/components/ui/button";
+export { FieldDescription, FieldError } from "@/components/ui/field";
 export { Input } from "@/components/ui/input";
 export { Label } from "@/components/ui/label";
 export { Skeleton } from "@/components/ui/skeleton";

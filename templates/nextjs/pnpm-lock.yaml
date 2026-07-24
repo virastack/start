@@ -94,8 +94,8 @@ importers:
         specifier: ^19
         version: 19.2.3(@types/react@19.2.17)
       '@virastack/ai':
-        specifier: ^1.2.0
-        version: 1.2.0
+        specifier: ^1.2.2
+        version: 1.2.2
       babel-plugin-react-compiler:
         specifier: 1.0.0
         version: 1.0.0
@@ -1288,8 +1288,8 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@virastack/ai@1.2.0':
-    resolution: {integrity: sha512-u/hIkHgfOuWEpcxgnNHxnyCT+ZhKm7vXBcwIkL8PMdkvC25nq47NKyIOobdXsgsAannOqjaad0EU3/8/kg7mSQ==}
+  '@virastack/ai@1.2.2':
+    resolution: {integrity: sha512-wkbxv8YJ/11WsUgL3LDTXYO1FKndwv+etJ7+1Q4v7SuzKvvl4/BODNkXRk8T27GDPg/V02EoZw+FFuTMeHth0Q==}
     hasBin: true
 
   acorn-jsx@5.3.2:
@@ -4309,7 +4309,7 @@ snapshots:
   '@unrs/resolver-binding-win32-x64-msvc@1.12.2':
     optional: true
 
-  '@virastack/ai@1.2.0': {}
+  '@virastack/ai@1.2.2': {}
 
   acorn-jsx@5.3.2(acorn@8.17.0):
     dependencies:

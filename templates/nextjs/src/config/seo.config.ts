@@ -5,11 +5,10 @@ import { siteConfig } from "@/config/site.config";
 export const defaultMetadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
   title: {
-    default: "ViraStack Start",
-    template: `%s · ViraStack Start`,
+    default: siteConfig.name,
+    template: `%s · ${siteConfig.name}`,
   },
-  description:
-    "Modern, open-source Next.js starter template by ViraStack. Includes React 19, Tailwind CSS 4, TanStack Query, and clean architecture.",
+  description: siteConfig.description,
   keywords: ["Next.js", "React", "TypeScript", "Tailwind CSS", "ViraStack", "Boilerplate"],
   authors: [{ name: "ViraStack", url: siteConfig.url }],
   creator: "ViraStack",
@@ -17,19 +16,19 @@ export const defaultMetadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: siteConfig.url,
-    title: "ViraStack Start",
+    title: siteConfig.name,
     description: siteConfig.description,
-    siteName: "ViraStack Start",
+    siteName: siteConfig.name,
     images: [{ url: siteConfig.ogImage, width: 1200, height: 630, alt: siteConfig.name }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "ViraStack Start",
+    title: siteConfig.name,
     description: siteConfig.description,
     images: [siteConfig.ogImage],
   },
   icons: {
-    icon: "/virastack.svg",
+    icon: "/logo.webp",
   },
   robots: {
     index: true,

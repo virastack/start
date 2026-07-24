@@ -1,1 +1,1 @@
-pnpm run typecheck && pnpm run lint:ci
+npm run typecheck && npm run lint:ci

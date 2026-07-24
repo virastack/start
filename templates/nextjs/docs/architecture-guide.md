@@ -2,13 +2,13 @@
 
 ## Technical Stack (SSOT)
 
-| Layer            | Technology           | Authority (Rule Ref)   |
-| :--------------- | :------------------- | :--------------------- |
-| **Server State** | TanStack Query       | `tanstack-query.mdc`   |
-| **Client State** | Zustand              | `state-management.mdc` |
-| **Validation**   | Zod                  | `typescript.mdc`       |
-| **UI / Styling** | shadcn/ui + Tailwind | `ui-components.mdc`    |
-| **API Client**   | Axios (Centralized)  | `api.mdc`              |
+| Layer            | Technology                                        | Authority (Rule Ref)   |
+| :--------------- | :------------------------------------------------ | :--------------------- |
+| **Server State** | TanStack Query                                    | `tanstack-query.mdc`   |
+| **Client State** | Zustand                                           | `state-management.mdc` |
+| **Validation**   | Zod                                               | `typescript.mdc`       |
+| **UI / Styling** | shadcn/ui + Tailwind                              | `ui-components.mdc`    |
+| **API Client**   | Native fetch wrapper (default) / Axios (optional) | `api.mdc`              |
 
 ## Framework Isolation Boundary
 
@@ -17,7 +17,7 @@ Implementation details for Next.js and TanStack Start are strictly segregated. F
 - **Next.js 16:** See `.cursor/rules/nextjs.mdc`
 - **TanStack Start:** See `.cursor/rules/tanstack-start.mdc`
 
-**Shared Layer:** Reserved strictly for framework-agnostic code (`shared/schemas`, `ui-primitives`).
+**Shared Layer:** Global folders under `src/` (`components/`, `lib/`, `hooks/`, `schemas/`, …). Do not invent a parallel `src/shared` tree.
 
 ## Global Directory Hierarchy
 
@@ -64,10 +64,10 @@ Apply the following metric hierarchy to determine code location:
 
 - **Default Scope:** All logic and components originate within `features/[feature]/`.
 - **Promotion:** Any logic or component requested by 2 different features MUST be moved to the global `src/` (shared) layer.
-- **Cross-Import Ban:** Direct imports between features are FORBIDDEN. Communication is restricted to the `src/shared` layer or via prop-drilling at the Page level.
+- **Cross-Import Ban:** Direct imports between features are FORBIDDEN. Share via the global `src/` layer (`components/`, `lib/`, `hooks/`, …) or prop-drill at the Page level.
 - **Helpers:** Pure TypeScript functions that strictly transform input to output without side effects. MUST NOT contain any package imports. (e.g., `isBrowser()`).
 - **Data:** Feature-specific static data (lists, config objects, constants). ONLY allowed within `features/[feature]/data/`.
-- **Lib:** Contains project-specific configured instances of external libraries (axios, date-fns, js-cookie, etc.). Files containing package imports MUST be placed here. Pure TS functions without package imports belong in `helpers`. (e.g., `isToday()` using date-fns goes to `lib`, `isBrowser()` goes to `helpers`).
+- **Lib:** Project-configured library instances (`src/lib/api.ts` fetch wrapper or axios, date-fns, etc.). Files with package imports belong here. Pure TS without package imports belongs in `helpers`.
 - **Zod Schemas:** All feature-related schemas MUST be stored in `features/[feature]/schemas/`. API functions and UI components MUST import from this single source to prevent duplication.
 
 ## Imports

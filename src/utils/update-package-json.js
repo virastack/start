@@ -31,7 +31,7 @@ export async function updatePackageJson(targetDir, { projectName, tools }) {
   for (const toolId of tools) {
     const tool = findTool(toolId);
     if (tool?.kind === "dependency") {
-      pkg.dependencies[tool.package] = "^1.0.0";
+      pkg.dependencies[tool.package] = tool.version ?? "^1.0.0";
     }
   }
 

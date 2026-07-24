@@ -4,11 +4,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 
-import { projectSchema, type ProjectInput } from "@/schemas";
-
 import { Button } from "@/components/ui/button";
+import { FieldDescription, FieldError } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { projectSchema, type ProjectInput } from "@/features/landing/schemas";
 
 export function ProjectFormDemo() {
   const {
@@ -28,7 +28,7 @@ export function ProjectFormDemo() {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} noValidate className="flex flex-col gap-4 py-2">
+    <form onSubmit={handleSubmit(onSubmit)} noValidate className="flex flex-col gap-4">
       <div className="flex flex-col gap-2.5 text-left">
         <Label htmlFor="name">Project Name</Label>
         <Controller
@@ -47,10 +47,14 @@ export function ProjectFormDemo() {
             />
           )}
         />
-        {errors.name && <p className="text-xs text-destructive">{errors.name.message}</p>}
+        {errors.name ? (
+          <FieldError>{errors.name.message}</FieldError>
+        ) : (
+          <FieldDescription>Use 3–50 characters for the project name.</FieldDescription>
+        )}
       </div>
 
-      <Button type="submit" disabled={isSubmitting} className="mt-2">
+      <Button type="submit" disabled={isSubmitting}>
         {isSubmitting ? "Creating…" : "Create Project"}
       </Button>
     </form>

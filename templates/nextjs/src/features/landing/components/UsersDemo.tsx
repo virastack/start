@@ -7,8 +7,6 @@ import { parseAsString, useQueryState } from "nuqs";
 
 import { ApiError } from "@/lib/api";
 
-import { useUsers } from "@/hooks";
-
 import {
   Avatar,
   AvatarFallback,
@@ -22,22 +20,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui";
-
-function getInitials(name: string) {
-  const parts = name.trim().split(/\s+/).filter(Boolean);
-  const first = parts[0];
-  const last = parts[parts.length - 1];
-
-  if (!first) {
-    return "?";
-  }
-
-  if (!last || parts.length === 1) {
-    return first.charAt(0).toUpperCase();
-  }
-
-  return `${first.charAt(0)}${last.charAt(0)}`.toUpperCase();
-}
+import { getInitials } from "@/features/landing/helpers";
+import { useUsers } from "@/features/landing/hooks";
 
 /**
  * Demonstrates server-state fetching & caching with TanStack Query.
@@ -90,19 +74,19 @@ export function UsersDemo() {
   );
 
   const tableShell = (children: ReactNode) => (
-    <div className="overflow-hidden rounded-xl border border-border/40 bg-background">
+    <div className="min-h-0 flex-1 overflow-hidden rounded border border-border/40 bg-background">
       <Table>{children}</Table>
     </div>
   );
 
   if (isLoading) {
     return (
-      <div className="flex flex-col">
+      <div className="flex h-full min-h-0 flex-col">
         {header}
         {toolbar}
         {tableShell(
           <>
-            <TableHeader>
+            <TableHeader className="bg-muted/40">
               <TableRow className="hover:bg-transparent">
                 <TableHead className="h-9 px-3 text-xs">User</TableHead>
                 <TableHead className="h-9 px-3 text-right text-xs">Status</TableHead>
@@ -139,7 +123,7 @@ export function UsersDemo() {
         : "Failed to load users. Check your network connection.";
 
     return (
-      <div className="flex flex-col">
+      <div className="flex h-full min-h-0 flex-col">
         {header}
         {toolbar}
         {tableShell(
@@ -156,12 +140,12 @@ export function UsersDemo() {
   }
 
   return (
-    <div className="flex flex-col">
+    <div className="flex h-full min-h-0 flex-col">
       {header}
       {toolbar}
       {tableShell(
         <>
-          <TableHeader>
+          <TableHeader className="bg-muted/40">
             <TableRow className="hover:bg-transparent">
               <TableHead className="h-9 px-3 text-xs">User</TableHead>
               <TableHead className="h-9 px-3 text-right text-xs">Status</TableHead>
