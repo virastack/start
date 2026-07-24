@@ -89,7 +89,7 @@ export function UsersDemo() {
             <TableHeader className="bg-muted/40">
               <TableRow className="hover:bg-transparent">
                 <TableHead className="h-9 px-3 text-xs">User</TableHead>
-                <TableHead className="h-9 px-3 text-right text-xs">Status</TableHead>
+                <TableHead className="h-9 px-3 text-right text-xs">City</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -105,7 +105,7 @@ export function UsersDemo() {
                     </div>
                   </TableCell>
                   <TableCell className="px-3 py-3 text-right">
-                    <Skeleton className="ml-auto h-5 w-14 rounded-md" />
+                    <Skeleton className="ml-auto h-3.5 w-16" />
                   </TableCell>
                 </TableRow>
               ))}
@@ -148,7 +148,7 @@ export function UsersDemo() {
           <TableHeader className="bg-muted/40">
             <TableRow className="hover:bg-transparent">
               <TableHead className="h-9 px-3 text-xs">User</TableHead>
-              <TableHead className="h-9 px-3 text-right text-xs">Status</TableHead>
+              <TableHead className="h-9 px-3 text-right text-xs">City</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -174,10 +174,8 @@ export function UsersDemo() {
                       </div>
                     </div>
                   </TableCell>
-                  <TableCell className="px-3 py-2.5 text-right">
-                    <span className="inline-flex items-center rounded-md bg-emerald-500/10 px-2 py-0.5 text-[11px] font-medium text-emerald-600 ring-1 ring-emerald-500/20 ring-inset dark:text-emerald-400">
-                      Active
-                    </span>
+                  <TableCell className="px-3 py-2.5 text-right text-xs text-muted-foreground">
+                    {user.address.city}
                   </TableCell>
                 </TableRow>
               ))

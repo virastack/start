@@ -2,7 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 
-import { getUsers } from "@/features/landing/api";
+import { getUsers, userKeys } from "@/features/landing/api";
 
 /**
  * Example TanStack Query hook. Lives with the landing demo feature —
@@ -10,7 +10,7 @@ import { getUsers } from "@/features/landing/api";
  */
 export function useUsers() {
   return useQuery({
-    queryKey: ["users"],
-    queryFn: getUsers,
+    queryKey: userKeys.list(),
+    queryFn: ({ signal }) => getUsers(signal),
   });
 }

@@ -9,7 +9,7 @@ export const siteConfig: SiteConfig = {
   url: env.NEXT_PUBLIC_APP_URL,
   ogImage: `${env.NEXT_PUBLIC_APP_URL}/og.png`,
   links: {
-    github: "https://github.com/virastack/nextjs-boilerplate",
+    github: "https://github.com/virastack/start",
     twitter: "https://x.com/virastack",
   },
 };
