@@ -1,3 +1,5 @@
+import { formatAgents, getAiPackageSpec } from "./agents.js";
+
 /**
  * Detects the package manager the CLI was invoked with, mirroring the
  * technique used by create-next-app and create-vite (npm_config_user_agent).
@@ -28,6 +30,7 @@ export function getRunDevCommand(pm) {
   return pm === "npm" ? "npm run dev" : `${pm} dev`;
 }
 
-export function getAiInitCommand() {
-  return "npx --yes @virastack/ai init --force";
+/** Manual ViraStack AI command for the selected agents (never `--force`). */
+export function getAiInitCommand(agents) {
+  return `npx ${getAiPackageSpec()} init --agent ${formatAgents(agents)}`;
 }

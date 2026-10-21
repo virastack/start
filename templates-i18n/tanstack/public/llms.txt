@@ -1,19 +1,20 @@
 # ViraStack Start — TanStack Start Edition (i18n)
 
-> Premium TanStack Start + React 19 + Tailwind CSS 4 boilerplate with **Paraglide JS** i18n (`en`, `tr`). Feature-sliced architecture, agent-ready DX. Auth, database/ORM, and testing are intentionally omitted.
+> Premium TanStack Start + React 19 + Tailwind CSS 4 boilerplate with **Paraglide JS** i18n (`en`, `tr`). Feature-sliced architecture, agent-ready DX. Auth and database/ORM are intentionally omitted.
 
 Built on TanStack Router file-based routing with SSR via TanStack Start. Messages live under `messages/`; Paraglide generates `src/paraglide`. UI: **Base UI** + Tailwind CSS 4. State triad: TanStack Query, Zustand, `nuqs`. Forms: React Hook Form + Zod. **ViraStack AI** ships on scaffold.
 
-- Tech stack: TanStack Start, TanStack Router, React 19, Tailwind CSS 4, TypeScript strict, Node.js `>=20.9`
+- Tech stack: TanStack Start, TanStack Router, React 19, Tailwind CSS 4, TypeScript 6 (strict + `noUncheckedIndexedAccess`), Node.js `>=20.9`
 - i18n: `@inlang/paraglide-js` — `project.inlang/settings.json` language tags `en` (source) and `tr`; compiled output in `src/paraglide`
-- UI: Base UI, Framer Motion, Sonner, Lucide React, `next-themes`, `class-variance-authority`
+- UI: Base UI, Motion, Sonner, Lucide React, `next-themes`, `class-variance-authority`
 - Data & state: TanStack Query 5, Zustand, `nuqs`
 - Forms: React Hook Form + Zod (+ `@hookform/resolvers`)
+- Testing: Vitest, React Testing Library, user-event, jest-dom, MSW (`src/test/`)
 - API: Native `fetch` wrapper in `src/lib/api.ts` (`ApiError`)
 - Env: Zod schema in `src/env.ts` (`VITE_*` public vars)
 - Tooling: ESLint 9, Prettier 3, Husky, Knip, Commitlint, Changesets, Vite 8
-- ViraStack AI: `AGENTS.md`, `CLAUDE.md`, `.cursor/rules/*.mdc`, `docs/*`
-- Not included by default: Auth, DB/ORM, test runner, CSP
+- ViraStack AI: `AGENTS.md`, `CLAUDE.md`, `.claude/rules/virastack/`, `.cursor/rules/virastack/`, `.virastack/ai.json`
+- Not included by default: Auth, DB/ORM, CSP
 
 ## Docs
 - [Repository (GitHub)](https://github.com/virastack/start): CLI and templates
@@ -22,7 +23,7 @@ Built on TanStack Router file-based routing with SSR via TanStack Start. Message
 - [Product docs](https://virastack.com/start/docs): ViraStack Start documentation
 - [Start llms-full.txt](https://virastack.com/start/llms-full.txt): CLI flags and template map for agents
 - [Ecosystem llms.txt](https://virastack.com/llms.txt): All ViraStack products
-- [Architecture guide](https://github.com/virastack/ai/blob/main/templates/core/docs/architecture-guide.md): Placement rules
+- [Architecture guide](https://github.com/virastack/ai/blob/main/templates/rules/architecture.mdc): Placement rules
 - [Paraglide JS](https://inlang.com/m/gerre34r/library-inlang-paraglideJs): i18n library docs
 
 ## Key Files & Entry Points

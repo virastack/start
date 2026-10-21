@@ -33,10 +33,10 @@ Production-grade Next.js starter with feature-sliced architecture, strict TypeSc
 ## Why ViraStack
 
 - **Opinionated, not opaque** — clear folder rules and placement conventions; nothing important is hidden behind magic
-- **Agent-ready by default** — `AGENTS.md`, Cursor rules, `llms.txt`, and design skills ship with every project
+- **Agent-ready by default** — `AGENTS.md`, rules for Claude Code and Cursor, `llms.txt`, and agent skills ship with every project
 - **Own your UI** — Base UI primitives in `components/ui` (shadcn-style), fully editable
 - **State triad** — TanStack Query (server), Zustand (client), nuqs (URL) — each with a dedicated job
-- **DX that sticks** — ESLint, Prettier, Knip, Husky, Commitlint, and GitHub Actions CI out of the box
+- **DX that sticks** — ESLint, Prettier, Knip, Vitest, Husky, Commitlint, and GitHub Actions CI out of the box
 
 ## Features
 
@@ -48,7 +48,7 @@ Production-grade Next.js starter with feature-sliced architecture, strict TypeSc
 - 🔄 **TanStack Query** · **Zustand** · **nuqs**
 - 📋 **React Hook Form** + **Zod** — validated forms end to end
 - 🤖 **ViraStack AI** — agent context, scoped rules, design skills
-- ✅ **Quality built in** — ESLint, Prettier, Knip, Husky, Commitlint, CI (typecheck → lint → knip → build)
+- ✅ **Quality built in** — ESLint, Prettier, Knip, Husky, Commitlint, Vitest + Testing Library + MSW, CI (typecheck → lint → knip → test → build)
 
 **Optional / bring your own**
 
@@ -89,8 +89,9 @@ Validated in `src/env.ts`. Scaffolded projects already have `.env.local`.
 | `format` / `format:check`       | Prettier                                     |
 | `typecheck`                     | `tsc --noEmit`                               |
 | `knip`                          | Find unused files, exports, and dependencies |
+| `test` / `test:watch`           | Vitest (single run / watch mode)             |
 
-CI runs the same gates: typecheck → lint → knip → build (see `.github/workflows/ci.yml`).
+CI runs the same gates: typecheck → lint → knip → test → build (see `.github/workflows/ci.yml`).
 
 ## Project structure
 
@@ -102,7 +103,6 @@ src/
 │       ├── api/
 │       ├── components/   # Hero, Features, Showcase, demos, LandingPage
 │       ├── constants/
-│       ├── data/
 │       ├── helpers/
 │       ├── hooks/
 │       ├── icons/        # Brand SVGs used only by the landing demo
@@ -124,6 +124,7 @@ src/
 ├── helpers/
 ├── types/
 ├── styles/
+├── test/                 # Vitest setup, MSW server, renderWithProviders
 └── env.ts
 ```
 
@@ -140,8 +141,10 @@ The bundled `landing` feature follows the ViraStack AI feature tree and is meant
 - Default scope is `features/[feature]/` — promote to global `src/` only when a second feature needs it
 - No cross-feature imports; share via `components/`, `lib/`, `hooks/`, etc.
 - Path aliases are mandatory; parent-relative imports (`../`) are forbidden
+- ESLint enforces both rules (`no-restricted-imports` in the ESLint config)
+- Tests live next to the code they cover (`*.test.ts(x)`)
 
-See [`docs/architecture-guide.md`](docs/architecture-guide.md) for placement rules and import conventions.
+See the ViraStack AI `architecture` rule (`.claude/rules/virastack/` or `.cursor/rules/virastack/`) for placement rules and import conventions.
 
 ## Customization
 
@@ -161,15 +164,18 @@ You own every file — trim demos, rename features, keep only what you need.
 
 Developed with [**ViraStack AI**](https://github.com/virastack/ai) — an AI-native architecture kit that ships agent context into every project:
 
-| File              | Purpose                          |
-| :---------------- | :------------------------------- |
-| `AGENTS.md`       | Agent operating guide            |
-| `CLAUDE.md`       | Claude Code entry point          |
-| `.cursor/rules/`  | Scoped coding rules              |
-| `public/llms.txt` | Machine-readable project summary |
-| `.agents/skills/` | Design-taste skills              |
+| File                       | Purpose                                       |
+| :------------------------- | :-------------------------------------------- |
+| `CLAUDE.md`                | Claude Code entry point (imports `AGENTS.md`) |
+| `.claude/rules/virastack/` | Scoped rules for Claude Code                  |
+| `.claude/skills/`          | Skills for Claude Code                        |
+| `.cursor/rules/virastack/` | Scoped rules for Cursor                       |
+| `AGENTS.md`                | Agent operating guide (managed block + yours) |
+| `.agents/skills/`          | Skills for other agents                       |
+| `.virastack/ai.json`       | Manifest of the files ViraStack AI manages    |
+| `public/llms.txt`          | Machine-readable project summary              |
 
-Install or refresh rules: `npx @virastack/ai init`
+Install or refresh rules: `npx @virastack/ai init` (pick tools with `--agent claude,cursor`).
 
 ## Deployment
 

@@ -5,3 +5,15 @@ public
 CHANGELOG.md
 .changeset
 src/routeTree.gen.ts
+src/paraglide
+project.inlang/*
+!project.inlang/settings.json
+
+# Managed by ViraStack AI and the skills CLI
+AGENTS.md
+CLAUDE.md
+.agents
+.claude
+.cursor
+.virastack
+skills-lock.json

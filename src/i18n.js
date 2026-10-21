@@ -7,7 +7,7 @@ const dictionaries = {
   en: {
     cancel: "Operation cancelled.",
     "telemetry.notice":
-      "ViraStack collects anonymous usage data (template, i18n choice, selected tools) to improve the CLI. No personal data is ever collected. Disable anytime with --telemetry-disable.",
+      "ViraStack collects anonymous usage data (template, i18n choice, selected tools, AI coding tools) to improve the CLI. No personal data is ever collected. Disable anytime with --telemetry-disable.",
 
     "projectName.message": "What is your project named?",
     "projectName.placeholder": "virastack-app",
@@ -30,6 +30,12 @@ const dictionaries = {
     "template.errorInvalid":
       'Unknown template "{template}". Available templates: nextjs, tanstack.',
 
+    "agents.message": "Which AI coding tools do you use?",
+    "agents.claude.label": "Claude Code",
+    "agents.cursor.label": "Cursor",
+    "agent.errorInvalid":
+      'Invalid --agent value "{value}". Use claude, cursor (comma separated) or none.',
+
     "i18n.message": "Would you like multi-language (i18n) support?",
     "i18n.active": "Yes",
     "i18n.inactive": "No",
@@ -46,9 +52,9 @@ const dictionaries = {
 
     "scaffold.copying": "Creating project files...",
     "scaffold.copyDone": "Project files created.",
-    "scaffold.gitInit": "Initializing git repository...",
-    "scaffold.gitInitDone": "Git repository initialized.",
-    "scaffold.gitInitSkipped": "Skipped git initialization.",
+    "scaffold.gitInit": "Creating the initial git commit...",
+    "scaffold.gitInitDone": "Initial git commit created.",
+    "scaffold.gitInitSkipped": "Skipped the initial git commit.",
     "scaffold.installing": "Installing dependencies with {pm}...",
     "scaffold.installDone": "Dependencies installed.",
     "scaffold.installFailed":
@@ -61,10 +67,9 @@ const dictionaries = {
     "scaffold.aiInitDone": "🤖 ViraStack AI agent rules successfully integrated.",
     "scaffold.aiInitFailed":
       "Failed to configure ViraStack AI rules.",
-    "scaffold.aiInitSkipped":
-      "Skipping AI setup because dependency install failed.",
-    "scaffold.skillsInitFailed":
-      "Design skills could not be installed. Run manually: npx skills@latest add emilkowalski/skills && npx skills@latest add jakubkrehel/make-interfaces-feel-better",
+    "scaffold.skillsInit": "Installing design skills...",
+    "scaffold.skillsInitDone": "Design skills installed.",
+    "scaffold.skillsInitFailed": "Some design skills could not be installed.",
 
     "done.title": "You're all set!",
     "done.partialTitle": "Project files are ready — finish setup manually:",
@@ -73,6 +78,7 @@ const dictionaries = {
     "done.cd": "  cd {dir}",
     "done.manualInstall": "  {cmd}",
     "done.manualAi": "  {cmd}",
+    "done.manualSkills": "  {cmd}",
     "done.dev": "  {cmd}",
 
     "add.toolMissing": "Please specify a tool to add. Available tools: {list}.",
@@ -85,6 +91,7 @@ const dictionaries = {
     help: `Usage:
   pnpm dlx virastack [init] [name]   Scaffold a new project
   pnpm dlx virastack add <tool>      Add a ViraStack tool to an existing project
+  pnpm dlx virastack add ai --agent <list>  Add AI rules for the given tools
 
 Tools:
   mask, password, ai
@@ -93,9 +100,10 @@ Options:
   --name <name>         Project name (or pass as positional arg / ".")
   --template <name>     Template: nextjs | tanstack
   --tools <list>        Comma-separated tools (e.g. mask,password)
+  --agent <list>        AI coding tools: claude, cursor (comma separated) or none
   --i18n / --no-i18n    Enable or disable the i18n template
   --yes, -y             Non-interactive mode (use flags/defaults)
-  --skip-install        Scaffold files only; skip install + AI setup
+  --skip-install        Skip dependency install (AI rules and skills are still added)
   --tr                  Ask questions in Turkish
   --telemetry-disable   Disable anonymous usage tracking
   -v, --version         Print the version
@@ -104,13 +112,13 @@ Options:
 Examples:
   pnpm dlx virastack
   pnpm dlx virastack my-app --yes
-  pnpm dlx virastack init my-app --template nextjs --tools mask --yes`,
+  pnpm dlx virastack init my-app --template nextjs --tools mask --agent claude --yes`,
   },
 
   tr: {
     cancel: "İşlem iptal edildi.",
     "telemetry.notice":
-      "ViraStack, CLI'ı geliştirmek için anonim kullanım verisi toplar (şablon, i18n tercihi, seçilen araçlar). Hiçbir kişisel veri toplanmaz. --telemetry-disable ile her zaman kapatabilirsiniz.",
+      "ViraStack, CLI'ı geliştirmek için anonim kullanım verisi toplar (şablon, i18n tercihi, seçilen araçlar, AI kodlama araçları). Hiçbir kişisel veri toplanmaz. --telemetry-disable ile her zaman kapatabilirsiniz.",
 
     "projectName.message": "Projenizin adı ne olsun?",
     "projectName.placeholder": "virastack-app",
@@ -133,6 +141,12 @@ Examples:
     "template.errorInvalid":
       'Bilinmeyen şablon "{template}". Kullanılabilir şablonlar: nextjs, tanstack.',
 
+    "agents.message": "Hangi AI kodlama araçlarını kullanıyorsunuz?",
+    "agents.claude.label": "Claude Code",
+    "agents.cursor.label": "Cursor",
+    "agent.errorInvalid":
+      'Geçersiz --agent değeri "{value}". claude, cursor (virgülle) veya none kullanın.',
+
     "i18n.message": "Çoklu dil (i18n) desteği ister misiniz?",
     "i18n.active": "Evet",
     "i18n.inactive": "Hayır",
@@ -149,9 +163,9 @@ Examples:
 
     "scaffold.copying": "Proje dosyaları oluşturuluyor...",
     "scaffold.copyDone": "Proje dosyaları oluşturuldu.",
-    "scaffold.gitInit": "Git deposu başlatılıyor...",
-    "scaffold.gitInitDone": "Git deposu başlatıldı.",
-    "scaffold.gitInitSkipped": "Git başlatma adımı atlandı.",
+    "scaffold.gitInit": "İlk git commit'i oluşturuluyor...",
+    "scaffold.gitInitDone": "İlk git commit'i oluşturuldu.",
+    "scaffold.gitInitSkipped": "İlk git commit'i atlandı.",
     "scaffold.installing": "Bağımlılıklar {pm} ile kuruluyor...",
     "scaffold.installDone": "Bağımlılıklar kuruldu.",
     "scaffold.installFailed":
@@ -164,10 +178,9 @@ Examples:
     "scaffold.aiInitDone": "🤖 ViraStack AI ajan kuralları projeye başarıyla entegre edildi.",
     "scaffold.aiInitFailed":
       "ViraStack AI kuralları yapılandırılamadı.",
-    "scaffold.aiInitSkipped":
-      "Bağımlılık kurulumu başarısız olduğu için AI yapılandırması atlandı.",
-    "scaffold.skillsInitFailed":
-      "Tasarım skill'leri kurulamadı. Manuel çalıştırın: npx skills@latest add emilkowalski/skills && npx skills@latest add jakubkrehel/make-interfaces-feel-better",
+    "scaffold.skillsInit": "Tasarım skill'leri kuruluyor...",
+    "scaffold.skillsInitDone": "Tasarım skill'leri kuruldu.",
+    "scaffold.skillsInitFailed": "Bazı tasarım skill'leri kurulamadı.",
 
     "done.title": "Her şey hazır!",
     "done.partialTitle": "Proje dosyaları hazır — kurulumu manuel tamamlayın:",
@@ -176,6 +189,7 @@ Examples:
     "done.cd": "  cd {dir}",
     "done.manualInstall": "  {cmd}",
     "done.manualAi": "  {cmd}",
+    "done.manualSkills": "  {cmd}",
     "done.dev": "  {cmd}",
 
     "add.toolMissing":
@@ -189,6 +203,7 @@ Examples:
     help: `Kullanım:
   pnpm dlx virastack [init] [ad]     Yeni bir proje oluştur
   pnpm dlx virastack add <araç>      Mevcut projeye bir ViraStack aracı ekle
+  pnpm dlx virastack add ai --agent <liste>  Seçilen araçlar için AI kurallarını ekle
 
 Araçlar:
   mask, password, ai
@@ -197,9 +212,10 @@ Seçenekler:
   --name <ad>           Proje adı (veya positional arg / ".")
   --template <ad>       Şablon: nextjs | tanstack
   --tools <liste>       Virgülle ayrılmış araçlar (örn. mask,password)
+  --agent <liste>       AI kodlama araçları: claude, cursor (virgülle) veya none
   --i18n / --no-i18n    i18n şablonunu aç / kapat
   --yes, -y             İnteraktif olmayan mod (flag/varsayılanlar)
-  --skip-install        Sadece dosyaları oluştur; kurulum + AI atla
+  --skip-install        Bağımlılık kurulumunu atla (AI kuralları ve skill'ler yine eklenir)
   --tr                  Soruları Türkçe sor
   --telemetry-disable   Anonim kullanım verisi toplamayı kapat
   -v, --version         Sürümü göster
@@ -208,7 +224,7 @@ Seçenekler:
 Örnekler:
   pnpm dlx virastack
   pnpm dlx virastack my-app --yes
-  pnpm dlx virastack init my-app --template nextjs --tools mask --yes`,
+  pnpm dlx virastack init my-app --template nextjs --tools mask --agent claude --yes`,
   },
 };
 

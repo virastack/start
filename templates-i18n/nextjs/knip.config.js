@@ -12,12 +12,14 @@ const config = {
     "src/stores/index.ts",
     "src/schemas/index.ts",
     "src/constants/index.ts",
-    "src/features/**/data/index.ts",
-    "src/features/**/data/*.data.tsx",
+    "src/features/**/constants/index.ts",
+    "src/features/**/constants/*.constants.tsx",
     "src/features/**/schemas/index.ts",
     "src/i18n/routing.ts",
   ],
   ignoreDependencies: ["tailwindcss", "tw-animate-css"],
+  // next-env.d.ts imports route types that exist only after `next dev` or `next build`.
+  ignoreUnresolved: [/^\.\/\.next\//],
   rules: {
     dependencies: "error",
     exports: "warn",

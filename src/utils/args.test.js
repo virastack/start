@@ -15,6 +15,12 @@ describe("parseArgs", () => {
     expect(getFlag(eq.flags, "name")).toBe("demo");
   });
 
+  it("reads --agent as a value flag", () => {
+    expect(getFlag(parseArgs(["node", "virastack", "--agent", "claude,cursor", "app"]).flags, "agent")).toBe("claude,cursor");
+    expect(getFlag(parseArgs(["node", "virastack", "--agent=none"]).flags, "agent")).toBe("none");
+    expect(getFlag(parseArgs(["node", "virastack", "--agent", "--yes"]).flags, "agent")).toBe(true);
+  });
+
   it("expands short flag clusters", () => {
     const { flags } = parseArgs(["node", "virastack", "-yh"]);
     expect(hasFlag(flags, "y")).toBe(true);

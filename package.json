@@ -1,6 +1,6 @@
 {
   "name": "virastack",
-  "version": "1.0.6",
+  "version": "1.1.0-beta.1",
   "description": "Scaffold new projects and add tools from the ViraStack ecosystem with a single command.",
   "author": {
     "name": "Ömer Gülçiçek (ViraStack)",
@@ -34,10 +34,11 @@
     "!src/**/*.test.js"
   ],
   "scripts": {
-    "prepublishOnly": "find templates templates-i18n -type d \\( -name 'node_modules' -o -name '.next' -o -name 'dist' -o -name '.vinxi' -o -name '.output' -o -name '.turbo' \\) -prune -exec rm -rf '{}' +",
+    "prepublishOnly": "find templates templates-i18n -type d \\( -name 'node_modules' -o -name '.next' -o -name 'dist' -o -name '.vinxi' -o -name '.output' -o -name '.turbo' \\) -prune -exec rm -rf '{}' + && find templates templates-i18n -name '.eslintcache' -type f -delete",
     "start": "node ./bin/virastack.js",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "test:e2e": "node scripts/e2e.js"
   },
   "keywords": [
     "virastack",

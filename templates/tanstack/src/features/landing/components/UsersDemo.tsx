@@ -27,7 +27,7 @@ import { useUsers } from "@/features/landing/hooks";
  * Demonstrates server-state fetching & caching with TanStack Query + URL state via nuqs.
  *
  * Demo-only client fetch — production routes should use loader prefetch
- * (see `tanstack-start.mdc`). Delete this feature when building for real.
+ * (see the ViraStack AI `tanstack-start` rule). Delete this feature when building for real.
  */
 export function UsersDemo() {
   const { data, isLoading, isError, error, refetch, isFetching } = useUsers();

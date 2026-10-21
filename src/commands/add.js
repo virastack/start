@@ -8,6 +8,7 @@ import { runCommand } from "../utils/exec.js";
 import { detectPackageManager, getAddArgs } from "../utils/package-manager.js";
 import { trackEvent } from "../utils/telemetry.js";
 import { findTool, TOOLS } from "../utils/tools.js";
+import { getAiInitArgs } from "../utils/agents.js";
 
 async function fileExists(filePath) {
   try {
@@ -18,7 +19,11 @@ async function fileExists(filePath) {
   }
 }
 
-export async function runAdd(toolId) {
+/**
+ * @param {string | undefined} toolId
+ * @param {{ agents?: string[] }} [options] `agents` applies to `add ai` only.
+ */
+export async function runAdd(toolId, options = {}) {
   console.log();
   p.intro(pc.bgMagenta(pc.black(" ViraStack ")));
 
@@ -49,9 +54,7 @@ export async function runAdd(toolId) {
     if (tool.kind === "dependency") {
       await runCommand(packageManager, getAddArgs(packageManager, [tool.package]), { cwd });
     } else {
-      const args = ["--yes", tool.package, "init", "--force"];
-      if (getLocale() === "tr") args.push("--tr");
-      await runCommand("npx", args, { cwd });
+      await runCommand("npx", getAiInitArgs(options.agents, { tr: getLocale() === "tr" }), { cwd });
     }
     spinner.stop(t("add.done", { pkg: tool.package }));
   } catch (error) {
@@ -60,5 +63,9 @@ export async function runAdd(toolId) {
     process.exit(1);
   }
 
-  await trackEvent("add", { tool: tool.id, packageManager });
+  await trackEvent("add", {
+    tool: tool.id,
+    ...(tool.id === "ai" && options.agents ? { agents: options.agents } : {}),
+    packageManager,
+  });
 }

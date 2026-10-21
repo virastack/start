@@ -50,3 +50,6 @@ yarn-error.log*
 .eslintcache
 .knip
 .turbo
+
+# paraglide (generated on install)
+/src/paraglide
