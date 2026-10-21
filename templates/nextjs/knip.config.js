@@ -14,6 +14,8 @@ const config = {
     "src/constants/index.ts",
   ],
   ignoreDependencies: ["tailwindcss", "tw-animate-css"],
+  // next-env.d.ts imports route types that exist only after `next dev` or `next build`.
+  ignoreUnresolved: [/^\.\/\.next\//],
   rules: {
     dependencies: "error",
     exports: "warn",
