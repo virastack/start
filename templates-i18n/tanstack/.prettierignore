@@ -5,3 +5,6 @@ public
 CHANGELOG.md
 .changeset
 src/routeTree.gen.ts
+src/paraglide
+project.inlang/*
+!project.inlang/settings.json

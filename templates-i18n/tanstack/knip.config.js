@@ -10,8 +10,8 @@ const config = {
     "src/schemas/index.ts",
     "src/constants/index.ts",
     // Domain-layer barrels
-    "src/features/**/data/index.ts",
-    "src/features/**/data/*.data.tsx",
+    "src/features/**/constants/index.ts",
+    "src/features/**/constants/*.constants.tsx",
     "src/features/**/schemas/index.ts",
   ],
   ignoreDependencies: ["tailwindcss", "tw-animate-css"],

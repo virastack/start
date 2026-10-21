@@ -76,6 +76,10 @@ jobs:
         working-directory: ${{ matrix.template }}
         run: pnpm run knip
 
+      - name: Test
+        working-directory: ${{ matrix.template }}
+        run: pnpm run test
+
       - name: Prepare environment
         working-directory: ${{ matrix.template }}
         run: cp .env.example .env.local

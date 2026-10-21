@@ -27,7 +27,6 @@
     "^@/providers($|/)",
     "^@/stores($|/)",
     "^@/hooks($|/)",
-    "^@/data($|/)",
     "",
     "^@/components($|/)",
     "^@/layout($|/)",

@@ -1,19 +1,20 @@
 # ViraStack Start — Next.js Edition (i18n)
 
-> Premium Next.js 16 + React 19 + Tailwind CSS 4 boilerplate with **next-intl** multi-language routing (`en`, `tr`). Feature-sliced architecture, agent-ready DX. Auth, database/ORM, and testing are intentionally omitted.
+> Premium Next.js 16 + React 19 + Tailwind CSS 4 boilerplate with **next-intl** multi-language routing (`en`, `tr`). Feature-sliced architecture, agent-ready DX. Auth and database/ORM are intentionally omitted.
 
 Built on the App Router with a `[locale]` segment, Server/Client Components, streaming, and the Metadata API. UI primitives use **Base UI** styled with Tailwind CSS 4. State triad: TanStack Query, Zustand, `nuqs`. Forms: React Hook Form + Zod. **ViraStack AI** ships on scaffold.
 
-- Tech stack: Next.js 16, React 19, Tailwind CSS 4, TypeScript 5 (strict + `noUncheckedIndexedAccess`), Node.js `>=20.9`
-- i18n: `next-intl` — locales `en` (default) and `tr`; messages in `src/messages/*.json`; routing in `src/i18n/`
-- UI: Base UI, Framer Motion, Sonner, Lucide React, `next-themes`, `class-variance-authority`
+- Tech stack: Next.js 16, React 19, Tailwind CSS 4, TypeScript 6 (strict + `noUncheckedIndexedAccess`), Node.js `>=20.9`
+- i18n: `next-intl` — locales `en` (default) and `tr`; messages in `messages/*.json`; routing in `src/i18n/`
+- UI: Base UI, Motion, Sonner, Lucide React, `next-themes`, `class-variance-authority`
 - Data & state: TanStack Query 5, Zustand, `nuqs`
 - Forms: React Hook Form + Zod (+ `@hookform/resolvers`)
+- Testing: Vitest, React Testing Library, user-event, jest-dom, MSW (`src/test/`)
 - API: Native `fetch` wrapper in `src/lib/api.ts` (`ApiError`)
 - Env: Zod schema in `src/env.ts`
 - Tooling: ESLint 9, Prettier 3, Husky, Knip, Commitlint, Changesets, `@next/bundle-analyzer`
-- ViraStack AI: `AGENTS.md`, `CLAUDE.md`, `.cursor/rules/*.mdc`, `docs/*`
-- Not included by default: Auth, DB/ORM, test runner, CSP
+- ViraStack AI: `AGENTS.md`, `CLAUDE.md`, `.claude/rules/virastack/`, `.cursor/rules/virastack/`, `.virastack/ai.json`
+- Not included by default: Auth, DB/ORM, CSP
 
 ## Docs
 - [Repository (GitHub)](https://github.com/virastack/start): CLI and templates
@@ -22,7 +23,7 @@ Built on the App Router with a `[locale]` segment, Server/Client Components, str
 - [Product docs](https://virastack.com/start/docs): ViraStack Start documentation
 - [Start llms-full.txt](https://virastack.com/start/llms-full.txt): CLI flags and template map for agents
 - [Ecosystem llms.txt](https://virastack.com/llms.txt): All ViraStack products
-- [Architecture guide](https://github.com/virastack/ai/blob/main/templates/core/docs/architecture-guide.md): Placement rules
+- [Architecture guide](https://github.com/virastack/ai/blob/main/templates/rules/architecture.mdc): Placement rules
 
 ## Key Files & Entry Points
 - [`src/app/layout.tsx`](https://github.com/virastack/start/blob/main/templates-i18n/nextjs/src/app/layout.tsx): Root shell
@@ -34,8 +35,8 @@ Built on the App Router with a `[locale]` segment, Server/Client Components, str
 - [`src/app/global-error.tsx`](https://github.com/virastack/start/blob/main/templates-i18n/nextjs/src/app/global-error.tsx): Root error boundary
 - [`src/i18n/routing.ts`](https://github.com/virastack/start/blob/main/templates-i18n/nextjs/src/i18n/routing.ts): Locales + defaultLocale
 - [`src/i18n/request.ts`](https://github.com/virastack/start/blob/main/templates-i18n/nextjs/src/i18n/request.ts): next-intl request config
-- [`src/messages/en.json`](https://github.com/virastack/start/blob/main/templates-i18n/nextjs/src/messages/en.json): English messages
-- [`src/messages/tr.json`](https://github.com/virastack/start/blob/main/templates-i18n/nextjs/src/messages/tr.json): Turkish messages
+- [`messages/en.json`](https://github.com/virastack/start/blob/main/templates-i18n/nextjs/messages/en.json): English messages
+- [`messages/tr.json`](https://github.com/virastack/start/blob/main/templates-i18n/nextjs/messages/tr.json): Turkish messages
 - [`src/components/shared/LanguageSwitcher.tsx`](https://github.com/virastack/start/blob/main/templates-i18n/nextjs/src/components/shared/LanguageSwitcher.tsx): Locale switcher
 - [`src/env.ts`](https://github.com/virastack/start/blob/main/templates-i18n/nextjs/src/env.ts): Zod env schema
 - [`src/config/site.config.ts`](https://github.com/virastack/start/blob/main/templates-i18n/nextjs/src/config/site.config.ts): Site config
@@ -45,7 +46,7 @@ Built on the App Router with a `[locale]` segment, Server/Client Components, str
 - [`next.config.ts`](https://github.com/virastack/start/blob/main/templates-i18n/nextjs/next.config.ts): Next config + next-intl plugin
 
 ## Landing Feature (demo — delete when building)
-Canonical tree under `src/features/landing/`. Prefer feature-local copy via next-intl keys in `src/messages`.
+Canonical tree under `src/features/landing/`. Prefer feature-local copy via next-intl keys in `messages/`.
 
 Quick start: delete `src/features/landing`, replace `src/app/[locale]/page.tsx`, keep layout chrome if useful.
 

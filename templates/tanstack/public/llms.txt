@@ -1,24 +1,25 @@
 # ViraStack Start — TanStack Start Edition
 
-> Premium TanStack Start + React 19 + Tailwind CSS 4 boilerplate focused on clean architecture, UI/UX, and agent-ready developer experience. Auth, database/ORM, i18n, and testing are intentionally omitted — bring the solution that fits your project.
+> Premium TanStack Start + React 19 + Tailwind CSS 4 boilerplate focused on clean architecture, UI/UX, and agent-ready developer experience. Auth, database/ORM, and i18n are intentionally omitted — bring the solution that fits your project.
 
 Built on TanStack Router file-based routing with type-safe loaders, nested layouts, and SSR via TanStack Start. UI primitives use **Base UI** (unstyled, accessible) styled with Tailwind CSS 4 design tokens. State is split by job: TanStack Query for server state, Zustand for client state, `nuqs` for URL state. Forms use React Hook Form + Zod. The home route renders a deletable `features/landing` demo that follows the canonical ViraStack feature tree. **ViraStack AI** (`@virastack/ai`) adds agent rules on scaffold; design skills come from [emilkowalski/skills](https://github.com/emilkowalski/skills) and [make-interfaces-feel-better](https://github.com/jakubkrehel/make-interfaces-feel-better).
 
-- Tech stack: TanStack Start, TanStack Router, React 19, Tailwind CSS 4, TypeScript (strict + `noUncheckedIndexedAccess`), Node.js `>=20.9`
-- UI: Base UI, Framer Motion, Sonner, Lucide React, `next-themes`, `class-variance-authority`
+- Tech stack: TanStack Start, TanStack Router, React 19, Tailwind CSS 4, TypeScript 6 (strict + `noUncheckedIndexedAccess`), Node.js `>=20.9`
+- UI: Base UI, Motion, Sonner, Lucide React, `next-themes`, `class-variance-authority`
 - Data & state: TanStack Query 5, Zustand, `nuqs`
 - Forms: React Hook Form + Zod (+ `@hookform/resolvers`)
+- Testing: Vitest, React Testing Library, user-event, jest-dom, MSW (`src/test/`)
 - API: Native `fetch` wrapper in `src/lib/api.ts` (`ApiError` with `message`, `status`, `data`); Axios is optional, not installed
 - Env: Hand-rolled Zod schema in `src/env.ts` (`VITE_*` public vars)
 - Tooling: ESLint 9, Prettier 3, Husky, Knip, Commitlint, Changesets, Vite 8
-- Quality scripts: `pnpm typecheck`, `pnpm lint` / `lint:ci`, `pnpm knip`, `pnpm build`
-- ViraStack AI (via `npx @virastack/ai init`): `AGENTS.md`, `CLAUDE.md`, `.cursor/rules/*.mdc`, `docs/*`
-- Not included by default: Auth, DB/ORM, i18n, test runner, CSP
+- Quality scripts: `pnpm typecheck`, `pnpm lint` / `lint:ci`, `pnpm knip`, `pnpm test`, `pnpm build`
+- ViraStack AI (via `npx @virastack/ai init`): `AGENTS.md`, `CLAUDE.md`, `.claude/rules/virastack/`, `.cursor/rules/virastack/`, `.virastack/ai.json`
+- Not included by default: Auth, DB/ORM, i18n, CSP
 
 ## Docs
 - [Repository (GitHub)](https://github.com/virastack/start): CLI and templates
 - [README](https://github.com/virastack/start/tree/main/templates/tanstack): Features, structure, and conventions
-- [Architecture guide](https://github.com/virastack/ai/blob/main/templates/core/docs/architecture-guide.md): Placement rules and import conventions
+- [Architecture guide](https://github.com/virastack/ai/blob/main/templates/rules/architecture.mdc): Placement rules and import conventions
 - [Product docs](https://virastack.com/start/docs): ViraStack Start documentation
 - [Start llms-full.txt](https://virastack.com/start/llms-full.txt): CLI flags and template map for agents
 - [Ecosystem llms.txt](https://virastack.com/llms.txt): All ViraStack products
@@ -68,11 +69,12 @@ Quick start: delete `src/features/landing`, replace `src/routes/index.tsx`, keep
 - Default scope is `features/[feature]/` — promote to global `src/` only when a second feature needs it. No cross-feature imports.
 
 ## ViraStack AI
-- Install or refresh: `npx @virastack/ai init --force`
+- Install or refresh: `npx @virastack/ai init`
 - `AGENTS.md`: Agent operating guide (all agents)
 - `CLAUDE.md`: Claude Code entry point (`@AGENTS.md`)
-- `.cursor/rules/*.mdc`: Scoped coding rules (Cursor auto-loads)
-- `docs/architecture-guide.md`, `docs/MEMORIES.md`: Architecture and project memory
+- `.claude/rules/virastack/*.md`: Scoped coding rules (Claude Code auto-loads)
+- `.cursor/rules/virastack/*.mdc`: Scoped coding rules (Cursor auto-loads)
+- `.virastack/ai.json`: Installed rule manifest (commit it)
 - Skills: [emilkowalski/skills](https://github.com/emilkowalski/skills) (7 design-engineering skills) + [make-interfaces-feel-better](https://github.com/jakubkrehel/make-interfaces-feel-better)
 - Package: [`@virastack/ai`](https://github.com/virastack/ai)
 

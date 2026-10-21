@@ -27,8 +27,6 @@
       "@/layout/*": ["./src/components/layout/*"],
       "@/hooks": ["./src/hooks/index.ts"],
       "@/hooks/*": ["./src/hooks/*"],
-      "@/data": ["./src/data/index.ts"],
-      "@/data/*": ["./src/data/*"],
       "@/schemas": ["./src/schemas/index.ts"],
       "@/schemas/*": ["./src/schemas/*"]
     }
