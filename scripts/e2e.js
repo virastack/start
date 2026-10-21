@@ -2,7 +2,7 @@
  * End-to-end check of `virastack init` with ViraStack AI.
  *
  *   node scripts/e2e.js            16 runs: 2 templates x i18n on/off x 4 agent choices,
- *                                  with --skip-install (files, git and agent folders only)
+ *                                  with --skip-install (files, git, agent folders and skills)
  *   node scripts/e2e.js --full     4 runs with install, skills, typecheck, lint:ci and test
  *   --only <text>                  only runs whose name contains <text> (e.g. tanstack-i18n)
  *
@@ -22,6 +22,7 @@ const onlyIndex = process.argv.indexOf("--only");
 const ONLY = onlyIndex === -1 ? "" : process.argv[onlyIndex + 1];
 
 const TEMPLATES = ["nextjs", "tanstack"];
+const SKILLS = ["emil-design-eng", "better-ui", "better-accessibility"];
 const AGENT_CHOICES = FULL ? ["claude,cursor"] : ["claude,cursor", "claude", "cursor", "none"];
 const ENV = {
   ...process.env,
@@ -58,12 +59,17 @@ function checkProject(dir, { template, agents }) {
   expect(agentsMd.includes("BEGIN:virastack-ai"), "AGENTS.md has no ViraStack AI block");
   expect(agentsMd.includes("BEGIN:nextjs-agent-rules") === (template === "nextjs"), "Next.js block does not match the template");
 
-  if (FULL) {
-    expect(has(".agents/skills/emil-design-eng/SKILL.md"), "design skill missing");
+  for (const skill of SKILLS) {
+    expect(has(`.agents/skills/${skill}/SKILL.md`), `${skill} missing in .agents/skills`);
+    const copy = path.join(dir, ".claude/skills", skill);
     if (claude) {
-      const skill = path.join(dir, ".claude/skills/emil-design-eng");
-      expect(existsSync(skill) && !lstatSync(skill).isSymbolicLink(), ".claude/skills is missing or a symlink");
+      expect(existsSync(copy) && !lstatSync(copy).isSymbolicLink(), `.claude/skills/${skill} missing or a symlink`);
+    } else {
+      expect(!existsSync(copy), `.claude/skills/${skill} unexpected`);
     }
+  }
+
+  if (FULL) {
     for (const script of ["typecheck", "lint:ci", "test"]) {
       const result = run("pnpm", ["run", script], dir);
       expect(result.ok, `pnpm run ${script} failed:\n${result.output.slice(-3000)}`);

@@ -9,9 +9,9 @@ Works with ViraStack AI v2. This prerelease installs `@virastack/ai@next`; the s
 - **AI coding tools question**: After the template, asks "Which AI coding tools do you use?" (Claude Code, Cursor, both selected). Selecting none installs plain rules in `.agents/rules/`.
 - **`--agent <list>`**: `claude`, `cursor` (comma separated) or `none`. `--yes` without it selects both. Also works with `add ai`.
 - **Setup order**: install, Next.js `AGENTS.md` block, `@virastack/ai init --agent <choice>`, design skills, then the first git commit. `git status` is clean after scaffolding.
-- **ViraStack AI never forced**: `--force` is no longer passed, so files you changed are kept. `--skip-install` no longer skips the AI rules.
+- **ViraStack AI never forced**: `--force` is no longer passed, so files you changed are kept. `--skip-install` no longer skips the AI rules or skills.
 - **Next.js `AGENTS.md` block**: Written directly, as documented for Next.js 16.2+ (points agents to `node_modules/next/dist/docs/`).
-- **Design skills**: Installed only for the selected tools, as files instead of symlinks. Each skill installs on its own, so one failure does not stop the other. With none selected, the command is printed at the end.
+- **Design skills**: Every project gets `emil-design-eng` ([emilkowalski/skills](https://github.com/emilkowalski/skills)), `better-ui` and `better-accessibility` ([jakubkrehel/skills](https://github.com/jakubkrehel/skills)). `better-ui` replaces `make-interfaces-feel-better`, which moved into Jakub Krehel's new skills repo. Skills go to `.agents/skills/` and, with Claude Code, to `.claude/skills/`, as files instead of symlinks. Each skill installs on its own, so one failure does not stop the others. Only offline skips them.
 - **Git**: The repo is created before install so husky can set up its hooks. The initial commit skips hooks.
 - **Telemetry**: Adds the selected AI coding tool names. No personal data.
 - **`prepublishOnly`**: Also removes `.eslintcache` files from the templates.

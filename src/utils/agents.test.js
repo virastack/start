@@ -61,16 +61,21 @@ describe("skills", () => {
     const args = getSkillArgs({ source: "emilkowalski/skills", skill: "emil-design-eng" }, ["cursor"]);
     expect(args).toEqual([
       "--yes", "skills@latest", "add", "emilkowalski/skills",
-      "--skill", "emil-design-eng", "-a", "cursor", "--copy", "-y",
+      "--skill", "emil-design-eng", "-a", "universal", "-a", "cursor", "--copy", "-y",
     ]);
     expect(getSkillArgs({ source: "a/b" }, ["claude", "cursor"])).toEqual(
       expect.arrayContaining(["-a", "claude-code", "cursor"]),
     );
   });
 
+  it("always installs to .agents/skills", () => {
+    const args = getSkillArgs({ source: "jakubkrehel/skills", skill: "better-ui" }, []);
+    expect(args.slice(4)).toEqual(["--skill", "better-ui", "-a", "universal", "--copy", "-y"]);
+  });
+
   it("prints an interactive manual command", () => {
     expect(getSkillsCommand()).toBe(
-      "npx skills@latest add emilkowalski/skills --skill emil-design-eng && npx skills@latest add jakubkrehel/make-interfaces-feel-better",
+      "npx skills@latest add emilkowalski/skills --skill emil-design-eng && npx skills@latest add jakubkrehel/skills --skill better-ui && npx skills@latest add jakubkrehel/skills --skill better-accessibility",
     );
   });
 });

@@ -27,7 +27,7 @@
 
 - **Interactive CLI:** Interactive prompts for template selection, project naming, and ecosystem tool integration.
 - **Production-Ready Foundations:** Scaffolds Next.js or TanStack Start projects with pre-configured feature-sliced architecture.
-- **Built-in AI Protocols:** Asks which AI coding tools you use (Claude Code, Cursor) and sets up [**ViraStack AI**](https://github.com/virastack/ai) for them — architecture rules in each tool's native format, `AGENTS.md`, and design skills from [**Emil Kowalski**](https://github.com/emilkowalski/skills) and [**Jakub Krehel**](https://github.com/jakubkrehel/make-interfaces-feel-better) — giving your coding agents a strict "constitution" from day one.
+- **Built-in AI Protocols:** Asks which AI coding tools you use (Claude Code, Cursor) and sets up [**ViraStack AI**](https://github.com/virastack/ai) for them — architecture rules in each tool's native format, `AGENTS.md`, and design skills from [**Emil Kowalski**](https://github.com/emilkowalski/skills) and [**Jakub Krehel**](https://github.com/jakubkrehel/skills) — giving your coding agents a strict "constitution" from day one.
 - **End-to-End Type Safety:** Strict TypeScript rules, Zod validation, and native package manager alignment (pnpm, npm, yarn, bun).
 - **Ecosystem Integration:** Add optional ViraStack tools (`@virastack/mask`, `@virastack/password`) seamlessly.
 
@@ -78,10 +78,10 @@ Select none to get plain rules in `.agents/rules/` that any agent can read throu
 2. Installs dependencies with the package manager you ran it with.
 3. Next.js only: adds the Next.js block to `AGENTS.md`, pointing agents at the docs bundled in `node_modules/next/dist/docs/`.
 4. Runs `@virastack/ai init --agent <your choice>`. It never overwrites files you changed.
-5. Installs the design skills for the selected tools.
+5. Installs three design skills: `emil-design-eng` ([Emil Kowalski](https://github.com/emilkowalski/skills)), `better-ui` and `better-accessibility` ([Jakub Krehel](https://github.com/jakubkrehel/skills)). They go to `.agents/skills/` and, with Claude Code, to `.claude/skills/`.
 6. Creates the first git commit, so `git status` is clean.
 
-`--skip-install` skips steps 2 and 5. Offline, steps 2, 4 and 5 are skipped and the commands to run later are printed.
+`--skip-install` skips step 2. Offline, steps 2, 4 and 5 are skipped and the commands to run later are printed.
 
 ## Tools
 
@@ -103,7 +103,7 @@ Select none to get plain rules in `.agents/rules/` that any agent can read throu
 | `--agent <list>` | AI coding tools: `claude`, `cursor` (comma separated) or `none`. Default with `--yes`: both |
 | `--i18n` / `--no-i18n` | Enable or disable the i18n template |
 | `--yes`, `-y` | Non-interactive mode (flags + defaults) |
-| `--skip-install` | Skip dependency install and skills (AI rules are still added) |
+| `--skip-install` | Skip dependency install (AI rules and skills are still added) |
 | `--tr` | Turkish prompts |
 | `--telemetry-disable` | Permanently disable anonymous usage tracking |
 | `-v`, `--version` | Print CLI version |

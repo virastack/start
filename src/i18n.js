@@ -103,7 +103,7 @@ Options:
   --agent <list>        AI coding tools: claude, cursor (comma separated) or none
   --i18n / --no-i18n    Enable or disable the i18n template
   --yes, -y             Non-interactive mode (use flags/defaults)
-  --skip-install        Skip dependency install and skills (AI rules are still added)
+  --skip-install        Skip dependency install (AI rules and skills are still added)
   --tr                  Ask questions in Turkish
   --telemetry-disable   Disable anonymous usage tracking
   -v, --version         Print the version
@@ -215,7 +215,7 @@ Seçenekler:
   --agent <liste>       AI kodlama araçları: claude, cursor (virgülle) veya none
   --i18n / --no-i18n    i18n şablonunu aç / kapat
   --yes, -y             İnteraktif olmayan mod (flag/varsayılanlar)
-  --skip-install        Bağımlılık ve skill kurulumunu atla (AI kuralları yine eklenir)
+  --skip-install        Bağımlılık kurulumunu atla (AI kuralları ve skill'ler yine eklenir)
   --tr                  Soruları Türkçe sor
   --telemetry-disable   Anonim kullanım verisi toplamayı kapat
   -v, --version         Sürümü göster

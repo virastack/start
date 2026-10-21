@@ -256,9 +256,10 @@ export async function runInit(options = {}) {
     }
   }
 
-  // Each skill is optional: one failing must not stop the other.
+  // Each skill installs on its own: one failing must not stop the others.
+  // Like ViraStack AI, they only write files, so only offline skips them.
   let skillsOk = false;
-  if (agents.length > 0 && !skipInstall && !offline) {
+  if (!offline) {
     const skillsSpinner = p.spinner();
     skillsSpinner.start(t("scaffold.skillsInit"));
     let failed = 0;

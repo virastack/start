@@ -51,20 +51,25 @@ export function getAiInitArgs(agents, { tr = false } = {}) {
   return args;
 }
 
-/** Design skills installed for the selected agents, one `skills add` call each. */
+/** Design skills installed in every project, one `skills add` call each. */
 export const SKILLS = [
   { source: "emilkowalski/skills", skill: "emil-design-eng" },
-  { source: "jakubkrehel/make-interfaces-feel-better" },
+  { source: "jakubkrehel/skills", skill: "better-ui" },
+  { source: "jakubkrehel/skills", skill: "better-accessibility" },
 ];
 
 /**
- * Arguments for `npx skills@latest add`. `--copy` writes real files instead
- * of symlinks so the first commit works the same on Windows.
+ * Arguments for `npx skills@latest add`. Skills always land in
+ * `.agents/skills/` (the `universal` target, read by Cursor and other
+ * agents) and are also copied for each selected tool that needs its own
+ * folder. `--copy` writes real files instead of symlinks so the first commit
+ * works the same on Windows.
  */
 export function getSkillArgs({ source, skill }, agents) {
+  const targets = ["universal", ...agents.map((id) => AGENTS.find((agent) => agent.id === id).skillsAgent)];
   const args = ["--yes", "skills@latest", "add", source];
   if (skill) args.push("--skill", skill);
-  for (const id of agents) args.push("-a", AGENTS.find((agent) => agent.id === id).skillsAgent);
+  for (const target of targets) args.push("-a", target);
   args.push("--copy", "-y");
   return args;
 }
