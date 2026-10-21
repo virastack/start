@@ -4,3 +4,12 @@ pnpm-lock.yaml
 public
 CHANGELOG.md
 .changeset
+
+# Managed by ViraStack AI and the skills CLI
+AGENTS.md
+CLAUDE.md
+.agents
+.claude
+.cursor
+.virastack
+skills-lock.json

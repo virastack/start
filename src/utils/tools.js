@@ -4,7 +4,7 @@
  * - "dependency" tools are added straight to package.json and installed
  *   like any other npm package (e.g. @virastack/mask).
  * - "postinstall-cli" tools ship their own `init` command that writes files
- *   into the target project (e.g. @virastack/ai writes .cursor/rules), so we
+ *   into the target project (e.g. @virastack/ai writes agent rules), so we
  *   shell out to them instead of treating them as a runtime dependency.
  */
 export const TOOLS = [

@@ -1,5 +1,32 @@
 # Changelog
 
+## [v1.1.0-beta.1] - Unreleased
+
+Works with ViraStack AI v2. This prerelease installs `@virastack/ai@next`; the stable release installs `@virastack/ai@2`.
+
+### CLI
+
+- **AI coding tools question**: After the template, asks "Which AI coding tools do you use?" (Claude Code, Cursor, both selected). Selecting none installs plain rules in `.agents/rules/`.
+- **`--agent <list>`**: `claude`, `cursor` (comma separated) or `none`. `--yes` without it selects both. Also works with `add ai`.
+- **Setup order**: install, Next.js `AGENTS.md` block, `@virastack/ai init --agent <choice>`, design skills, then the first git commit. `git status` is clean after scaffolding.
+- **ViraStack AI never forced**: `--force` is no longer passed, so files you changed are kept. `--skip-install` no longer skips the AI rules.
+- **Next.js `AGENTS.md` block**: Written directly, as documented for Next.js 16.2+ (points agents to `node_modules/next/dist/docs/`).
+- **Design skills**: Installed only for the selected tools, as files instead of symlinks. Each skill installs on its own, so one failure does not stop the other. With none selected, the command is printed at the end.
+- **Git**: The repo is created before install so husky can set up its hooks. The initial commit skips hooks.
+- **Telemetry**: Adds the selected AI coding tool names. No personal data.
+- **`prepublishOnly`**: Also removes `.eslintcache` files from the templates.
+- **Tests**: Unit tests for `--agent`, the ai and skills commands and the Next.js block. `pnpm test:e2e` scaffolds 16 combinations (2 templates, i18n on and off, 4 tool choices) and checks git, agent folders and `AGENTS.md`; `--full` also installs and runs `typecheck`, `lint:ci` and `test`.
+
+### Templates
+
+- **Tests**: Vitest, Testing Library and MSW in all four templates, with example tests, `test` / `test:watch` scripts and a CI step.
+- **Feature boundaries**: ESLint `no-restricted-imports` blocks cross-feature imports and `../` imports.
+- **Layout for ViraStack AI v2**: `features/*/data/` became `constants/`, the `@/data` alias is gone, and Next.js i18n messages moved to the root `messages/` folder.
+- **Motion**: `framer-motion` replaced by `motion` (`motion/react`).
+- **Queries**: The landing users query is defined once with `queryOptions`.
+- **TanStack i18n**: Paraglide compiles on `postinstall`; generated files are ignored by git and Prettier.
+- **Knip**: Next.js templates no longer fail before `next dev` generates route types.
+
 ## [v1.0.6] - 2026-08-06
 
 ### Documentation

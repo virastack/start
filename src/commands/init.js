@@ -6,7 +6,9 @@ import pc from "picocolors";
 import { t, getLocale } from "../i18n.js";
 import { copyTemplate, dirHasFiles, isDirEmpty } from "../utils/copy-template.js";
 import { runCommand } from "../utils/exec.js";
-import { initGitRepo } from "../utils/git.js";
+import { commitInitial, initGitRepo } from "../utils/git.js";
+import { AGENTS, ALL_AGENTS, SKILLS, getAiInitArgs, getSkillArgs, getSkillsCommand } from "../utils/agents.js";
+import { writeNextAgentsBlock } from "../utils/next-agents-md.js";
 import { isOnline } from "../utils/is-online.js";
 import {
   detectPackageManager,
@@ -43,6 +45,7 @@ function failAndExit(message) {
  *   template?: string,
  *   i18n?: boolean,
  *   tools?: string[] | string | true,
+ *   agents?: string[],
  *   yes?: boolean,
  *   skipInstall?: boolean,
  * }} [options]
@@ -139,6 +142,25 @@ export async function runInit(options = {}) {
     template = "nextjs";
   }
 
+  let agents = options.agents;
+  if (agents == null) {
+    if (yes) {
+      agents = ALL_AGENTS;
+    } else {
+      const selected = await p.multiselect({
+        message: t("agents.message"),
+        required: false,
+        initialValues: ALL_AGENTS,
+        options: AGENTS.map((agent) => ({
+          value: agent.id,
+          label: t(`agents.${agent.id}.label`),
+        })),
+      });
+      if (p.isCancel(selected)) return cancelAndExit();
+      agents = ALL_AGENTS.filter((id) => selected.includes(id));
+    }
+  }
+
   let wantsI18n = options.i18n;
   if (wantsI18n == null) {
     if (yes) {
@@ -193,22 +215,15 @@ export async function runInit(options = {}) {
   await setupEnvFile(targetDir);
   scaffoldSpinner.stop(t("scaffold.copyDone"));
 
-  const gitSpinner = p.spinner();
-  gitSpinner.start(t("scaffold.gitInit"));
   const gitInitialized = await initGitRepo(targetDir);
-  gitSpinner.stop(
-    gitInitialized ? t("scaffold.gitInitDone") : t("scaffold.gitInitSkipped"),
-  );
 
   const online = await isOnline();
   let installOk = false;
-  let aiOk = false;
-  let offline = false;
+  const offline = !online;
 
   if (skipInstall) {
     p.log.info(t("scaffold.skipInstall"));
-  } else if (!online) {
-    offline = true;
+  } else if (offline) {
     p.log.warn(t("scaffold.offline"));
   } else {
     const installSpinner = p.spinner();
@@ -221,37 +236,54 @@ export async function runInit(options = {}) {
       installSpinner.stop(t("scaffold.installFailed"));
       p.log.error(String(error?.message ?? error));
     }
+  }
 
-    if (installOk) {
-      const aiSpinner = p.spinner();
-      aiSpinner.start(t("scaffold.aiInit"));
-      try {
-        const args = ["--yes", "@virastack/ai", "init", "--force"];
-        if (getLocale() === "tr") args.push("--tr");
-        await runCommand("npx", args, { cwd: targetDir });
-        aiSpinner.stop(t("scaffold.aiInitDone"));
-        aiOk = true;
-      } catch {
-        aiSpinner.stop(t("scaffold.aiInitFailed"));
-      }
+  if (template === "nextjs") {
+    await writeNextAgentsBlock(targetDir);
+  }
 
-      if (aiOk) {
-        try {
-          await runCommand("npx", ["--yes", "skills@latest", "add", "emilkowalski/skills", "--skill", "emil-design-eng", "-y"], { cwd: targetDir });
-          await runCommand("npx", ["--yes", "skills@latest", "add", "jakubkrehel/make-interfaces-feel-better", "-y"], { cwd: targetDir });
-        } catch {
-          p.log.warn(t("scaffold.skillsInitFailed"));
-        }
-      }
-    } else {
-      p.log.warn(t("scaffold.aiInitSkipped"));
+  // ViraStack AI only writes files, so it runs even with --skip-install.
+  let aiOk = false;
+  if (!offline) {
+    const aiSpinner = p.spinner();
+    aiSpinner.start(t("scaffold.aiInit"));
+    try {
+      await runCommand("npx", getAiInitArgs(agents, { tr: getLocale() === "tr" }), { cwd: targetDir });
+      aiSpinner.stop(t("scaffold.aiInitDone"));
+      aiOk = true;
+    } catch {
+      aiSpinner.stop(t("scaffold.aiInitFailed"));
     }
   }
+
+  // Each skill is optional: one failing must not stop the other.
+  let skillsOk = false;
+  if (agents.length > 0 && !skipInstall && !offline) {
+    const skillsSpinner = p.spinner();
+    skillsSpinner.start(t("scaffold.skillsInit"));
+    let failed = 0;
+    for (const entry of SKILLS) {
+      try {
+        await runCommand("npx", getSkillArgs(entry, agents), { cwd: targetDir });
+      } catch {
+        failed += 1;
+      }
+    }
+    skillsOk = failed === 0;
+    skillsSpinner.stop(skillsOk ? t("scaffold.skillsInitDone") : t("scaffold.skillsInitFailed"));
+  }
+
+  // Last, so the first commit contains every generated file.
+  const gitSpinner = p.spinner();
+  gitSpinner.start(t("scaffold.gitInit"));
+  const committed = gitInitialized && (await commitInitial(targetDir));
+  gitSpinner.stop(committed ? t("scaffold.gitInitDone") : t("scaffold.gitInitSkipped"));
 
   await trackEvent("create", {
     template,
     i18n: wantsI18n,
     tools,
+    agents,
     packageManager,
     installOk,
     skipInstall,
@@ -259,14 +291,16 @@ export async function runInit(options = {}) {
 
   const cdHint = useCurrentDir ? null : t("done.cd", { dir: projectName });
   const installCmd = getInstallCommand(packageManager);
-  const aiCmd = getAiInitCommand();
+  const aiCmd = getAiInitCommand(agents);
+  const skillsCmd = getSkillsCommand();
   const devCmd = getRunDevCommand(packageManager);
 
   if (skipInstall || offline || !installOk) {
     const outroLines = [t("done.partialTitle")];
     if (cdHint) outroLines.push(cdHint);
     outroLines.push(t("done.manualInstall", { cmd: installCmd }));
-    outroLines.push(t("done.manualAi", { cmd: aiCmd }));
+    if (!aiOk) outroLines.push(t("done.manualAi", { cmd: aiCmd }));
+    if (!skillsOk) outroLines.push(t("done.manualSkills", { cmd: skillsCmd }));
     outroLines.push(t("done.dev", { cmd: devCmd }));
     if (!installOk && !offline && !skipInstall) {
       p.log.error(t("done.installFailedNote"));
@@ -281,6 +315,7 @@ export async function runInit(options = {}) {
   const outroLines = [t("done.title")];
   if (cdHint) outroLines.push(cdHint);
   if (!aiOk) outroLines.push(t("done.manualAi", { cmd: aiCmd }));
+  if (!skillsOk) outroLines.push(t("done.manualSkills", { cmd: skillsCmd }));
   outroLines.push(t("done.dev", { cmd: devCmd }));
   p.outro(outroLines.join("\n"));
 }

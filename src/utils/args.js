@@ -5,7 +5,7 @@
  * Value-taking long flags consume the next token when it is not itself a flag.
  */
 
-const VALUE_FLAGS = new Set(["name", "template", "tools"]);
+const VALUE_FLAGS = new Set(["name", "template", "tools", "agent"]);
 
 /**
  * @param {string[]} argv

@@ -27,7 +27,7 @@
 
 - **Interactive CLI:** Interactive prompts for template selection, project naming, and ecosystem tool integration.
 - **Production-Ready Foundations:** Scaffolds Next.js or TanStack Start projects with pre-configured feature-sliced architecture.
-- **Built-in AI Protocols:** Integrates [**ViraStack AI**](https://github.com/virastack/ai) automatically — architecture rules, `AGENTS.md`, and design skills from [**Emil Kowalski**](https://github.com/emilkowalski/skills) and [**Jakub Krehel**](https://github.com/jakubkrehel/make-interfaces-feel-better) — giving your coding agents a strict "constitution" from day one.
+- **Built-in AI Protocols:** Asks which AI coding tools you use (Claude Code, Cursor) and sets up [**ViraStack AI**](https://github.com/virastack/ai) for them — architecture rules in each tool's native format, `AGENTS.md`, and design skills from [**Emil Kowalski**](https://github.com/emilkowalski/skills) and [**Jakub Krehel**](https://github.com/jakubkrehel/make-interfaces-feel-better) — giving your coding agents a strict "constitution" from day one.
 - **End-to-End Type Safety:** Strict TypeScript rules, Zod validation, and native package manager alignment (pnpm, npm, yarn, bun).
 - **Ecosystem Integration:** Add optional ViraStack tools (`@virastack/mask`, `@virastack/password`) seamlessly.
 
@@ -57,6 +57,10 @@ Which template would you like to use?
   › Next.js App Router
     TanStack Start
 
+Which AI coding tools do you use?
+  [x] Claude Code
+  [x] Cursor
+
 Would you like multi-language (i18n) support?
   › Yes
     No
@@ -65,6 +69,19 @@ Which ViraStack tools would you like to include?
   [ ] @virastack/mask
   [ ] @virastack/password
 ```
+
+Select none to get plain rules in `.agents/rules/` that any agent can read through `AGENTS.md`.
+
+## What it sets up
+
+1. Copies the template and sets the project name.
+2. Installs dependencies with the package manager you ran it with.
+3. Next.js only: adds the Next.js block to `AGENTS.md`, pointing agents at the docs bundled in `node_modules/next/dist/docs/`.
+4. Runs `@virastack/ai init --agent <your choice>`. It never overwrites files you changed.
+5. Installs the design skills for the selected tools.
+6. Creates the first git commit, so `git status` is clean.
+
+`--skip-install` skips steps 2 and 5. Offline, steps 2, 4 and 5 are skipped and the commands to run later are printed.
 
 ## Tools
 
@@ -83,9 +100,10 @@ Which ViraStack tools would you like to include?
 | `--name <name>` | Project name (or pass as positional / `.`) |
 | `--template <name>` | `nextjs` or `tanstack` |
 | `--tools <list>` | Comma-separated tools (`mask,password`) |
+| `--agent <list>` | AI coding tools: `claude`, `cursor` (comma separated) or `none`. Default with `--yes`: both |
 | `--i18n` / `--no-i18n` | Enable or disable the i18n template |
 | `--yes`, `-y` | Non-interactive mode (flags + defaults) |
-| `--skip-install` | Scaffold files only; skip install + AI setup |
+| `--skip-install` | Skip dependency install and skills (AI rules are still added) |
 | `--tr` | Turkish prompts |
 | `--telemetry-disable` | Permanently disable anonymous usage tracking |
 | `-v`, `--version` | Print CLI version |
@@ -95,6 +113,7 @@ Which ViraStack tools would you like to include?
 pnpm dlx virastack add mask
 pnpm dlx virastack add password
 pnpm dlx virastack add ai
+pnpm dlx virastack add ai --agent cursor
 ```
 
 ## Included by default
@@ -106,13 +125,14 @@ Every template ships with this stack already installed:
 | **State** | TanStack Query, Zustand, nuqs |
 | **Form** | React Hook Form, Zod |
 | **Hooks** | `usehooks-ts` |
-| **UI** | Base UI, Framer Motion, Lucide React |
+| **UI** | Base UI, Motion, Lucide React |
+| **Test** | Vitest, Testing Library, MSW |
 
 [ViraStack AI](https://github.com/virastack/ai) encodes these choices as agent rules so assistants follow the same stack from day one.
 
 ## Telemetry
 
-To keep usage statistics, ViraStack collects strictly anonymous data (template, i18n choice, selected tools, package manager, and CLI version). Absolutely no personal data, project names, or file paths are collected.
+To keep usage statistics, ViraStack collects strictly anonymous data (template, i18n choice, selected tools, AI coding tool names, package manager, and CLI version). Absolutely no personal data, project names, or file paths are collected.
 
 Opt out anytime: `pnpm dlx virastack --telemetry-disable`
 
