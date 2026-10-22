@@ -1,6 +1,6 @@
 # Changelog
 
-## [v1.1.0-beta.1] - Unreleased
+## [v1.1.0-beta.1] - 2026-10-22
 
 Works with ViraStack AI v2. This prerelease installs `@virastack/ai@next`; the stable release installs `@virastack/ai@2`.
 
