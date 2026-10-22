@@ -59,14 +59,17 @@ export const SKILLS = [
 ];
 
 /**
- * Arguments for `npx skills@latest add`. Skills always land in
- * `.agents/skills/` (the `universal` target, read by Cursor and other
- * agents) and are also copied for each selected tool that needs its own
- * folder. `--copy` writes real files instead of symlinks so the first commit
- * works the same on Windows.
+ * Arguments for `npx skills@latest add`. Skills land in `.agents/skills/`
+ * (the `universal` target, read by Cursor and other agents) and are also
+ * copied for each selected tool that needs its own folder. With Claude Code
+ * as the only tool, `.agents/skills/` would go unused, so it is skipped.
+ * `--copy` writes real files instead of symlinks so the first commit works
+ * the same on Windows.
  */
 export function getSkillArgs({ source, skill }, agents) {
-  const targets = ["universal", ...agents.map((id) => AGENTS.find((agent) => agent.id === id).skillsAgent)];
+  const tools = agents.map((id) => AGENTS.find((agent) => agent.id === id).skillsAgent);
+  const claudeOnly = agents.length === 1 && agents[0] === "claude";
+  const targets = claudeOnly ? tools : ["universal", ...tools];
   const args = ["--yes", "skills@latest", "add", source];
   if (skill) args.push("--skill", skill);
   for (const target of targets) args.push("-a", target);

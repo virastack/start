@@ -78,7 +78,7 @@ Select none to get plain rules in `.agents/rules/` that any agent can read throu
 2. Installs dependencies with the package manager you ran it with.
 3. Next.js only: adds the Next.js block to `AGENTS.md`, pointing agents at the docs bundled in `node_modules/next/dist/docs/`.
 4. Runs `@virastack/ai init --agent <your choice>`. It never overwrites files you changed.
-5. Installs three design skills: `emil-design-eng` ([Emil Kowalski](https://github.com/emilkowalski/skills)), `better-ui` and `better-accessibility` ([Jakub Krehel](https://github.com/jakubkrehel/skills)). They go to `.agents/skills/` and, with Claude Code, to `.claude/skills/`.
+5. Installs three design skills: `emil-design-eng` ([Emil Kowalski](https://github.com/emilkowalski/skills)), `better-ui` and `better-accessibility` ([Jakub Krehel](https://github.com/jakubkrehel/skills)). They go to `.agents/skills/` and, with Claude Code, to `.claude/skills/`. With Claude Code as the only tool, they go only to `.claude/skills/`.
 6. Creates the first git commit, so `git status` is clean.
 
 `--skip-install` skips step 2. Offline, steps 2, 4 and 5 are skipped and the commands to run later are printed.

@@ -68,9 +68,15 @@ describe("skills", () => {
     );
   });
 
-  it("always installs to .agents/skills", () => {
+  it("installs to .agents/skills unless Claude Code is the only tool", () => {
     const args = getSkillArgs({ source: "jakubkrehel/skills", skill: "better-ui" }, []);
     expect(args.slice(4)).toEqual(["--skill", "better-ui", "-a", "universal", "--copy", "-y"]);
+    expect(getSkillArgs({ source: "a/b" }, ["claude", "cursor"])).toContain("universal");
+  });
+
+  it("skips .agents/skills when Claude Code is the only tool", () => {
+    const args = getSkillArgs({ source: "jakubkrehel/skills", skill: "better-ui" }, ["claude"]);
+    expect(args.slice(4)).toEqual(["--skill", "better-ui", "-a", "claude-code", "--copy", "-y"]);
   });
 
   it("prints an interactive manual command", () => {
