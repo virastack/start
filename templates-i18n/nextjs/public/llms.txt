@@ -1,6 +1,6 @@
 # ViraStack Start — Next.js Edition (i18n)
 
-> Premium Next.js 16 + React 19 + Tailwind CSS 4 boilerplate with **next-intl** multi-language routing (`en`, `tr`). Feature-sliced architecture, agent-ready DX. Auth and database/ORM are intentionally omitted.
+> Next.js 16 + React 19 + Tailwind CSS 4 boilerplate with **next-intl** multi-language routing (`en`, `tr`). Feature-sliced architecture, agent-ready DX. Auth and database/ORM are intentionally omitted.
 
 Built on the App Router with a `[locale]` segment, Server/Client Components, streaming, and the Metadata API. UI primitives use **Base UI** styled with Tailwind CSS 4. State triad: TanStack Query, Zustand, `nuqs`. Forms: React Hook Form + Zod. **ViraStack AI** ships on scaffold.
 

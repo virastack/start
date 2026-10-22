@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "Premium TanStack Start + React 19 + Tailwind CSS 4 boilerplate focused on clean architecture, UI/UX, and agent-ready developer experience.",
+  "description": "TanStack Start + React 19 + Tailwind CSS 4 boilerplate focused on clean architecture, UI/UX, and agent-ready developer experience.",
   "author": {
     "name": "Ömer Gülçiçek (ViraStack)",
     "email": "iletisim@omergulcicek.com",

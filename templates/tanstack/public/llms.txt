@@ -1,6 +1,6 @@
 # ViraStack Start — TanStack Start Edition
 
-> Premium TanStack Start + React 19 + Tailwind CSS 4 boilerplate focused on clean architecture, UI/UX, and agent-ready developer experience. Auth, database/ORM, and i18n are intentionally omitted — bring the solution that fits your project.
+> TanStack Start + React 19 + Tailwind CSS 4 boilerplate focused on clean architecture, UI/UX, and agent-ready developer experience. Auth, database/ORM, and i18n are intentionally omitted — bring the solution that fits your project.
 
 Built on TanStack Router file-based routing with type-safe loaders, nested layouts, and SSR via TanStack Start. UI primitives use **Base UI** (unstyled, accessible) styled with Tailwind CSS 4 design tokens. State is split by job: TanStack Query for server state, Zustand for client state, `nuqs` for URL state. Forms use React Hook Form + Zod. The home route renders a deletable `features/landing` demo that follows the canonical ViraStack feature tree. **ViraStack AI** (`@virastack/ai`) adds agent rules on scaffold; design skills come from [emilkowalski/skills](https://github.com/emilkowalski/skills) and [make-interfaces-feel-better](https://github.com/jakubkrehel/make-interfaces-feel-better).
 

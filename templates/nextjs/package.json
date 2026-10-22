@@ -2,7 +2,7 @@
   "name": "virastack",
   "version": "1.0.0",
   "private": true,
-  "description": "Premium Next.js 16 + React 19 + Tailwind CSS 4 boilerplate focused on clean architecture, UI/UX, and agent-ready developer experience.",
+  "description": "Next.js 16 + React 19 + Tailwind CSS 4 boilerplate focused on clean architecture, UI/UX, and agent-ready developer experience.",
   "author": {
     "name": "Ömer Gülçiçek (ViraStack)",
     "email": "iletisim@omergulcicek.com",
