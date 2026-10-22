@@ -51,7 +51,6 @@ export function Hero() {
 
       <Reveal mode="mount" delay={0.1} className="mt-2 flex items-center gap-2">
         <Button
-          className="h-10 px-4 py-2"
           nativeButton={false}
           render={<a href={siteConfig.links.github} target="_blank" rel="noreferrer" />}
         >
@@ -59,7 +58,7 @@ export function Hero() {
           <span>{m.github()}</span>
         </Button>
         <LanguageSwitcher />
-        <div className="h-10 w-10 [&>button]:h-full [&>button]:w-full">
+        <div className="h-9 w-9 [&>button]:h-full [&>button]:w-full">
           <ThemeToggle />
         </div>
       </Reveal>

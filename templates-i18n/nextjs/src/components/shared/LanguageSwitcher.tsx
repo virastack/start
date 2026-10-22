@@ -25,12 +25,12 @@ export function LanguageSwitcher() {
         value={locale}
         onChange={onChange}
         disabled={isPending}
-        className="h-10 cursor-pointer appearance-none rounded-md border border-input bg-background pr-8 pl-3 text-sm text-foreground focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none disabled:opacity-50"
+        className="h-9 cursor-pointer appearance-none rounded-md border border-input bg-background pr-8 pl-3 text-sm text-foreground focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none disabled:opacity-50"
       >
         <option value="en">EN</option>
         <option value="tr">TR</option>
       </select>
-      <div className="pointer-events-none absolute top-[11px] right-2.5 h-4 w-4 text-muted-foreground">
+      <div className="pointer-events-none absolute top-[9px] right-2.5 h-4 w-4 text-muted-foreground">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
