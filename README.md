@@ -8,7 +8,7 @@
   </picture>
 </a>
 
-*Production-grade scaffolding CLI for modern React — integrate ecosystem tools in one command.*
+*Scaffolding CLI for Next.js and TanStack Start: ViraStack tools and AI rules in one command*
 
 [![ViraStack Start](https://img.shields.io/badge/ViraStack-Start-%2300bba7)](https://virastack.com/start/)
 [![npm version](https://img.shields.io/npm/v/virastack?color=blue)](https://www.npmjs.com/package/virastack)
@@ -23,7 +23,7 @@
 
 ### [Read the full documentation →](https://virastack.com/start/)
 
-## Why ViraStack Start?
+## Features
 
 - **Interactive CLI:** Interactive prompts for template selection, project naming, and ecosystem tool integration.
 - **Production-Ready Foundations:** Scaffolds Next.js or TanStack Start projects with pre-configured feature-sliced architecture.
@@ -132,24 +132,16 @@ Every template ships with this stack already installed:
 
 ## Telemetry
 
-To keep usage statistics, ViraStack collects strictly anonymous data (template, i18n choice, selected tools, AI coding tool names, package manager, and CLI version). Absolutely no personal data, project names, or file paths are collected.
-
-Opt out anytime: `pnpm dlx virastack --telemetry-disable`
+The CLI collects anonymous usage data only: template, options, tools, package manager and CLI version. Opt out: `pnpm dlx virastack --telemetry-disable`
 
 ## Contributing
 
 Ideas and bug reports are welcome — open an [issue](https://github.com/virastack/start/issues).
 
-## Explore the ViraStack Ecosystem
+## Ecosystem
 
-Discover all ViraStack tools, libraries, and boilerplates at [**virastack.com**](https://virastack.com).
+Part of the [ViraStack](https://virastack.com) ecosystem.
 
 ## License
 
-Licensed under the [MIT License](LICENSE).
-
-## Maintainer
-
-A project by [**Ömer Gülçiçek**](https://omergulcicek.com)
-
-[![Follow Ömer Gülçiçek](https://img.shields.io/github/followers/omergulcicek?label=Follow&style=social)](https://github.com/omergulcicek)
+[MIT](LICENSE) © [Ömer Gülçiçek](https://omergulcicek.com)
