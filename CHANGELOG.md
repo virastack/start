@@ -1,8 +1,8 @@
 # Changelog
 
-## [v1.1.0-beta.1] - 2026-10-22
+## [v1.1.0] - 2026-10-22
 
-Works with ViraStack AI v2. This prerelease installs `@virastack/ai@next`; the stable release installs `@virastack/ai@2`.
+Works with ViraStack AI v2: the CLI installs `@virastack/ai@2`.
 
 ### CLI
 
@@ -26,6 +26,9 @@ Works with ViraStack AI v2. This prerelease installs `@virastack/ai@next`; the s
 - **Queries**: The landing users query is defined once with `queryOptions`.
 - **TanStack i18n**: Paraglide compiles on `postinstall`; generated files are ignored by git and Prettier.
 - **Knip**: Next.js templates no longer fail before `next dev` generates route types.
+- **TanStack logo**: The landing demo uses the current flat TanStack logo, drawn in `currentColor`.
+- **Hero buttons**: One size smaller (`h-9`), including the theme toggle and the language select.
+- **Copy**: Dropped the word "Premium" from template descriptions, `site.config.ts`, `llms.txt` and the hero badge.
 
 ## [v1.0.6] - 2026-08-06
 
