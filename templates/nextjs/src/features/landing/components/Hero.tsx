@@ -12,7 +12,7 @@ export function Hero() {
     <section className="mx-auto flex max-w-3xl flex-col items-center gap-6 px-6 pt-24 pb-16 text-center">
       <Reveal mode="mount" delay={0} y={-8}>
         <span className="rounded-full border border-border px-3 py-1 text-xs font-medium text-muted-foreground">
-          Premium UI/UX · Agent-ready · Zero bloat
+          UI/UX · Agent-ready · Zero bloat
         </span>
       </Reveal>
 

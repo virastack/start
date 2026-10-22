@@ -5,7 +5,7 @@ import { env } from "@/env";
 export const siteConfig: SiteConfig = {
   name: env.VITE_APP_NAME,
   description:
-    "Premium TanStack Start boilerplate built for scalable UI/UX, clean architecture, and agent-ready developer experience.",
+    "TanStack Start boilerplate built for scalable UI/UX, clean architecture, and agent-ready developer experience.",
   url: env.VITE_APP_URL,
   ogImage: `${env.VITE_APP_URL}/og.png`,
   links: {
