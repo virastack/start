@@ -140,7 +140,7 @@ Ideas and bug reports are welcome — open an [issue](https://github.com/virasta
 
 ## Ecosystem
 
-Part of the [ViraStack](https://virastack.com) ecosystem: [Academy](https://virastack.com/academy) · [AI](https://virastack.com/ai) · [Mask](https://virastack.com/mask) · [Password](https://virastack.com/password) · [Guide](https://virastack.com/guide)
+Part of the [ViraStack](https://virastack.com) ecosystem: [Academy](https://github.com/virastack/academy) · [AI](https://github.com/virastack/ai) · [Mask](https://github.com/virastack/mask) · [Password](https://github.com/virastack/password) · [Guide](https://github.com/virastack/guide)
 
 ## License
 
