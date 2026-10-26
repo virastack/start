@@ -46,7 +46,7 @@ const dictionaries = {
     "tools.mask.label": "@virastack/mask",
     "tools.mask.hint": "Headless input formatter",
     "tools.password.label": "@virastack/password",
-    "tools.password.hint": "Password visibility toggle",
+    "tools.password.hint": "Password field: show/hide, strength, confirmation",
     "tools.ai.label": "@virastack/ai",
     "tools.ai.hint": "AI rules for Cursor & Claude",
 
@@ -157,7 +157,7 @@ Examples:
     "tools.mask.label": "@virastack/mask",
     "tools.mask.hint": "Headless input formatlayıcı",
     "tools.password.label": "@virastack/password",
-    "tools.password.hint": "Şifre görünürlük anahtarı",
+    "tools.password.hint": "Parola alanı: göster/gizle, güç, parola tekrarı",
     "tools.ai.label": "@virastack/ai",
     "tools.ai.hint": "Cursor & Claude için AI kuralları",
 
