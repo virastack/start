@@ -89,7 +89,7 @@ Select none to get plain rules in `.agents/rules/` that any agent can read throu
 | :--- | :--- |
 | `@virastack/ai` | Pre-configured AI layer and coding rules for modern AI assistants (included in templates by default) |
 | `@virastack/mask` | Input masking and formatting (Phone, IBAN, etc.) |
-| `@virastack/password` | Password visibility toggle with customizable icons and text |
+| `@virastack/password` | Accessible password field hook: show/hide, NIST-style strength, confirmation and server validation |
 
 ## Commands and options
 
