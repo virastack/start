@@ -29,11 +29,16 @@ const TEMPLATES_DIR = path.resolve(__dirname, "../../templates");
 const TEMPLATES_I18N_DIR = path.resolve(__dirname, "../../templates-i18n");
 const VALID_TEMPLATES = new Set(["nextjs", "tanstack"]);
 
+/** @returns {never} */
 function cancelAndExit() {
   p.cancel(t("cancel"));
   process.exit(0);
 }
 
+/**
+ * @param {string} message
+ * @returns {never}
+ */
 function failAndExit(message) {
   p.log.error(message);
   process.exit(1);
@@ -69,7 +74,7 @@ export async function runInit(options = {}) {
       failAndExit(t("projectName.errorNonInteractive"));
     }
 
-    projectNameInput = await p.text({
+    const name = await p.text({
       message: t("projectName.message"),
       placeholder: t("projectName.placeholder"),
       validate: (value) => {
@@ -78,7 +83,8 @@ export async function runInit(options = {}) {
         if (error === "invalid") return t("projectName.errorInvalid");
       },
     });
-    if (p.isCancel(projectNameInput)) return cancelAndExit();
+    if (p.isCancel(name)) return cancelAndExit();
+    projectNameInput = name;
   } else {
     const error = validateProjectName(projectNameInput);
     if (error === "empty") failAndExit(t("projectName.errorEmpty"));
@@ -118,7 +124,7 @@ export async function runInit(options = {}) {
     if (yes) {
       template = "nextjs";
     } else {
-      template = await p.select({
+      const chosenTemplate = await p.select({
         message: t("template.message"),
         options: [
           {
@@ -133,7 +139,8 @@ export async function runInit(options = {}) {
           },
         ],
       });
-      if (p.isCancel(template)) return cancelAndExit();
+      if (p.isCancel(chosenTemplate)) return cancelAndExit();
+      template = chosenTemplate;
     }
   }
 
@@ -166,13 +173,14 @@ export async function runInit(options = {}) {
     if (yes) {
       wantsI18n = false;
     } else {
-      wantsI18n = await p.confirm({
+      const chosenI18n = await p.confirm({
         message: t("i18n.message"),
         active: t("i18n.active"),
         inactive: t("i18n.inactive"),
         initialValue: false,
       });
-      if (p.isCancel(wantsI18n)) return cancelAndExit();
+      if (p.isCancel(chosenI18n)) return cancelAndExit();
+      wantsI18n = chosenI18n;
     }
   }
 
@@ -186,7 +194,7 @@ export async function runInit(options = {}) {
     if (yes) {
       tools = [];
     } else {
-      tools = await p.multiselect({
+      const chosenTools = await p.multiselect({
         message: t("tools.message"),
         required: false,
         options: TOOLS.filter((tool) => !tool.hiddenFromInit).map((tool) => ({
@@ -195,7 +203,8 @@ export async function runInit(options = {}) {
           hint: t(`tools.${tool.id}.hint`),
         })),
       });
-      if (p.isCancel(tools)) return cancelAndExit();
+      if (p.isCancel(chosenTools)) return cancelAndExit();
+      tools = chosenTools;
     }
   } else {
     tools = Array.isArray(tools) ? tools : parseToolsFlag(tools);

@@ -34,11 +34,15 @@
     "!src/**/*.test.js"
   ],
   "scripts": {
-    "prepublishOnly": "find templates templates-i18n -type d \\( -name 'node_modules' -o -name '.next' -o -name 'dist' -o -name '.vinxi' -o -name '.output' -o -name '.turbo' \\) -prune -exec rm -rf '{}' + && find templates templates-i18n -name '.eslintcache' -type f -delete",
     "start": "node ./bin/virastack.js",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:e2e": "node scripts/e2e.js"
+    "test:e2e": "node scripts/e2e.js",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "check": "npm run typecheck && npm run lint && npm test",
+    "clean:templates": "find templates templates-i18n -type d \\( -name 'node_modules' -o -name '.next' -o -name 'dist' -o -name '.vinxi' -o -name '.output' -o -name '.turbo' \\) -prune -exec rm -rf '{}' + && find templates templates-i18n -name '.eslintcache' -type f -delete",
+    "prepublishOnly": "npm run check && npm run clean:templates"
   },
   "keywords": [
     "virastack",
@@ -59,6 +63,11 @@
     "picocolors": "^1.1.1"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^26.6.5",
+    "eslint": "^10.13.0",
+    "globals": "^17.13.0",
+    "typescript": "^7.0.2",
     "vitest": "^3.2.7"
   }
 }

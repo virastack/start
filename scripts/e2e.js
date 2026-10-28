@@ -59,8 +59,14 @@ function checkProject(dir, { template, agents }) {
   expect(agentsMd.includes("BEGIN:virastack-ai"), "AGENTS.md has no ViraStack AI block");
   expect(agentsMd.includes("BEGIN:nextjs-agent-rules") === (template === "nextjs"), "Next.js block does not match the template");
 
+  // `.agents/skills` would go unused with Claude Code alone, so the CLI skips it.
+  const claudeOnly = agents.length === 1 && claude;
+
   for (const skill of SKILLS) {
-    expect(has(`.agents/skills/${skill}/SKILL.md`), `${skill} missing in .agents/skills`);
+    expect(
+      has(`.agents/skills/${skill}/SKILL.md`) === !claudeOnly,
+      `${skill} ${claudeOnly ? "unexpected" : "missing"} in .agents/skills`,
+    );
     const copy = path.join(dir, ".claude/skills", skill);
     if (claude) {
       expect(existsSync(copy) && !lstatSync(copy).isSymbolicLink(), `.claude/skills/${skill} missing or a symlink`);

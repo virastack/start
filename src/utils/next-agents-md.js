@@ -26,6 +26,7 @@ Before any Next.js work, find and read the relevant doc in \`node_modules/next/d
  */
 export async function writeNextAgentsBlock(targetDir) {
   const file = path.join(targetDir, "AGENTS.md");
+  /** @type {string | null} */
   let current = null;
   try {
     current = await fs.readFile(file, "utf8");

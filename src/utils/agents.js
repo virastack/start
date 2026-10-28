@@ -65,9 +65,12 @@ export const SKILLS = [
  * as the only tool, `.agents/skills/` would go unused, so it is skipped.
  * `--copy` writes real files instead of symlinks so the first commit works
  * the same on Windows.
+ *
+ * @param {{ source: string, skill?: string }} entry
+ * @param {string[]} agents
  */
 export function getSkillArgs({ source, skill }, agents) {
-  const tools = agents.map((id) => AGENTS.find((agent) => agent.id === id).skillsAgent);
+  const tools = agents.flatMap((id) => AGENTS.find((agent) => agent.id === id)?.skillsAgent ?? []);
   const claudeOnly = agents.length === 1 && agents[0] === "claude";
   const targets = claudeOnly ? tools : ["universal", ...tools];
   const args = ["--yes", "skills@latest", "add", source];

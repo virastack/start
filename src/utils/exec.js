@@ -3,6 +3,11 @@ import spawn from "cross-spawn";
 /**
  * Runs a command and resolves once it exits successfully, rejecting otherwise.
  * Uses cross-spawn so package manager shims (npm.cmd, pnpm.cmd, ...) resolve on Windows too.
+ *
+ * @param {string} command
+ * @param {string[]} [args]
+ * @param {import("node:child_process").SpawnOptions} [options]
+ * @returns {Promise<void>}
  */
 export function runCommand(command, args = [], options = {}) {
   return new Promise((resolve, reject) => {

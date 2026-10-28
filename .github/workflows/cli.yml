@@ -39,6 +39,12 @@ jobs:
       - name: Install CLI dependencies
         run: npm ci
 
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Lint
+        run: npm run lint
+
       - name: Unit tests
         run: npm test
 
@@ -57,3 +63,7 @@ jobs:
           test -f cli-smoke-app/.env.local
           test ! -d cli-smoke-app/.next
           test ! -d cli-smoke-app/node_modules
+
+      # 16 scaffolds: both templates x i18n on/off x four agent choices.
+      - name: End-to-end scaffolds
+        run: npm run test:e2e
