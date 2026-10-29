@@ -7,11 +7,11 @@
 *Scaffolding CLI for Next.js and TanStack Start: ViraStack tools and AI rules in one command*
 
 [![ViraStack Start](https://img.shields.io/badge/ViraStack-Start-%2300c950)](https://virastack.com/start/)
-[![npm version](https://img.shields.io/npm/v/virastack?color=00c950)](https://www.npmjs.com/package/virastack)
-[![npm downloads](https://img.shields.io/npm/dt/virastack?color=00c950)](https://www.npmjs.com/package/virastack)
-[![Node](https://img.shields.io/badge/node-%3E%3D20.9-339933?logo=node.js&logoColor=white)](package.json)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![@virastack](https://img.shields.io/badge/-%40virastack-black?logo=x&logoColor=white)](https://x.com/virastack)
+[![npm version](https://img.shields.io/npm/v/virastack)](https://www.npmjs.com/package/virastack)
+[![npm downloads](https://img.shields.io/npm/dt/virastack)](https://www.npmjs.com/package/virastack)
+[![Node](https://img.shields.io/node/v/virastack)](package.json)
+[![License: MIT](https://img.shields.io/github/license/virastack/start)](LICENSE)
+[![@virastack](https://img.shields.io/badge/-%40virastack-555?logo=x&logoColor=white)](https://x.com/virastack)
 
 </div>
 
