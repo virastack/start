@@ -1,5 +1,12 @@
 # Changelog
 
+## [Unreleased]
+
+### CLI
+
+- **`@virastack/address`**: Offered in the "Which ViraStack tools" question, and accepted by `--tools address` and `add address`.
+- **Tool hints**: Every tool's hint is now the short description from the virastack.com header, in English and Turkish.
+
 ## [v1.1.0] - 2026-10-22
 
 Works with ViraStack AI v2: the CLI installs `@virastack/ai@2`.

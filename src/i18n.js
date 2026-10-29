@@ -44,11 +44,13 @@ const dictionaries = {
 
     "tools.message": "Which ViraStack tools would you like to include?",
     "tools.mask.label": "@virastack/mask",
-    "tools.mask.hint": "Headless input formatter",
+    "tools.mask.hint": "Input masks for React Hook Form: phone, card, date, currency",
     "tools.password.label": "@virastack/password",
-    "tools.password.hint": "Password field: show/hide, strength, confirmation",
+    "tools.password.hint": "Accessible password hook: show/hide, strength, server checks",
+    "tools.address.label": "@virastack/address",
+    "tools.address.hint": "Turkish address hook: province, district, neighbourhood and postal code",
     "tools.ai.label": "@virastack/ai",
-    "tools.ai.hint": "AI rules for Cursor & Claude",
+    "tools.ai.hint": "Architecture rules for Claude Code, Cursor and AGENTS.md",
 
     "scaffold.copying": "Creating project files...",
     "scaffold.copyDone": "Project files created.",
@@ -94,7 +96,7 @@ const dictionaries = {
   pnpm dlx virastack add ai --agent <list>  Add AI rules for the given tools
 
 Tools:
-  mask, password, ai
+  mask, password, address, ai
 
 Options:
   --name <name>         Project name (or pass as positional arg / ".")
@@ -155,11 +157,13 @@ Examples:
 
     "tools.message": "Projenize hangi ViraStack araçları eklensin?",
     "tools.mask.label": "@virastack/mask",
-    "tools.mask.hint": "Headless input formatlayıcı",
+    "tools.mask.hint": "React Hook Form için input maskeleri: telefon, IBAN, TCKN",
     "tools.password.label": "@virastack/password",
-    "tools.password.hint": "Parola alanı: göster/gizle, güç, parola tekrarı",
+    "tools.password.hint": "Erişilebilir parola hook’u: göster/gizle, güç, sunucu kontrolü",
+    "tools.address.label": "@virastack/address",
+    "tools.address.hint": "Türkiye adres hook’u: il, ilçe, mahalle ve posta kodu",
     "tools.ai.label": "@virastack/ai",
-    "tools.ai.hint": "Cursor & Claude için AI kuralları",
+    "tools.ai.hint": "Claude Code, Cursor ve AGENTS.md için mimari kurallar",
 
     "scaffold.copying": "Proje dosyaları oluşturuluyor...",
     "scaffold.copyDone": "Proje dosyaları oluşturuldu.",
@@ -206,7 +210,7 @@ Examples:
   pnpm dlx virastack add ai --agent <liste>  Seçilen araçlar için AI kurallarını ekle
 
 Araçlar:
-  mask, password, ai
+  mask, password, address, ai
 
 Seçenekler:
   --name <ad>           Proje adı (veya positional arg / ".")

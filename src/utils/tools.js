@@ -21,6 +21,12 @@ export const TOOLS = [
     version: "latest",
   },
   {
+    id: "address",
+    package: "@virastack/address",
+    kind: "dependency",
+    version: "latest",
+  },
+  {
     id: "ai",
     package: "@virastack/ai",
     kind: "postinstall-cli",

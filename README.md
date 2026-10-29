@@ -29,7 +29,7 @@
 - **Production-Ready Foundations:** Scaffolds Next.js or TanStack Start projects with a pre-configured feature-based architecture.
 - **Built-in AI Protocols:** Asks which AI coding tools you use (Claude Code, Cursor) and sets up [**ViraStack AI**](https://github.com/virastack/ai) for them — architecture rules in each tool's native format, `AGENTS.md`, and design skills from [**Emil Kowalski**](https://github.com/emilkowalski/skills) and [**Jakub Krehel**](https://github.com/jakubkrehel/skills) — giving your coding agents a strict "constitution" from day one.
 - **End-to-End Type Safety:** Strict TypeScript rules, Zod validation, and native package manager alignment (pnpm, npm, yarn, bun).
-- **Ecosystem Integration:** Add optional ViraStack tools (`@virastack/mask`, `@virastack/password`) seamlessly.
+- **Ecosystem Integration:** Add optional ViraStack tools (`@virastack/mask`, `@virastack/password`, `@virastack/address`) seamlessly.
 
 ## Quick Start
 
@@ -68,6 +68,7 @@ Would you like multi-language (i18n) support?
 Which ViraStack tools would you like to include?
   [ ] @virastack/mask
   [ ] @virastack/password
+  [ ] @virastack/address
 ```
 
 Select none to get plain rules in `.agents/rules/` that any agent can read through `AGENTS.md`.
@@ -87,19 +88,20 @@ Select none to get plain rules in `.agents/rules/` that any agent can read throu
 
 | Tool | Description |
 | :--- | :--- |
-| `@virastack/ai` | Pre-configured AI layer and coding rules for modern AI assistants (included in templates by default) |
-| `@virastack/mask` | Input masking and formatting (Phone, IBAN, etc.) |
-| `@virastack/password` | Accessible password field hook: show/hide, NIST-style strength, confirmation and server validation |
+| `@virastack/ai` | Architecture rules for Claude Code, Cursor and AGENTS.md (included in templates by default) |
+| `@virastack/mask` | Input masks for React Hook Form: phone, card, date, currency |
+| `@virastack/password` | Accessible password hook: show/hide, strength, server checks |
+| `@virastack/address` | Turkish address hook: province, district, neighbourhood and postal code |
 
 ## Commands and options
 
 | Command / flag | Description |
 | :--- | :--- |
 | `init [name]` | Create a new project (default; also runs with no command) |
-| `add <tool>` | Add a tool to an existing project (`mask`, `password`, `ai`) |
+| `add <tool>` | Add a tool to an existing project (`mask`, `password`, `address`, `ai`) |
 | `--name <name>` | Project name (or pass as positional / `.`) |
 | `--template <name>` | `nextjs` or `tanstack` |
-| `--tools <list>` | Comma-separated tools (`mask,password`) |
+| `--tools <list>` | Comma-separated tools (`mask,password,address`) |
 | `--agent <list>` | AI coding tools: `claude`, `cursor` (comma separated) or `none`. Default with `--yes`: both |
 | `--i18n` / `--no-i18n` | Enable or disable the i18n template |
 | `--yes`, `-y` | Non-interactive mode (flags + defaults) |
@@ -112,6 +114,7 @@ Select none to get plain rules in `.agents/rules/` that any agent can read throu
 ```bash
 pnpm dlx virastack add mask
 pnpm dlx virastack add password
+pnpm dlx virastack add address
 pnpm dlx virastack add ai
 pnpm dlx virastack add ai --agent cursor
 ```
@@ -140,7 +143,7 @@ Ideas and bug reports are welcome — open an [issue](https://github.com/virasta
 
 ## Ecosystem
 
-Part of the [ViraStack](https://virastack.com) ecosystem: [Academy](https://github.com/virastack/academy) · [AI](https://github.com/virastack/ai) · [Mask](https://github.com/virastack/mask) · [Password](https://github.com/virastack/password) · [Guide](https://github.com/virastack/guide)
+Part of the [ViraStack](https://virastack.com) ecosystem: [Academy](https://github.com/virastack/academy) · [AI](https://github.com/virastack/ai) · [Mask](https://github.com/virastack/form/tree/main/packages/mask) · [Password](https://github.com/virastack/form/tree/main/packages/password) · [Address](https://github.com/virastack/form/tree/main/packages/address) · [Guide](https://github.com/virastack/guide)
 
 ## License
 
