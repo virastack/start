@@ -1,6 +1,6 @@
 # ViraStack Start — TanStack Start Edition (i18n)
 
-> TanStack Start + React 19 + Tailwind CSS 4 boilerplate with **Paraglide JS** i18n (`en`, `tr`). Feature-sliced architecture, agent-ready DX. Auth and database/ORM are intentionally omitted.
+> TanStack Start + React 19 + Tailwind CSS 4 boilerplate with **Paraglide JS** i18n (`en`, `tr`). Feature-based architecture, agent-ready DX. Auth and database/ORM are intentionally omitted.
 
 Built on TanStack Router file-based routing with SSR via TanStack Start. Messages live under `messages/`; Paraglide generates `src/paraglide`. UI: **Base UI** + Tailwind CSS 4. State triad: TanStack Query, Zustand, `nuqs`. Forms: React Hook Form + Zod. **ViraStack AI** ships on scaffold.
 
@@ -47,7 +47,7 @@ Canonical tree under `src/features/landing/`. Use Paraglide message functions fo
 Quick start: delete `src/features/landing`, replace home route, keep shared layout if useful.
 
 ## Architecture for agents
-- Feature-Sliced: `src/features/[feature]/` — no cross-feature imports
+- Feature-based: `src/features/[feature]/` — no cross-feature imports
 - Prefer short aliases; promote shared code only via Rule of Three
 - Edit `messages/*.json` (or inlang sources), not generated `src/paraglide` output
 - Brand name `ViraStack` stays untranslated
