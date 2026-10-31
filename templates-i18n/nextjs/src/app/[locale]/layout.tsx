@@ -8,7 +8,7 @@ import { NuqsAdapter } from "nuqs/adapters/next/app"
 
 import { defaultMetadata } from "@/config/seo.config"
 
-import { Providers } from "@/providers"
+import { Providers } from "@/providers/Providers"
 
 import { routing } from "@/i18n/routing"
 

@@ -1,9 +1,7 @@
-import {
-  ReactHookFormIcon,
-  TailwindIcon,
-  TanstackIcon,
-  TypescriptIcon
-} from "@/features/landing/icons"
+import { ReactHookFormIcon } from "@/features/landing/icons/react-hook-form"
+import { TailwindIcon } from "@/features/landing/icons/tailwind"
+import { TanstackIcon } from "@/features/landing/icons/tanstack"
+import { TypescriptIcon } from "@/features/landing/icons/typescript"
 
 export const FEATURES = [
   {

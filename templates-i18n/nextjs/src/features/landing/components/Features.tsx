@@ -1,14 +1,12 @@
 import { useTranslations } from "next-intl"
 
 import { RevealGroup, RevealItem } from "@/features/landing/components/Reveal"
-import { featureCardClassName } from "@/features/landing/helpers"
-import {
-  NextjsIcon,
-  ReactHookFormIcon,
-  TailwindIcon,
-  TanstackIcon,
-  TypescriptIcon
-} from "@/features/landing/icons"
+import { featureCardClassName } from "@/features/landing/helpers/motion"
+import { NextjsIcon } from "@/features/landing/icons/nextjs"
+import { ReactHookFormIcon } from "@/features/landing/icons/react-hook-form"
+import { TailwindIcon } from "@/features/landing/icons/tailwind"
+import { TanstackIcon } from "@/features/landing/icons/tanstack"
+import { TypescriptIcon } from "@/features/landing/icons/typescript"
 
 export function Features() {
   const t = useTranslations("Index")

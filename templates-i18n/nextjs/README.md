@@ -104,8 +104,7 @@ src/
 │       ├── icons/        # Brand SVGs used only by the landing demo
 │       ├── schemas/
 │       ├── stores/
-│       ├── types/
-│       └── index.ts
+│       └── types/
 ├── components/
 │   ├── ui/               # Base UI primitives (Button, Dialog, Tabs, …)
 │   ├── layout/           # Header, Footer (reusable chrome)

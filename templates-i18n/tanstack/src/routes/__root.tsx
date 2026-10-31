@@ -9,8 +9,8 @@ import { seoHeadMeta } from "@/config/seo.config"
 
 import appCss from "@/styles/tailwind.css?url"
 
-import { Providers } from "@/providers"
 import TanStackQueryDevtools from "@/providers/devtools"
+import { Providers } from "@/providers/Providers"
 
 import { DefaultCatchBoundary } from "@/components/shared/DefaultCatchBoundary"
 import { NotFound } from "@/components/shared/NotFound"

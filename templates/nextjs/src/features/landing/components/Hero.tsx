@@ -5,7 +5,9 @@ import { siteConfig } from "@/config/site.config"
 import { ThemeToggle } from "@/components/shared/ThemeToggle"
 import { Button } from "@/components/ui/button"
 import { Reveal } from "@/features/landing/components/Reveal"
-import { NextjsIcon, ReactIcon, TailwindIcon } from "@/features/landing/icons"
+import { NextjsIcon } from "@/features/landing/icons/nextjs"
+import { ReactIcon } from "@/features/landing/icons/react"
+import { TailwindIcon } from "@/features/landing/icons/tailwind"
 
 export function Hero() {
   return (

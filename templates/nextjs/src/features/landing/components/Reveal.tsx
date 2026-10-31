@@ -4,7 +4,7 @@ import type { ReactNode } from "react"
 
 import { motion } from "motion/react"
 
-import { fadeInUp, staggerContainer, viewport } from "@/features/landing/helpers"
+import { fadeInUp, staggerContainer, viewport } from "@/features/landing/helpers/motion"
 
 type RevealProps = {
   children: ReactNode

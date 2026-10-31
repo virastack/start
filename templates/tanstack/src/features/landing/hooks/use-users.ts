@@ -2,7 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query"
 
-import { usersQueryOptions } from "@/features/landing/api"
+import { usersQueryOptions } from "@/features/landing/api/user.queries"
 
 /**
  * Example TanStack Query hook for the landing Showcase demo.

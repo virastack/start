@@ -1,12 +1,12 @@
 import { siteConfig } from "@/config/site.config"
 
-import { formatDate } from "@/helpers"
+import { formatDate } from "@/helpers/format-date"
 
 import { CartDemo } from "@/features/landing/components/CartDemo"
 import { ProjectFormDemo } from "@/features/landing/components/ProjectFormDemo"
 import { RevealGroup, RevealItem } from "@/features/landing/components/Reveal"
 import { UsersDemo } from "@/features/landing/components/UsersDemo"
-import { featureCardClassName } from "@/features/landing/helpers"
+import { featureCardClassName } from "@/features/landing/helpers/motion"
 
 export function Showcase() {
   return (

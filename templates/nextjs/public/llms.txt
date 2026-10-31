@@ -46,7 +46,7 @@ Built on the App Router with Server/Client Components, streaming, and the Metada
 ## Landing Feature (demo — delete when building)
 Canonical tree under `src/features/landing/`. Home page composes `LandingPage`.
 
-- [`src/features/landing/index.ts`](https://github.com/virastack/start/blob/main/templates/nextjs/src/features/landing/index.ts): Public export (`LandingPage`)
+- [`src/features/landing/components/LandingPage.tsx`](https://github.com/virastack/start/blob/main/templates/nextjs/src/features/landing/components/LandingPage.tsx): Page component (`LandingPage`)
 - [`src/features/landing/components/LandingPage.tsx`](https://github.com/virastack/start/blob/main/templates/nextjs/src/features/landing/components/LandingPage.tsx): Page composition (Header + sections + Footer)
 - [`src/features/landing/components/Hero.tsx`](https://github.com/virastack/start/blob/main/templates/nextjs/src/features/landing/components/Hero.tsx): Hero section
 - [`src/features/landing/components/Features.tsx`](https://github.com/virastack/start/blob/main/templates/nextjs/src/features/landing/components/Features.tsx): Feature grid
@@ -76,7 +76,7 @@ Quick start: delete `src/features/landing`, replace `src/app/page.tsx`, keep `co
 
 ## Customization & Imports
 - Search the project for `FIXME:` (site config, remote images, auth attachment on the API client).
-- Prefer short path aliases: `@/ui`, `@/hooks`, `@/schemas`, `@/layout` over long forms. Prefer feature-local imports under `@/features/[feature]/…` for demo-scoped code.
+- Import from the defining file with the single `@/*` alias. There are no barrel files.
 - Default scope is `features/[feature]/` — promote to global `src/` only when a second feature needs it. No cross-feature imports.
 
 ## ViraStack AI

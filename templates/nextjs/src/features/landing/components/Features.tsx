@@ -1,6 +1,6 @@
 import { RevealGroup, RevealItem } from "@/features/landing/components/Reveal"
-import { FEATURES } from "@/features/landing/constants"
-import { featureCardClassName } from "@/features/landing/helpers"
+import { FEATURES } from "@/features/landing/constants/features.constants"
+import { featureCardClassName } from "@/features/landing/helpers/motion"
 
 export function Features() {
   return (

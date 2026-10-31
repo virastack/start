@@ -7,21 +7,20 @@ import { parseAsString, useQueryState } from "nuqs"
 
 import { ApiError } from "@/lib/api"
 
+import { Avatar, AvatarFallback } from "@/components/ui/avatar"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Skeleton } from "@/components/ui/skeleton"
 import {
-  Avatar,
-  AvatarFallback,
-  Button,
-  Input,
-  Skeleton,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
   TableRow
-} from "@/components/ui"
-import { getInitials } from "@/features/landing/helpers"
-import { useUsers } from "@/features/landing/hooks"
+} from "@/components/ui/table"
+import { getInitials } from "@/features/landing/helpers/get-initials"
+import { useUsers } from "@/features/landing/hooks/use-users"
 
 /**
  * Demonstrates server-state fetching & caching with TanStack Query + URL state via nuqs.

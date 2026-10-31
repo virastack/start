@@ -5,7 +5,7 @@
   "type": "module",
   "description": "TanStack Start + React 19 + Tailwind CSS 4 boilerplate focused on clean architecture, UI/UX, and agent-ready developer experience.",
   "author": {
-    "name": "Ömer Gülçiçek (ViraStack)",
+    "name": "\u00d6mer G\u00fcl\u00e7i\u00e7ek (ViraStack)",
     "email": "iletisim@omergulcicek.com",
     "url": "https://omergulcicek.com"
   },
@@ -25,9 +25,6 @@
   },
   "engines": {
     "node": ">=22.13.0"
-  },
-  "imports": {
-    "#/*": "./src/*"
   },
   "scripts": {
     "dev": "vite dev --port 3000",

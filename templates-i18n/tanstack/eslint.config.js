@@ -15,11 +15,11 @@ const SHARED_FILES = [
   "src/env.ts"
 ]
 const SHARED_IMPORT = {
-  group: ["@/features/*", "#/features/*", "@/routes/*", "#/routes/*"],
+  group: ["@/features/*", "@/routes/*"],
   message: "Shared folders must not import features or routes, so a feature can be deleted safely."
 }
 const ROUTE_IMPORT = {
-  group: ["@/routes/*", "#/routes/*"],
+  group: ["@/routes/*"],
   message: "Features must not import routes. Compose features at the route level."
 }
 
@@ -46,14 +46,7 @@ const boundaries = [
             PARENT_IMPORT,
             ROUTE_IMPORT,
             {
-              group: [
-                "@/features/*",
-                `!@/features/${feature}`,
-                `!@/features/${feature}/**`,
-                "#/features/*",
-                `!#/features/${feature}`,
-                `!#/features/${feature}/**`
-              ],
+              group: ["@/features/*", `!@/features/${feature}`, `!@/features/${feature}/**`],
               message:
                 "Features must not import each other. Move shared code to src/ (components, lib, hooks, ...)."
             }

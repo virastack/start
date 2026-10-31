@@ -3,8 +3,8 @@ import { describe, expect, it } from "vitest"
 
 import { ApiError } from "@/lib/api"
 
-import { getUsers } from "@/features/landing/api"
-import type { User } from "@/features/landing/types"
+import { getUsers } from "@/features/landing/api/get-users.api"
+import type { User } from "@/features/landing/types/user.types"
 import { server } from "@/test/server"
 
 const USERS_URL = "https://jsonplaceholder.typicode.com/users"

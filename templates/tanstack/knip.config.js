@@ -2,14 +2,7 @@
 const config = {
   entry: ["src/router.tsx", "src/start.ts", "src/routes/**/*.{ts,tsx}"],
   project: ["src/**/*.{ts,tsx,js,jsx}"],
-  ignore: [
-    "src/components/ui/**",
-    // Shared-layer barrels reserved for Rule-of-Three promotions
-    "src/hooks/index.ts",
-    "src/stores/index.ts",
-    "src/schemas/index.ts",
-    "src/constants/index.ts"
-  ],
+  ignore: ["src/components/ui/**"],
   ignoreDependencies: ["tailwindcss", "tw-animate-css"],
   rules: {
     dependencies: "error",

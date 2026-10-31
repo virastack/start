@@ -8,8 +8,8 @@ import { Button } from "@/components/ui/button"
 import { FieldDescription, FieldError } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { projectSchema } from "@/features/landing/schemas"
-import type { ProjectInput } from "@/features/landing/schemas"
+import { projectSchema } from "@/features/landing/schemas/project.schema"
+import type { ProjectInput } from "@/features/landing/schemas/project.schema"
 
 export function ProjectFormDemo() {
   const {

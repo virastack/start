@@ -3,7 +3,7 @@
 import { MinusIcon, PlusIcon, ShirtIcon, Trash2Icon } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
-import { useCounterStore } from "@/features/landing/stores"
+import { useCounterStore } from "@/features/landing/stores/counter.store"
 import * as m from "@/paraglide/messages.js"
 
 /**

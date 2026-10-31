@@ -4,7 +4,7 @@ import { MinusIcon, PlusIcon, ShirtIcon, Trash2Icon } from "lucide-react"
 import { useTranslations } from "next-intl"
 
 import { Button } from "@/components/ui/button"
-import { useCounterStore } from "@/features/landing/stores"
+import { useCounterStore } from "@/features/landing/stores/counter.store"
 
 /**
  * Demonstrates global client state with Zustand via a mini cart UI.

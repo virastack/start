@@ -1,11 +1,9 @@
 import { RevealGroup, RevealItem } from "@/features/landing/components/Reveal"
-import { featureCardClassName } from "@/features/landing/helpers"
-import {
-  ReactHookFormIcon,
-  TailwindIcon,
-  TanstackIcon,
-  TypescriptIcon
-} from "@/features/landing/icons"
+import { featureCardClassName } from "@/features/landing/helpers/motion"
+import { ReactHookFormIcon } from "@/features/landing/icons/react-hook-form"
+import { TailwindIcon } from "@/features/landing/icons/tailwind"
+import { TanstackIcon } from "@/features/landing/icons/tanstack"
+import { TypescriptIcon } from "@/features/landing/icons/typescript"
 import * as m from "@/paraglide/messages.js"
 
 export function Features() {

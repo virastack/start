@@ -4,7 +4,9 @@ import { LanguageSwitcher } from "@/components/shared/LanguageSwitcher"
 import { ThemeToggle } from "@/components/shared/ThemeToggle"
 import { Button } from "@/components/ui/button"
 import { Reveal } from "@/features/landing/components/Reveal"
-import { ReactIcon, TailwindIcon, TanstackIcon } from "@/features/landing/icons"
+import { ReactIcon } from "@/features/landing/icons/react"
+import { TailwindIcon } from "@/features/landing/icons/tailwind"
+import { TanstackIcon } from "@/features/landing/icons/tanstack"
 import * as m from "@/paraglide/messages.js"
 
 export function Hero() {
