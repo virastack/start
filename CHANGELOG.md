@@ -5,6 +5,7 @@
 ### Security
 
 - **Next.js and React**: New Next.js projects use Next.js `~16.4.3` and React `^19.3.1`. Next.js 16.2.11 has known critical vulnerabilities, including remote code execution. TanStack Start projects use React `^19.3.1`. Upgrade existing projects yourself; this release does not change them.
+- **TanStack Start CSRF**: New TanStack Start projects protect server functions with `createCsrfMiddleware`. The template's custom `src/start.ts` had turned off Start's automatic protection. In an existing project, add the middleware to `src/start.ts` before you use server functions.
 
 ### CLI
 

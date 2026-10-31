@@ -1,4 +1,4 @@
-import { createMiddleware, createStart } from "@tanstack/react-start";
+import { createCsrfMiddleware, createMiddleware, createStart } from "@tanstack/react-start";
 
 /**
  * Baseline security headers (parity with the Next.js template's `headers()`).
@@ -15,6 +15,11 @@ const securityHeadersMiddleware = createMiddleware().server(async ({ next }) => 
   return result;
 });
 
+/** A custom `src/start.ts` turns off TanStack Start's automatic CSRF protection, so it is added here. */
+const csrfMiddleware = createCsrfMiddleware({
+  filter: (ctx) => ctx.handlerType === "serverFn",
+});
+
 export const startInstance = createStart(() => ({
-  requestMiddleware: [securityHeadersMiddleware],
+  requestMiddleware: [securityHeadersMiddleware, csrfMiddleware],
 }));
