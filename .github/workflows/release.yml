@@ -35,3 +35,15 @@ jobs:
       # prepublishOnly runs the checks and cleans the templates.
       - name: Publish
         run: npm publish
+
+  # A job of its own, so install and publish scripts never hold the write token.
+  github-release:
+    needs: publish
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Create GitHub release
+        run: gh release create "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" --verify-tag --notes "Release notes at https://virastack.com/releases/start"
+        env:
+          GH_TOKEN: ${{ github.token }}
