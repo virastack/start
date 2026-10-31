@@ -27,7 +27,7 @@ const AGENT_CHOICES = FULL ? ["claude,cursor"] : ["claude,cursor", "claude", "cu
 const ENV = {
   ...process.env,
   VIRASTACK_TELEMETRY_DISABLED: "1",
-  npm_config_user_agent: "pnpm/10.0.0 npm/? node/? linux x64",
+  npm_config_user_agent: "pnpm/12.16.1 npm/? node/? linux x64",
   CI: "1",
 };
 

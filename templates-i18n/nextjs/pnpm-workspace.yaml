@@ -1,4 +1,12 @@
-ignoredBuiltDependencies:
-  - msw
-  - sharp
-  - unrs-resolver
+allowBuilds:
+  "@parcel/watcher": false
+  "@swc/core": false
+  esbuild: true
+  lightningcss: true
+  msw: false
+  sharp: false
+  unrs-resolver: false
+# eslint-config-next pulls plugins that do not list ESLint 10 yet; their rules were checked on it.
+peerDependencyRules:
+  allowedVersions:
+    eslint: "10"

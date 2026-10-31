@@ -1,4 +1,4 @@
-import { http, HttpResponse } from "msw";
+import { http, HttpResponse } from "msw/http";
 import { describe, expect, it } from "vitest";
 
 import { ApiError } from "@/lib/api";
