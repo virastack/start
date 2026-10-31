@@ -1,11 +1,16 @@
 # Changelog
 
-## [Unreleased]
+## [v1.1.1] - 2026-10-31
+
+### Security
+
+- **Next.js and React**: New Next.js projects use Next.js `~16.4.3` and React `^19.3.1`. Next.js 16.2.11 has known critical vulnerabilities, including remote code execution. TanStack Start projects use React `^19.3.1`. Upgrade existing projects yourself; this release does not change them.
 
 ### CLI
 
 - **`@virastack/address`**: Offered in the "Which ViraStack tools" question, and accepted by `--tools address` and `add address`.
 - **Tool hints**: Every tool's hint is now the short description from the virastack.com header, in English and Turkish.
+- **Next.js `AGENTS.md` block**: The CLI no longer writes it. Next.js owns this block: `next dev` writes it when it detects a coding agent.
 
 ## [v1.1.0] - 2026-10-22
 

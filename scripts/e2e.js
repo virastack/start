@@ -36,7 +36,7 @@ function run(command, args, cwd) {
   return { ok: result.status === 0, output: `${result.stdout ?? ""}${result.stderr ?? ""}` };
 }
 
-function checkProject(dir, { template, agents }) {
+function checkProject(dir, { agents }) {
   const errors = [];
   const expect = (condition, message) => condition || errors.push(message);
   const has = (file) => existsSync(path.join(dir, file));
@@ -57,7 +57,8 @@ function checkProject(dir, { template, agents }) {
 
   const agentsMd = has("AGENTS.md") ? readFileSync(path.join(dir, "AGENTS.md"), "utf8") : "";
   expect(agentsMd.includes("BEGIN:virastack-ai"), "AGENTS.md has no ViraStack AI block");
-  expect(agentsMd.includes("BEGIN:nextjs-agent-rules") === (template === "nextjs"), "Next.js block does not match the template");
+  // Next.js owns this block: `next dev` writes it when it detects a coding agent.
+  expect(!agentsMd.includes("BEGIN:nextjs-agent-rules"), "the CLI wrote the Next.js block");
 
   // `.agents/skills` would go unused with Claude Code alone, so the CLI skips it.
   const claudeOnly = agents.length === 1 && claude;
@@ -97,7 +98,7 @@ for (const template of TEMPLATES) {
       const result = run(process.execPath, args, work);
       const agents = agentFlag === "none" ? [] : agentFlag.split(",");
       const errors = result.ok
-        ? checkProject(path.join(work, name), { template, agents })
+        ? checkProject(path.join(work, name), { agents })
         : [`CLI failed:\n${result.output.slice(-2000)}`];
       failures += errors.length > 0 ? 1 : 0;
       console.log(`${errors.length ? "FAIL" : "ok  "} ${name}`);

@@ -8,7 +8,6 @@ import { copyTemplate, dirHasFiles, isDirEmpty } from "../utils/copy-template.js
 import { runCommand } from "../utils/exec.js";
 import { commitInitial, initGitRepo } from "../utils/git.js";
 import { AGENTS, ALL_AGENTS, SKILLS, getAiInitArgs, getSkillArgs, getSkillsCommand } from "../utils/agents.js";
-import { writeNextAgentsBlock } from "../utils/next-agents-md.js";
 import { isOnline } from "../utils/is-online.js";
 import {
   detectPackageManager,
@@ -245,10 +244,6 @@ export async function runInit(options = {}) {
       installSpinner.stop(t("scaffold.installFailed"));
       p.log.error(String(error?.message ?? error));
     }
-  }
-
-  if (template === "nextjs") {
-    await writeNextAgentsBlock(targetDir);
   }
 
   // ViraStack AI only writes files, so it runs even with --skip-install.
