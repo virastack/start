@@ -1,12 +1,12 @@
-import { siteConfig } from "@/config/site.config";
+import { siteConfig } from "@/config/site.config"
 
-import { formatDate } from "@/helpers";
+import { formatDate } from "@/helpers"
 
-import { CartDemo } from "@/features/landing/components/CartDemo";
-import { ProjectFormDemo } from "@/features/landing/components/ProjectFormDemo";
-import { RevealGroup, RevealItem } from "@/features/landing/components/Reveal";
-import { UsersDemo } from "@/features/landing/components/UsersDemo";
-import { featureCardClassName } from "@/features/landing/helpers";
+import { CartDemo } from "@/features/landing/components/CartDemo"
+import { ProjectFormDemo } from "@/features/landing/components/ProjectFormDemo"
+import { RevealGroup, RevealItem } from "@/features/landing/components/Reveal"
+import { UsersDemo } from "@/features/landing/components/UsersDemo"
+import { featureCardClassName } from "@/features/landing/helpers"
 
 export function Showcase() {
   return (
@@ -62,5 +62,5 @@ export function Showcase() {
         </p>
       </div>
     </section>
-  );
+  )
 }

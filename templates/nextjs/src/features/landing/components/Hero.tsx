@@ -1,11 +1,11 @@
-import Link from "next/link";
+import Link from "next/link"
 
-import { siteConfig } from "@/config/site.config";
+import { siteConfig } from "@/config/site.config"
 
-import { ThemeToggle } from "@/components/shared/ThemeToggle";
-import { Button } from "@/components/ui/button";
-import { Reveal } from "@/features/landing/components/Reveal";
-import { NextjsIcon, ReactIcon, TailwindIcon } from "@/features/landing/icons";
+import { ThemeToggle } from "@/components/shared/ThemeToggle"
+import { Button } from "@/components/ui/button"
+import { Reveal } from "@/features/landing/components/Reveal"
+import { NextjsIcon, ReactIcon, TailwindIcon } from "@/features/landing/icons"
 
 export function Hero() {
   return (
@@ -60,5 +60,5 @@ export function Hero() {
         </div>
       </Reveal>
     </section>
-  );
+  )
 }

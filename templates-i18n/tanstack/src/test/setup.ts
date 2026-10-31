@@ -1,15 +1,15 @@
-import "@testing-library/jest-dom/vitest";
+import "@testing-library/jest-dom/vitest"
 
-import { cleanup } from "@testing-library/react";
-import { afterAll, afterEach, beforeAll } from "vitest";
+import { cleanup } from "@testing-library/react"
+import { afterAll, afterEach, beforeAll } from "vitest"
 
-import { server } from "@/test/server";
+import { server } from "@/test/server"
 
-beforeAll(() => server.listen({ onUnhandledFrame: "error" }));
+beforeAll(() => server.listen({ onUnhandledFrame: "error" }))
 
 afterEach(() => {
-  cleanup();
-  server.resetHandlers();
-});
+  cleanup()
+  server.resetHandlers()
+})
 
-afterAll(() => server.close());
+afterAll(() => server.close())

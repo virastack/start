@@ -1,6 +1,6 @@
-"use client";
+"use client"
 
-import Error from "next/error";
+import Error from "next/error"
 
 export default function GlobalNotFound() {
   return (
@@ -9,5 +9,5 @@ export default function GlobalNotFound() {
         <Error statusCode={404} />
       </body>
     </html>
-  );
+  )
 }

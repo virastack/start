@@ -1,6 +1,6 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router"
 
-import { siteConfig } from "@/config/site.config";
+import { siteConfig } from "@/config/site.config"
 
 export const Route = createFileRoute("/site.webmanifest")({
   server: {
@@ -18,15 +18,15 @@ export const Route = createFileRoute("/site.webmanifest")({
             {
               src: "/logo.webp",
               sizes: "96x96",
-              type: "image/webp",
-            },
-          ],
-        };
+              type: "image/webp"
+            }
+          ]
+        }
 
         return Response.json(manifest, {
-          headers: { "Content-Type": "application/manifest+json; charset=utf-8" },
-        });
-      },
-    },
-  },
-});
+          headers: { "Content-Type": "application/manifest+json; charset=utf-8" }
+        })
+      }
+    }
+  }
+})

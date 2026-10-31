@@ -1,98 +1,97 @@
-import { createContext, useContext, useEffect, useState } from "react";
-import { ScriptOnce } from "@tanstack/react-router";
+import { createContext, useContext, useEffect, useState } from "react"
 
-type Theme = "dark" | "light" | "system";
+import { ScriptOnce } from "@tanstack/react-router"
+
+type Theme = "dark" | "light" | "system"
 
 interface ThemeProviderProps {
-  children: React.ReactNode;
-  defaultTheme?: Theme;
-  storageKey?: string;
+  children: React.ReactNode
+  defaultTheme?: Theme
+  storageKey?: string
 }
 
 interface ThemeProviderState {
-  theme: Theme;
-  resolvedTheme: "dark" | "light";
-  setTheme: (theme: Theme) => void;
+  theme: Theme
+  resolvedTheme: "dark" | "light"
+  setTheme: (theme: Theme) => void
 }
 
 function getThemeScript(storageKey: string, defaultTheme: Theme) {
-  const key = JSON.stringify(storageKey);
-  const fallback = JSON.stringify(defaultTheme);
+  const key = JSON.stringify(storageKey)
+  const fallback = JSON.stringify(defaultTheme)
 
-  return `(function(){try{var t=localStorage.getItem(${key});if(t!=='light'&&t!=='dark'&&t!=='system'){t=${fallback}}var d=matchMedia('(prefers-color-scheme: dark)').matches;var r=t==='system'?(d?'dark':'light'):t;var e=document.documentElement;e.classList.add(r);e.style.colorScheme=r}catch(e){}})();`;
+  return `(function(){try{var t=localStorage.getItem(${key});if(t!=='light'&&t!=='dark'&&t!=='system'){t=${fallback}}var d=matchMedia('(prefers-color-scheme: dark)').matches;var r=t==='system'?(d?'dark':'light'):t;var e=document.documentElement;e.classList.add(r);e.style.colorScheme=r}catch(e){}})();`
 }
 
-const ThemeProviderContext = createContext<ThemeProviderState | undefined>(undefined);
+const ThemeProviderContext = createContext<ThemeProviderState | undefined>(undefined)
 
 export function ThemeProvider({
   children,
   defaultTheme = "system",
-  storageKey = "theme",
+  storageKey = "theme"
 }: ThemeProviderProps) {
-  const [theme, setThemeState] = useState<Theme>(defaultTheme);
-  const [resolvedTheme, setResolvedTheme] = useState<"dark" | "light">("light");
-  const [mounted, setMounted] = useState(false);
+  const [theme, setThemeState] = useState<Theme>(defaultTheme)
+  const [resolvedTheme, setResolvedTheme] = useState<"dark" | "light">("light")
+  const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
-    const stored = localStorage.getItem(storageKey);
+    const stored = localStorage.getItem(storageKey)
     const initialTheme =
-      stored === "light" || stored === "dark" || stored === "system" ? stored : defaultTheme;
-    setThemeState(initialTheme);
+      stored === "light" || stored === "dark" || stored === "system" ? stored : defaultTheme
+    setThemeState(initialTheme)
 
     if (initialTheme === "system") {
-      setResolvedTheme(
-        window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light",
-      );
+      setResolvedTheme(window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light")
     } else {
-      setResolvedTheme(initialTheme);
+      setResolvedTheme(initialTheme)
     }
 
-    setMounted(true);
-  }, [defaultTheme, storageKey]);
+    setMounted(true)
+  }, [defaultTheme, storageKey])
 
   useEffect(() => {
-    if (!mounted) return;
+    if (!mounted) return
 
-    const root = document.documentElement;
-    root.classList.remove("light", "dark");
-    root.classList.add(resolvedTheme);
-    root.style.colorScheme = resolvedTheme;
-  }, [resolvedTheme, mounted]);
+    const root = document.documentElement
+    root.classList.remove("light", "dark")
+    root.classList.add(resolvedTheme)
+    root.style.colorScheme = resolvedTheme
+  }, [resolvedTheme, mounted])
 
   useEffect(() => {
-    if (!mounted) return;
+    if (!mounted) return
 
     if (theme !== "system") {
-      setResolvedTheme(theme);
-      return;
+      setResolvedTheme(theme)
+      return
     }
 
-    const media = window.matchMedia("(prefers-color-scheme: dark)");
+    const media = window.matchMedia("(prefers-color-scheme: dark)")
     const onChange = (e: MediaQueryListEvent) => {
-      setResolvedTheme(e.matches ? "dark" : "light");
-    };
+      setResolvedTheme(e.matches ? "dark" : "light")
+    }
 
-    setResolvedTheme(media.matches ? "dark" : "light");
-    media.addEventListener("change", onChange);
+    setResolvedTheme(media.matches ? "dark" : "light")
+    media.addEventListener("change", onChange)
 
-    return () => media.removeEventListener("change", onChange);
-  }, [theme, mounted]);
+    return () => media.removeEventListener("change", onChange)
+  }, [theme, mounted])
 
   const setTheme = (next: Theme) => {
-    localStorage.setItem(storageKey, next);
-    setThemeState(next);
-  };
+    localStorage.setItem(storageKey, next)
+    setThemeState(next)
+  }
 
   return (
     <ThemeProviderContext value={{ theme, resolvedTheme, setTheme }}>
       <ScriptOnce>{getThemeScript(storageKey, defaultTheme)}</ScriptOnce>
       {children}
     </ThemeProviderContext>
-  );
+  )
 }
 
 export function useTheme() {
-  const context = useContext(ThemeProviderContext);
-  if (context === undefined) throw new Error("useTheme must be used within a ThemeProvider");
-  return context;
+  const context = useContext(ThemeProviderContext)
+  if (context === undefined) throw new Error("useTheme must be used within a ThemeProvider")
+  return context
 }

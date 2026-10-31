@@ -1,17 +1,17 @@
-"use client";
+"use client"
 
-import { MinusIcon, PlusIcon, ShirtIcon, Trash2Icon } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { MinusIcon, PlusIcon, ShirtIcon, Trash2Icon } from "lucide-react"
+import { useTranslations } from "next-intl"
 
-import { Button } from "@/components/ui/button";
-import { useCounterStore } from "@/features/landing/stores";
+import { Button } from "@/components/ui/button"
+import { useCounterStore } from "@/features/landing/stores"
 
 /**
  * Demonstrates global client state with Zustand via a mini cart UI.
  */
 export function CartDemo() {
-  const { count, increment, decrement, reset } = useCounterStore();
-  const t = useTranslations("Index");
+  const { count, increment, decrement, reset } = useCounterStore()
+  const t = useTranslations("Index")
 
   return (
     <div className="flex flex-col gap-4">
@@ -64,5 +64,5 @@ export function CartDemo() {
         </Button>
       </div>
     </div>
-  );
+  )
 }

@@ -1,1 +1,1 @@
-export { formatDate } from "@/helpers/format-date";
+export { formatDate } from "@/helpers/format-date"

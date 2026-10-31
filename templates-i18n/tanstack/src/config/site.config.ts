@@ -1,5 +1,5 @@
-import type { SiteConfig } from "@/types/site-config.types";
-import { env } from "@/env";
+import type { SiteConfig } from "@/types/site-config.types"
+import { env } from "@/env"
 
 // FIXME: replace with your own site metadata.
 export const siteConfig: SiteConfig = {
@@ -10,6 +10,6 @@ export const siteConfig: SiteConfig = {
   ogImage: `${env.VITE_APP_URL}/og.png`,
   links: {
     github: "https://github.com/virastack/start",
-    twitter: "https://x.com/virastack",
-  },
-};
+    twitter: "https://x.com/virastack"
+  }
+}

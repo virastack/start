@@ -1,4 +1,4 @@
-import type { ComponentProps } from "react";
+import type { ComponentProps } from "react"
 
 export function ReactHookFormIcon(props: ComponentProps<"svg">) {
   return (
@@ -14,5 +14,5 @@ export function ReactHookFormIcon(props: ComponentProps<"svg">) {
         fill="#fff"
       />
     </svg>
-  );
+  )
 }

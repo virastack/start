@@ -1,18 +1,18 @@
-import { useLocale, useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl"
 
-import { siteConfig } from "@/config/site.config";
+import { siteConfig } from "@/config/site.config"
 
-import { formatDate } from "@/helpers";
+import { formatDate } from "@/helpers"
 
-import { CartDemo } from "@/features/landing/components/CartDemo";
-import { ProjectFormDemo } from "@/features/landing/components/ProjectFormDemo";
-import { RevealGroup, RevealItem } from "@/features/landing/components/Reveal";
-import { UsersDemo } from "@/features/landing/components/UsersDemo";
-import { featureCardClassName } from "@/features/landing/helpers";
+import { CartDemo } from "@/features/landing/components/CartDemo"
+import { ProjectFormDemo } from "@/features/landing/components/ProjectFormDemo"
+import { RevealGroup, RevealItem } from "@/features/landing/components/Reveal"
+import { UsersDemo } from "@/features/landing/components/UsersDemo"
+import { featureCardClassName } from "@/features/landing/helpers"
 
 export function Showcase() {
-  const t = useTranslations("Index");
-  const locale = useLocale();
+  const t = useTranslations("Index")
+  const locale = useLocale()
 
   return (
     <section id="showcase" className="mx-auto max-w-5xl px-6 pb-16">
@@ -43,7 +43,7 @@ export function Showcase() {
               <p className="mt-1 text-sm text-pretty text-muted-foreground">
                 {t.rich("showcase_project_desc", {
                   rhf: (chunks) => <span className="font-semibold text-foreground">{chunks}</span>,
-                  zod: (chunks) => <span className="font-semibold text-foreground">{chunks}</span>,
+                  zod: (chunks) => <span className="font-semibold text-foreground">{chunks}</span>
                 })}
               </p>
             </div>
@@ -59,7 +59,7 @@ export function Showcase() {
                 {t.rich("showcase_state_desc", {
                   zustand: (chunks) => (
                     <span className="font-semibold text-foreground">{chunks}</span>
-                  ),
+                  )
                 })}
               </p>
             </div>
@@ -74,10 +74,10 @@ export function Showcase() {
         </p>
         <p className="italic" suppressHydrationWarning>
           {t("showcase_footer_built", {
-            date: formatDate(new Date(), locale === "tr" ? "tr-TR" : "en-US"),
+            date: formatDate(new Date(), locale === "tr" ? "tr-TR" : "en-US")
           })}
         </p>
       </div>
     </section>
-  );
+  )
 }

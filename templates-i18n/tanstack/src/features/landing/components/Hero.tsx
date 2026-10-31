@@ -1,11 +1,11 @@
-import { siteConfig } from "@/config/site.config";
+import { siteConfig } from "@/config/site.config"
 
-import { LanguageSwitcher } from "@/components/shared/LanguageSwitcher";
-import { ThemeToggle } from "@/components/shared/ThemeToggle";
-import { Button } from "@/components/ui/button";
-import { Reveal } from "@/features/landing/components/Reveal";
-import { ReactIcon, TailwindIcon, TanstackIcon } from "@/features/landing/icons";
-import * as m from "@/paraglide/messages.js";
+import { LanguageSwitcher } from "@/components/shared/LanguageSwitcher"
+import { ThemeToggle } from "@/components/shared/ThemeToggle"
+import { Button } from "@/components/ui/button"
+import { Reveal } from "@/features/landing/components/Reveal"
+import { ReactIcon, TailwindIcon, TanstackIcon } from "@/features/landing/icons"
+import * as m from "@/paraglide/messages.js"
 
 export function Hero() {
   return (
@@ -63,5 +63,5 @@ export function Hero() {
         </div>
       </Reveal>
     </section>
-  );
+  )
 }

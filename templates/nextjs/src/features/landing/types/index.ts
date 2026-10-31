@@ -1,1 +1,1 @@
-export type { User } from "@/features/landing/types/user.types";
+export type { User } from "@/features/landing/types/user.types"

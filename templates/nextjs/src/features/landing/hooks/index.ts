@@ -1,1 +1,1 @@
-export { useUsers } from "@/features/landing/hooks/use-users";
+export { useUsers } from "@/features/landing/hooks/use-users"

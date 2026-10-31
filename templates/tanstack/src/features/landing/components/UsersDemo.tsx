@@ -1,11 +1,11 @@
-"use client";
+"use client"
 
-import type { ReactNode } from "react";
+import type { ReactNode } from "react"
 
-import { RefreshCwIcon, SearchIcon } from "lucide-react";
-import { parseAsString, useQueryState } from "nuqs";
+import { RefreshCwIcon, SearchIcon } from "lucide-react"
+import { parseAsString, useQueryState } from "nuqs"
 
-import { ApiError } from "@/lib/api";
+import { ApiError } from "@/lib/api"
 
 import {
   Avatar,
@@ -18,10 +18,10 @@ import {
   TableCell,
   TableHead,
   TableHeader,
-  TableRow,
-} from "@/components/ui";
-import { getInitials } from "@/features/landing/helpers";
-import { useUsers } from "@/features/landing/hooks";
+  TableRow
+} from "@/components/ui"
+import { getInitials } from "@/features/landing/helpers"
+import { useUsers } from "@/features/landing/hooks"
 
 /**
  * Demonstrates server-state fetching & caching with TanStack Query + URL state via nuqs.
@@ -30,15 +30,15 @@ import { useUsers } from "@/features/landing/hooks";
  * (see the ViraStack AI `tanstack-start` rule). Delete this feature when building for real.
  */
 export function UsersDemo() {
-  const { data, isLoading, isError, error, refetch, isFetching } = useUsers();
-  const [search, setSearch] = useQueryState("q", parseAsString.withDefault(""));
+  const { data, isLoading, isError, error, refetch, isFetching } = useUsers()
+  const [search, setSearch] = useQueryState("q", parseAsString.withDefault(""))
 
   const filteredData = data?.filter(
     (user) =>
       user.name.toLowerCase().includes(search.toLowerCase()) ||
       user.email.toLowerCase().includes(search.toLowerCase()) ||
-      user.username.toLowerCase().includes(search.toLowerCase()),
-  );
+      user.username.toLowerCase().includes(search.toLowerCase())
+  )
 
   const header = (
     <div className="mb-4">
@@ -49,7 +49,7 @@ export function UsersDemo() {
         <span className="font-semibold text-foreground">nuqs</span>.
       </p>
     </div>
-  );
+  )
 
   const toolbar = (
     <div className="mb-3 flex items-center justify-between gap-2">
@@ -74,13 +74,13 @@ export function UsersDemo() {
         {isFetching ? "Refreshing..." : "Refresh"}
       </Button>
     </div>
-  );
+  )
 
   const tableShell = (children: ReactNode) => (
     <div className="min-h-0 flex-1 overflow-hidden rounded border border-border/40 bg-background">
       <Table>{children}</Table>
     </div>
-  );
+  )
 
   if (isLoading) {
     return (
@@ -113,17 +113,17 @@ export function UsersDemo() {
                 </TableRow>
               ))}
             </TableBody>
-          </>,
+          </>
         )}
       </div>
-    );
+    )
   }
 
   if (isError) {
     const message =
       error instanceof ApiError
         ? `Request failed with status ${error.status}.`
-        : "Failed to load users. Check your network connection.";
+        : "Failed to load users. Check your network connection."
 
     return (
       <div className="flex h-full min-h-0 flex-col">
@@ -136,10 +136,10 @@ export function UsersDemo() {
                 {message}
               </TableCell>
             </TableRow>
-          </TableBody>,
+          </TableBody>
         )}
       </div>
-    );
+    )
   }
 
   return (
@@ -184,8 +184,8 @@ export function UsersDemo() {
               ))
             )}
           </TableBody>
-        </>,
+        </>
       )}
     </div>
-  );
+  )
 }

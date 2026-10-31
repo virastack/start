@@ -1,17 +1,17 @@
-import Link from "next/link";
+import Link from "next/link"
 
-import { useTranslations } from "next-intl";
+import { useTranslations } from "next-intl"
 
-import { siteConfig } from "@/config/site.config";
+import { siteConfig } from "@/config/site.config"
 
-import { LanguageSwitcher } from "@/components/shared/LanguageSwitcher";
-import { ThemeToggle } from "@/components/shared/ThemeToggle";
-import { Button } from "@/components/ui/button";
-import { Reveal } from "@/features/landing/components/Reveal";
-import { NextjsIcon, ReactIcon, TailwindIcon } from "@/features/landing/icons";
+import { LanguageSwitcher } from "@/components/shared/LanguageSwitcher"
+import { ThemeToggle } from "@/components/shared/ThemeToggle"
+import { Button } from "@/components/ui/button"
+import { Reveal } from "@/features/landing/components/Reveal"
+import { NextjsIcon, ReactIcon, TailwindIcon } from "@/features/landing/icons"
 
 export function Hero() {
-  const t = useTranslations("Index");
+  const t = useTranslations("Index")
 
   return (
     <section className="mx-auto flex max-w-3xl flex-col items-center gap-6 px-6 pt-24 pb-16 text-center">
@@ -53,7 +53,7 @@ export function Hero() {
           tanstack: (chunks) => (
             <span className="font-medium text-foreground italic">{chunks}</span>
           ),
-          rhf: (chunks) => <span className="font-medium text-foreground italic">{chunks}</span>,
+          rhf: (chunks) => <span className="font-medium text-foreground italic">{chunks}</span>
         })}
       </p>
 
@@ -71,5 +71,5 @@ export function Hero() {
         </div>
       </Reveal>
     </section>
-  );
+  )
 }

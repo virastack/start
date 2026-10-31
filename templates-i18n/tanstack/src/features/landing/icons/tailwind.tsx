@@ -1,4 +1,4 @@
-import type { ComponentProps } from "react";
+import type { ComponentProps } from "react"
 
 export function TailwindIcon(props: ComponentProps<"svg">) {
   return (
@@ -10,5 +10,5 @@ export function TailwindIcon(props: ComponentProps<"svg">) {
         clipRule="evenodd"
       />
     </svg>
-  );
+  )
 }

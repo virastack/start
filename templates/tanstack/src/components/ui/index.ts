@@ -1,8 +1,8 @@
-export { Button, buttonVariants, type ButtonProps } from "@/components/ui/button";
-export { FieldDescription, FieldError } from "@/components/ui/field";
-export { Input } from "@/components/ui/input";
-export { Label } from "@/components/ui/label";
-export { Skeleton } from "@/components/ui/skeleton";
+export { Button, buttonVariants, type ButtonProps } from "@/components/ui/button"
+export { FieldDescription, FieldError } from "@/components/ui/field"
+export { Input } from "@/components/ui/input"
+export { Label } from "@/components/ui/label"
+export { Skeleton } from "@/components/ui/skeleton"
 export {
   Dialog,
   DialogClose,
@@ -11,10 +11,10 @@ export {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-export { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-export { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+  DialogTrigger
+} from "@/components/ui/dialog"
+export { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+export { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 export {
   Table,
   TableBody,
@@ -23,5 +23,5 @@ export {
   TableFooter,
   TableHead,
   TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+  TableRow
+} from "@/components/ui/table"

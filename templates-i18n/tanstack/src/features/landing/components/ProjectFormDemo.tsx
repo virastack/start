@@ -1,32 +1,32 @@
-"use client";
+"use client"
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Controller, useForm } from "react-hook-form";
-import { toast } from "sonner";
+import { zodResolver } from "@hookform/resolvers/zod"
+import { Controller, useForm } from "react-hook-form"
+import { toast } from "sonner"
 
-import { Button } from "@/components/ui/button";
-import { FieldDescription, FieldError } from "@/components/ui/field";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import type { ProjectInput } from "@/features/landing/schemas/project.schema";
-import { getProjectSchema } from "@/features/landing/schemas/project.schema";
-import * as m from "@/paraglide/messages.js";
+import { Button } from "@/components/ui/button"
+import { FieldDescription, FieldError } from "@/components/ui/field"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import type { ProjectInput } from "@/features/landing/schemas/project.schema"
+import { getProjectSchema } from "@/features/landing/schemas/project.schema"
+import * as m from "@/paraglide/messages.js"
 
 export function ProjectFormDemo() {
   const {
     control,
     handleSubmit,
     reset,
-    formState: { errors, isSubmitting },
+    formState: { errors, isSubmitting }
   } = useForm<ProjectInput>({
     resolver: zodResolver(getProjectSchema()),
-    defaultValues: { name: "" },
-  });
+    defaultValues: { name: "" }
+  })
 
   async function onSubmit(values: ProjectInput) {
-    await new Promise((resolve) => setTimeout(resolve, 600));
-    toast.success(m.project_success({ name: values.name }));
-    reset();
+    await new Promise((resolve) => setTimeout(resolve, 600))
+    toast.success(m.project_success({ name: values.name }))
+    reset()
   }
 
   return (
@@ -60,5 +60,5 @@ export function ProjectFormDemo() {
         {isSubmitting ? m.project_submitting() : m.project_submit()}
       </Button>
     </form>
-  );
+  )
 }

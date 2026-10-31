@@ -1,4 +1,4 @@
-import type { ComponentProps } from "react";
+import type { ComponentProps } from "react"
 
 export function NextjsIcon(props: ComponentProps<"svg">) {
   return (
@@ -64,5 +64,5 @@ export function NextjsIcon(props: ComponentProps<"svg">) {
         </linearGradient>
       </defs>
     </svg>
-  );
+  )
 }

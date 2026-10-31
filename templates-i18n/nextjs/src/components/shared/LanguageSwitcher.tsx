@@ -1,23 +1,23 @@
-"use client";
+"use client"
 
-import { useTransition } from "react";
+import { useTransition } from "react"
 
-import { useLocale } from "next-intl";
+import { useLocale } from "next-intl"
 
-import { usePathname, useRouter } from "@/i18n/routing";
+import { usePathname, useRouter } from "@/i18n/routing"
 
 export function LanguageSwitcher() {
-  const locale = useLocale();
-  const router = useRouter();
-  const pathname = usePathname();
-  const [isPending, startTransition] = useTransition();
+  const locale = useLocale()
+  const router = useRouter()
+  const pathname = usePathname()
+  const [isPending, startTransition] = useTransition()
 
   const onChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const nextLocale = e.target.value;
+    const nextLocale = e.target.value
     startTransition(() => {
-      router.replace(pathname, { locale: nextLocale });
-    });
-  };
+      router.replace(pathname, { locale: nextLocale })
+    })
+  }
 
   return (
     <div className="relative">
@@ -44,5 +44,5 @@ export function LanguageSwitcher() {
         </svg>
       </div>
     </div>
-  );
+  )
 }

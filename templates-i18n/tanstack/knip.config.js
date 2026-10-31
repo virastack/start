@@ -12,15 +12,15 @@ const config = {
     // Domain-layer barrels
     "src/features/**/constants/index.ts",
     "src/features/**/constants/*.constants.tsx",
-    "src/features/**/schemas/index.ts",
+    "src/features/**/schemas/index.ts"
   ],
   ignoreDependencies: ["tailwindcss", "tw-animate-css"],
   rules: {
     dependencies: "error",
     exports: "warn",
     types: "warn",
-    files: "warn",
-  },
-};
+    files: "warn"
+  }
+}
 
-module.exports = config;
+module.exports = config

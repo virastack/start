@@ -1,6 +1,6 @@
-import type { ComponentProps } from "react";
+import type { ComponentProps } from "react"
 
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils"
 
 export function FieldDescription({ className, ...props }: ComponentProps<"p">) {
   return (
@@ -9,7 +9,7 @@ export function FieldDescription({ className, ...props }: ComponentProps<"p">) {
       className={cn("text-sm font-normal text-muted-foreground", className)}
       {...props}
     />
-  );
+  )
 }
 
 export function FieldError({ className, ...props }: ComponentProps<"p">) {
@@ -20,5 +20,5 @@ export function FieldError({ className, ...props }: ComponentProps<"p">) {
       className={cn("text-sm font-normal text-destructive", className)}
       {...props}
     />
-  );
+  )
 }

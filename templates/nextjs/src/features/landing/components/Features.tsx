@@ -1,6 +1,6 @@
-import { RevealGroup, RevealItem } from "@/features/landing/components/Reveal";
-import { FEATURES } from "@/features/landing/constants";
-import { featureCardClassName } from "@/features/landing/helpers";
+import { RevealGroup, RevealItem } from "@/features/landing/components/Reveal"
+import { FEATURES } from "@/features/landing/constants"
+import { featureCardClassName } from "@/features/landing/helpers"
 
 export function Features() {
   return (
@@ -35,5 +35,5 @@ export function Features() {
         ))}
       </RevealGroup>
     </section>
-  );
+  )
 }

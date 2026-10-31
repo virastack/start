@@ -1,22 +1,22 @@
-import path from "node:path";
-import type { NextConfig } from "next";
+import path from "node:path"
+import type { NextConfig } from "next"
 
-import createBundleAnalyzer from "@next/bundle-analyzer";
+import createBundleAnalyzer from "@next/bundle-analyzer"
 
 const withBundleAnalyzer = createBundleAnalyzer({
-  enabled: process.env.ANALYZE === "true",
-});
+  enabled: process.env.ANALYZE === "true"
+})
 
 const nextConfig: NextConfig = {
   reactCompiler: process.env.NODE_ENV === "production",
   turbopack: {
-    root: path.join(import.meta.dirname),
+    root: path.join(import.meta.dirname)
   },
   images: {
     remotePatterns: [
       // FIXME: add your own remote image domains here, e.g.:
       // { protocol: "https", hostname: "images.unsplash.com" },
-    ],
+    ]
   },
   async headers() {
     return [
@@ -28,12 +28,12 @@ const nextConfig: NextConfig = {
           { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
           {
             key: "Permissions-Policy",
-            value: "camera=(), microphone=(), geolocation=()",
-          },
-        ],
-      },
-    ];
-  },
-};
+            value: "camera=(), microphone=(), geolocation=()"
+          }
+        ]
+      }
+    ]
+  }
+}
 
-export default withBundleAnalyzer(nextConfig);
+export default withBundleAnalyzer(nextConfig)

@@ -1,26 +1,26 @@
-"use client";
+"use client"
 
-import type { ReactNode } from "react";
+import type { ReactNode } from "react"
 
-import { motion } from "motion/react";
+import { motion } from "motion/react"
 
-import { fadeInUp, staggerContainer, viewport } from "@/features/landing/helpers";
+import { fadeInUp, staggerContainer, viewport } from "@/features/landing/helpers"
 
 type RevealProps = {
-  children: ReactNode;
-  className?: string;
+  children: ReactNode
+  className?: string
   /** Mount animation delay in seconds (hero-style). Ignored when `mode="view"`. */
-  delay?: number;
+  delay?: number
   /** `mount` = animate on load; `view` = animate when scrolled into view. */
-  mode?: "mount" | "view";
+  mode?: "mount" | "view"
   /** Initial Y offset for mount animations. */
-  y?: number;
+  y?: number
   /**
    * When false (mount mode), only translate — keep opacity at 1 so LCP text
    * is painted on first frame. Default true.
    */
-  fadeOpacity?: boolean;
-};
+  fadeOpacity?: boolean
+}
 
 /**
  * Client-only motion shell. Keep copy/markup in Server Components and wrap
@@ -32,7 +32,7 @@ export function Reveal({
   delay = 0,
   mode = "view",
   y = 12,
-  fadeOpacity = true,
+  fadeOpacity = true
 }: RevealProps) {
   if (mode === "mount") {
     return (
@@ -44,7 +44,7 @@ export function Reveal({
       >
         {children}
       </motion.div>
-    );
+    )
   }
 
   return (
@@ -57,7 +57,7 @@ export function Reveal({
     >
       {children}
     </motion.div>
-  );
+  )
 }
 
 export function RevealGroup({ children, className }: { children: ReactNode; className?: string }) {
@@ -71,7 +71,7 @@ export function RevealGroup({ children, className }: { children: ReactNode; clas
     >
       {children}
     </motion.div>
-  );
+  )
 }
 
 export function RevealItem({ children, className }: { children: ReactNode; className?: string }) {
@@ -79,5 +79,5 @@ export function RevealItem({ children, className }: { children: ReactNode; class
     <motion.div className={className} variants={fadeInUp}>
       {children}
     </motion.div>
-  );
+  )
 }

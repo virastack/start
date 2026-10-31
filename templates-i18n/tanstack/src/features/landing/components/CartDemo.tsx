@@ -1,16 +1,16 @@
-"use client";
+"use client"
 
-import { MinusIcon, PlusIcon, ShirtIcon, Trash2Icon } from "lucide-react";
+import { MinusIcon, PlusIcon, ShirtIcon, Trash2Icon } from "lucide-react"
 
-import { Button } from "@/components/ui/button";
-import { useCounterStore } from "@/features/landing/stores";
-import * as m from "@/paraglide/messages.js";
+import { Button } from "@/components/ui/button"
+import { useCounterStore } from "@/features/landing/stores"
+import * as m from "@/paraglide/messages.js"
 
 /**
  * Demonstrates global client state with Zustand via a mini cart UI.
  */
 export function CartDemo() {
-  const { count, increment, decrement, reset } = useCounterStore();
+  const { count, increment, decrement, reset } = useCounterStore()
 
   return (
     <div className="flex flex-col gap-4">
@@ -63,5 +63,5 @@ export function CartDemo() {
         </Button>
       </div>
     </div>
-  );
+  )
 }

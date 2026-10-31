@@ -8,15 +8,15 @@ const config = {
     "src/hooks/index.ts",
     "src/stores/index.ts",
     "src/schemas/index.ts",
-    "src/constants/index.ts",
+    "src/constants/index.ts"
   ],
   ignoreDependencies: ["tailwindcss", "tw-animate-css"],
   rules: {
     dependencies: "error",
     exports: "warn",
     types: "warn",
-    files: "warn",
-  },
-};
+    files: "warn"
+  }
+}
 
-module.exports = config;
+module.exports = config

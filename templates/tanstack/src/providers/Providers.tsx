@@ -1,6 +1,6 @@
-import { Toaster } from "sonner";
+import { Toaster } from "sonner"
 
-import { ThemeProvider } from "@/providers/ThemeProvider";
+import { ThemeProvider } from "@/providers/ThemeProvider"
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
@@ -8,5 +8,5 @@ export function Providers({ children }: { children: React.ReactNode }) {
       {children}
       <Toaster richColors position="bottom-right" closeButton />
     </ThemeProvider>
-  );
+  )
 }

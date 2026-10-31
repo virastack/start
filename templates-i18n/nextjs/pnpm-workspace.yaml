@@ -7,6 +7,9 @@ allowBuilds:
   sharp: false
   unrs-resolver: false
 # eslint-config-next pulls plugins that do not list ESLint 10 yet; their rules were checked on it.
+minimumReleaseAgeExclude:
+  - knip@6.44.1
+  - lucide-react@1.66.0
 peerDependencyRules:
   allowedVersions:
     eslint: "10"

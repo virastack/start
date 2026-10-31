@@ -1,4 +1,4 @@
-import { QueryClient } from "@tanstack/react-query";
+import { QueryClient } from "@tanstack/react-query"
 
 /**
  * Creates a new QueryClient with sane defaults.
@@ -11,8 +11,8 @@ export function makeQueryClient() {
       queries: {
         staleTime: 60 * 1000,
         refetchOnWindowFocus: false,
-        retry: 1,
-      },
-    },
-  });
+        retry: 1
+      }
+    }
+  })
 }

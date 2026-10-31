@@ -1,4 +1,4 @@
-import { Skeleton } from "@/components/ui/skeleton";
+import { Skeleton } from "@/components/ui/skeleton"
 
 /** Route-level pending UI (TanStack equivalent of Next.js `loading.tsx`). */
 export function Pending() {
@@ -9,5 +9,5 @@ export function Pending() {
       <Skeleton className="h-4 w-5/6" />
       <Skeleton className="mt-6 h-40 w-full" />
     </div>
-  );
+  )
 }

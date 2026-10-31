@@ -1,11 +1,11 @@
-"use client";
+"use client"
 
-import type { ReactNode } from "react";
+import type { ReactNode } from "react"
 
-import { RefreshCwIcon, SearchIcon } from "lucide-react";
-import { parseAsString, useQueryState } from "nuqs";
+import { RefreshCwIcon, SearchIcon } from "lucide-react"
+import { parseAsString, useQueryState } from "nuqs"
 
-import { ApiError } from "@/lib/api";
+import { ApiError } from "@/lib/api"
 
 import {
   Avatar,
@@ -18,25 +18,25 @@ import {
   TableCell,
   TableHead,
   TableHeader,
-  TableRow,
-} from "@/components/ui";
-import { getInitials } from "@/features/landing/helpers";
-import { useUsers } from "@/features/landing/hooks";
-import * as m from "@/paraglide/messages.js";
+  TableRow
+} from "@/components/ui"
+import { getInitials } from "@/features/landing/helpers"
+import { useUsers } from "@/features/landing/hooks"
+import * as m from "@/paraglide/messages.js"
 
 /**
  * Demonstrates server-state fetching & caching with TanStack Query.
  */
 export function UsersDemo() {
-  const { data, isLoading, isError, error, refetch, isFetching } = useUsers();
-  const [search, setSearch] = useQueryState("q", parseAsString.withDefault(""));
+  const { data, isLoading, isError, error, refetch, isFetching } = useUsers()
+  const [search, setSearch] = useQueryState("q", parseAsString.withDefault(""))
 
   const filteredData = data?.filter(
     (user) =>
       user.name.toLowerCase().includes(search.toLowerCase()) ||
       user.email.toLowerCase().includes(search.toLowerCase()) ||
-      user.username.toLowerCase().includes(search.toLowerCase()),
-  );
+      user.username.toLowerCase().includes(search.toLowerCase())
+  )
 
   const header = (
     <div className="mb-4">
@@ -49,7 +49,7 @@ export function UsersDemo() {
         {m.users_desc_3()}
       </p>
     </div>
-  );
+  )
 
   const toolbar = (
     <div className="mb-3 flex items-center justify-between gap-2">
@@ -74,13 +74,13 @@ export function UsersDemo() {
         {isFetching ? m.users_refreshing() : m.users_refresh()}
       </Button>
     </div>
-  );
+  )
 
   const tableShell = (children: ReactNode) => (
     <div className="min-h-0 flex-1 overflow-hidden rounded border border-border/40 bg-background">
       <Table>{children}</Table>
     </div>
-  );
+  )
 
   if (isLoading) {
     return (
@@ -113,17 +113,17 @@ export function UsersDemo() {
                 </TableRow>
               ))}
             </TableBody>
-          </>,
+          </>
         )}
       </div>
-    );
+    )
   }
 
   if (isError) {
     const message =
       error instanceof ApiError
         ? m.users_error_status({ status: error.status.toString() })
-        : m.users_error_network();
+        : m.users_error_network()
 
     return (
       <div className="flex h-full min-h-0 flex-col">
@@ -136,10 +136,10 @@ export function UsersDemo() {
                 {message}
               </TableCell>
             </TableRow>
-          </TableBody>,
+          </TableBody>
         )}
       </div>
-    );
+    )
   }
 
   return (
@@ -184,8 +184,8 @@ export function UsersDemo() {
               ))
             )}
           </TableBody>
-        </>,
+        </>
       )}
     </div>
-  );
+  )
 }

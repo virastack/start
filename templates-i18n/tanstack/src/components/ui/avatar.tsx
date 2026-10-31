@@ -1,6 +1,6 @@
-import * as React from "react";
+import * as React from "react"
 
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils"
 
 const Avatar = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
   ({ className, ...props }, ref) => (
@@ -9,17 +9,17 @@ const Avatar = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElem
       className={cn("relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full", className)}
       {...props}
     />
-  ),
-);
-Avatar.displayName = "Avatar";
+  )
+)
+Avatar.displayName = "Avatar"
 
 const AvatarImage = React.forwardRef<
   HTMLImageElement,
   React.ImgHTMLAttributes<HTMLImageElement> & {
-    onLoadingStatusChange?: (status: "loading" | "loaded" | "error") => void;
+    onLoadingStatusChange?: (status: "loading" | "loaded" | "error") => void
   }
 >(({ className, src, alt = "", ...props }, ref) => {
-  const [status, setStatus] = React.useState<"loading" | "loaded" | "error">("loading");
+  const [status, setStatus] = React.useState<"loading" | "loaded" | "error">("loading")
 
   return (
     <img
@@ -31,9 +31,9 @@ const AvatarImage = React.forwardRef<
       onError={() => setStatus("error")}
       {...props}
     />
-  );
-});
-AvatarImage.displayName = "AvatarImage";
+  )
+})
+AvatarImage.displayName = "AvatarImage"
 
 const AvatarFallback = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
   ({ className, ...props }, ref) => (
@@ -41,12 +41,12 @@ const AvatarFallback = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTM
       ref={ref}
       className={cn(
         "flex h-full w-full items-center justify-center rounded-full bg-muted text-xs",
-        className,
+        className
       )}
       {...props}
     />
-  ),
-);
-AvatarFallback.displayName = "AvatarFallback";
+  )
+)
+AvatarFallback.displayName = "AvatarFallback"
 
-export { Avatar, AvatarImage, AvatarFallback };
+export { Avatar, AvatarImage, AvatarFallback }

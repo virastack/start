@@ -1,1 +1,1 @@
-export { Providers } from "@/providers/Providers";
+export { Providers } from "@/providers/Providers"

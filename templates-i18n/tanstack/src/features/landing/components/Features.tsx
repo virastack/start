@@ -1,46 +1,46 @@
-import { RevealGroup, RevealItem } from "@/features/landing/components/Reveal";
-import { featureCardClassName } from "@/features/landing/helpers";
+import { RevealGroup, RevealItem } from "@/features/landing/components/Reveal"
+import { featureCardClassName } from "@/features/landing/helpers"
 import {
   ReactHookFormIcon,
   TailwindIcon,
   TanstackIcon,
-  TypescriptIcon,
-} from "@/features/landing/icons";
-import * as m from "@/paraglide/messages.js";
+  TypescriptIcon
+} from "@/features/landing/icons"
+import * as m from "@/paraglide/messages.js"
 
 export function Features() {
   const FEATURES = [
     {
       title: m.feature_1_title(),
       description: m.feature_1_desc(),
-      icon: <TanstackIcon className="size-7 text-primary" />,
+      icon: <TanstackIcon className="size-7 text-primary" />
     },
     {
       title: m.feature_2_title(),
       description: m.feature_2_desc(),
-      icon: <TypescriptIcon className="size-7 text-primary" />,
+      icon: <TypescriptIcon className="size-7 text-primary" />
     },
     {
       title: m.feature_3_title(),
       description: m.feature_3_desc(),
-      icon: <TanstackIcon className="size-7 text-primary" />,
+      icon: <TanstackIcon className="size-7 text-primary" />
     },
     {
       title: m.feature_4_title(),
       description: m.feature_4_desc(),
-      icon: <TailwindIcon className="size-7 text-primary" />,
+      icon: <TailwindIcon className="size-7 text-primary" />
     },
     {
       title: m.feature_5_title(),
       description: m.feature_5_desc(),
-      icon: <ReactHookFormIcon className="size-7 text-primary" />,
+      icon: <ReactHookFormIcon className="size-7 text-primary" />
     },
     {
       title: m.feature_6_title(),
       description: m.feature_6_desc(),
-      icon: <img src="/logo.webp" alt="ViraStack Logo" className="size-7" />,
-    },
-  ];
+      icon: <img src="/logo.webp" alt="ViraStack Logo" className="size-7" />
+    }
+  ]
 
   return (
     <section id="features" className="mx-auto max-w-5xl px-6 py-16">
@@ -75,5 +75,5 @@ export function Features() {
         ))}
       </RevealGroup>
     </section>
-  );
+  )
 }

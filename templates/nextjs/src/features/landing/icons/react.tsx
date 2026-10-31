@@ -1,4 +1,4 @@
-import type { ComponentProps } from "react";
+import type { ComponentProps } from "react"
 
 export function ReactIcon(props: ComponentProps<"svg">) {
   return (
@@ -16,5 +16,5 @@ export function ReactIcon(props: ComponentProps<"svg">) {
         </g>
       </g>
     </svg>
-  );
+  )
 }

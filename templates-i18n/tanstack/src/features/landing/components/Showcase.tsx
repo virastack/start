@@ -1,17 +1,17 @@
-import { siteConfig } from "@/config/site.config";
+import { siteConfig } from "@/config/site.config"
 
-import { formatDate } from "@/helpers";
+import { formatDate } from "@/helpers"
 
-import { CartDemo } from "@/features/landing/components/CartDemo";
-import { ProjectFormDemo } from "@/features/landing/components/ProjectFormDemo";
-import { RevealGroup, RevealItem } from "@/features/landing/components/Reveal";
-import { UsersDemo } from "@/features/landing/components/UsersDemo";
-import { featureCardClassName } from "@/features/landing/helpers";
-import * as m from "@/paraglide/messages.js";
-import { getLocale } from "@/paraglide/runtime.js";
+import { CartDemo } from "@/features/landing/components/CartDemo"
+import { ProjectFormDemo } from "@/features/landing/components/ProjectFormDemo"
+import { RevealGroup, RevealItem } from "@/features/landing/components/Reveal"
+import { UsersDemo } from "@/features/landing/components/UsersDemo"
+import { featureCardClassName } from "@/features/landing/helpers"
+import * as m from "@/paraglide/messages.js"
+import { getLocale } from "@/paraglide/runtime.js"
 
 export function Showcase() {
-  const currentLang = getLocale();
+  const currentLang = getLocale()
 
   return (
     <section id="showcase" className="mx-auto max-w-5xl px-6 pb-16">
@@ -72,10 +72,10 @@ export function Showcase() {
         </p>
         <p className="italic" suppressHydrationWarning>
           {m.showcase_footer_built({
-            date: formatDate(new Date(), currentLang === "tr" ? "tr-TR" : "en-US"),
+            date: formatDate(new Date(), currentLang === "tr" ? "tr-TR" : "en-US")
           })}
         </p>
       </div>
     </section>
-  );
+  )
 }

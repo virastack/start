@@ -1,33 +1,33 @@
-import { useRouter } from "@tanstack/react-router";
+import { useRouter } from "@tanstack/react-router"
 
-import { getLocale, setLocale } from "@/paraglide/runtime.js";
+import { getLocale, setLocale } from "@/paraglide/runtime.js"
 
 export function LanguageSwitcher() {
-  const router = useRouter();
-  const currentLang = getLocale();
+  const router = useRouter()
+  const currentLang = getLocale()
 
   const onChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const nextLocale = e.target.value as "en" | "tr";
+    const nextLocale = e.target.value as "en" | "tr"
 
     // Geçici olarak as-needed kapatıldı. Her dil için prefix eklenecek.
     // Issue çözüldüğünde eski localizeUrl mantığına dönülebilir.
-    const url = new URL(window.location.href);
-    const pathSegments = url.pathname.split("/").filter(Boolean);
+    const url = new URL(window.location.href)
+    const pathSegments = url.pathname.split("/").filter(Boolean)
 
     if (pathSegments.length > 0 && (pathSegments[0] === "en" || pathSegments[0] === "tr")) {
-      pathSegments[0] = nextLocale;
+      pathSegments[0] = nextLocale
     } else {
-      pathSegments.unshift(nextLocale);
+      pathSegments.unshift(nextLocale)
     }
 
-    const newPath = "/" + pathSegments.join("/");
+    const newPath = "/" + pathSegments.join("/")
 
-    setLocale(nextLocale, { reload: false });
+    setLocale(nextLocale, { reload: false })
     void router.navigate({
       to: `${newPath}${url.search}${url.hash}`,
-      replace: true,
-    });
-  };
+      replace: true
+    })
+  }
 
   return (
     <div className="relative">
@@ -53,5 +53,5 @@ export function LanguageSwitcher() {
         </svg>
       </div>
     </div>
-  );
+  )
 }

@@ -1,4 +1,4 @@
-import { siteConfig } from "@/config/site.config";
+import { siteConfig } from "@/config/site.config"
 
 /** Shared SEO fields used by the root route `head()` and social meta tags. */
 const defaultSeo = {
@@ -15,20 +15,20 @@ const defaultSeo = {
     title: siteConfig.name,
     description: siteConfig.description,
     siteName: siteConfig.name,
-    images: [{ url: siteConfig.ogImage, width: 1200, height: 630, alt: siteConfig.name }],
+    images: [{ url: siteConfig.ogImage, width: 1200, height: 630, alt: siteConfig.name }]
   },
   twitter: {
     card: "summary_large_image",
     title: siteConfig.name,
     description: siteConfig.description,
-    images: [siteConfig.ogImage],
-  },
-} as const;
+    images: [siteConfig.ogImage]
+  }
+} as const
 
 /** Flatten `defaultSeo` into TanStack Router `head().meta` entries. */
 export function seoHeadMeta() {
-  const og = defaultSeo.openGraph;
-  const twitter = defaultSeo.twitter;
+  const og = defaultSeo.openGraph
+  const twitter = defaultSeo.twitter
 
   return [
     { title: defaultSeo.title },
@@ -47,6 +47,6 @@ export function seoHeadMeta() {
     { name: "twitter:card", content: twitter.card },
     { name: "twitter:title", content: twitter.title },
     { name: "twitter:description", content: twitter.description },
-    { name: "twitter:image", content: twitter.images[0] },
-  ];
+    { name: "twitter:image", content: twitter.images[0] }
+  ]
 }

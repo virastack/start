@@ -1,9 +1,8 @@
-import { tanstackStart } from "@tanstack/react-start/plugin/vite";
-
-import { paraglideVitePlugin } from "@inlang/paraglide-js";
-import tailwindcss from "@tailwindcss/vite";
-import viteReact from "@vitejs/plugin-react";
-import { defineConfig } from "vite";
+import { tanstackStart } from "@tanstack/react-start/plugin/vite"
+import { paraglideVitePlugin } from "@inlang/paraglide-js"
+import tailwindcss from "@tailwindcss/vite"
+import viteReact from "@vitejs/plugin-react"
+import { defineConfig } from "vite"
 
 const config = defineConfig({
   resolve: { tsconfigPaths: true },
@@ -20,12 +19,12 @@ const config = defineConfig({
           pattern: "/:path(.*)?",
           localized: [
             ["tr", "/tr/:path(.*)?"],
-            ["en", "/:path(.*)?"],
-          ],
-        },
-      ],
-    }),
-  ],
-});
+            ["en", "/:path(.*)?"]
+          ]
+        }
+      ]
+    })
+  ]
+})
 
-export default config;
+export default config

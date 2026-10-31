@@ -1,8 +1,8 @@
-import type { ComponentProps } from "react";
+import type { ComponentProps } from "react"
 
-import { Input as BaseInput } from "@base-ui/react/input";
+import { Input as BaseInput } from "@base-ui/react/input"
 
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils"
 
 export function Input({ className, ...props }: ComponentProps<typeof BaseInput>) {
   return (
@@ -15,9 +15,9 @@ export function Input({ className, ...props }: ComponentProps<typeof BaseInput>)
         "disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50",
         "aria-invalid:border-destructive aria-invalid:ring-destructive/20",
         "file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground",
-        className,
+        className
       )}
       {...props}
     />
-  );
+  )
 }

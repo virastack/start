@@ -1,23 +1,23 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import type { Metadata } from "next"
+import { Inter } from "next/font/google"
 
-import { NuqsAdapter } from "nuqs/adapters/next/app";
+import { NuqsAdapter } from "nuqs/adapters/next/app"
 
-import { defaultMetadata } from "@/config/seo.config";
+import { defaultMetadata } from "@/config/seo.config"
 
-import { Providers } from "@/providers";
+import { Providers } from "@/providers"
 
-import "@/styles/tailwind.css";
+import "@/styles/tailwind.css"
 
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
   display: "swap",
   preload: true,
-  adjustFontFallback: true,
-});
+  adjustFontFallback: true
+})
 
-export const metadata: Metadata = defaultMetadata;
+export const metadata: Metadata = defaultMetadata
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
@@ -33,5 +33,5 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         </NuqsAdapter>
       </body>
     </html>
-  );
+  )
 }

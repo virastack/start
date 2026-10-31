@@ -1,6 +1,6 @@
-import type { MetadataRoute } from "next";
+import type { MetadataRoute } from "next"
 
-import { siteConfig } from "@/config/site.config";
+import { siteConfig } from "@/config/site.config"
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
@@ -15,8 +15,8 @@ export default function manifest(): MetadataRoute.Manifest {
       {
         src: "/logo.webp",
         sizes: "96x96",
-        type: "image/webp",
-      },
-    ],
-  };
+        type: "image/webp"
+      }
+    ]
+  }
 }

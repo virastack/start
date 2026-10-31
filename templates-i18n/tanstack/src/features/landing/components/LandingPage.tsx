@@ -1,6 +1,6 @@
-import { Features } from "@/features/landing/components/Features";
-import { Hero } from "@/features/landing/components/Hero";
-import { Showcase } from "@/features/landing/components/Showcase";
+import { Features } from "@/features/landing/components/Features"
+import { Hero } from "@/features/landing/components/Hero"
+import { Showcase } from "@/features/landing/components/Showcase"
 
 /**
  * Demo landing surface. Delete `src/features/landing` and replace
@@ -13,5 +13,5 @@ export function LandingPage() {
       <Features />
       <Showcase />
     </main>
-  );
+  )
 }

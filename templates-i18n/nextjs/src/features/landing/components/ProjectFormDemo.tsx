@@ -1,32 +1,32 @@
-"use client";
+"use client"
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useTranslations } from "next-intl";
-import { Controller, useForm } from "react-hook-form";
-import { toast } from "sonner";
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useTranslations } from "next-intl"
+import { Controller, useForm } from "react-hook-form"
+import { toast } from "sonner"
 
-import { Button } from "@/components/ui/button";
-import { FieldDescription, FieldError } from "@/components/ui/field";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { getProjectSchema, type ProjectInput } from "@/features/landing/schemas/project.schema";
+import { Button } from "@/components/ui/button"
+import { FieldDescription, FieldError } from "@/components/ui/field"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { getProjectSchema, type ProjectInput } from "@/features/landing/schemas/project.schema"
 
 export function ProjectFormDemo() {
-  const t = useTranslations("Index");
+  const t = useTranslations("Index")
   const {
     control,
     handleSubmit,
     reset,
-    formState: { errors, isSubmitting },
+    formState: { errors, isSubmitting }
   } = useForm<ProjectInput>({
     resolver: zodResolver(getProjectSchema(t)),
-    defaultValues: { name: "" },
-  });
+    defaultValues: { name: "" }
+  })
 
   async function onSubmit(values: ProjectInput) {
-    await new Promise((resolve) => setTimeout(resolve, 600));
-    toast.success(t("project_success", { name: values.name }));
-    reset();
+    await new Promise((resolve) => setTimeout(resolve, 600))
+    toast.success(t("project_success", { name: values.name }))
+    reset()
   }
 
   return (
@@ -60,5 +60,5 @@ export function ProjectFormDemo() {
         {isSubmitting ? t("project_submitting") : t("project_submit")}
       </Button>
     </form>
-  );
+  )
 }

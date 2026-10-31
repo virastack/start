@@ -6,3 +6,6 @@ allowBuilds:
   msw: false
   sharp: false
   unrs-resolver: false
+minimumReleaseAgeExclude:
+  - knip@6.44.1
+  - lucide-react@1.66.0

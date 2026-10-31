@@ -1,1 +1,1 @@
-export { useCounterStore } from "@/features/landing/stores/counter.store";
+export { useCounterStore } from "@/features/landing/stores/counter.store"

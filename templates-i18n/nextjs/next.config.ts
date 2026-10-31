@@ -1,25 +1,25 @@
-import path from "node:path";
-import type { NextConfig } from "next";
+import path from "node:path"
+import type { NextConfig } from "next"
 
-import createBundleAnalyzer from "@next/bundle-analyzer";
-import createNextIntlPlugin from "next-intl/plugin";
+import createBundleAnalyzer from "@next/bundle-analyzer"
+import createNextIntlPlugin from "next-intl/plugin"
 
-const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
+const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts")
 
 const withBundleAnalyzer = createBundleAnalyzer({
-  enabled: process.env.ANALYZE === "true",
-});
+  enabled: process.env.ANALYZE === "true"
+})
 
 const nextConfig: NextConfig = {
   reactCompiler: process.env.NODE_ENV === "production",
   turbopack: {
-    root: path.join(import.meta.dirname),
+    root: path.join(import.meta.dirname)
   },
   images: {
     remotePatterns: [
       // FIXME: add your own remote image domains here, e.g.:
       // { protocol: "https", hostname: "images.unsplash.com" },
-    ],
+    ]
   },
   async headers() {
     return [
@@ -31,12 +31,12 @@ const nextConfig: NextConfig = {
           { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
           {
             key: "Permissions-Policy",
-            value: "camera=(), microphone=(), geolocation=()",
-          },
-        ],
-      },
-    ];
-  },
-};
+            value: "camera=(), microphone=(), geolocation=()"
+          }
+        ]
+      }
+    ]
+  }
+}
 
-export default withNextIntl(withBundleAnalyzer(nextConfig));
+export default withNextIntl(withBundleAnalyzer(nextConfig))
