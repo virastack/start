@@ -8,6 +8,20 @@ const PARENT_IMPORT = {
   message: "Use a path alias (@/...) instead of a parent-relative import.",
 };
 
+// One-way imports: shared folders, then features, then routes.
+const SHARED_FILES = [
+  "src/{components,config,constants,helpers,hooks,i18n,lib,providers,schemas,stores,styles,test,types}/**/*.{ts,tsx}",
+  "src/env.ts",
+];
+const SHARED_IMPORT = {
+  group: ["@/features/*", "#/features/*", "@/routes/*", "#/routes/*"],
+  message: "Shared folders must not import features or routes, so a feature can be deleted safely.",
+};
+const ROUTE_IMPORT = {
+  group: ["@/routes/*", "#/routes/*"],
+  message: "Features must not import routes. Compose features at the route level.",
+};
+
 // Feature boundaries: a feature may import itself, never another feature.
 const featuresDir = new URL("./src/features", import.meta.url);
 const features = existsSync(featuresDir)
@@ -29,6 +43,7 @@ const boundaries = [
         {
           patterns: [
             PARENT_IMPORT,
+            ROUTE_IMPORT,
             {
               group: [
                 "@/features/*",
@@ -46,6 +61,10 @@ const boundaries = [
       ],
     },
   })),
+  {
+    files: SHARED_FILES,
+    rules: { "no-restricted-imports": ["error", { patterns: [PARENT_IMPORT, SHARED_IMPORT] }] },
+  },
 ];
 
 export default [
