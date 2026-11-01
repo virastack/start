@@ -7,6 +7,7 @@ import { siteConfig } from "@/config/site.config"
  * Retries belong to TanStack Query (`makeQueryClient`). Bodies are read as text, so file
  * downloads use `fetch` directly; long uploads raise `timeoutMs`. The timeout signal opts out of
  * React's `fetch` memoization, so share server requests through a QueryClient or `cache()`.
+ * Stream uploads need HTTP/2 in Chrome and cannot be retried.
  */
 
 type ApiErrorKind = "http" | "network" | "timeout" | "parse"
@@ -25,9 +26,11 @@ export class ApiError extends Error {
   }
 }
 
+type QueryParams = Record<string, string | number | boolean | null | undefined>
+
 type RequestOptions<TSchema extends z.ZodType> = Omit<RequestInit, "body" | "method"> & {
   /** Added to the query string. `null` and `undefined` values are left out. */
-  params?: Record<string, string | number | boolean | null | undefined>
+  params?: QueryParams
   /** Validates the response. Without it the result is `unknown`. */
   schema?: TSchema
   /** Fails the request after this long, so a stalled API cannot hold up a server render. */
@@ -39,7 +42,7 @@ type ApiConfig = {
   baseUrl: string
   /** Auth headers: a token, or cookies on the server. Never sent to absolute URLs. */
   getHeaders?: () => HeadersInit | Promise<HeadersInit>
-  /** Use `"include"` when an API on another origin relies on cookies. */
+  /** Use `"include"` when an API on another origin relies on cookies. Absolute URLs never get it. */
   credentials?: RequestCredentials
 }
 
@@ -54,7 +57,7 @@ const isNativeBody = (body: unknown): body is BodyInit =>
   ArrayBuffer.isView(body) ||
   body instanceof ReadableStream
 
-function withParams(url: string, params: RequestOptions<z.ZodType>["params"] = {}) {
+function withParams(url: string, params: QueryParams = {}) {
   const query = new URLSearchParams()
   for (const [key, value] of Object.entries(params)) {
     if (value !== null && value !== undefined) query.set(key, String(value))
@@ -122,35 +125,45 @@ export function createApi({ baseUrl, getHeaders, credentials }: ApiConfig) {
     options: RequestOptions<TSchema> = {}
   ): Promise<z.output<TSchema>> {
     const { params, schema, timeoutMs = DEFAULT_TIMEOUT_MS, signal, headers, ...rest } = options
-    const isJson = body !== undefined && !isNativeBody(body)
     const isOwnApi = path.startsWith("/")
-    // Outside the try: a failing auth step is not a network error.
-    const authHeaders = isOwnApi ? await getHeaders?.() : undefined
+    if (!isOwnApi && !/^https?:\/\//.test(path)) {
+      throw new TypeError(`Path must start with "/" or be an absolute URL: ${path}`)
+    }
+
+    // Prepared outside the try: a bad body or a failing auth step is not a network error.
+    const isJson = body !== undefined && !isNativeBody(body)
+    const url = withParams(isOwnApi ? `${base}${path}` : path, params)
+    const payload = isJson ? JSON.stringify(body) : body
+    const mergedHeaders = mergeHeaders(
+      { Accept: "application/json" },
+      isJson ? { "Content-Type": "application/json" } : undefined,
+      isOwnApi ? await getHeaders?.() : undefined,
+      headers
+    )
     const timeout = AbortSignal.timeout(timeoutMs)
 
     try {
-      const response = await fetch(withParams(isOwnApi ? `${base}${path}` : path, params), {
-        credentials,
+      const response = await fetch(url, {
+        credentials: isOwnApi ? credentials : undefined,
+        // Fetch rejects a stream body without this.
+        ...(body instanceof ReadableStream && { duplex: "half" }),
         ...rest,
         method,
-        headers: mergeHeaders(
-          { Accept: "application/json" },
-          isJson ? { "Content-Type": "application/json" } : undefined,
-          authHeaders,
-          headers
-        ),
+        headers: mergedHeaders,
         signal: signal ? AbortSignal.any([signal, timeout]) : timeout,
-        body: isJson ? JSON.stringify(body) : body
+        body: payload
       })
 
       return parseResponse(response, await response.text(), schema)
     } catch (error) {
+      if (error instanceof ApiError) throw error
+
       const name = error instanceof Error ? error.name : ""
-      // A cancelled request is not a failure: TanStack Query expects this error untouched.
-      if (error instanceof ApiError || name === "AbortError") throw error
       if (name === "TimeoutError") {
         throw new ApiError("timeout", "The request timed out", null, null, { cause: error })
       }
+      // A cancelled request is not a failure: TanStack Query expects this error untouched.
+      if (name === "AbortError" || signal?.aborted) throw error
 
       throw new ApiError("network", "Network request failed", null, null, { cause: error })
     }

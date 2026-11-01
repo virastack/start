@@ -136,6 +136,31 @@ describe("api", () => {
     expect(fetchSpy.mock.calls[1]?.[1]?.credentials).toBe("omit")
   })
 
+  it("does not send the configured credentials to an absolute URL", async () => {
+    const fetchSpy = vi
+      .spyOn(globalThis, "fetch")
+      .mockImplementation(() => Promise.resolve(new Response("ok")))
+    const withCookies = createApi({ baseUrl: BASE_URL, credentials: "include" })
+
+    await withCookies.get("https://other.example.com/items")
+
+    expect(fetchSpy.mock.calls[0]?.[1]?.credentials).toBeUndefined()
+  })
+
+  it("rejects a path that is neither relative to the API nor absolute", async () => {
+    await expect(client.get("items")).rejects.toBeInstanceOf(TypeError)
+  })
+
+  it("lets a body that cannot be serialized fail as itself", async () => {
+    const circular: Record<string, unknown> = {}
+    circular.self = circular
+
+    const error = await client.post("/items", circular).catch((caught: unknown) => caught)
+
+    expect(error).toBeInstanceOf(TypeError)
+    expect(error).not.toBeInstanceOf(ApiError)
+  })
+
   it("starts the timeout after getHeaders has finished", async () => {
     server.use(http.get(ITEMS_URL, () => HttpResponse.json({ id: 1 })))
     const slowAuth = createApi({
@@ -186,6 +211,7 @@ describe("api", () => {
 
     expect(fetchSpy.mock.calls[0]?.[1]?.body).toBe(bytes)
     expect(fetchSpy.mock.calls[1]?.[1]?.body).toBe(stream)
+    expect(fetchSpy.mock.calls[1]?.[1]).toMatchObject({ duplex: "half" })
   })
 
   it("turns an error response into an http error with its status and data", async () => {
@@ -288,6 +314,19 @@ describe("api", () => {
     })
   })
 
+  it("reports the caller's own timeout signal as a timeout error", async () => {
+    server.use(
+      http.get(ITEMS_URL, async () => {
+        await delay("infinite")
+        return HttpResponse.json(null)
+      })
+    )
+
+    await expect(client.get("/items", { signal: AbortSignal.timeout(20) })).rejects.toMatchObject({
+      kind: "timeout"
+    })
+  })
+
   it("rethrows AbortError untouched", async () => {
     server.use(
       http.get(ITEMS_URL, async () => {
@@ -302,5 +341,21 @@ describe("api", () => {
 
     await expect(pending).rejects.toMatchObject({ name: "AbortError" })
     await expect(pending).rejects.not.toBeInstanceOf(ApiError)
+  })
+
+  it("rethrows a custom abort reason untouched", async () => {
+    server.use(
+      http.get(ITEMS_URL, async () => {
+        await delay("infinite")
+        return HttpResponse.json(null)
+      })
+    )
+    const reason = new Error("Left the page")
+    const controller = new AbortController()
+    const pending = client.get("/items", { signal: controller.signal })
+
+    controller.abort(reason)
+
+    await expect(pending).rejects.toBe(reason)
   })
 })
