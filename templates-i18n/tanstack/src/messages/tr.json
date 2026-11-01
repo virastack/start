@@ -63,5 +63,8 @@
   "users_error_email": "Geçerli bir e-posta adresi girin",
   "users_error_generic": "Bir şeyler ters gitti.",
   "users_error_network": "Sunucuya ulaşılamadı.",
-  "users_error_status": "İstek başarısız oldu (durum kodu: {status})."
+  "users_error_status": "İstek başarısız oldu (durum kodu: {status}).",
+  "users_guide_source": "Bu demo:",
+  "users_guide_api": "Kendi API'n:",
+  "users_guide_remove": "Kaldırmak için:"
 }

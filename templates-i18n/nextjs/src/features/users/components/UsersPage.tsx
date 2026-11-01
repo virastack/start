@@ -37,6 +37,22 @@ export function UsersPage({ children }: UsersPageProps) {
         <FavoritesCount />
       </header>
       {children}
+      <footer className="flex flex-col gap-1 border-t pt-4 text-sm text-muted-foreground">
+        <p>
+          {t("guide_source")}{" "}
+          <code className="font-mono text-xs break-all">src/features/users</code>
+        </p>
+        <p>
+          {t("guide_api")}{" "}
+          <code className="font-mono text-xs break-all">api/, schemas/, AddUserForm</code>
+        </p>
+        <p>
+          {t("guide_remove")}{" "}
+          <code className="font-mono text-xs break-all">
+            src/features/users, src/app/[locale]/users, home link, then knip
+          </code>
+        </p>
+      </footer>
     </main>
   )
 }

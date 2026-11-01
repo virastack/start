@@ -30,6 +30,20 @@ export function UsersPage({ children }: UsersPageProps) {
         <FavoritesCount />
       </header>
       {children}
+      <footer className="flex flex-col gap-1 border-t pt-4 text-sm text-muted-foreground">
+        <p>
+          This demo: <code className="font-mono text-xs break-all">src/features/users</code>
+        </p>
+        <p>
+          Your API: <code className="font-mono text-xs break-all">api/, schemas/, AddUserForm</code>
+        </p>
+        <p>
+          To remove:{" "}
+          <code className="font-mono text-xs break-all">
+            src/features/users, src/app/users, home link, then knip
+          </code>
+        </p>
+      </footer>
     </main>
   )
 }

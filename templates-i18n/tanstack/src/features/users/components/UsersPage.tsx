@@ -41,6 +41,22 @@ export function UsersPage({ children }: UsersPageProps) {
         <FavoritesCount />
       </header>
       {children}
+      <footer className="flex flex-col gap-1 border-t pt-4 text-sm text-muted-foreground">
+        <p>
+          {m.users_guide_source()}{" "}
+          <code className="font-mono text-xs break-all">src/features/users</code>
+        </p>
+        <p>
+          {m.users_guide_api()}{" "}
+          <code className="font-mono text-xs break-all">api/, schemas/, AddUserForm</code>
+        </p>
+        <p>
+          {m.users_guide_remove()}{" "}
+          <code className="font-mono text-xs break-all">
+            {"src/features/users, src/routes/{-$lang}/users.tsx, home link, then knip"}
+          </code>
+        </p>
+      </footer>
     </main>
   )
 }

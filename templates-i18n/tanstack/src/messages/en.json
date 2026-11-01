@@ -77,5 +77,8 @@
   "users_error_email": "Enter a valid email address",
   "users_error_generic": "Something went wrong.",
   "users_error_network": "Network request failed",
-  "users_error_status": "Request failed with status {status}"
+  "users_error_status": "Request failed with status {status}",
+  "users_guide_source": "This demo:",
+  "users_guide_api": "Your API:",
+  "users_guide_remove": "To remove:"
 }

@@ -69,6 +69,9 @@
     "total_users": "{total, plural, one {# user} other {# users}}",
     "error_network": "Network request failed",
     "error_status": "Request failed with status {status}",
-    "error_unknown": "Something went wrong."
+    "error_unknown": "Something went wrong.",
+    "guide_source": "This demo:",
+    "guide_api": "Your API:",
+    "guide_remove": "To remove:"
   }
 }
