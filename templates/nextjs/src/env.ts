@@ -13,7 +13,7 @@ const serverSchema = z.object({
 })
 
 const clientSchema = z.object({
-  NEXT_PUBLIC_APP_URL: z.string().url().default("http://localhost:3000"),
+  NEXT_PUBLIC_APP_URL: z.url().default("http://localhost:3000"),
   NEXT_PUBLIC_APP_NAME: z.string().min(1).default("ViraStack Start - Next.js Edition")
 })
 
@@ -29,8 +29,8 @@ const clientParsed = clientSchema.safeParse({
 if (!serverParsed.success || !clientParsed.success) {
   console.error(
     "❌ Invalid environment variables:",
-    serverParsed.error?.flatten().fieldErrors,
-    clientParsed.error?.flatten().fieldErrors
+    serverParsed.error && z.flattenError(serverParsed.error).fieldErrors,
+    clientParsed.error && z.flattenError(clientParsed.error).fieldErrors
   )
   throw new Error("Invalid environment variables. Check src/env.ts")
 }

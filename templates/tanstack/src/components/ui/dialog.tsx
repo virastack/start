@@ -2,8 +2,7 @@ import type { ComponentProps } from "react"
 
 import { XIcon } from "lucide-react"
 import { Dialog as BaseDialog } from "@base-ui/react/dialog"
-
-import { cn } from "@/lib/utils"
+import { cn } from "cn"
 
 export function Dialog(props: ComponentProps<typeof BaseDialog.Root>) {
   return <BaseDialog.Root data-slot="dialog" {...props} />

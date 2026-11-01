@@ -63,6 +63,14 @@ const boundaries = [
 
 export default [
   ...tanstackConfig,
+  // UI primitives come from shadcn; `shadcn add` must not fail lint on its own output.
+  {
+    files: ["src/components/ui/**/*.tsx"],
+    rules: {
+      "import/consistent-type-specifier-style": "off",
+      "@typescript-eslint/no-unnecessary-condition": "off"
+    }
+  },
   {
     rules: {
       "import/no-cycle": "off",

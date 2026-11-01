@@ -1,8 +1,7 @@
 import type { ComponentProps } from "react"
 
 import { Input as BaseInput } from "@base-ui/react/input"
-
-import { cn } from "@/lib/utils"
+import { cn } from "cn"
 
 export function Input({ className, ...props }: ComponentProps<typeof BaseInput>) {
   return (

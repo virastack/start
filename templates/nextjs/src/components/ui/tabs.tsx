@@ -1,8 +1,7 @@
 import type { ComponentProps } from "react"
 
 import { Tabs as BaseTabs } from "@base-ui/react/tabs"
-
-import { cn } from "@/lib/utils"
+import { cn } from "cn"
 
 export function Tabs({ className, ...props }: ComponentProps<typeof BaseTabs.Root>) {
   return (

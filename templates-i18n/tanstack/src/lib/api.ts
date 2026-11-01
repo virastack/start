@@ -2,14 +2,16 @@
  * Lightweight native `fetch` wrapper.
  *
  * Zero external HTTP dependencies (no axios/ofetch), so framework `fetch` options keep working.
+ * Retries belong to TanStack Query (`makeQueryClient`), not to this client.
  */
 
+/** `status` is 0 when no response arrived (network failure, unreadable body). */
 export class ApiError extends Error {
   readonly status: number
   readonly data: unknown
 
-  constructor(message: string, status: number, data: unknown) {
-    super(message)
+  constructor(message: string, status: number, data: unknown, options?: ErrorOptions) {
+    super(message, options)
     this.name = "ApiError"
     this.status = status
     this.data = data
@@ -18,17 +20,12 @@ export class ApiError extends Error {
 
 type RequestOptions = Omit<RequestInit, "body"> & {
   body?: unknown
-  retry?: number
-  retryDelayMs?: number
 }
 
-const DEFAULT_RETRY = 0
-const DEFAULT_RETRY_DELAY_MS = 300
-
-function buildHeaders(init?: HeadersInit): Headers {
+function buildHeaders(init: HeadersInit | undefined, hasBody: boolean): Headers {
   const headers = new Headers(init)
 
-  if (!headers.has("Content-Type")) {
+  if (hasBody && !headers.has("Content-Type")) {
     headers.set("Content-Type", "application/json")
   }
 
@@ -51,35 +48,24 @@ async function parseResponse<T>(response: Response): Promise<T> {
   return payload as T
 }
 
-async function sleep(ms: number) {
-  await new Promise((resolve) => setTimeout(resolve, ms))
-}
-
 async function request<T>(url: string, options: RequestOptions = {}): Promise<T> {
-  const { body, retry = DEFAULT_RETRY, retryDelayMs = DEFAULT_RETRY_DELAY_MS, ...rest } = options
+  const { body, ...rest } = options
+  const hasBody = body !== undefined
 
-  let attempt = 0
+  try {
+    const response = await fetch(url, {
+      ...rest,
+      headers: buildHeaders(rest.headers, hasBody),
+      body: hasBody ? JSON.stringify(body) : undefined
+    })
 
-  for (;;) {
-    try {
-      const response = await fetch(url, {
-        ...rest,
-        headers: buildHeaders(rest.headers),
-        body: body !== undefined ? JSON.stringify(body) : undefined
-      })
+    return await parseResponse<T>(response)
+  } catch (error) {
+    if (error instanceof ApiError) throw error
+    // A cancelled request is not a failure: TanStack Query expects this error untouched.
+    if (error instanceof Error && error.name === "AbortError") throw error
 
-      return await parseResponse<T>(response)
-    } catch (error) {
-      const isLastAttempt = attempt >= retry
-      const isServerOrNetworkError = !(error instanceof ApiError) || error.status >= 500
-
-      if (isLastAttempt || !isServerOrNetworkError) {
-        throw error
-      }
-
-      attempt += 1
-      await sleep(retryDelayMs * attempt)
-    }
+    throw new ApiError("Network request failed", 0, null, { cause: error })
   }
 }
 

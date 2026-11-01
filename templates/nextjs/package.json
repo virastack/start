@@ -4,7 +4,7 @@
   "private": true,
   "description": "Next.js 16 + React 19 + Tailwind CSS 4 boilerplate focused on clean architecture, UI/UX, and agent-ready developer experience.",
   "author": {
-    "name": "Ömer Gülçiçek (ViraStack)",
+    "name": "\u00d6mer G\u00fcl\u00e7i\u00e7ek (ViraStack)",
     "email": "iletisim@omergulcicek.com",
     "url": "https://omergulcicek.com"
   },
@@ -76,7 +76,7 @@
     "@tanstack/react-query": "^5.105.0",
     "@tanstack/react-query-devtools": "^5.105.0",
     "class-variance-authority": "^0.7.1",
-    "clsx": "^2.1.1",
+    "cn": "^0.5.1",
     "lucide-react": "^1.66.0",
     "motion": "^12.43.0",
     "next": "~16.4.3",
@@ -86,7 +86,6 @@
     "react-dom": "^19.3.1",
     "react-hook-form": "^7.91.0",
     "sonner": "^2.0.8",
-    "tailwind-merge": "^3.7.0",
     "usehooks-ts": "^3.1.1",
     "zod": "^4.6.7",
     "zustand": "^5.0.16"
