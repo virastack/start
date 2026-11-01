@@ -23,7 +23,9 @@ export async function generateMetadata({
   return {
     title: t("meta_title"),
     description: t("meta_description"),
-    alternates: getPageAlternates(locale, "/users")
+    alternates: getPageAlternates(locale, "/users"),
+    // A demo should not reach search results.
+    robots: { index: false, follow: false }
   }
 }
 

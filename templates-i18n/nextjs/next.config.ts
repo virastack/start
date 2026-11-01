@@ -11,6 +11,7 @@ const withBundleAnalyzer = createBundleAnalyzer({
 })
 
 const nextConfig: NextConfig = {
+  poweredByHeader: false,
   reactCompiler: true,
   turbopack: {
     root: path.join(import.meta.dirname)

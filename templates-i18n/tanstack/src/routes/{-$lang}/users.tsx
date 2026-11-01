@@ -28,7 +28,9 @@ export const Route = createFileRoute("/{-$lang}/users")({
   head: () => ({
     meta: [
       { title: `${m.users_title()} · ${siteConfig.name}` },
-      { name: "description", content: m.users_meta_description() }
+      { name: "description", content: m.users_meta_description() },
+      // A demo should not reach search results.
+      { name: "robots", content: "noindex, nofollow" }
     ],
     links: hreflangLinks("/users")
   }),

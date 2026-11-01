@@ -37,6 +37,16 @@ if (!serverParsed.success || !clientParsed.success) {
   throw new Error("Invalid environment variables. Check src/env.ts")
 }
 
+if (
+  serverParsed.data.NODE_ENV === "production" &&
+  typeof window === "undefined" &&
+  !process.env.NEXT_PUBLIC_APP_URL
+) {
+  console.warn(
+    "⚠️ NEXT_PUBLIC_APP_URL is not set, so the sitemap and social links point to localhost."
+  )
+}
+
 export const env = {
   ...serverParsed.data,
   ...clientParsed.data

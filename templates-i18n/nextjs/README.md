@@ -140,7 +140,7 @@ Both bundled features follow the ViraStack AI feature tree and are meant to be d
 **Remove the demo**
 
 1. Delete `src/features/users` and `src/app/[locale]/users`
-2. Remove `/users` from `src/app/sitemap.ts` and the `Users` block from both files in `src/messages`
+2. Remove the `Users` block from both files in `src/messages`
 3. In `src/features/home`, remove the `/users` link from `components/HomePage.tsx` and update the next steps in `constants/home.constants.ts`
 
 **Remove the start page too**

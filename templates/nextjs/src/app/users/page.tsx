@@ -13,7 +13,9 @@ import { loadUsersParams } from "@/features/users/schemas/users-params.schema"
 
 export const metadata: Metadata = {
   title: "Users",
-  description: "A demo feature with a searchable user list, a validated form and favorites."
+  description: "A demo feature with a searchable user list, a validated form and favorites.",
+  // A demo should not reach search results.
+  robots: { index: false, follow: false }
 }
 
 export default function UsersRoute({ searchParams }: PageProps<"/users">) {

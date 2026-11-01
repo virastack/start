@@ -10,7 +10,6 @@ const defaultSeo = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: siteConfig.url,
     title: siteConfig.name,
     description: siteConfig.description,
     siteName: siteConfig.name,
@@ -37,7 +36,6 @@ export function seoHeadMeta() {
     { name: "robots", content: "index, follow" },
     { property: "og:type", content: og.type },
     { property: "og:locale", content: og.locale },
-    { property: "og:url", content: og.url },
     { property: "og:title", content: og.title },
     { property: "og:description", content: og.description },
     { property: "og:site_name", content: og.siteName },

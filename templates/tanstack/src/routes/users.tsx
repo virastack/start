@@ -28,7 +28,9 @@ export const Route = createFileRoute("/users")({
       {
         name: "description",
         content: "A demo feature with a searchable user list, a validated form and favorites."
-      }
+      },
+      // A demo should not reach search results.
+      { name: "robots", content: "noindex, nofollow" }
     ]
   }),
   pendingComponent: () => (

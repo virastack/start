@@ -8,7 +8,7 @@ export const Route = createFileRoute("/site.webmanifest")({
       GET: async () => {
         const manifest = {
           name: siteConfig.name,
-          short_name: siteConfig.name,
+          short_name: siteConfig.shortName,
           description: siteConfig.description,
           start_url: "/",
           display: "standalone",

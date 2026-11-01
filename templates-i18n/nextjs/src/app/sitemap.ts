@@ -4,7 +4,7 @@ import { getLanguageUrls } from "@/config/seo.config"
 
 import { routing } from "@/i18n/routing"
 
-const ROUTES = ["/", "/users"]
+const ROUTES = ["/"]
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return ROUTES.flatMap((route) => {

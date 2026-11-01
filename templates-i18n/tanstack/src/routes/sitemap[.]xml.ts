@@ -4,7 +4,7 @@ import { localizedUrl } from "@/helpers/localized-url"
 
 import { locales } from "@/paraglide/runtime.js"
 
-const PATHS = ["/", "/users"]
+const PATHS = ["/"]
 
 export const Route = createFileRoute("/sitemap.xml")({
   server: {
