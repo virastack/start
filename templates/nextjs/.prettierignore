@@ -3,8 +3,6 @@ next-env.d.ts
 node_modules
 pnpm-lock.yaml
 public
-CHANGELOG.md
-.changeset
 
 # Managed by ViraStack AI and the skills CLI
 AGENTS.md

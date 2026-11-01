@@ -1,7 +1,7 @@
 import type { SiteConfig } from "@/types/site-config.types"
 import { env } from "@/env"
 
-// FIXME: replace with your own site metadata.
+// FIXME: replace with your own site metadata, and public/og.png and public/logo.* with your images.
 export const siteConfig: SiteConfig = {
   name: env.NEXT_PUBLIC_APP_NAME,
   description:

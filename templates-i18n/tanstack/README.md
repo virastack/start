@@ -29,7 +29,7 @@ Production-grade TanStack Start starter with feature-based architecture, strict 
 ## Why ViraStack
 
 - **Opinionated, not opaque** — clear folder rules and placement conventions; nothing important is hidden behind magic
-- **Agent-ready by default** — `AGENTS.md`, rules for Claude Code and Cursor, `llms.txt`, and agent skills ship with every project
+- **Agent-ready by default** — `AGENTS.md`, rules for Claude Code and Cursor, and agent skills ship with every project
 - **Own your UI** — Base UI primitives in `components/ui` (shadcn-style), fully editable
 - **State triad** — TanStack Query (server), Zustand (client), TanStack Router search params (URL) — each with a dedicated job
 - **DX that sticks** — ESLint, Prettier, Knip, Vitest, Husky, Commitlint, and GitHub Actions CI out of the box
@@ -199,7 +199,6 @@ Developed with [**ViraStack AI**](https://github.com/virastack/ai) — an AI-nat
 | `AGENTS.md`                | Agent operating guide (managed block + yours) |
 | `.agents/skills/`          | Skills for other agents                       |
 | `.virastack/ai.json`       | Manifest of the files ViraStack AI manages    |
-| `public/llms.txt`          | Machine-readable project summary              |
 
 Install or refresh rules: `npx @virastack/ai init` (pick tools with `--agent claude,cursor`).
 

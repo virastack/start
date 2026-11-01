@@ -5,9 +5,8 @@ const defaultSeo = {
   title: siteConfig.name,
   titleTemplate: `%s · ${siteConfig.name}`,
   description: siteConfig.description,
-  keywords: ["TanStack Start", "React", "TypeScript", "Tailwind CSS", "ViraStack", "Boilerplate"],
-  authors: [{ name: "ViraStack", url: siteConfig.url }],
-  creator: "ViraStack",
+  authors: [{ name: siteConfig.name, url: siteConfig.url }],
+  creator: siteConfig.name,
   openGraph: {
     type: "website",
     locale: "en_US",
@@ -33,7 +32,6 @@ export function seoHeadMeta() {
   return [
     { title: defaultSeo.title },
     { name: "description", content: defaultSeo.description },
-    { name: "keywords", content: defaultSeo.keywords.join(", ") },
     { name: "author", content: defaultSeo.creator },
     { name: "creator", content: defaultSeo.creator },
     { name: "robots", content: "index, follow" },

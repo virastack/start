@@ -14,6 +14,7 @@ export const Route = createFileRoute("/site.webmanifest")({
           display: "standalone",
           background_color: "#ffffff",
           theme_color: "#ffffff",
+          // FIXME: add 192x192 and 512x512 icons to make the app installable.
           icons: [
             {
               src: "/logo.webp",

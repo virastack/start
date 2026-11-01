@@ -9,9 +9,8 @@ export const defaultMetadata: Metadata = {
     template: `%s · ${siteConfig.name}`
   },
   description: siteConfig.description,
-  keywords: ["Next.js", "React", "TypeScript", "Tailwind CSS", "ViraStack", "Boilerplate"],
-  authors: [{ name: "ViraStack", url: siteConfig.url }],
-  creator: "ViraStack",
+  authors: [{ name: siteConfig.name, url: siteConfig.url }],
+  creator: siteConfig.name,
   openGraph: {
     type: "website",
     locale: "en_US",

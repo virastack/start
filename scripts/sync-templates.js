@@ -28,7 +28,6 @@ export const GROUPS = [
     source: NEXT,
     targets: [TANSTACK, NEXT_I18N, TANSTACK_I18N],
     entries: [
-      ".changeset/",
       ".github/workflows/ci.yml",
       ".husky/commit-msg",
       ".husky/pre-commit",

@@ -3,34 +3,24 @@ import type { z } from "zod"
 import { siteConfig } from "@/config/site.config"
 
 /**
- * Lightweight native `fetch` wrapper.
- *
- * Zero external HTTP dependencies (no axios/ofetch), so framework `fetch` options keep working.
- * Retries belong to TanStack Query (`makeQueryClient`), not to this client.
+ * Native `fetch` wrapper with no HTTP dependency, so framework `fetch` options keep working.
+ * Retries belong to TanStack Query (`makeQueryClient`). Bodies are read as text, so file
+ * downloads use `fetch` directly; long uploads raise `timeoutMs`.
  */
 
-export type ApiErrorKind = "http" | "network" | "timeout" | "parse"
-
-type ApiErrorInit = {
-  kind: ApiErrorKind
-  message: string
-  /** The response status. `null` when no response arrived. */
-  status?: number | null
-  data?: unknown
-  cause?: unknown
-}
+type ApiErrorKind = "http" | "network" | "timeout" | "parse"
 
 export class ApiError extends Error {
-  readonly kind: ApiErrorKind
-  readonly status: number | null
-  readonly data: unknown
-
-  constructor({ kind, message, status = null, data = null, cause }: ApiErrorInit) {
-    super(message, { cause })
+  constructor(
+    readonly kind: ApiErrorKind,
+    message: string,
+    /** `null` when no response arrived. */
+    readonly status: number | null = null,
+    readonly data: unknown = null,
+    options?: ErrorOptions
+  ) {
+    super(message, options)
     this.name = "ApiError"
-    this.kind = kind
-    this.status = status
-    this.data = data
   }
 }
 
@@ -50,13 +40,18 @@ type ApiConfig = {
 
 const DEFAULT_TIMEOUT_MS = 10_000
 
-function isNativeBody(body: unknown): body is BodyInit {
-  return (
-    body instanceof FormData ||
-    body instanceof Blob ||
-    body instanceof URLSearchParams ||
-    body instanceof ArrayBuffer
-  )
+const isNativeBody = (body: unknown): body is BodyInit =>
+  body instanceof FormData ||
+  body instanceof Blob ||
+  body instanceof URLSearchParams ||
+  body instanceof ArrayBuffer
+
+function mergeHeaders(...sources: (HeadersInit | undefined)[]) {
+  const merged = new Headers()
+  for (const source of sources) {
+    new Headers(source).forEach((value, key) => merged.set(key, value))
+  }
+  return merged
 }
 
 /** Reads the body as text first, so a broken body cannot hide the response status. */
@@ -74,107 +69,86 @@ function readPayload(text: string, contentType: string): unknown {
 function parseResponse<TSchema extends z.ZodType>(
   response: Response,
   text: string,
-  schema: TSchema | undefined
+  schema?: TSchema
 ): z.output<TSchema> {
+  const { ok, status } = response
   const payload = readPayload(text, response.headers.get("content-type") ?? "")
-  const { status } = response
 
-  if (!response.ok) {
-    throw new ApiError({
-      kind: "http",
-      message: `Request failed with status ${status}`,
-      status,
-      data: payload
-    })
-  }
-  if (payload === undefined) {
-    throw new ApiError({
-      kind: "parse",
-      message: "The response is not valid JSON",
-      status,
-      data: text
-    })
-  }
+  if (!ok) throw new ApiError("http", `Request failed with status ${status}`, status, payload)
+  if (payload === undefined) throw new ApiError("parse", "Response is not valid JSON", status, text)
   // Without a schema, TSchema stays at its ZodUnknown default.
   if (!schema) return payload as z.output<TSchema>
 
   const result = schema.safeParse(payload)
-  if (!result.success) {
-    throw new ApiError({
-      kind: "parse",
-      message: "The response does not match its schema",
-      status,
-      data: result.error.issues,
-      cause: result.error
-    })
-  }
-  return result.data
+  if (result.success) return result.data
+
+  throw new ApiError("parse", "Response does not match its schema", status, result.error.issues, {
+    cause: result.error
+  })
 }
 
 export function createApi({ baseUrl, getHeaders }: ApiConfig) {
-  async function request<TSchema extends z.ZodType = z.ZodUnknown>(
+  const base = baseUrl.replace(/\/+$/, "")
+
+  async function request<TSchema extends z.ZodType>(
     method: string,
     path: string,
     body: unknown,
     options: RequestOptions<TSchema> = {}
   ): Promise<z.output<TSchema>> {
     const { schema, timeoutMs = DEFAULT_TIMEOUT_MS, signal, headers, ...rest } = options
-    const isNative = isNativeBody(body)
+    const isJson = body !== undefined && !isNativeBody(body)
     const timeout = AbortSignal.timeout(timeoutMs)
+    // Outside the try: a failing auth step is not a network error.
+    const authHeaders = await getHeaders?.()
 
     try {
-      const merged = new Headers({ Accept: "application/json" })
-      new Headers(await getHeaders?.()).forEach((value, key) => merged.set(key, value))
-      new Headers(headers).forEach((value, key) => merged.set(key, value))
-      if (body !== undefined && !isNative && !merged.has("Content-Type")) {
-        merged.set("Content-Type", "application/json")
-      }
-
-      const response = await fetch(path.startsWith("/") ? `${baseUrl}${path}` : path, {
+      const response = await fetch(path.startsWith("/") ? `${base}${path}` : path, {
         ...rest,
         method,
-        headers: merged,
+        headers: mergeHeaders(
+          { Accept: "application/json" },
+          isJson ? { "Content-Type": "application/json" } : undefined,
+          authHeaders,
+          headers
+        ),
         signal: signal ? AbortSignal.any([signal, timeout]) : timeout,
-        body: isNative || body === undefined ? body : JSON.stringify(body)
+        body: isJson ? JSON.stringify(body) : body
       })
 
       return parseResponse(response, await response.text(), schema)
     } catch (error) {
-      if (error instanceof ApiError) throw error
+      const name = error instanceof Error ? error.name : ""
       // A cancelled request is not a failure: TanStack Query expects this error untouched.
-      if (error instanceof Error && error.name === "AbortError") throw error
-      if (error instanceof Error && error.name === "TimeoutError") {
-        throw new ApiError({ kind: "timeout", message: "The request timed out", cause: error })
+      if (error instanceof ApiError || name === "AbortError") throw error
+      if (name === "TimeoutError") {
+        throw new ApiError("timeout", "The request timed out", null, null, { cause: error })
       }
 
-      throw new ApiError({ kind: "network", message: "Network request failed", cause: error })
+      throw new ApiError("network", "Network request failed", null, null, { cause: error })
     }
   }
 
+  const read =
+    (method: string) =>
+    <TSchema extends z.ZodType = z.ZodUnknown>(path: string, options?: RequestOptions<TSchema>) =>
+      request<TSchema>(method, path, undefined, options)
+
+  const write =
+    (method: string) =>
+    <TSchema extends z.ZodType = z.ZodUnknown>(
+      path: string,
+      body?: unknown,
+      options?: RequestOptions<TSchema>
+    ) =>
+      request<TSchema>(method, path, body, options)
+
   return {
-    get: <TSchema extends z.ZodType = z.ZodUnknown>(
-      path: string,
-      options?: RequestOptions<TSchema>
-    ) => request<TSchema>("GET", path, undefined, options),
-    post: <TSchema extends z.ZodType = z.ZodUnknown>(
-      path: string,
-      body?: unknown,
-      options?: RequestOptions<TSchema>
-    ) => request<TSchema>("POST", path, body, options),
-    put: <TSchema extends z.ZodType = z.ZodUnknown>(
-      path: string,
-      body?: unknown,
-      options?: RequestOptions<TSchema>
-    ) => request<TSchema>("PUT", path, body, options),
-    patch: <TSchema extends z.ZodType = z.ZodUnknown>(
-      path: string,
-      body?: unknown,
-      options?: RequestOptions<TSchema>
-    ) => request<TSchema>("PATCH", path, body, options),
-    delete: <TSchema extends z.ZodType = z.ZodUnknown>(
-      path: string,
-      options?: RequestOptions<TSchema>
-    ) => request<TSchema>("DELETE", path, undefined, options)
+    get: read("GET"),
+    post: write("POST"),
+    put: write("PUT"),
+    patch: write("PATCH"),
+    delete: read("DELETE")
   }
 }
 

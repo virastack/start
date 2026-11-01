@@ -24,6 +24,24 @@ describe("api", () => {
     await expect(api.get(ITEMS_URL)).resolves.toEqual({ id: 1 })
   })
 
+  it("ignores a trailing slash on the base URL", async () => {
+    server.use(http.get(ITEMS_URL, () => HttpResponse.json({ id: 1 })))
+
+    await expect(createApi({ baseUrl: `${BASE_URL}/` }).get("/items")).resolves.toEqual({ id: 1 })
+  })
+
+  it("lets a failing getHeaders through as it is", async () => {
+    const failure = new Error("No session")
+    const authed = createApi({
+      baseUrl: BASE_URL,
+      getHeaders: () => {
+        throw failure
+      }
+    })
+
+    await expect(authed.get("/items")).rejects.toBe(failure)
+  })
+
   it("validates with a schema and infers its type", async () => {
     server.use(http.get(ITEMS_URL, () => HttpResponse.json({ id: 1, extra: true })))
 

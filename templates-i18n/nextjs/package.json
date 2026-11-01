@@ -41,10 +41,7 @@
     "typecheck": "next typegen && tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
-    "prepare": "husky",
-    "changeset": "changeset",
-    "changeset:version": "changeset version",
-    "changeset:publish": "changeset publish"
+    "prepare": "husky"
   },
   "lint-staged": {
     "*.{ts,tsx,js,jsx}": [
@@ -92,7 +89,6 @@
     "zustand": "^5.0.16"
   },
   "devDependencies": {
-    "@changesets/cli": "^3.0.3",
     "@commitlint/cli": "^21.2.4",
     "@commitlint/config-conventional": "^21.2.4",
     "@ianvs/prettier-plugin-sort-imports": "^4.7.1",

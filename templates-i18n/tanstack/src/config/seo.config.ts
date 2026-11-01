@@ -10,9 +10,8 @@ const OG_LOCALES: Record<Locale, string> = { en: "en_US", tr: "tr_TR" }
 const defaultSeo = {
   title: siteConfig.name,
   titleTemplate: `%s · ${siteConfig.name}`,
-  keywords: ["TanStack Start", "React", "TypeScript", "Tailwind CSS", "ViraStack", "Boilerplate"],
-  authors: [{ name: "ViraStack", url: siteConfig.url }],
-  creator: "ViraStack",
+  authors: [{ name: siteConfig.name, url: siteConfig.url }],
+  creator: siteConfig.name,
   openGraph: {
     type: "website",
     url: siteConfig.url,
@@ -36,7 +35,6 @@ export function seoHeadMeta() {
   return [
     { title: defaultSeo.title },
     { name: "description", content: description },
-    { name: "keywords", content: defaultSeo.keywords.join(", ") },
     { name: "author", content: defaultSeo.creator },
     { name: "creator", content: defaultSeo.creator },
     { name: "robots", content: "index, follow" },

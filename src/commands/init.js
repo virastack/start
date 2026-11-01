@@ -19,6 +19,7 @@ import {
 import { trackEvent, isTelemetryDisabled, hasSeenTelemetryNotice, markTelemetryNoticeShown } from "../utils/telemetry.js";
 import { TOOLS, parseToolsFlag } from "../utils/tools.js";
 import { setupEnvFile } from "../utils/setup-env.js";
+import { setupPackageManager } from "../utils/setup-package-manager.js";
 import { updatePackageJson } from "../utils/update-package-json.js";
 import { updateReadme } from "../utils/update-readme.js";
 import { validateProjectName } from "../utils/validate-project-name.js";
@@ -221,6 +222,9 @@ export async function runInit(options = {}) {
   await updatePackageJson(targetDir, { projectName, tools });
   await updateReadme(targetDir, projectName);
   await setupEnvFile(targetDir);
+  await setupPackageManager(targetDir, packageManager, {
+    isYarnClassic: (process.env.npm_config_user_agent ?? "").startsWith("yarn/1."),
+  });
   scaffoldSpinner.stop(t("scaffold.copyDone"));
 
   const gitInitialized = await initGitRepo(targetDir);
