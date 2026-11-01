@@ -1,6 +1,7 @@
 /**
  * Keeps `registry.json` in step with `registry/<name>` and the templates, then builds it with shadcn:
- * shared files in `common`, framework files and routes in `nextjs` and `tanstack`.
+ * shared files in `common`, framework files and routes in `nextjs` and `tanstack`. The i18n layers
+ * replace the `common` files that hold text, and carry the messages `virastack add` merges.
  *
  *   node scripts/build-registry.js [outDir]    default: registry-dist
  *
@@ -17,14 +18,21 @@ const SCHEMA = "https://ui.shadcn.com/schema/registry.json";
 const AUTHOR = "ViraStack <https://virastack.com>";
 
 /** Provided by every template, so an item never lists them. */
-const BUILT_IN = new Set(["react", "react-dom", "next", "@tanstack/react-router", "@tanstack/react-start"]);
+const BUILT_IN = new Set([
+  "react",
+  "react-dom",
+  "next",
+  "next-intl",
+  "@tanstack/react-router",
+  "@tanstack/react-start",
+]);
 
 export const FEATURES = [
   {
     name: "users",
     title: "Users",
     description: "A searchable user list with pagination in the URL, a validated form and favorites.",
-    frameworks: ["nextjs", "tanstack"],
+    frameworks: ["nextjs", "tanstack", "nextjs-i18n", "tanstack-i18n"],
   },
 ];
 
@@ -62,19 +70,35 @@ export function findDependencies(contents, pkg) {
   return { dependencies: [...dependencies].sort(), devDependencies: [...devDependencies].sort() };
 }
 
+function readMessages(root, source) {
+  const dir = path.join(root, source, "messages");
+  if (!existsSync(dir)) return null;
+  return Object.fromEntries(
+    readdirSync(dir).map((file) => [
+      path.basename(file, ".json"),
+      JSON.parse(readFileSync(path.join(dir, file), "utf8")),
+    ]),
+  );
+}
+
 export function buildItem(root, feature, framework) {
-  const template = path.join(root, "templates", framework);
+  const i18n = framework.endsWith("-i18n");
+  const base = framework.replace("-i18n", "");
+  const template = path.join(root, i18n ? "templates-i18n" : "templates", base);
   const source = path.posix.join("registry", feature.name);
   const pkg = JSON.parse(readFileSync(path.join(template, "package.json"), "utf8"));
-  const files = ["common", framework]
-    .flatMap((layer) =>
-      listFiles(path.join(root, source, layer), "src").map((target) => ({
-        path: path.posix.join(source, layer, target),
-        type: "registry:file",
-        target,
-      })),
-    )
+
+  // A later layer replaces the same file of an earlier one.
+  const byTarget = new Map();
+  for (const layer of ["common", framework]) {
+    for (const target of listFiles(path.join(root, source, layer), "src")) {
+      byTarget.set(target, path.posix.join(source, layer, target));
+    }
+  }
+  const files = [...byTarget]
+    .map(([target, file]) => ({ path: file, type: "registry:file", target }))
     .sort((a, b) => a.target.localeCompare(b.target));
+  const messages = readMessages(root, path.posix.join(source, framework));
 
   return {
     name: `${feature.name}-${framework}`,
@@ -87,7 +111,7 @@ export function buildItem(root, feature, framework) {
       pkg,
     ),
     files,
-    meta: { product: "virastack-start", framework },
+    meta: { product: "virastack-start", framework: base, ...(messages && { messages }) },
   };
 }
 

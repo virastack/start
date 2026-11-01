@@ -3,11 +3,12 @@ import os from "node:os";
 import path from "node:path";
 
 import { runCommand } from "./exec.js";
-import { getDlxCommand } from "./package-manager.js";
+import { getDlxCommand, getExecCommand } from "./package-manager.js";
 
 const DEFAULT_REGISTRY = "https://virastack.com/r";
 /** The version the registry was last tested with. Raised on purpose, never `latest`. */
 export const SHADCN = "shadcn@4.23.0";
+const MESSAGES_DIR = "src/messages";
 const HOME_CONSTANTS = "src/features/home/constants/home.constants.ts";
 const DEMO_LINE = /export const DEMO_PATH = .* as string \| null/;
 
@@ -36,23 +37,99 @@ export async function readProjectInfo(cwd) {
   return { template: pkg.virastack?.template, i18n: pkg.virastack?.i18n === true };
 }
 
-async function loadItem(feature, framework) {
+async function loadItem(name) {
   const base = getRegistryUrl();
-  const name = `${feature.id}-${framework}.json`;
-  if (!/^https?:/.test(base)) return JSON.parse(await fs.readFile(path.join(base, name), "utf8"));
+  const file = `${name}.json`;
+  if (!/^https?:/.test(base)) return JSON.parse(await fs.readFile(path.join(base, file), "utf8"));
 
-  const response = await fetch(`${base}/${name}`, { signal: AbortSignal.timeout(15_000) });
-  if (!response.ok) throw new Error(`Registry answered ${response.status} for ${name}`);
+  const response = await fetch(`${base}/${file}`, { signal: AbortSignal.timeout(15_000) });
+  if (!response.ok) throw new Error(`Registry answered ${response.status} for ${file}`);
   return response.json();
 }
 
-/** Removes what already exists, so `add` never overwrites a route the project owns. */
-export async function withoutExistingFiles(item, cwd) {
+/** A feature that cannot be installed without touching what the project already has. */
+export class FeatureConflictError extends Error {
+  constructor(conflicts) {
+    super(conflicts.join(", "));
+    this.name = "FeatureConflictError";
+    this.conflicts = conflicts;
+  }
+}
+
+function isGroup(value) {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+/** Every message of `incoming` with what the project has for it: present, missing or conflict. */
+export function compareMessages(current, incoming, prefix = "") {
+  return Object.entries(incoming).flatMap(([key, value]) => {
+    const name = `${prefix}${key}`;
+    if (!isGroup(value)) {
+      if (!(key in current)) return [{ name, state: "missing" }];
+      return [{ name, state: isGroup(current[key]) ? "conflict" : "present" }];
+    }
+    if (key in current && !isGroup(current[key])) return [{ name, state: "conflict" }];
+    return compareMessages(current[key] ?? {}, value, `${name}.`);
+  });
+}
+
+/** Only ever adds: the project's own messages stay as they are. */
+export function mergeMessages(current, incoming) {
+  const merged = { ...current };
+  for (const [key, value] of Object.entries(incoming)) {
+    merged[key] = isGroup(value) ? mergeMessages(merged[key] ?? {}, value) : (merged[key] ?? value);
+  }
+  return merged;
+}
+
+/** All or nothing: only a part of the files means the project has its own code there. */
+async function planFiles(item, cwd) {
   const checks = await Promise.all(item.files.map((file) => exists(path.join(cwd, file.target))));
-  return {
-    item: { ...item, files: item.files.filter((_, index) => !checks[index]) },
-    skipped: item.files.filter((_, index) => checks[index]).map((file) => file.target),
-  };
+  const existing = item.files.filter((_, index) => checks[index]).map((file) => file.target);
+  const isPartial = existing.length > 0 && existing.length < item.files.length;
+  return { installed: existing.length === item.files.length, conflicts: isPartial ? existing : [] };
+}
+
+async function readJson(filePath, name) {
+  try {
+    return JSON.parse(await fs.readFile(filePath, "utf8"));
+  } catch (error) {
+    throw new Error(`${name} could not be read: ${error.message}`, { cause: error });
+  }
+}
+
+/** Reads every message file, so a broken one stops the install before anything is written. */
+async function planMessages(item, cwd) {
+  const messages = item.meta?.messages;
+  if (!messages) return { writes: [], untranslated: [], conflicts: [] };
+
+  const dir = path.join(cwd, MESSAGES_DIR);
+  if (!(await exists(dir))) throw new Error(`${MESSAGES_DIR} was not found, so ${item.name} has nowhere to add its messages.`);
+  const files = (await fs.readdir(dir)).filter((file) => file.endsWith(".json"));
+  const writes = [];
+  const untranslated = [];
+  const conflicts = [];
+
+  for (const file of files) {
+    const locale = path.basename(file, ".json");
+    const incoming = messages[locale] ?? messages.en;
+    if (!messages[locale]) untranslated.push(locale);
+
+    const filePath = path.join(dir, file);
+    const current = await readJson(filePath, `${MESSAGES_DIR}/${file}`);
+    const compared = compareMessages(current, incoming);
+    const present = compared.filter(({ state }) => state === "present");
+    const isMixed = present.length > 0 && present.length < compared.length;
+    conflicts.push(
+      ...compared
+        .filter(({ state }) => state === "conflict" || (isMixed && state === "present"))
+        .map(({ name }) => `${MESSAGES_DIR}/${file}: ${name}`),
+    );
+    if (present.length === 0) {
+      writes.push({ filePath, content: `${JSON.stringify(mergeMessages(current, incoming), null, 2)}\n` });
+    }
+  }
+  return { writes, untranslated: writes.length > 0 ? untranslated : [], conflicts };
 }
 
 /** Shows or hides the start page links to the demo. */
@@ -65,25 +142,52 @@ export async function setDemoPath(cwd, demoPath) {
   await fs.writeFile(file, source.replace(DEMO_LINE, `export const DEMO_PATH = ${value} as string | null`));
 }
 
-/** Installs a feature with shadcn and returns the files it left alone. */
-export async function installFeature(feature, { cwd, packageManager, template, isYarnClassic }) {
-  const loaded = await loadItem(feature, template);
-  const { item, skipped } = await withoutExistingFiles(loaded, cwd);
-
-  const dir = await fs.mkdtemp(path.join(os.tmpdir(), "virastack-add-"));
-  const itemPath = path.join(dir, `${item.name}.json`);
+/** Best effort: the messages work either way, but the project's own format check expects this. */
+async function formatFiles(packageManager, files, cwd) {
+  const [command, ...prefix] = getExecCommand(packageManager);
   try {
-    await fs.writeFile(itemPath, JSON.stringify(item));
-    const [command, prefix] = getDlxCommand(packageManager, { isYarnClassic });
-    await runCommand(command, [...prefix, SHADCN, "add", itemPath, "--yes"], { cwd });
-  } finally {
-    await fs.rm(dir, { recursive: true, force: true });
+    await runCommand(command, [...prefix, "prettier", "--write", ...files], { cwd });
+  } catch {
+    // A project without Prettier has no format to keep.
+  }
+}
+
+/**
+ * Installs a feature with shadcn and merges its messages. Checks everything first, so a conflict
+ * changes nothing. Throws FeatureConflictError for one.
+ */
+export async function installFeature(feature, { cwd, packageManager, template, i18n = false, isYarnClassic }) {
+  const item = await loadItem(`${feature.id}-${template}${i18n ? "-i18n" : ""}`);
+  const files = await planFiles(item, cwd);
+  const messages = await planMessages(item, cwd);
+
+  const conflicts = [...files.conflicts, ...messages.conflicts];
+  if (conflicts.length > 0) throw new FeatureConflictError(conflicts);
+  if (files.installed && messages.writes.length === 0) return { alreadyInstalled: true, untranslated: [] };
+
+  if (!files.installed) {
+    const dir = await fs.mkdtemp(path.join(os.tmpdir(), "virastack-add-"));
+    const itemPath = path.join(dir, `${item.name}.json`);
+    try {
+      await fs.writeFile(itemPath, JSON.stringify(item));
+      const [command, prefix] = getDlxCommand(packageManager, { isYarnClassic });
+      await runCommand(command, [...prefix, SHADCN, "add", itemPath, "--yes"], { cwd });
+    } finally {
+      await fs.rm(dir, { recursive: true, force: true });
+    }
+  }
+
+  await Promise.all(messages.writes.map(({ filePath, content }) => fs.writeFile(filePath, content)));
+  if (messages.writes.length > 0) {
+    await formatFiles(packageManager, messages.writes.map(({ filePath }) => filePath), cwd);
   }
 
   if (template === "tanstack") {
+    // Paraglide compiles the messages; the router has to see the new route.
+    if (i18n) await runCommand(packageManager, ["run", "postinstall"], { cwd });
     await runCommand(packageManager, ["run", "generate-routes"], { cwd });
   }
   if (feature.demoPath) await setDemoPath(cwd, feature.demoPath);
 
-  return { skipped };
+  return { alreadyInstalled: false, untranslated: messages.untranslated };
 }

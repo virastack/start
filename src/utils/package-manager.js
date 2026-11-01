@@ -33,6 +33,11 @@ export function getDlxCommand(pm, { isYarnClassic = false } = {}) {
   return ["npx", ["--yes"]];
 }
 
+/** Runs a tool the project has installed. */
+export function getExecCommand(pm) {
+  return { pnpm: ["pnpm", "exec"], yarn: ["yarn"], bun: ["bunx"] }[pm] ?? ["npx", "--no", "--"];
+}
+
 export function getInstallCommand(pm) {
   return pm === "npm" ? "npm install" : `${pm} install`;
 }

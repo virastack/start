@@ -14,7 +14,6 @@ import { Route as SiteDotwebmanifestRouteImport } from './routes/site[.]webmanif
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as Char123LangChar125RouteImport } from './routes/{-$lang}'
 import { Route as Char123LangChar125IndexRouteImport } from './routes/{-$lang}/index'
-import { Route as Char123LangChar125UsersRouteImport } from './routes/{-$lang}/users'
 
 const RobotsDottxtRoute = RobotsDottxtRouteImport.update({
   id: '/robots.txt',
@@ -41,25 +40,18 @@ const Char123LangChar125IndexRoute = Char123LangChar125IndexRouteImport.update({
   path: '/',
   getParentRoute: () => Char123LangChar125Route,
 } as any)
-const Char123LangChar125UsersRoute = Char123LangChar125UsersRouteImport.update({
-  id: '/users',
-  path: '/users',
-  getParentRoute: () => Char123LangChar125Route,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/robots.txt': typeof RobotsDottxtRoute
   '/site.webmanifest': typeof SiteDotwebmanifestRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/{-$lang}': typeof Char123LangChar125RouteWithChildren
-  '/{-$lang}/users': typeof Char123LangChar125UsersRoute
   '/{-$lang}/': typeof Char123LangChar125IndexRoute
 }
 export interface FileRoutesByTo {
   '/robots.txt': typeof RobotsDottxtRoute
   '/site.webmanifest': typeof SiteDotwebmanifestRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
-  '/{-$lang}/users': typeof Char123LangChar125UsersRoute
   '/{-$lang}': typeof Char123LangChar125IndexRoute
 }
 export interface FileRoutesById {
@@ -68,7 +60,6 @@ export interface FileRoutesById {
   '/site.webmanifest': typeof SiteDotwebmanifestRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/{-$lang}': typeof Char123LangChar125RouteWithChildren
-  '/{-$lang}/users': typeof Char123LangChar125UsersRoute
   '/{-$lang}/': typeof Char123LangChar125IndexRoute
 }
 export interface FileRouteTypes {
@@ -78,22 +69,15 @@ export interface FileRouteTypes {
     | '/site.webmanifest'
     | '/sitemap.xml'
     | '/{-$lang}'
-    | '/{-$lang}/users'
     | '/{-$lang}/'
   fileRoutesByTo: FileRoutesByTo
-  to:
-    | '/robots.txt'
-    | '/site.webmanifest'
-    | '/sitemap.xml'
-    | '/{-$lang}/users'
-    | '/{-$lang}'
+  to: '/robots.txt' | '/site.webmanifest' | '/sitemap.xml' | '/{-$lang}'
   id:
     | '__root__'
     | '/robots.txt'
     | '/site.webmanifest'
     | '/sitemap.xml'
     | '/{-$lang}'
-    | '/{-$lang}/users'
     | '/{-$lang}/'
   fileRoutesById: FileRoutesById
 }
@@ -141,23 +125,14 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Char123LangChar125IndexRouteImport
       parentRoute: typeof Char123LangChar125Route
     }
-    '/{-$lang}/users': {
-      id: '/{-$lang}/users'
-      path: '/users'
-      fullPath: '/{-$lang}/users'
-      preLoaderRoute: typeof Char123LangChar125UsersRouteImport
-      parentRoute: typeof Char123LangChar125Route
-    }
   }
 }
 
 interface Char123LangChar125RouteChildren {
-  Char123LangChar125UsersRoute: typeof Char123LangChar125UsersRoute
   Char123LangChar125IndexRoute: typeof Char123LangChar125IndexRoute
 }
 
 const Char123LangChar125RouteChildren: Char123LangChar125RouteChildren = {
-  Char123LangChar125UsersRoute: Char123LangChar125UsersRoute,
   Char123LangChar125IndexRoute: Char123LangChar125IndexRoute,
 }
 
@@ -173,13 +148,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

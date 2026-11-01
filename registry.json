@@ -138,7 +138,7 @@
           "target": "src/features/users/constants/users.constants.ts"
         },
         {
-          "path": "registry/users/common/src/features/users/helpers/get-error-message.ts",
+          "path": "registry/users/nextjs/src/features/users/helpers/get-error-message.ts",
           "type": "registry:file",
           "target": "src/features/users/helpers/get-error-message.ts"
         },
@@ -322,7 +322,7 @@
           "target": "src/features/users/constants/users.constants.ts"
         },
         {
-          "path": "registry/users/common/src/features/users/helpers/get-error-message.ts",
+          "path": "registry/users/tanstack/src/features/users/helpers/get-error-message.ts",
           "type": "registry:file",
           "target": "src/features/users/helpers/get-error-message.ts"
         },
@@ -380,6 +380,622 @@
       "meta": {
         "product": "virastack-start",
         "framework": "tanstack"
+      }
+    },
+    {
+      "name": "users-nextjs-i18n",
+      "type": "registry:item",
+      "title": "Users",
+      "description": "A searchable user list with pagination in the URL, a validated form and favorites.",
+      "author": "ViraStack <https://virastack.com>",
+      "dependencies": [
+        "@hookform/resolvers@^6.0.2",
+        "@tanstack/react-query@^5.105.0",
+        "cn@^0.5.1",
+        "lucide-react@^1.66.0",
+        "nuqs@^2.10.2",
+        "react-hook-form@^7.91.0",
+        "usehooks-ts@^3.1.1",
+        "zod@^4.6.7",
+        "zustand@^5.0.16"
+      ],
+      "devDependencies": [
+        "@testing-library/react@^16.3.3",
+        "@testing-library/user-event@^14.6.8",
+        "msw@^3.0.3",
+        "vitest@^5.0.5"
+      ],
+      "files": [
+        {
+          "path": "registry/users/nextjs-i18n/src/app/[locale]/users/loading.tsx",
+          "type": "registry:file",
+          "target": "src/app/[locale]/users/loading.tsx"
+        },
+        {
+          "path": "registry/users/nextjs-i18n/src/app/[locale]/users/page.tsx",
+          "type": "registry:file",
+          "target": "src/app/[locale]/users/page.tsx"
+        },
+        {
+          "path": "registry/users/common/src/features/users/api/add-user.api.test.ts",
+          "type": "registry:file",
+          "target": "src/features/users/api/add-user.api.test.ts"
+        },
+        {
+          "path": "registry/users/common/src/features/users/api/add-user.api.ts",
+          "type": "registry:file",
+          "target": "src/features/users/api/add-user.api.ts"
+        },
+        {
+          "path": "registry/users/common/src/features/users/api/get-users.api.test.ts",
+          "type": "registry:file",
+          "target": "src/features/users/api/get-users.api.test.ts"
+        },
+        {
+          "path": "registry/users/common/src/features/users/api/get-users.api.ts",
+          "type": "registry:file",
+          "target": "src/features/users/api/get-users.api.ts"
+        },
+        {
+          "path": "registry/users/common/src/features/users/api/query-keys.ts",
+          "type": "registry:file",
+          "target": "src/features/users/api/query-keys.ts"
+        },
+        {
+          "path": "registry/users/common/src/features/users/api/user.queries.ts",
+          "type": "registry:file",
+          "target": "src/features/users/api/user.queries.ts"
+        },
+        {
+          "path": "registry/users/nextjs-i18n/src/features/users/components/AddUserDialog.tsx",
+          "type": "registry:file",
+          "target": "src/features/users/components/AddUserDialog.tsx"
+        },
+        {
+          "path": "registry/users/common/src/features/users/components/AddUserForm.test.tsx",
+          "type": "registry:file",
+          "target": "src/features/users/components/AddUserForm.test.tsx"
+        },
+        {
+          "path": "registry/users/nextjs-i18n/src/features/users/components/AddUserForm.tsx",
+          "type": "registry:file",
+          "target": "src/features/users/components/AddUserForm.tsx"
+        },
+        {
+          "path": "registry/users/common/src/features/users/components/FavoriteButton.test.tsx",
+          "type": "registry:file",
+          "target": "src/features/users/components/FavoriteButton.test.tsx"
+        },
+        {
+          "path": "registry/users/nextjs-i18n/src/features/users/components/FavoriteButton.tsx",
+          "type": "registry:file",
+          "target": "src/features/users/components/FavoriteButton.tsx"
+        },
+        {
+          "path": "registry/users/nextjs-i18n/src/features/users/components/FavoritesCount.tsx",
+          "type": "registry:file",
+          "target": "src/features/users/components/FavoritesCount.tsx"
+        },
+        {
+          "path": "registry/users/nextjs-i18n/src/features/users/components/UsersDirectory.test.tsx",
+          "type": "registry:file",
+          "target": "src/features/users/components/UsersDirectory.test.tsx"
+        },
+        {
+          "path": "registry/users/nextjs-i18n/src/features/users/components/UsersDirectory.tsx",
+          "type": "registry:file",
+          "target": "src/features/users/components/UsersDirectory.tsx"
+        },
+        {
+          "path": "registry/users/common/src/features/users/components/UsersDirectorySkeleton.tsx",
+          "type": "registry:file",
+          "target": "src/features/users/components/UsersDirectorySkeleton.tsx"
+        },
+        {
+          "path": "registry/users/common/src/features/users/components/UsersMessage.tsx",
+          "type": "registry:file",
+          "target": "src/features/users/components/UsersMessage.tsx"
+        },
+        {
+          "path": "registry/users/nextjs-i18n/src/features/users/components/UsersPage.tsx",
+          "type": "registry:file",
+          "target": "src/features/users/components/UsersPage.tsx"
+        },
+        {
+          "path": "registry/users/nextjs-i18n/src/features/users/components/UsersPagination.tsx",
+          "type": "registry:file",
+          "target": "src/features/users/components/UsersPagination.tsx"
+        },
+        {
+          "path": "registry/users/nextjs-i18n/src/features/users/components/UsersTable.tsx",
+          "type": "registry:file",
+          "target": "src/features/users/components/UsersTable.tsx"
+        },
+        {
+          "path": "registry/users/nextjs-i18n/src/features/users/components/UsersTableSkeleton.tsx",
+          "type": "registry:file",
+          "target": "src/features/users/components/UsersTableSkeleton.tsx"
+        },
+        {
+          "path": "registry/users/common/src/features/users/constants/users.constants.ts",
+          "type": "registry:file",
+          "target": "src/features/users/constants/users.constants.ts"
+        },
+        {
+          "path": "registry/users/common/src/features/users/helpers/get-initials.test.ts",
+          "type": "registry:file",
+          "target": "src/features/users/helpers/get-initials.test.ts"
+        },
+        {
+          "path": "registry/users/common/src/features/users/helpers/get-initials.ts",
+          "type": "registry:file",
+          "target": "src/features/users/helpers/get-initials.ts"
+        },
+        {
+          "path": "registry/users/common/src/features/users/hooks/use-add-user.ts",
+          "type": "registry:file",
+          "target": "src/features/users/hooks/use-add-user.ts"
+        },
+        {
+          "path": "registry/users/nextjs-i18n/src/features/users/hooks/use-error-message.ts",
+          "type": "registry:file",
+          "target": "src/features/users/hooks/use-error-message.ts"
+        },
+        {
+          "path": "registry/users/common/src/features/users/hooks/use-favorite-ids.ts",
+          "type": "registry:file",
+          "target": "src/features/users/hooks/use-favorite-ids.ts"
+        },
+        {
+          "path": "registry/users/nextjs-i18n/src/features/users/hooks/use-users-params.ts",
+          "type": "registry:file",
+          "target": "src/features/users/hooks/use-users-params.ts"
+        },
+        {
+          "path": "registry/users/common/src/features/users/hooks/use-users.ts",
+          "type": "registry:file",
+          "target": "src/features/users/hooks/use-users.ts"
+        },
+        {
+          "path": "registry/users/nextjs-i18n/src/features/users/schemas/user.schema.ts",
+          "type": "registry:file",
+          "target": "src/features/users/schemas/user.schema.ts"
+        },
+        {
+          "path": "registry/users/nextjs-i18n/src/features/users/schemas/users-params.schema.ts",
+          "type": "registry:file",
+          "target": "src/features/users/schemas/users-params.schema.ts"
+        },
+        {
+          "path": "registry/users/common/src/features/users/stores/favorites.store.ts",
+          "type": "registry:file",
+          "target": "src/features/users/stores/favorites.store.ts"
+        }
+      ],
+      "meta": {
+        "product": "virastack-start",
+        "framework": "nextjs",
+        "messages": {
+          "en": {
+            "Users": {
+              "meta_title": "Users",
+              "meta_description": "A demo feature with a searchable user list, a validated form and favorites.",
+              "back_to_start": "Start page",
+              "title": "Users",
+              "subtitle": "Live data from DummyJSON.",
+              "favorites_count": "<number>{count}</number> {count, plural, one {favorite} other {favorites}}",
+              "search_label": "Search users",
+              "add_user": "Add user",
+              "add_user_description": "Sends a real POST request to the DummyJSON demo API.",
+              "adding_user": "Adding…",
+              "add_another_user": "Add another user",
+              "add_result": "The API returned user #{id}",
+              "add_not_saved": "<strong>This user was not saved.</strong> DummyJSON is a demo API: it returns the new user but does not store it, so the user will not appear in the list.",
+              "add_error": "Could not add the user. {error}",
+              "field_first_name": "First name",
+              "field_last_name": "Last name",
+              "field_email": "Email",
+              "validation_first_name": "Enter a first name",
+              "validation_last_name": "Enter a last name",
+              "validation_email": "Enter a valid email address",
+              "validation_max_length": "Use 50 characters or fewer",
+              "loading_users": "Loading users",
+              "load_error_title": "Could not load users",
+              "retry": "Retry",
+              "retrying": "Retrying…",
+              "empty_page_title": "This page is empty",
+              "empty_page_description": "The results end before page {page}.",
+              "go_to_first_page": "Go to the first page",
+              "no_results_title": "No users found",
+              "no_results_description": "Nothing matches “{query}”.",
+              "clear_search": "Clear search",
+              "no_users_title": "No users yet",
+              "no_users_description": "The API returned an empty list.",
+              "column_user": "User",
+              "column_email": "Email",
+              "column_favorite": "Favorite",
+              "favorite_user": "Favorite {name}",
+              "pagination_label": "Pagination",
+              "previous": "Previous",
+              "next": "Next",
+              "page_status": "Page {page} of {totalPages}",
+              "total_users": "{total, plural, one {# user} other {# users}}",
+              "error_network": "Network request failed",
+              "error_status": "Request failed with status {status}",
+              "error_unknown": "Something went wrong.",
+              "guide_source": "This demo:",
+              "guide_api": "Your API:",
+              "guide_remove": "To remove:"
+            }
+          },
+          "tr": {
+            "Users": {
+              "meta_title": "Kullanıcılar",
+              "meta_description": "Aranabilir kullanıcı listesi, doğrulamalı form ve favoriler içeren bir demo feature.",
+              "back_to_start": "Başlangıç sayfası",
+              "title": "Kullanıcılar",
+              "subtitle": "Veriler canlı olarak DummyJSON'dan geliyor.",
+              "favorites_count": "<number>{count}</number> favori",
+              "search_label": "Kullanıcı ara",
+              "add_user": "Kullanıcı ekle",
+              "add_user_description": "DummyJSON demo API'sine gerçek bir POST isteği gönderir.",
+              "adding_user": "Ekleniyor…",
+              "add_another_user": "Başka bir kullanıcı ekle",
+              "add_result": "API, #{id} numaralı kullanıcıyı döndürdü",
+              "add_not_saved": "<strong>Bu kullanıcı kaydedilmedi.</strong> DummyJSON bir demo API: yeni kullanıcıyı döndürür ama saklamaz, bu yüzden kullanıcı listede görünmez.",
+              "add_error": "Kullanıcı eklenemedi. {error}",
+              "field_first_name": "Ad",
+              "field_last_name": "Soyad",
+              "field_email": "E-posta",
+              "validation_first_name": "Adı girin",
+              "validation_last_name": "Soyadı girin",
+              "validation_email": "Geçerli bir e-posta adresi girin",
+              "validation_max_length": "En fazla 50 karakter girebilirsiniz",
+              "loading_users": "Kullanıcılar yükleniyor",
+              "load_error_title": "Kullanıcılar yüklenemedi",
+              "retry": "Tekrar dene",
+              "retrying": "Deneniyor…",
+              "empty_page_title": "Bu sayfa boş",
+              "empty_page_description": "Sonuçlar {page}. sayfaya gelmeden bitiyor.",
+              "go_to_first_page": "İlk sayfaya git",
+              "no_results_title": "Kullanıcı bulunamadı",
+              "no_results_description": "“{query}” ile eşleşen sonuç yok.",
+              "clear_search": "Aramayı temizle",
+              "no_users_title": "Henüz kullanıcı yok",
+              "no_users_description": "API boş bir liste döndürdü.",
+              "column_user": "Kullanıcı",
+              "column_email": "E-posta",
+              "column_favorite": "Favori",
+              "favorite_user": "Favori: {name}",
+              "pagination_label": "Sayfalama",
+              "previous": "Önceki",
+              "next": "Sonraki",
+              "page_status": "Sayfa {page}/{totalPages}",
+              "total_users": "{total} kullanıcı",
+              "error_network": "İstek gönderilemedi. İnternet bağlantınızı kontrol edin.",
+              "error_status": "İstek başarısız oldu (durum kodu: {status})",
+              "error_unknown": "Bir şeyler ters gitti.",
+              "guide_source": "Bu demo:",
+              "guide_api": "Kendi API'n:",
+              "guide_remove": "Kaldırmak için:"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "users-tanstack-i18n",
+      "type": "registry:item",
+      "title": "Users",
+      "description": "A searchable user list with pagination in the URL, a validated form and favorites.",
+      "author": "ViraStack <https://virastack.com>",
+      "dependencies": [
+        "@hookform/resolvers@^6.0.2",
+        "@tanstack/react-query@^5.105.0",
+        "cn@^0.5.1",
+        "lucide-react@^1.66.0",
+        "react-hook-form@^7.91.0",
+        "usehooks-ts@^3.1.1",
+        "zod@^4.6.7",
+        "zustand@^5.0.16"
+      ],
+      "devDependencies": [
+        "@testing-library/react@^16.3.3",
+        "@testing-library/user-event@^14.6.8",
+        "msw@^3.0.3",
+        "vitest@^5.0.5"
+      ],
+      "files": [
+        {
+          "path": "registry/users/common/src/features/users/api/add-user.api.test.ts",
+          "type": "registry:file",
+          "target": "src/features/users/api/add-user.api.test.ts"
+        },
+        {
+          "path": "registry/users/common/src/features/users/api/add-user.api.ts",
+          "type": "registry:file",
+          "target": "src/features/users/api/add-user.api.ts"
+        },
+        {
+          "path": "registry/users/common/src/features/users/api/get-users.api.test.ts",
+          "type": "registry:file",
+          "target": "src/features/users/api/get-users.api.test.ts"
+        },
+        {
+          "path": "registry/users/common/src/features/users/api/get-users.api.ts",
+          "type": "registry:file",
+          "target": "src/features/users/api/get-users.api.ts"
+        },
+        {
+          "path": "registry/users/common/src/features/users/api/query-keys.ts",
+          "type": "registry:file",
+          "target": "src/features/users/api/query-keys.ts"
+        },
+        {
+          "path": "registry/users/common/src/features/users/api/user.queries.ts",
+          "type": "registry:file",
+          "target": "src/features/users/api/user.queries.ts"
+        },
+        {
+          "path": "registry/users/tanstack-i18n/src/features/users/components/AddUserDialog.tsx",
+          "type": "registry:file",
+          "target": "src/features/users/components/AddUserDialog.tsx"
+        },
+        {
+          "path": "registry/users/common/src/features/users/components/AddUserForm.test.tsx",
+          "type": "registry:file",
+          "target": "src/features/users/components/AddUserForm.test.tsx"
+        },
+        {
+          "path": "registry/users/tanstack-i18n/src/features/users/components/AddUserForm.tsx",
+          "type": "registry:file",
+          "target": "src/features/users/components/AddUserForm.tsx"
+        },
+        {
+          "path": "registry/users/common/src/features/users/components/FavoriteButton.test.tsx",
+          "type": "registry:file",
+          "target": "src/features/users/components/FavoriteButton.test.tsx"
+        },
+        {
+          "path": "registry/users/tanstack-i18n/src/features/users/components/FavoriteButton.tsx",
+          "type": "registry:file",
+          "target": "src/features/users/components/FavoriteButton.tsx"
+        },
+        {
+          "path": "registry/users/tanstack-i18n/src/features/users/components/FavoritesCount.tsx",
+          "type": "registry:file",
+          "target": "src/features/users/components/FavoritesCount.tsx"
+        },
+        {
+          "path": "registry/users/tanstack-i18n/src/features/users/components/UsersDirectory.test.tsx",
+          "type": "registry:file",
+          "target": "src/features/users/components/UsersDirectory.test.tsx"
+        },
+        {
+          "path": "registry/users/tanstack-i18n/src/features/users/components/UsersDirectory.tsx",
+          "type": "registry:file",
+          "target": "src/features/users/components/UsersDirectory.tsx"
+        },
+        {
+          "path": "registry/users/common/src/features/users/components/UsersDirectorySkeleton.tsx",
+          "type": "registry:file",
+          "target": "src/features/users/components/UsersDirectorySkeleton.tsx"
+        },
+        {
+          "path": "registry/users/common/src/features/users/components/UsersMessage.tsx",
+          "type": "registry:file",
+          "target": "src/features/users/components/UsersMessage.tsx"
+        },
+        {
+          "path": "registry/users/tanstack-i18n/src/features/users/components/UsersPage.tsx",
+          "type": "registry:file",
+          "target": "src/features/users/components/UsersPage.tsx"
+        },
+        {
+          "path": "registry/users/tanstack-i18n/src/features/users/components/UsersPagination.tsx",
+          "type": "registry:file",
+          "target": "src/features/users/components/UsersPagination.tsx"
+        },
+        {
+          "path": "registry/users/tanstack-i18n/src/features/users/components/UsersTable.tsx",
+          "type": "registry:file",
+          "target": "src/features/users/components/UsersTable.tsx"
+        },
+        {
+          "path": "registry/users/tanstack-i18n/src/features/users/components/UsersTableSkeleton.tsx",
+          "type": "registry:file",
+          "target": "src/features/users/components/UsersTableSkeleton.tsx"
+        },
+        {
+          "path": "registry/users/common/src/features/users/constants/users.constants.ts",
+          "type": "registry:file",
+          "target": "src/features/users/constants/users.constants.ts"
+        },
+        {
+          "path": "registry/users/tanstack-i18n/src/features/users/helpers/get-error-message.ts",
+          "type": "registry:file",
+          "target": "src/features/users/helpers/get-error-message.ts"
+        },
+        {
+          "path": "registry/users/common/src/features/users/helpers/get-initials.test.ts",
+          "type": "registry:file",
+          "target": "src/features/users/helpers/get-initials.test.ts"
+        },
+        {
+          "path": "registry/users/tanstack-i18n/src/features/users/helpers/get-initials.ts",
+          "type": "registry:file",
+          "target": "src/features/users/helpers/get-initials.ts"
+        },
+        {
+          "path": "registry/users/common/src/features/users/hooks/use-add-user.ts",
+          "type": "registry:file",
+          "target": "src/features/users/hooks/use-add-user.ts"
+        },
+        {
+          "path": "registry/users/common/src/features/users/hooks/use-favorite-ids.ts",
+          "type": "registry:file",
+          "target": "src/features/users/hooks/use-favorite-ids.ts"
+        },
+        {
+          "path": "registry/users/tanstack-i18n/src/features/users/hooks/use-users-params.ts",
+          "type": "registry:file",
+          "target": "src/features/users/hooks/use-users-params.ts"
+        },
+        {
+          "path": "registry/users/common/src/features/users/hooks/use-users.ts",
+          "type": "registry:file",
+          "target": "src/features/users/hooks/use-users.ts"
+        },
+        {
+          "path": "registry/users/tanstack-i18n/src/features/users/schemas/user.schema.ts",
+          "type": "registry:file",
+          "target": "src/features/users/schemas/user.schema.ts"
+        },
+        {
+          "path": "registry/users/tanstack-i18n/src/features/users/schemas/users-params.schema.ts",
+          "type": "registry:file",
+          "target": "src/features/users/schemas/users-params.schema.ts"
+        },
+        {
+          "path": "registry/users/common/src/features/users/stores/favorites.store.ts",
+          "type": "registry:file",
+          "target": "src/features/users/stores/favorites.store.ts"
+        },
+        {
+          "path": "registry/users/tanstack-i18n/src/routes/{-$lang}/users.tsx",
+          "type": "registry:file",
+          "target": "src/routes/{-$lang}/users.tsx"
+        }
+      ],
+      "meta": {
+        "product": "virastack-start",
+        "framework": "tanstack",
+        "messages": {
+          "en": {
+            "users_title": "Users",
+            "users_subtitle": "Live data from DummyJSON.",
+            "users_meta_description": "A demo feature with a searchable user list, a validated form and favorites.",
+            "users_back": "Start page",
+            "users_favorites_count": {
+              "declarations": [
+                "input count",
+                "local countPlural = count: plural"
+              ],
+              "selectors": [
+                "countPlural"
+              ],
+              "match": {
+                "countPlural=one": "{count} favorite",
+                "countPlural=other": "{count} favorites"
+              }
+            },
+            "users_favorite": "Favorite {name}",
+            "users_search": "Search users",
+            "users_loading": "Loading users",
+            "users_load_error": "Could not load users",
+            "users_retry": "Retry",
+            "users_retrying": "Retrying…",
+            "users_page_empty_title": "This page is empty",
+            "users_page_empty_description": "The results end before page {page}.",
+            "users_first_page": "Go to the first page",
+            "users_no_results_title": "No users found",
+            "users_no_results_description": "Nothing matches “{query}”.",
+            "users_clear_search": "Clear search",
+            "users_empty_title": "No users yet",
+            "users_empty_description": "The API returned an empty list.",
+            "users_pagination": "Pagination",
+            "users_previous": "Previous",
+            "users_next": "Next",
+            "users_page_of": "Page {page} of {totalPages}",
+            "users_total": {
+              "declarations": [
+                "input count",
+                "local countPlural = count: plural"
+              ],
+              "selectors": [
+                "countPlural"
+              ],
+              "match": {
+                "countPlural=one": "{count} user",
+                "countPlural=other": "{count} users"
+              }
+            },
+            "users_column_user": "User",
+            "users_column_email": "Email",
+            "users_column_favorite": "Favorite",
+            "users_add": "Add user",
+            "users_adding": "Adding…",
+            "users_add_description": "Sends a real POST request to the DummyJSON demo API.",
+            "users_add_returned": "The API returned user #{id}",
+            "users_add_not_saved": "This user was not saved.",
+            "users_add_not_saved_reason": "DummyJSON is a demo API: it returns the new user but does not store it, so the user will not appear in the list.",
+            "users_add_another": "Add another user",
+            "users_add_failed": "Could not add the user. {reason}",
+            "users_first_name": "First name",
+            "users_last_name": "Last name",
+            "users_email": "Email",
+            "users_error_first_name": "Enter a first name",
+            "users_error_last_name": "Enter a last name",
+            "users_error_too_long": "Use 50 characters or fewer",
+            "users_error_email": "Enter a valid email address",
+            "users_error_generic": "Something went wrong.",
+            "users_error_network": "Network request failed",
+            "users_error_status": "Request failed with status {status}",
+            "users_guide_source": "This demo:",
+            "users_guide_api": "Your API:",
+            "users_guide_remove": "To remove:"
+          },
+          "tr": {
+            "users_title": "Kullanıcılar",
+            "users_subtitle": "Veriler canlı olarak DummyJSON'dan geliyor.",
+            "users_meta_description": "Aranabilir kullanıcı listesi, doğrulamalı form ve favoriler içeren bir demo feature.",
+            "users_back": "Başlangıç sayfası",
+            "users_favorites_count": "{count} favori",
+            "users_favorite": "Favori: {name}",
+            "users_search": "Kullanıcı ara",
+            "users_loading": "Kullanıcılar yükleniyor",
+            "users_load_error": "Kullanıcılar yüklenemedi",
+            "users_retry": "Yeniden dene",
+            "users_retrying": "Yeniden deneniyor…",
+            "users_page_empty_title": "Bu sayfa boş",
+            "users_page_empty_description": "Sonuçlar {page}. sayfaya gelmeden bitiyor.",
+            "users_first_page": "İlk sayfaya dön",
+            "users_no_results_title": "Kullanıcı bulunamadı",
+            "users_no_results_description": "“{query}” aramasıyla eşleşen sonuç yok.",
+            "users_clear_search": "Aramayı temizle",
+            "users_empty_title": "Henüz kullanıcı yok",
+            "users_empty_description": "API boş bir liste döndürdü.",
+            "users_pagination": "Sayfalama",
+            "users_previous": "Önceki",
+            "users_next": "Sonraki",
+            "users_page_of": "Sayfa {page} / {totalPages}",
+            "users_total": "{count} kullanıcı",
+            "users_column_user": "Kullanıcı",
+            "users_column_email": "E-posta",
+            "users_column_favorite": "Favori",
+            "users_add": "Kullanıcı ekle",
+            "users_adding": "Ekleniyor…",
+            "users_add_description": "DummyJSON demo API'sine gerçek bir POST isteği gönderir.",
+            "users_add_returned": "API, #{id} numaralı kullanıcıyı döndürdü",
+            "users_add_not_saved": "Bu kullanıcı kaydedilmedi.",
+            "users_add_not_saved_reason": "DummyJSON bir demo API: yeni kullanıcıyı yanıtta döndürür ama saklamaz. Bu yüzden kullanıcı listede görünmez.",
+            "users_add_another": "Başka bir kullanıcı ekle",
+            "users_add_failed": "Kullanıcı eklenemedi. {reason}",
+            "users_first_name": "Ad",
+            "users_last_name": "Soyad",
+            "users_email": "E-posta",
+            "users_error_first_name": "Bir ad girin",
+            "users_error_last_name": "Bir soyad girin",
+            "users_error_too_long": "En fazla 50 karakter girin",
+            "users_error_email": "Geçerli bir e-posta adresi girin",
+            "users_error_generic": "Bir şeyler ters gitti.",
+            "users_error_network": "Sunucuya ulaşılamadı.",
+            "users_error_status": "İstek başarısız oldu (durum kodu: {status}).",
+            "users_guide_source": "Bu demo:",
+            "users_guide_api": "Kendi API'n:",
+            "users_guide_remove": "Kaldırmak için:"
+          }
+        }
       }
     }
   ]

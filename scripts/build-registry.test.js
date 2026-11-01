@@ -34,7 +34,7 @@ describe("findDependencies", () => {
   });
 });
 
-describe.each(["nextjs", "tanstack"])("users for %s", (framework) => {
+describe.each(["nextjs", "tanstack", "nextjs-i18n", "tanstack-i18n"])("users for %s", (framework) => {
   const item = buildItem(REPO, users, framework);
 
   it("installs into the same paths as the template", () => {
@@ -43,18 +43,34 @@ describe.each(["nextjs", "tanstack"])("users for %s", (framework) => {
   });
 
   it("brings its route", () => {
-    const route = framework === "nextjs" ? "src/app/users/page.tsx" : "src/routes/users.tsx";
+    const route = {
+      nextjs: "src/app/users/page.tsx",
+      tanstack: "src/routes/users.tsx",
+      "nextjs-i18n": "src/app/[locale]/users/page.tsx",
+      "tanstack-i18n": "src/routes/{-$lang}/users.tsx",
+    }[framework];
     expect(item.files.map((file) => file.target)).toContain(route);
   });
 
   it("names its maker", () => {
     expect(item.author).toContain("ViraStack");
-    expect(item.meta).toEqual({ product: "virastack-start", framework });
+    expect(item.meta).toMatchObject({ product: "virastack-start", framework: framework.replace("-i18n", "") });
+  });
+
+  it("carries messages only with i18n, with the same keys in every locale", () => {
+    const { messages } = item.meta;
+    if (!messages) {
+      expect(framework.endsWith("-i18n")).toBe(false);
+      return;
+    }
+    const keys = (locale) => JSON.stringify(Object.keys(locale.Users ?? locale).sort());
+    expect(keys(messages.tr)).toBe(keys(messages.en));
+    expect(Object.keys(messages.en).length).toBeGreaterThan(0);
   });
 
   it("uses the framework's own URL state", () => {
     const names = item.dependencies.join(" ");
-    if (framework === "nextjs") expect(names).toContain("nuqs@");
+    if (framework.startsWith("nextjs")) expect(names).toContain("nuqs@");
     else expect(names).not.toContain("nuqs");
   });
 });

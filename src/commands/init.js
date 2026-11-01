@@ -252,26 +252,25 @@ export async function runInit(options = {}) {
   }
 
   // The demo comes from the registry. Without it the start page stands alone.
-  if (!wantsI18n) {
-    let demoOk = false;
-    if (installOk) {
-      const demoSpinner = p.spinner();
-      demoSpinner.start(t("scaffold.demoInit"));
-      try {
-        await installFeature(findFeature("users"), {
-          cwd: targetDir,
-          packageManager,
-          template,
-          isYarnClassic: (process.env.npm_config_user_agent ?? "").startsWith("yarn/1."),
-        });
-        demoOk = true;
-        demoSpinner.stop(t("scaffold.demoInitDone"));
-      } catch {
-        demoSpinner.stop(t("scaffold.demoInitFailed"));
-      }
+  let demoOk = false;
+  if (installOk) {
+    const demoSpinner = p.spinner();
+    demoSpinner.start(t("scaffold.demoInit"));
+    try {
+      await installFeature(findFeature("users"), {
+        cwd: targetDir,
+        packageManager,
+        template,
+        i18n: wantsI18n,
+        isYarnClassic: (process.env.npm_config_user_agent ?? "").startsWith("yarn/1."),
+      });
+      demoOk = true;
+      demoSpinner.stop(t("scaffold.demoInitDone"));
+    } catch {
+      demoSpinner.stop(t("scaffold.demoInitFailed"));
     }
-    if (!demoOk) await setDemoPath(targetDir, null);
   }
+  if (!demoOk) await setDemoPath(targetDir, null);
 
   // ViraStack AI only writes files, so it runs even with --skip-install.
   let aiOk = false;

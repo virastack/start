@@ -1,14 +1,12 @@
-import { Link } from "@tanstack/react-router"
 import { ArrowRightIcon, ArrowUpRightIcon } from "lucide-react"
-
-import { getLangParam } from "@/helpers/localized-url"
 
 import { LanguageSwitcher } from "@/components/shared/LanguageSwitcher"
 import { ThemeToggle } from "@/components/shared/ThemeToggle"
 import { buttonVariants } from "@/components/ui/button"
 import { StackList } from "@/features/home/components/StackList"
-import { getNextSteps, getResourceLinks } from "@/features/home/constants/home.constants"
+import { DEMO_PATH, getNextSteps, getResourceLinks } from "@/features/home/constants/home.constants"
 import * as m from "@/paraglide/messages.js"
+import { localizeHref } from "@/paraglide/runtime.js"
 
 export function HomePage() {
   return (
@@ -36,17 +34,18 @@ export function HomePage() {
           </h1>
         </div>
         <p className="text-balance text-muted-foreground">{m.site_description()}</p>
-        <Link
-          to="/{-$lang}/users"
-          params={{ lang: getLangParam() }}
-          className={buttonVariants({ size: "lg", className: "group" })}
-        >
-          {m.home_cta()}
-          <ArrowRightIcon
-            aria-hidden
-            className="transition-transform duration-150 ease-out group-hover:translate-x-0.5 motion-reduce:transition-none"
-          />
-        </Link>
+        {DEMO_PATH && (
+          <a
+            href={localizeHref(DEMO_PATH)}
+            className={buttonVariants({ size: "lg", className: "group" })}
+          >
+            {m.home_cta()}
+            <ArrowRightIcon
+              aria-hidden
+              className="transition-transform duration-150 ease-out group-hover:translate-x-0.5 motion-reduce:transition-none"
+            />
+          </a>
+        )}
       </header>
 
       <section aria-labelledby="next-steps-heading" className="flex flex-col gap-3">

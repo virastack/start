@@ -17,13 +17,22 @@ type StackItem = {
   icon: ComponentType<{ className?: string }>
 }
 
+/** Where the demo lives. `null` when it is not installed, which also hides the links to it. */
+export const DEMO_PATH = "/users" as string | null
+
 // These two are functions so the text is read per request, in the locale of that request.
-export const getNextSteps = () =>
-  [
-    { title: m.home_next_replace(), path: "src/routes/{-$lang}/index.tsx" },
-    { title: m.home_next_feature(), path: "src/features/<name>" },
-    { title: m.home_next_remove(), path: "src/features/users, src/routes/{-$lang}/users.tsx" }
-  ] as const
+export const getNextSteps = () => [
+  { title: m.home_next_replace(), path: "src/routes/{-$lang}/index.tsx" },
+  { title: m.home_next_feature(), path: "src/features/<name>" },
+  ...(DEMO_PATH
+    ? [
+        {
+          title: m.home_next_remove(),
+          path: "src/features/users, src/routes/{-$lang}/users.tsx, users_* in src/messages"
+        }
+      ]
+    : [])
+]
 
 export const STACK: readonly StackItem[] = [
   { name: "TanStack Start", packageName: "@tanstack/react-start", icon: TanstackIcon },

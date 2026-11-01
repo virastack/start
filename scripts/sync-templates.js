@@ -15,7 +15,6 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const SHARED = "templates-shared";
-const USERS_COMMON = "registry/users/common";
 const NEXT = "templates/nextjs";
 const TANSTACK = "templates/tanstack";
 const NEXT_I18N = "templates-i18n/nextjs";
@@ -65,30 +64,6 @@ export const GROUPS = [
       "src/test/setup.ts",
       "src/types/site-config.types.ts",
       "vitest.config.ts"
-    ],
-  },
-  {
-    // i18n templates still carry the demo; the other two install it from the registry.
-    name: "users demo",
-    source: USERS_COMMON,
-    targets: [NEXT_I18N, TANSTACK_I18N],
-    entries: [
-      "src/features/users/api/add-user.api.test.ts",
-      "src/features/users/api/add-user.api.ts",
-      "src/features/users/api/get-users.api.test.ts",
-      "src/features/users/api/get-users.api.ts",
-      "src/features/users/api/query-keys.ts",
-      "src/features/users/api/user.queries.ts",
-      "src/features/users/components/AddUserForm.test.tsx",
-      "src/features/users/components/FavoriteButton.test.tsx",
-      "src/features/users/components/UsersDirectorySkeleton.tsx",
-      "src/features/users/components/UsersMessage.tsx",
-      "src/features/users/constants/users.constants.ts",
-      "src/features/users/helpers/get-initials.test.ts",
-      "src/features/users/hooks/use-add-user.ts",
-      "src/features/users/hooks/use-favorite-ids.ts",
-      "src/features/users/hooks/use-users.ts",
-      "src/features/users/stores/favorites.store.ts"
     ],
   },
   {

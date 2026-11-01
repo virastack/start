@@ -1,6 +1,8 @@
 import { promises as fs } from "node:fs";
 import path from "node:path";
 
+import { getExecCommand } from "./package-manager.js";
+
 const WORKFLOW = ".github/workflows/ci.yml";
 
 /** The template is written for pnpm; `yarn@1` has no `--immutable` and needs no Corepack. */
@@ -41,7 +43,7 @@ export function adaptWorkflow(text, pm, { isYarnClassic = false } = {}) {
 }
 
 export function getHookCommands(pm) {
-  const exec = { pnpm: "pnpm exec", yarn: "yarn", bun: "bunx" }[pm] ?? "npx --no --";
+  const exec = getExecCommand(pm).join(" ");
   return {
     "pre-commit": `${exec} lint-staged\n`,
     "pre-push": `${pm} run typecheck && ${pm} run lint:ci\n`,
