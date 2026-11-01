@@ -31,7 +31,10 @@
     "src",
     "templates",
     "templates-i18n",
-    "!src/**/*.test.js"
+    "!src/**/*.test.js",
+    "!templates*/**/*.tsbuildinfo",
+    "!templates*/**/.env.local",
+    "!templates*/**/pnpm-lock.yaml"
   ],
   "scripts": {
     "start": "node ./bin/virastack.js",

@@ -48,6 +48,16 @@ export function getHookCommands(pm) {
   };
 }
 
+/**
+ * npm: every later install also needs this, because some plugins do not list ESLint 10 yet.
+ * Modern Yarn: the build tools read packages they do not declare, which Plug'n'Play forbids.
+ */
+export function getConfigFiles(pm, { isYarnClassic = false } = {}) {
+  if (pm === "npm") return { ".npmrc": "legacy-peer-deps=true\n" };
+  if (pm === "yarn" && !isYarnClassic) return { ".yarnrc.yml": "nodeLinker: node-modules\n" };
+  return {};
+}
+
 /** Points CI and git hooks at the package manager the project was created with. */
 export async function setupPackageManager(targetDir, pm, options) {
   const workflowPath = path.join(targetDir, WORKFLOW);
@@ -56,5 +66,11 @@ export async function setupPackageManager(targetDir, pm, options) {
 
   for (const [hook, content] of Object.entries(getHookCommands(pm))) {
     await fs.writeFile(path.join(targetDir, ".husky", hook), content);
+  }
+
+  // shadcn and other tools pick the package manager from these files.
+  if (pm !== "pnpm") await fs.rm(path.join(targetDir, "pnpm-workspace.yaml"), { force: true });
+  for (const [file, content] of Object.entries(getConfigFiles(pm, options))) {
+    await fs.writeFile(path.join(targetDir, file), content);
   }
 }

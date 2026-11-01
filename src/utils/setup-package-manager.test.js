@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
-import { adaptWorkflow, getHookCommands } from "./setup-package-manager.js";
+import { adaptWorkflow, getConfigFiles, getHookCommands } from "./setup-package-manager.js";
 
 const template = readFileSync(
   path.resolve(import.meta.dirname, "../../templates/nextjs/.github/workflows/ci.yml"),
@@ -59,5 +59,21 @@ describe("getHookCommands", () => {
   ])("runs lint-staged with %s", (pm, command) => {
     expect(getHookCommands(pm)["pre-commit"]).toBe(command);
     expect(getHookCommands(pm)["pre-push"]).toBe(`${pm} run typecheck && ${pm} run lint:ci\n`);
+  });
+});
+
+describe("getConfigFiles", () => {
+  it("keeps later npm installs working", () => {
+    expect(getConfigFiles("npm")).toEqual({ ".npmrc": "legacy-peer-deps=true\n" });
+  });
+
+  it("turns off Plug'n'Play for modern Yarn only", () => {
+    expect(getConfigFiles("yarn")).toEqual({ ".yarnrc.yml": "nodeLinker: node-modules\n" });
+    expect(getConfigFiles("yarn", { isYarnClassic: true })).toEqual({});
+  });
+
+  it("adds nothing for pnpm and bun", () => {
+    expect(getConfigFiles("pnpm")).toEqual({});
+    expect(getConfigFiles("bun")).toEqual({});
   });
 });
