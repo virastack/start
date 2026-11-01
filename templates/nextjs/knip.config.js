@@ -5,8 +5,22 @@ const config = {
     "src/app/**/{sitemap,robots,manifest}.{ts,tsx}"
   ],
   project: ["src/**/*.{ts,tsx,js,jsx}"],
-  ignore: ["src/components/ui/**"],
-  ignoreDependencies: ["tailwindcss", "tw-animate-css"],
+  ignore: [
+    "src/components/ui/**",
+    // components.json points shadcn at this file.
+    "src/lib/utils.ts",
+    // Used by features from `virastack add`.
+    "src/test/render.tsx"
+  ],
+  // The users demo and `virastack add` features use these.
+  ignoreDependencies: [
+    "tailwindcss",
+    "tw-animate-css",
+    "react-hook-form",
+    "@hookform/resolvers",
+    "zustand",
+    "@testing-library/user-event"
+  ],
   // next-env.d.ts imports route types that exist only after `next dev` or `next build`.
   ignoreUnresolved: [/^\.\/\.next\//],
   rules: {

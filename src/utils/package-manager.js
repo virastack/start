@@ -22,6 +22,17 @@ export function getAddArgs(pm, packages) {
   return pm === "npm" ? ["install", "--legacy-peer-deps", ...packages] : ["add", ...packages];
 }
 
+/**
+ * `yarn@1` has no `dlx`.
+ * @returns {[string, string[]]}
+ */
+export function getDlxCommand(pm, { isYarnClassic = false } = {}) {
+  if (pm === "pnpm") return ["pnpm", ["dlx"]];
+  if (pm === "bun") return ["bunx", []];
+  if (pm === "yarn" && !isYarnClassic) return ["yarn", ["dlx"]];
+  return ["npx", ["--yes"]];
+}
+
 export function getInstallCommand(pm) {
   return pm === "npm" ? "npm install" : `${pm} install`;
 }

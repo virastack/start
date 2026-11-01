@@ -6,7 +6,7 @@
  *
  * `templates-shared` is the source of what all four templates share. Framework pairs still copy
  * from their base template. Feature files are listed one by one, because a feature differs per
- * framework: a whole feature folder is refused.
+ * framework: a whole feature folder is refused. The users demo lives in `registry/users`.
  * This script never ships in the npm package and never runs on a user's machine.
  */
 import { execFileSync } from "node:child_process";
@@ -15,6 +15,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const SHARED = "templates-shared";
+const USERS_COMMON = "registry/users/common";
 const NEXT = "templates/nextjs";
 const TANSTACK = "templates/tanstack";
 const NEXT_I18N = "templates-i18n/nextjs";
@@ -55,6 +56,23 @@ export const GROUPS = [
       "src/features/home/icons/typescript.tsx",
       "src/features/home/icons/zod.tsx",
       "src/features/home/icons/zustand.tsx",
+      "src/helpers/.gitkeep",
+      "src/hooks/.gitkeep",
+      "src/lib/",
+      "src/schemas/.gitkeep",
+      "src/stores/.gitkeep",
+      "src/test/server.ts",
+      "src/test/setup.ts",
+      "src/types/site-config.types.ts",
+      "vitest.config.ts"
+    ],
+  },
+  {
+    // i18n templates still carry the demo; the other two install it from the registry.
+    name: "users demo",
+    source: USERS_COMMON,
+    targets: [NEXT_I18N, TANSTACK_I18N],
+    entries: [
       "src/features/users/api/add-user.api.test.ts",
       "src/features/users/api/add-user.api.ts",
       "src/features/users/api/get-users.api.test.ts",
@@ -70,16 +88,7 @@ export const GROUPS = [
       "src/features/users/hooks/use-add-user.ts",
       "src/features/users/hooks/use-favorite-ids.ts",
       "src/features/users/hooks/use-users.ts",
-      "src/features/users/stores/favorites.store.ts",
-      "src/helpers/.gitkeep",
-      "src/hooks/.gitkeep",
-      "src/lib/",
-      "src/schemas/.gitkeep",
-      "src/stores/.gitkeep",
-      "src/test/server.ts",
-      "src/test/setup.ts",
-      "src/types/site-config.types.ts",
-      "vitest.config.ts"
+      "src/features/users/stores/favorites.store.ts"
     ],
   },
   {

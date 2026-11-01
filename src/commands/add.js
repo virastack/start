@@ -9,6 +9,7 @@ import { detectPackageManager, getAddArgs } from "../utils/package-manager.js";
 import { trackEvent } from "../utils/telemetry.js";
 import { findTool, TOOLS } from "../utils/tools.js";
 import { getAiInitArgs } from "../utils/agents.js";
+import { findFeature, installFeature, readProjectInfo } from "../utils/features.js";
 
 async function fileExists(filePath) {
   try {
@@ -17,6 +18,44 @@ async function fileExists(filePath) {
   } catch {
     return false;
   }
+}
+
+async function addFeature(feature) {
+  const cwd = process.cwd();
+  if (!(await fileExists(path.join(cwd, "package.json")))) {
+    p.log.error(t("add.notAProject"));
+    process.exit(1);
+  }
+
+  const { template, i18n } = await readProjectInfo(cwd);
+  if (!template) {
+    p.log.error(t("add.notStart"));
+    process.exit(1);
+  }
+  if (i18n) {
+    p.log.error(t("add.i18nUnsupported", { feature: feature.id }));
+    process.exit(1);
+  }
+
+  const packageManager = detectPackageManager();
+  const spinner = p.spinner();
+  spinner.start(t("add.installing", { pkg: feature.id }));
+  try {
+    const { skipped } = await installFeature(feature, {
+      cwd,
+      packageManager,
+      template,
+      isYarnClassic: (process.env.npm_config_user_agent ?? "").startsWith("yarn/1."),
+    });
+    spinner.stop(t("add.done", { pkg: feature.id }));
+    if (skipped.length > 0) p.log.warn(t("add.skippedFiles", { files: skipped.join(", ") }));
+  } catch (error) {
+    spinner.stop(t("add.installFailed", { pkg: feature.id }));
+    p.log.error(String(error?.message ?? error));
+    process.exit(1);
+  }
+
+  await trackEvent("add", { feature: feature.id, packageManager });
 }
 
 /**
@@ -32,6 +71,12 @@ export async function runAdd(toolId, options = {}) {
   if (!toolId) {
     p.log.error(t("add.toolMissing", { list: toolList }));
     process.exit(1);
+  }
+
+  const feature = findFeature(toolId);
+  if (feature) {
+    await addFeature(feature);
+    return;
   }
 
   const tool = findTool(toolId);

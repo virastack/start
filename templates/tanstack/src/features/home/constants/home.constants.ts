@@ -16,11 +16,16 @@ type StackItem = {
   icon: ComponentType<{ className?: string }>
 }
 
+/** Where the demo lives. `null` when it is not installed, which also hides the links to it. */
+export const DEMO_PATH = "/users" as string | null
+
 export const NEXT_STEPS = [
   { title: "Replace this page", path: "src/routes/index.tsx" },
   { title: "Add your first feature", path: "src/features/<name>" },
-  { title: "Remove the demo", path: "src/features/users, src/routes/users.tsx" }
-] as const
+  ...(DEMO_PATH
+    ? [{ title: "Remove the demo", path: "src/features/users, src/routes/users.tsx" }]
+    : [])
+]
 
 export const STACK: readonly StackItem[] = [
   { name: "TanStack Start", packageName: "@tanstack/react-start", icon: TanstackIcon },

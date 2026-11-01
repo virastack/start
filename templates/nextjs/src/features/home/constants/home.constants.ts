@@ -18,11 +18,14 @@ type StackItem = {
   icon: ComponentType<{ className?: string }>
 }
 
+/** Where the demo lives. `null` when it is not installed, which also hides the links to it. */
+export const DEMO_PATH = "/users" as string | null
+
 export const NEXT_STEPS = [
   { title: "Replace this page", path: "src/app/page.tsx" },
   { title: "Add your first feature", path: "src/features/<name>" },
-  { title: "Remove the demo", path: "src/features/users, src/app/users" }
-] as const
+  ...(DEMO_PATH ? [{ title: "Remove the demo", path: "src/features/users, src/app/users" }] : [])
+]
 
 export const STACK: readonly StackItem[] = [
   { name: "Next.js", packageName: "next", icon: NextjsIcon },

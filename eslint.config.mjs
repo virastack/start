@@ -2,7 +2,7 @@ import js from "@eslint/js";
 import globals from "globals";
 
 export default [
-  { ignores: ["node_modules", "templates", "templates-i18n", "templates-shared", "coverage"] },
+  { ignores: ["node_modules", "templates", "templates-i18n", "templates-shared", "registry", "registry-dist", "coverage"] },
   js.configs.recommended,
   {
     languageOptions: {

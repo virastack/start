@@ -24,8 +24,12 @@ const ONLY = onlyIndex === -1 ? "" : process.argv[onlyIndex + 1];
 const TEMPLATES = ["nextjs", "tanstack"];
 const SKILLS = ["emil-design-eng", "better-ui", "better-accessibility"];
 const AGENT_CHOICES = FULL ? ["claude,cursor"] : ["claude,cursor", "claude", "cursor", "none"];
+const REGISTRY = path.join(os.tmpdir(), "virastack-e2e-registry");
+spawnSync(process.execPath, [path.join(ROOT, "scripts/build-registry.js"), REGISTRY]);
+
 const ENV = {
   ...process.env,
+  VIRASTACK_REGISTRY_URL: REGISTRY,
   VIRASTACK_TELEMETRY_DISABLED: "1",
   npm_config_user_agent: "pnpm/12.16.1 npm/? node/? linux x64",
   CI: "1",

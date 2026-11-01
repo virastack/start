@@ -184,8 +184,9 @@ describe("this repository", () => {
     expect(entries.filter((entry) => entry.includes("features") && entry.endsWith("/"))).toEqual([]);
   });
 
-  it("does not ship templates-shared in the npm package", () => {
+  it("does not ship templates-shared or the registry in the npm package", () => {
     const { files } = JSON.parse(readFileSync(path.join(REPO, "package.json"), "utf8"));
     expect(files).not.toContain("templates-shared");
+    expect(files).not.toContain("registry");
   });
 });

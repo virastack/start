@@ -1,5 +1,6 @@
 /**
- * Builds shadcn registry items for `virastack add` from the templates.
+ * Builds shadcn registry items for `virastack add` from `registry/<name>`:
+ * shared files in `common`, framework files and routes in `nextjs` and `tanstack`.
  *
  *   node scripts/build-registry.js [outDir]    default: registry-dist
  *
@@ -20,8 +21,7 @@ export const FEATURES = [
     name: "users",
     title: "Users",
     description: "A searchable user list with pagination in the URL, a validated form and favorites.",
-    paths: { nextjs: ["src/app/users"], tanstack: ["src/routes/users.tsx"] },
-    folder: "src/features/users",
+    frameworks: ["nextjs", "tanstack"],
   },
 ];
 
@@ -33,10 +33,6 @@ function listFiles(root, rel) {
     const child = path.posix.join(rel, entry.name);
     return entry.isDirectory() ? listFiles(root, child) : [child];
   });
-}
-
-function listPath(root, rel) {
-  return rel.endsWith(".tsx") || rel.endsWith(".ts") ? [rel] : listFiles(root, rel);
 }
 
 /** `@scope/name/sub` becomes `@scope/name`, `zustand/middleware` becomes `zustand`. */
@@ -65,17 +61,18 @@ export function findDependencies(contents, pkg) {
 
 export function buildItem(root, feature, framework) {
   const template = path.join(root, "templates", framework);
+  const source = path.join(root, "registry", feature.name);
   const pkg = JSON.parse(readFileSync(path.join(template, "package.json"), "utf8"));
-  const paths = [
-    ...listFiles(template, feature.folder),
-    ...feature.paths[framework].flatMap((rel) => listPath(template, rel)),
-  ].sort();
-  const files = paths.map((rel) => ({
-    path: rel,
-    target: rel,
-    type: "registry:file",
-    content: readFileSync(path.join(template, rel), "utf8"),
-  }));
+  const files = ["common", framework]
+    .flatMap((layer) =>
+      listFiles(path.join(source, layer), "src").map((rel) => ({
+        path: rel,
+        target: rel,
+        type: "registry:file",
+        content: readFileSync(path.join(source, layer, rel), "utf8"),
+      })),
+    )
+    .sort((a, b) => a.path.localeCompare(b.path));
 
   return {
     $schema: SCHEMA,
@@ -97,7 +94,7 @@ function main() {
   mkdirSync(outDir, { recursive: true });
 
   for (const feature of FEATURES) {
-    for (const framework of Object.keys(feature.paths)) {
+    for (const framework of feature.frameworks) {
       const item = buildItem(root, feature, framework);
       writeFileSync(path.join(outDir, `${item.name}.json`), `${JSON.stringify(item, null, 2)}\n`);
       console.log(`${item.name}: ${item.files.length} files, ${item.dependencies.length} packages`);

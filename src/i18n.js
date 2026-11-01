@@ -89,6 +89,12 @@ const dictionaries = {
     "add.installing": "Adding {pkg}...",
     "add.done": "{pkg} added.",
     "add.installFailed": "Failed to add {pkg}.",
+    "add.notStart": "This command works in projects created with ViraStack Start.",
+    "add.i18nUnsupported": "{feature} is not available for projects with i18n yet.",
+    "add.skippedFiles": "Left these existing files alone: {files}",
+    "scaffold.demoInit": "Adding the users demo...",
+    "scaffold.demoInitDone": "Users demo added.",
+    "scaffold.demoInitFailed": "Could not add the users demo. The start page works without it. Add it later: virastack add users",
 
     help: `Usage:
   pnpm dlx virastack [init] [name]   Scaffold a new project
@@ -203,6 +209,12 @@ Examples:
     "add.installing": "{pkg} ekleniyor...",
     "add.done": "{pkg} eklendi.",
     "add.installFailed": "{pkg} eklenemedi.",
+    "add.notStart": "Bu komut ViraStack Start ile kurulan projelerde çalışır.",
+    "add.i18nUnsupported": "{feature} henüz i18n'li projelerde kullanılamıyor.",
+    "add.skippedFiles": "Var olan şu dosyalara dokunulmadı: {files}",
+    "scaffold.demoInit": "Users demosu ekleniyor...",
+    "scaffold.demoInitDone": "Users demosu eklendi.",
+    "scaffold.demoInitFailed": "Users demosu eklenemedi. Başlangıç sayfası onsuz da çalışır. Sonra eklemek için: virastack add users",
 
     help: `Kullanım:
   pnpm dlx virastack [init] [ad]     Yeni bir proje oluştur

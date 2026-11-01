@@ -1,4 +1,3 @@
-import { Link } from "@tanstack/react-router"
 import { ArrowRightIcon, ArrowUpRightIcon } from "lucide-react"
 
 import { siteConfig } from "@/config/site.config"
@@ -6,7 +5,7 @@ import { siteConfig } from "@/config/site.config"
 import { ThemeToggle } from "@/components/shared/ThemeToggle"
 import { buttonVariants } from "@/components/ui/button"
 import { StackList } from "@/features/home/components/StackList"
-import { NEXT_STEPS, RESOURCE_LINKS } from "@/features/home/constants/home.constants"
+import { DEMO_PATH, NEXT_STEPS, RESOURCE_LINKS } from "@/features/home/constants/home.constants"
 
 export function HomePage() {
   return (
@@ -33,13 +32,15 @@ export function HomePage() {
           </h1>
         </div>
         <p className="text-balance text-muted-foreground">{siteConfig.description}</p>
-        <Link to="/users" className={buttonVariants({ size: "lg", className: "group" })}>
-          See the stack working
-          <ArrowRightIcon
-            aria-hidden
-            className="transition-transform duration-150 ease-out group-hover:translate-x-0.5 motion-reduce:transition-none"
-          />
-        </Link>
+        {DEMO_PATH && (
+          <a href={DEMO_PATH} className={buttonVariants({ size: "lg", className: "group" })}>
+            See the stack working
+            <ArrowRightIcon
+              aria-hidden
+              className="transition-transform duration-150 ease-out group-hover:translate-x-0.5 motion-reduce:transition-none"
+            />
+          </a>
+        )}
       </header>
 
       <section aria-labelledby="next-steps-heading" className="flex flex-col gap-3">

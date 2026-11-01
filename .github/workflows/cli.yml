@@ -12,6 +12,7 @@ on:
       - "templates/**"
       - "templates-i18n/**"
       - "templates-shared/**"
+      - "registry/**"
       - ".github/workflows/cli.yml"
   pull_request:
     branches: [main, master]
@@ -24,6 +25,7 @@ on:
       - "templates/**"
       - "templates-i18n/**"
       - "templates-shared/**"
+      - "registry/**"
       - ".github/workflows/cli.yml"
 
 jobs:
