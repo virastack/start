@@ -4,6 +4,7 @@ import { disableTelemetry } from "./utils/telemetry.js";
 import { setLocale, t } from "./i18n.js";
 import { runInit } from "./commands/init.js";
 import { runAdd } from "./commands/add.js";
+import { runRemove } from "./commands/remove.js";
 import { parseToolsFlag } from "./utils/tools.js";
 import { parseAgentFlag } from "./utils/agents.js";
 
@@ -70,6 +71,9 @@ export async function main() {
       break;
     case "add":
       await runAdd(rest[0], { agents: resolveAgentFlag(flags) });
+      break;
+    case "remove":
+      await runRemove(rest[0], { yes: hasFlag(flags, "yes", "y") });
       break;
     default:
       // `pnpm dlx virastack my-app --yes` — first token is the project name.

@@ -1,12 +1,11 @@
-import { Link } from "@tanstack/react-router"
-import { ArrowRightIcon, ArrowUpRightIcon } from "lucide-react"
+import { ArrowUpRightIcon } from "lucide-react"
 
 import { siteConfig } from "@/config/site.config"
 
 import { buttonVariants } from "@/components/ui/button"
 import { BrandLockup } from "@/features/home/components/BrandLockup"
 import { StackList } from "@/features/home/components/StackList"
-import { DEMO_PATH, NEXT_STEPS, RESOURCE_LINKS } from "@/features/home/constants/home.constants"
+import { FEATURES_URL, NEXT_STEPS, RESOURCE_LINKS } from "@/features/home/constants/home.constants"
 
 export function HomePage() {
   return (
@@ -17,19 +16,18 @@ export function HomePage() {
           <BrandLockup className="w-[85.2vw] overflow-visible sm:w-[521px] lg:w-[601px]" />
         </h1>
         <p className="text-balance text-muted-foreground">{siteConfig.description}</p>
-        {DEMO_PATH && (
-          // The demo's route exists only after `virastack add`, so the route types cannot know it.
-          <Link
-            to={DEMO_PATH as "/"}
-            className={buttonVariants({ size: "lg", className: "group" })}
-          >
-            See the stack working
-            <ArrowRightIcon
-              aria-hidden
-              className="transition-transform duration-150 ease-out group-hover:translate-x-0.5 motion-reduce:transition-none"
-            />
-          </Link>
-        )}
+        <a
+          href={FEATURES_URL}
+          target="_blank"
+          rel="noreferrer"
+          className={buttonVariants({ size: "lg", className: "group" })}
+        >
+          Explore ready-to-run modules
+          <ArrowUpRightIcon
+            aria-hidden
+            className="transition-transform duration-150 ease-out group-hover:translate-x-0.5 group-hover:-translate-y-0.5 motion-reduce:transition-none"
+          />
+        </a>
       </header>
 
       <section aria-labelledby="next-steps-heading" className="flex flex-col gap-3">

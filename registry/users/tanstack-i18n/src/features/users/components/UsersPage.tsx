@@ -39,15 +39,7 @@ export function UsersPage({ children }: UsersPageProps) {
           label={m.users_guide_api()}
           items={["VITE_API_URL", "api/", "schemas/", "AddUserForm"]}
         />
-        <GuideRow
-          label={m.users_guide_remove()}
-          items={[
-            "src/features/users",
-            "src/routes/{-$lang}/users.tsx",
-            "users_* in src/messages",
-            "DEMO_PATH = null"
-          ]}
-        />
+        <GuideRow label={m.users_guide_remove()} items={["npx virastack remove users"]} />
       </footer>
     </main>
   )

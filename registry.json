@@ -192,7 +192,7 @@
         "product": "virastack-start",
         "framework": "nextjs",
         "minStartVersion": "2.0.0",
-        "demoPath": "/users"
+        "pagePath": "/users"
       }
     },
     {
@@ -383,7 +383,7 @@
         "product": "virastack-start",
         "framework": "tanstack",
         "minStartVersion": "2.0.0",
-        "demoPath": "/users"
+        "pagePath": "/users"
       }
     },
     {
@@ -580,7 +580,7 @@
         "product": "virastack-start",
         "framework": "nextjs",
         "minStartVersion": "2.0.0",
-        "demoPath": "/users",
+        "pagePath": "/users",
         "messages": {
           "en": {
             "Users": {
@@ -885,7 +885,7 @@
         "product": "virastack-start",
         "framework": "tanstack",
         "minStartVersion": "2.0.0",
-        "demoPath": "/users",
+        "pagePath": "/users",
         "messages": {
           "en": {
             "users_title": "Users",

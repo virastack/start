@@ -32,10 +32,7 @@ export function UsersPage({ children }: UsersPageProps) {
           label="Your API:"
           items={["NEXT_PUBLIC_API_URL", "api/", "schemas/", "AddUserForm"]}
         />
-        <GuideRow
-          label="To remove:"
-          items={["src/features/users", "src/app/users", "DEMO_PATH = null"]}
-        />
+        <GuideRow label="To remove:" items={["npx virastack remove users"]} />
       </footer>
     </main>
   )

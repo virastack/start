@@ -61,7 +61,7 @@ Once your project is scaffolded, start the development server:
 pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000). `/` is a short start page from `src/features/home`: the first file to edit and a map of the stack. `/users` is a working demo from `src/features/users`: a paginated, searchable user list, an Add user form and favorites, backed by the [DummyJSON](https://dummyjson.com) demo API. Delete both when you are ready to build. Turkish lives at `/tr` and `/tr/users`.
+Open [http://localhost:3000](http://localhost:3000). `/` is a short start page from `src/features/home`: the first file to edit and a map of the stack. Replace it when you are ready to build. `npx virastack add users` adds a working users module at `/users`. Turkish lives at `/tr` and `/tr/users`.
 
 ## Environment variables
 
@@ -96,19 +96,11 @@ CI runs the same gates: typecheck → lint → knip → test → build (see `.gi
 src/
 ├── app/                  # Routes, layouts, metadata (App Router only)
 ├── features/
-│   ├── home/             # Start page at `/` (deletable)
-│   │   ├── components/   # HomePage, StackList
-│   │   ├── constants/    # Stack list data and links
-│   │   ├── helpers/      # Reads versions from package.json ranges
-│   │   └── icons/        # Brand SVGs used by the stack list
-│   └── users/            # Demo feature at `/users` (deletable)
-│       ├── api/          # DummyJSON calls, query options and keys
-│       ├── components/   # UsersPage, UsersDirectory, AddUserForm, FavoriteButton, ...
-│       ├── constants/
-│       ├── helpers/
-│       ├── hooks/
-│       ├── schemas/      # Zod schemas and URL params
-│       └── stores/       # Favorites (Zustand)
+│   └── home/             # Start page at `/` (deletable)
+│       ├── components/   # HomePage, StackList
+│       ├── constants/    # Stack list data and links
+│       ├── helpers/      # Reads versions from package.json ranges
+│       └── icons/        # Brand SVGs used by the stack list
 ├── components/
 │   ├── ui/               # Base UI primitives (Button, Dialog, Tabs, …)
 │   └── shared/           # Cross-feature components (ThemeToggle, LanguageSwitcher)
@@ -128,24 +120,24 @@ src/
 └── env.ts
 ```
 
-Both bundled features follow the ViraStack AI feature tree and are meant to be deleted when you start building.
+The start page follows the ViraStack AI feature tree and is meant to be deleted when you start building.
 
-**About the users demo**
+**The users module**
+
+Run `npx virastack add users` to add a working list at `/users`: pagination and search in the URL, an Add user form and favorites, backed by the [DummyJSON](https://dummyjson.com) demo API.
+
+Run `npx virastack remove users` to take it out. It asks before deleting files you changed, and leaves packages in place because other code may use them.
+
+**About the users module**
 
 - Page and search stay in the URL (`/users?page=2&q=ann`), so a shared link opens the same view
 - `POST /users/add` on DummyJSON returns the new user but does not save it, so the user never appears in the list
 - Favorites stay in this browser (`localStorage`) through a Zustand store
 - The route prefetches on the server at request time, so `next build` does not need DummyJSON
 
-**Remove the demo**
+**Remove the start page**
 
-1. Delete `src/features/users` and `src/app/[locale]/users`
-2. Remove the `Users` block from both files in `src/messages`
-3. In `src/features/home`, remove the `/users` link from `components/HomePage.tsx` and update the next steps in `constants/home.constants.ts`
-
-**Remove the start page too**
-
-1. Do the steps above, skipping step 3, and delete `src/features/home`
+1. Delete `src/features/home`
 2. Replace `src/app/[locale]/page.tsx` with your own page and remove the `Home` block from both files in `src/messages`
 
 Then run `pnpm knip` and remove what it reports as unused.
@@ -188,7 +180,7 @@ Search the repo for `FIXME:` to find the first things to own:
 | `src/env.ts` + `.env.example` | New environment variables                |
 | `public/`                     | Favicon and static assets                |
 
-You own every file — trim demos, rename features, keep only what you need.
+You own every file — trim pages, rename features, keep only what you need.
 
 ## ViraStack AI
 
@@ -226,7 +218,7 @@ Optimized for [Vercel](https://vercel.com/):
 
 Ideas and bug reports welcome — open an [issue](https://github.com/virastack/start/issues).
 
-PRs that improve DX, architecture docs, or the bundled demo are especially appreciated.
+PRs that improve DX, architecture docs, or the bundled modules are especially appreciated.
 
 ---
 

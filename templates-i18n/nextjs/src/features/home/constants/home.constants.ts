@@ -18,20 +18,12 @@ type StackItem = {
   icon: ComponentType<{ className?: string }>
 }
 
-/** Where the demo lives. `null` when it is not installed, which also hides the links to it. */
-export const DEMO_PATH = "/users" as string | null
+export const FEATURES_URL = "https://virastack.com/start/features"
 
 export const NEXT_STEPS = [
   { titleKey: "step_replace_page", path: "src/app/[locale]/page.tsx" },
   { titleKey: "step_add_feature", path: "src/features/<name>" },
-  ...(DEMO_PATH
-    ? ([
-        {
-          titleKey: "step_remove_demo",
-          path: "src/features/users, src/app/[locale]/users, Users in src/messages, DEMO_PATH = null"
-        }
-      ] as const)
-    : [])
+  { titleKey: "step_add_module", path: "npx virastack add users" }
 ] as const
 
 export const STACK: readonly StackItem[] = [

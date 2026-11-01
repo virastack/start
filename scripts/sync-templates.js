@@ -6,7 +6,7 @@
  *
  * `templates-shared` is the source of what all four templates share. Framework pairs still copy
  * from their base template. Feature files are listed one by one, because a feature differs per
- * framework: a whole feature folder is refused. The users demo lives in `registry/users`.
+ * framework: a whole feature folder is refused. The users module lives in `registry/users`.
  * This script never ships in the npm package and never runs on a user's machine.
  */
 import { execFileSync } from "node:child_process";

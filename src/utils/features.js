@@ -1,6 +1,7 @@
 import { promises as fs } from "node:fs";
 import os from "node:os";
 import path from "node:path";
+import { isDeepStrictEqual } from "node:util";
 
 import { runCommand } from "./exec.js";
 import { getDlxCommand, getExecCommand } from "./package-manager.js";
@@ -9,14 +10,11 @@ const DEFAULT_REGISTRY = "https://virastack.com/r";
 /** The version the registry was last tested with. Raised on purpose, never `latest`. */
 export const SHADCN = "shadcn@4.23.0";
 const MESSAGES_DIR = "src/messages";
-const HOME_CONSTANTS = "src/features/home/constants/home.constants.ts";
-const DEMO_LINE = /export const DEMO_PATH = .* as string \| null/;
 
 const VALID_ID = /^[a-z0-9-]+$/;
 const ITEM_SUFFIX = /-(nextjs|tanstack)(-i18n)?$/;
-
-/** The module `init` installs as the project's demo. */
-export const DEMO_FEATURE = "users";
+/** `src/features` and `src/app` are the project's own folders, even when they are empty. */
+const KEPT_FOLDER_DEPTH = 2;
 
 export class FeatureNotFoundError extends Error {
   name = "FeatureNotFoundError";
@@ -103,11 +101,10 @@ export async function listFeatures() {
 
 /** A feature that cannot be installed without touching what the project already has. */
 export class FeatureConflictError extends Error {
-  constructor(conflicts, demoPath) {
+  constructor(conflicts) {
     super(conflicts.join(", "));
     this.name = "FeatureConflictError";
     this.conflicts = conflicts;
-    this.demoPath = demoPath;
   }
 }
 
@@ -187,16 +184,6 @@ async function planMessages(item, cwd) {
   return { writes, untranslated: writes.length > 0 ? untranslated : [], conflicts };
 }
 
-/** Shows or hides the start page links to the demo. */
-export async function setDemoPath(cwd, demoPath) {
-  const file = path.join(cwd, HOME_CONSTANTS);
-  if (!(await exists(file))) return;
-
-  const source = await fs.readFile(file, "utf8");
-  const value = demoPath ? JSON.stringify(demoPath) : "null";
-  await fs.writeFile(file, source.replace(DEMO_LINE, `export const DEMO_PATH = ${value} as string | null`));
-}
-
 /** Best effort: the messages work either way, but the project's own format check expects this. */
 async function formatFiles(packageManager, files, cwd) {
   const [command, ...prefix] = getExecCommand(packageManager);
@@ -207,15 +194,27 @@ async function formatFiles(packageManager, files, cwd) {
   }
 }
 
+async function loadItem(id, template, i18n) {
+  const item = VALID_ID.test(id)
+    ? await loadRegistryFile(`${id}-${template}${i18n ? "-i18n" : ""}.json`)
+    : null;
+  if (!item) throw new FeatureNotFoundError(id);
+  return item;
+}
+
+/** Paraglide compiles the messages; the router has to see the changed routes. */
+async function refreshGenerated({ cwd, packageManager, template, i18n }) {
+  if (template !== "tanstack") return;
+  if (i18n) await runCommand(packageManager, ["run", "postinstall"], { cwd });
+  await runCommand(packageManager, ["run", "generate-routes"], { cwd });
+}
+
 /**
  * Installs a feature with shadcn and merges its messages. Checks everything first, so a conflict
  * changes nothing. Throws FeatureConflictError for one.
  */
 export async function installFeature(id, { cwd, packageManager, template, i18n = false, isYarnClassic }) {
-  const item = VALID_ID.test(id)
-    ? await loadRegistryFile(`${id}-${template}${i18n ? "-i18n" : ""}.json`)
-    : null;
-  if (!item) throw new FeatureNotFoundError(id);
+  const item = await loadItem(id, template, i18n);
 
   const required = item.meta?.minStartVersion;
   if (required) {
@@ -223,13 +222,11 @@ export async function installFeature(id, { cwd, packageManager, template, i18n =
     if (isOlderVersion(version, required)) throw new StartTooOldError(required, version ?? "?");
   }
 
-  const demoPath = item.meta?.demoPath;
-
   const files = await planFiles(item, cwd);
   const messages = await planMessages(item, cwd);
 
   const conflicts = [...files.conflicts, ...messages.conflicts];
-  if (conflicts.length > 0) throw new FeatureConflictError(conflicts, demoPath);
+  if (conflicts.length > 0) throw new FeatureConflictError(conflicts);
   if (files.installed && messages.writes.length === 0) return { alreadyInstalled: true, untranslated: [] };
 
   if (!files.installed) {
@@ -249,12 +246,103 @@ export async function installFeature(id, { cwd, packageManager, template, i18n =
     await formatFiles(packageManager, messages.writes.map(({ filePath }) => filePath), cwd);
   }
 
-  if (template === "tanstack") {
-    // Paraglide compiles the messages; the router has to see the new route.
-    if (i18n) await runCommand(packageManager, ["run", "postinstall"], { cwd });
-    await runCommand(packageManager, ["run", "generate-routes"], { cwd });
-  }
-  if (demoPath) await setDemoPath(cwd, demoPath);
+  await refreshGenerated({ cwd, packageManager, template, i18n });
 
-  return { alreadyInstalled: false, untranslated: messages.untranslated };
+  return { alreadyInstalled: false, untranslated: messages.untranslated, pagePath: item.meta?.pagePath };
+}
+
+/** Takes out what `incoming` added. A text the project changed goes too, and is reported. */
+export function removeMessages(current, incoming, prefix = "") {
+  const kept = { ...current };
+  const removed = [];
+  const changed = [];
+  for (const [key, value] of Object.entries(incoming)) {
+    const name = `${prefix}${key}`;
+    if (!(key in kept)) continue;
+    if (isGroup(value) && isGroup(kept[key])) {
+      const inner = removeMessages(kept[key], value, `${name}.`);
+      removed.push(...inner.removed);
+      changed.push(...inner.changed);
+      kept[key] = inner.kept;
+      if (Object.keys(inner.kept).length === 0) delete kept[key];
+    } else {
+      removed.push(name);
+      if (!isDeepStrictEqual(kept[key], value)) changed.push(name);
+      delete kept[key];
+    }
+  }
+  return { kept, removed, changed };
+}
+
+async function planMessageRemoval(item, cwd) {
+  const messages = item.meta?.messages;
+  const dir = path.join(cwd, MESSAGES_DIR);
+  if (!messages || !(await exists(dir))) return { writes: [], changed: [] };
+
+  const writes = [];
+  const changed = [];
+  for (const file of (await fs.readdir(dir)).filter((name) => name.endsWith(".json"))) {
+    const filePath = path.join(dir, file);
+    const current = await readJson(filePath, `${MESSAGES_DIR}/${file}`);
+    const incoming = messages[path.basename(file, ".json")] ?? messages.en;
+    const result = removeMessages(current, incoming);
+    if (result.removed.length === 0) continue;
+    writes.push({ filePath, content: `${JSON.stringify(result.kept, null, 2)}\n` });
+    changed.push(...result.changed.map((name) => `${MESSAGES_DIR}/${file}: ${name}`));
+  }
+  return { writes, changed };
+}
+
+/** shadcn drops `.js` from `@/` imports while installing, so that alone is not a change. */
+function toComparable(source) {
+  return source.replace(/\r\n/g, "\n").replace(/(from "@\/[^"]+)\.js"/g, '$1"');
+}
+
+/** What `virastack remove` would delete, and which of it the project has changed. Writes nothing. */
+export async function planRemoval(id, { cwd, template, i18n = false }) {
+  const item = await loadItem(id, template, i18n);
+  const files = [];
+  const changed = [];
+
+  for (const { target, content } of item.files) {
+    const filePath = path.resolve(cwd, target);
+    if (!filePath.startsWith(`${path.resolve(cwd)}${path.sep}`)) {
+      throw new Error(`${item.name} points outside the project: ${target}`);
+    }
+    if (!(await exists(filePath))) continue;
+    files.push(target);
+    if (toComparable(await fs.readFile(filePath, "utf8")) !== toComparable(content)) changed.push(target);
+  }
+
+  const messages = await planMessageRemoval(item, cwd);
+  return { files, messages: messages.writes, changed: [...changed, ...messages.changed] };
+}
+
+/** Removes the folders the files leave empty, from the deepest up. */
+async function removeEmptyFolders(files, cwd) {
+  const folders = new Set();
+  for (const file of files) {
+    const parts = path.dirname(file).split(/[\\/]/);
+    for (let depth = parts.length; depth > KEPT_FOLDER_DEPTH; depth -= 1) {
+      folders.add(parts.slice(0, depth).join("/"));
+    }
+  }
+  const deepestFirst = [...folders].sort((a, b) => b.split("/").length - a.split("/").length);
+  for (const folder of deepestFirst) {
+    const folderPath = path.join(cwd, folder);
+    if ((await exists(folderPath)) && (await fs.readdir(folderPath)).length === 0) await fs.rmdir(folderPath);
+  }
+}
+
+/** Deletes what `planRemoval` found. Packages stay: other code in the project may use them. */
+export async function applyRemoval(plan, { cwd, packageManager, template, i18n = false }) {
+  await Promise.all(plan.files.map((file) => fs.rm(path.join(cwd, file), { force: true })));
+  await removeEmptyFolders(plan.files, cwd);
+
+  await Promise.all(plan.messages.map(({ filePath, content }) => fs.writeFile(filePath, content)));
+  if (plan.messages.length > 0) {
+    await formatFiles(packageManager, plan.messages.map(({ filePath }) => filePath), cwd);
+  }
+
+  await refreshGenerated({ cwd, packageManager, template, i18n });
 }

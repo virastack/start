@@ -14,7 +14,7 @@ const config = {
     // Exposes the whole next-intl navigation API, including what the app does not use yet.
     "src/i18n/routing.ts"
   ],
-  // The users demo and `virastack add` features use these.
+  // Features from `virastack add` use these.
   ignoreDependencies: [
     "tailwindcss",
     "tw-animate-css",

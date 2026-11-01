@@ -1,12 +1,13 @@
-import { Link } from "@tanstack/react-router"
-import { ArrowRightIcon, ArrowUpRightIcon } from "lucide-react"
-
-import { getLangParam } from "@/helpers/localized-url"
+import { ArrowUpRightIcon } from "lucide-react"
 
 import { buttonVariants } from "@/components/ui/button"
 import { BrandLockup } from "@/features/home/components/BrandLockup"
 import { StackList } from "@/features/home/components/StackList"
-import { DEMO_PATH, getNextSteps, getResourceLinks } from "@/features/home/constants/home.constants"
+import {
+  FEATURES_URL,
+  getNextSteps,
+  getResourceLinks
+} from "@/features/home/constants/home.constants"
 import * as m from "@/paraglide/messages.js"
 
 export function HomePage() {
@@ -18,19 +19,18 @@ export function HomePage() {
           <BrandLockup className="w-[85.2vw] overflow-visible sm:w-[521px] lg:w-[601px]" />
         </h1>
         <p className="text-balance text-muted-foreground">{m.site_description()}</p>
-        {DEMO_PATH && (
-          <Link
-            to={`/{-$lang}${DEMO_PATH}` as "/{-$lang}"}
-            params={{ lang: getLangParam() }}
-            className={buttonVariants({ size: "lg", className: "group" })}
-          >
-            {m.home_cta()}
-            <ArrowRightIcon
-              aria-hidden
-              className="transition-transform duration-150 ease-out group-hover:translate-x-0.5 motion-reduce:transition-none"
-            />
-          </Link>
-        )}
+        <a
+          href={FEATURES_URL}
+          target="_blank"
+          rel="noreferrer"
+          className={buttonVariants({ size: "lg", className: "group" })}
+        >
+          {m.home_cta()}
+          <ArrowUpRightIcon
+            aria-hidden
+            className="transition-transform duration-150 ease-out group-hover:translate-x-0.5 group-hover:-translate-y-0.5 motion-reduce:transition-none"
+          />
+        </a>
       </header>
 
       <section aria-labelledby="next-steps-heading" className="flex flex-col gap-3">

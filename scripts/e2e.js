@@ -3,7 +3,8 @@
  *
  *   node scripts/e2e.js            16 runs: 2 templates x i18n on/off x 4 agent choices,
  *                                  with --skip-install (files, git, agent folders and skills)
- *   node scripts/e2e.js --full     4 runs with install, skills, typecheck, lint:ci and test
+ *   node scripts/e2e.js --full     4 runs with install, skills, typecheck, lint:ci and test,
+ *                                  then `add users`, the same checks and `remove users`
  *   --only <text>                  only runs whose name contains <text> (e.g. tanstack-i18n)
  *
  * Set VIRASTACK_AI_SPEC to test an unpublished ViraStack AI (e.g. file:/path/to.tgz
@@ -81,10 +82,25 @@ function checkProject(dir, { agents }) {
   }
 
   if (FULL) {
-    for (const script of ["typecheck", "lint:ci", "test"]) {
-      const result = run("pnpm", ["run", script], dir);
-      expect(result.ok, `pnpm run ${script} failed:\n${result.output.slice(-3000)}`);
-    }
+    // A new project has no module; the users module has to work in it and leave no trace.
+    const checkScripts = () => {
+      for (const script of ["typecheck", "lint:ci", "test"]) {
+        const result = run("pnpm", ["run", script], dir);
+        expect(result.ok, `pnpm run ${script} failed:\n${result.output.slice(-3000)}`);
+      }
+    };
+    checkScripts();
+    expect(!has("src/features/users"), "init installed the users module");
+
+    const added = run(process.execPath, [CLI, "add", "users"], dir);
+    expect(added.ok, `add users failed:\n${added.output.slice(-2000)}`);
+    expect(has("src/features/users"), "add users wrote no files");
+    checkScripts();
+
+    const removed = run(process.execPath, [CLI, "remove", "users"], dir);
+    expect(removed.ok, `remove users failed:\n${removed.output.slice(-2000)}`);
+    const left = run("git", ["status", "--porcelain"], dir).output.trim();
+    expect(left === "", `remove users left changes:\n${left}`);
   }
   return errors;
 }

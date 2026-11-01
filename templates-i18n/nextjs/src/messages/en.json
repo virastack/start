@@ -12,11 +12,11 @@
     "go_home": "Go home"
   },
   "Home": {
-    "cta": "See the stack working",
+    "cta": "Explore ready-to-run modules",
     "next_steps_title": "Next steps",
     "step_replace_page": "Replace this page",
     "step_add_feature": "Add your first feature",
-    "step_remove_demo": "Remove the demo",
+    "step_add_module": "Add a ready-to-run module",
     "stack_label": "Tech stack",
     "links_label": "Project links",
     "link_docs": "Docs",

@@ -19,6 +19,9 @@ import {
   StartTooOldError,
 } from "../utils/features.js";
 
+/** Both frameworks' `dev` scripts start here in a new project. */
+const DEV_URL = "http://localhost:3000";
+
 async function fileExists(filePath) {
   try {
     await fs.access(filePath);
@@ -53,7 +56,7 @@ async function addFeature(id) {
   const spinner = p.spinner();
   spinner.start(t("add.installing", { pkg: id }));
   try {
-    const { alreadyInstalled, untranslated } = await installFeature(id, {
+    const { alreadyInstalled, untranslated, pagePath } = await installFeature(id, {
       cwd,
       packageManager,
       template,
@@ -61,6 +64,7 @@ async function addFeature(id) {
       isYarnClassic: (process.env.npm_config_user_agent ?? "").startsWith("yarn/1."),
     });
     spinner.stop(t(alreadyInstalled ? "add.alreadyInstalled" : "add.done", { pkg: id }));
+    if (pagePath) p.log.info(t("add.openPage", { url: `${DEV_URL}${pagePath}` }));
     if (untranslated.length > 0) {
       p.log.warn(t("add.untranslated", { locales: untranslated.join(", ") }));
     }
@@ -83,7 +87,6 @@ async function addFeature(id) {
     if (error instanceof FeatureConflictError) {
       spinner.stop(t("add.conflict", { pkg: id }));
       p.log.warn(t("add.conflictList", { list: error.conflicts.join("\n  ") }));
-      if (error.demoPath) p.log.info(t("add.conflictDemo"));
       process.exit(1);
     }
     spinner.stop(t("add.installFailed", { pkg: id }));

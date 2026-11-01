@@ -11,11 +11,11 @@
   "error_description": "Bu sayfa gösterilirken beklenmedik bir hata oluştu. Yeniden deneyebilir ya da ana sayfaya dönebilirsiniz.",
   "error_retry": "Yeniden dene",
   "error_go_back": "Geri dön",
-  "home_cta": "Stack'i çalışırken görün",
+  "home_cta": "Çalışmaya hazır modülleri keşfedin",
   "home_next_steps": "Sıradaki adımlar",
   "home_next_replace": "Bu sayfayı kendi sayfanızla değiştirin",
   "home_next_feature": "İlk feature'ınızı ekleyin",
-  "home_next_remove": "Demoyu kaldırın",
+  "home_next_module": "Çalışmaya hazır bir modül ekleyin",
   "home_stack_label": "Kullanılan teknolojiler",
   "home_links_label": "Proje bağlantıları",
   "home_link_docs": "Dokümantasyon"

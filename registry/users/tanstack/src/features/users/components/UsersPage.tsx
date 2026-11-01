@@ -29,10 +29,7 @@ export function UsersPage({ children }: UsersPageProps) {
       <footer className="flex flex-col gap-2 border-t pt-4 text-sm text-muted-foreground">
         <GuideRow label="This demo:" items={["src/features/users"]} />
         <GuideRow label="Your API:" items={["VITE_API_URL", "api/", "schemas/", "AddUserForm"]} />
-        <GuideRow
-          label="To remove:"
-          items={["src/features/users", "src/routes/users.tsx", "DEMO_PATH = null"]}
-        />
+        <GuideRow label="To remove:" items={["npx virastack remove users"]} />
       </footer>
     </main>
   )

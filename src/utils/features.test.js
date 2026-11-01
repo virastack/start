@@ -1,4 +1,4 @@
-import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
@@ -6,16 +6,17 @@ import {
   compareMessages,
   FeatureConflictError,
   FeatureNotFoundError,
+  applyRemoval,
   installFeature,
   listFeatures,
   mergeMessages,
+  planRemoval,
+  removeMessages,
   isOlderVersion,
   RegistryUnavailableError,
-  setDemoPath,
   StartTooOldError,
 } from "./features.js";
 
-const REPO = path.resolve(import.meta.dirname, "../..");
 const dirs = [];
 
 function project(files = {}) {
@@ -182,17 +183,118 @@ describe("installFeature conflicts", () => {
   });
 });
 
-describe.each(["templates/nextjs", "templates/tanstack", "templates-i18n/nextjs", "templates-i18n/tanstack"])("DEMO_PATH in %s", (template) => {
-  const file = "src/features/home/constants/home.constants.ts";
-  const source = readFileSync(path.join(REPO, template, file), "utf8");
 
-  it("can be hidden and shown again", async () => {
-    const cwd = project({ [file]: source });
+describe("removeMessages", () => {
+  it("takes out only what the module added", () => {
+    const current = { Home: { title: "Home" }, Users: { title: "Users", own: "Mine" } };
+    const { kept, removed, changed } = removeMessages(current, { Users: { title: "Users" } });
 
-    await setDemoPath(cwd, null);
-    expect(readFileSync(path.join(cwd, file), "utf8")).toContain("DEMO_PATH = null as string | null");
+    expect(kept).toEqual({ Home: { title: "Home" }, Users: { own: "Mine" } });
+    expect(removed).toEqual(["Users.title"]);
+    expect(changed).toEqual([]);
+  });
 
-    await setDemoPath(cwd, "/users");
-    expect(readFileSync(path.join(cwd, file), "utf8")).toBe(source);
+  it("reads a message with variants as unchanged", () => {
+    const count = { declarations: ["input count"], selectors: ["count"], match: { "count=one": "1" } };
+    const { kept, changed } = removeMessages({ users_total: [count] }, { users_total: [{ ...count }] });
+
+    expect(kept).toEqual({});
+    expect(changed).toEqual([]);
+  });
+
+  it("drops a group left empty and reports a text the project changed", () => {
+    const { kept, changed } = removeMessages({ Users: { title: "Kişiler" } }, { Users: { title: "Users" } });
+
+    expect(kept).toEqual({});
+    expect(changed).toEqual(["Users.title"]);
+  });
+});
+
+describe("removing a feature", () => {
+  const files = [
+    { target: "src/features/users/api/get-users.ts", content: "api" },
+    { target: "src/app/users/page.tsx", content: "page" },
+  ];
+  const options = (cwd) => ({ cwd, template: "nextjs", i18n: false, packageManager: "pnpm" });
+  const registry = (item) => {
+    process.env.VIRASTACK_REGISTRY_URL = project({ [`${item.name}.json`]: JSON.stringify(item) });
+  };
+
+  afterEach(() => {
+    delete process.env.VIRASTACK_REGISTRY_URL;
+  });
+
+  it("deletes the files and the folders they leave empty, and nothing else", async () => {
+    registry({ name: "users-nextjs", files });
+    const cwd = project({
+      "src/features/users/api/get-users.ts": "api",
+      "src/features/home/page.tsx": "home",
+      "src/app/users/page.tsx": "page",
+      "src/app/page.tsx": "root",
+    });
+
+    const plan = await planRemoval("users", options(cwd));
+    expect(plan.changed).toEqual([]);
+    await applyRemoval(plan, options(cwd));
+
+    expect(existsSync(path.join(cwd, "src/features/users"))).toBe(false);
+    expect(existsSync(path.join(cwd, "src/app/users"))).toBe(false);
+    expect(readFileSync(path.join(cwd, "src/features/home/page.tsx"), "utf8")).toBe("home");
+    expect(readFileSync(path.join(cwd, "src/app/page.tsx"), "utf8")).toBe("root");
+  });
+
+  it("keeps a folder that still holds the project's own file", async () => {
+    registry({ name: "users-nextjs", files });
+    const cwd = project({
+      "src/features/users/api/get-users.ts": "api",
+      "src/features/users/api/mine.ts": "mine",
+    });
+
+    await applyRemoval(await planRemoval("users", options(cwd)), options(cwd));
+
+    expect(readFileSync(path.join(cwd, "src/features/users/api/mine.ts"), "utf8")).toBe("mine");
+  });
+
+  it("keeps the first folders under src even when they end up empty", async () => {
+    registry({ name: "users-nextjs", files });
+    const cwd = project({ "src/features/users/api/get-users.ts": "api", "src/app/users/page.tsx": "page" });
+
+    await applyRemoval(await planRemoval("users", options(cwd)), options(cwd));
+
+    expect(existsSync(path.join(cwd, "src/features"))).toBe(true);
+    expect(existsSync(path.join(cwd, "src/app"))).toBe(true);
+  });
+
+  it("reports a file the project changed, and writes nothing while planning", async () => {
+    registry({ name: "users-nextjs", files });
+    const cwd = project({ "src/features/users/api/get-users.ts": "edited", "src/app/users/page.tsx": "page" });
+
+    const plan = await planRemoval("users", options(cwd));
+
+    expect(plan.changed).toEqual(["src/features/users/api/get-users.ts"]);
+    expect(readFileSync(path.join(cwd, "src/features/users/api/get-users.ts"), "utf8")).toBe("edited");
+  });
+
+  it("does not call the import shadcn rewrites a change", async () => {
+    const content = 'import * as m from "@/paraglide/messages.js"\n';
+    registry({ name: "users-nextjs", files: [{ target: "src/features/users/a.ts", content }] });
+    const cwd = project({ "src/features/users/a.ts": 'import * as m from "@/paraglide/messages"\n' });
+
+    expect((await planRemoval("users", options(cwd))).changed).toEqual([]);
+  });
+
+  it("finds nothing to do in a project without the module", async () => {
+    registry({ name: "users-nextjs", files });
+
+    const plan = await planRemoval("users", options(project({ "package.json": "{}" })));
+
+    expect(plan.files).toEqual([]);
+    expect(plan.messages).toEqual([]);
+  });
+
+  it("refuses a registry file that points outside the project", async () => {
+    registry({ name: "users-nextjs", files: [{ target: "../outside.ts", content: "x" }] });
+
+    await expect(planRemoval("users", options(project()))).rejects.toThrow("outside the project");
   });
 });

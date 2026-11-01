@@ -20,7 +20,6 @@ import { trackEvent, isTelemetryDisabled, hasSeenTelemetryNotice, markTelemetryN
 import { TOOLS, parseToolsFlag } from "../utils/tools.js";
 import { setupEnvFile } from "../utils/setup-env.js";
 import { setupPackageManager } from "../utils/setup-package-manager.js";
-import { DEMO_FEATURE, installFeature, setDemoPath } from "../utils/features.js";
 import { updatePackageJson } from "../utils/update-package-json.js";
 import { updateReadme } from "../utils/update-readme.js";
 import { validateProjectName } from "../utils/validate-project-name.js";
@@ -250,28 +249,6 @@ export async function runInit(options = {}) {
       p.log.error(String(error?.message ?? error));
     }
   }
-
-  // The demo comes from the registry. Without it the start page stands alone.
-  let demoOk = false;
-  if (installOk) {
-    const demoSpinner = p.spinner();
-    demoSpinner.start(t("scaffold.demoInit"));
-    try {
-      await installFeature(DEMO_FEATURE, {
-        cwd: targetDir,
-        packageManager,
-        template,
-        i18n: wantsI18n,
-        isYarnClassic: (process.env.npm_config_user_agent ?? "").startsWith("yarn/1."),
-      });
-      demoOk = true;
-      demoSpinner.stop(t("scaffold.demoInitDone"));
-    } catch (error) {
-      demoSpinner.stop(t("scaffold.demoInitFailed"));
-      p.log.warn(String(error?.message ?? error));
-    }
-  }
-  if (!demoOk) await setDemoPath(targetDir, null);
 
   // ViraStack AI only writes files, so it runs even with --skip-install.
   let aiOk = false;

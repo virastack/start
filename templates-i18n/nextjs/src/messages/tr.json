@@ -12,11 +12,11 @@
     "go_home": "Ana sayfaya dön"
   },
   "Home": {
-    "cta": "Stack'i çalışırken görün",
+    "cta": "Çalışmaya hazır modülleri keşfedin",
     "next_steps_title": "Sırada ne var?",
     "step_replace_page": "Bu sayfayı kendinize göre değiştirin",
     "step_add_feature": "İlk feature'ınızı ekleyin",
-    "step_remove_demo": "Demoyu kaldırın",
+    "step_add_module": "Çalışmaya hazır bir modül ekleyin",
     "stack_label": "Kullanılan teknolojiler",
     "links_label": "Proje bağlantıları",
     "link_docs": "Dokümantasyon",

@@ -35,7 +35,7 @@ export const FEATURES = [
     title: "Users",
     description: "A searchable user list with pagination in the URL, a validated form and favorites.",
     frameworks: ["nextjs", "tanstack", "nextjs-i18n", "tanstack-i18n"],
-    demoPath: "/users",
+    pagePath: "/users",
     minStartVersion: "2.0.0",
   },
 ];
@@ -119,7 +119,7 @@ export function buildItem(root, feature, framework) {
       product: "virastack-start",
       framework: base,
       minStartVersion: feature.minStartVersion,
-      ...(feature.demoPath && { demoPath: feature.demoPath }),
+      ...(feature.pagePath && { pagePath: feature.pagePath }),
       ...(messages && { messages }),
     },
   };

@@ -1,11 +1,10 @@
-import { ArrowRightIcon, ArrowUpRightIcon } from "lucide-react"
+import { ArrowUpRightIcon } from "lucide-react"
 import { useTranslations } from "next-intl"
 
 import { buttonVariants } from "@/components/ui/button"
 import { BrandLockup } from "@/features/home/components/BrandLockup"
 import { StackList } from "@/features/home/components/StackList"
-import { DEMO_PATH, NEXT_STEPS, RESOURCE_LINKS } from "@/features/home/constants/home.constants"
-import { Link } from "@/i18n/routing"
+import { FEATURES_URL, NEXT_STEPS, RESOURCE_LINKS } from "@/features/home/constants/home.constants"
 
 export function HomePage() {
   const t = useTranslations("Home")
@@ -19,15 +18,18 @@ export function HomePage() {
           <BrandLockup className="w-[85.2vw] overflow-visible sm:w-[521px] lg:w-[601px]" />
         </h1>
         <p className="text-balance text-muted-foreground">{tCommon("site_description")}</p>
-        {DEMO_PATH && (
-          <Link href={DEMO_PATH} className={buttonVariants({ size: "lg", className: "group" })}>
-            {t("cta")}
-            <ArrowRightIcon
-              aria-hidden
-              className="transition-transform duration-150 ease-out group-hover:translate-x-0.5 motion-reduce:transition-none"
-            />
-          </Link>
-        )}
+        <a
+          href={FEATURES_URL}
+          target="_blank"
+          rel="noreferrer"
+          className={buttonVariants({ size: "lg", className: "group" })}
+        >
+          {t("cta")}
+          <ArrowUpRightIcon
+            aria-hidden
+            className="transition-transform duration-150 ease-out group-hover:translate-x-0.5 group-hover:-translate-y-0.5 motion-reduce:transition-none"
+          />
+        </a>
       </header>
 
       <section aria-labelledby="next-steps-heading" className="flex flex-col gap-3">

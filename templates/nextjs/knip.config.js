@@ -12,7 +12,7 @@ const config = {
     // Used by features from `virastack add`.
     "src/test/render.tsx"
   ],
-  // The users demo and `virastack add` features use these.
+  // Features from `virastack add` use these.
   ignoreDependencies: [
     "tailwindcss",
     "tw-animate-css",

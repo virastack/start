@@ -66,7 +66,7 @@ const dictionaries = {
     "scaffold.offline":
       "You appear to be offline. Skipping dependency install and AI setup — run them manually when you're back online.",
     "scaffold.aiInit": "Configuring ViraStack AI rules...",
-    "scaffold.aiInitDone": "🤖 ViraStack AI agent rules successfully integrated.",
+    "scaffold.aiInitDone": "ViraStack AI rules added.",
     "scaffold.aiInitFailed":
       "Failed to configure ViraStack AI rules.",
     "scaffold.skillsInit": "Installing design skills...",
@@ -97,19 +97,30 @@ const dictionaries = {
     "add.alreadyInstalled": "{pkg} is already in this project. Nothing changed.",
     "add.conflict": "{pkg} was not added. Nothing changed.",
     "add.conflictList": "This project already has files or messages with the same names:\n  {list}",
-    "add.conflictDemo": "To see the demo, try it in a new project: npx virastack init demo",
+        "add.openPage": "Start the dev server and open {url}",
+    "remove.missing": "Please specify what to remove.",
+    "remove.removing": "Removing {pkg}...",
+    "remove.done": "{pkg} removed.",
+    "remove.packagesKept": "Its packages stay, because other code may use them.",
+    "remove.failed": "Failed to remove {pkg}.",
+    "remove.notInstalled": "{pkg} is not in this project. Nothing changed.",
+    "remove.changedList": "You changed these:\n  {list}",
+    "remove.confirm": "Delete them too?",
+    "remove.kept": "{pkg} was not removed. Nothing changed.",
+    "remove.needsYes": "Nothing changed. Run it again with --yes to delete them too.",
     "add.untranslated": "Added English text for: {locales}. Translate it when you are ready.",
-    "scaffold.demoInit": "Adding the users demo...",
-    "scaffold.demoInitDone": "Users demo added.",
-    "scaffold.demoInitFailed": "Could not add the users demo. The start page works without it. Add it later: virastack add users",
 
     help: `Usage:
   pnpm dlx virastack [init] [name]   Scaffold a new project
-  pnpm dlx virastack add <tool>      Add a ViraStack tool to an existing project
+  pnpm dlx virastack add <name>      Add a ViraStack tool or module to an existing project
+  pnpm dlx virastack remove <module> Remove a module
   pnpm dlx virastack add ai --agent <list>  Add AI rules for the given tools
 
 Tools:
   mask, password, address, ai
+
+Modules:
+  users
 
 Options:
   --name <name>         Project name (or pass as positional arg / ".")
@@ -192,7 +203,7 @@ Examples:
     "scaffold.offline":
       "İnternet bağlantısı yok gibi görünüyor. Bağımlılık kurulumu ve AI yapılandırması atlandı — çevrimiçi olduğunuzda manuel çalıştırın.",
     "scaffold.aiInit": "ViraStack AI kuralları yapılandırılıyor...",
-    "scaffold.aiInitDone": "🤖 ViraStack AI ajan kuralları projeye başarıyla entegre edildi.",
+    "scaffold.aiInitDone": "ViraStack AI kuralları eklendi.",
     "scaffold.aiInitFailed":
       "ViraStack AI kuralları yapılandırılamadı.",
     "scaffold.skillsInit": "Tasarım skill'leri kuruluyor...",
@@ -224,19 +235,30 @@ Examples:
     "add.alreadyInstalled": "{pkg} bu projede zaten var. Hiçbir şey değişmedi.",
     "add.conflict": "{pkg} eklenmedi. Hiçbir şey değişmedi.",
     "add.conflictList": "Bu projede aynı adlı dosya veya çeviriler var:\n  {list}",
-    "add.conflictDemo": "Demoyu görmek için yeni bir projede deneyebilirsin: npx virastack init demo",
+        "add.openPage": "Geliştirme sunucusunu başlat ve şu adresi aç: {url}",
+    "remove.missing": "Lütfen neyi kaldırmak istediğinizi belirtin.",
+    "remove.removing": "{pkg} kaldırılıyor...",
+    "remove.done": "{pkg} kaldırıldı.",
+    "remove.packagesKept": "Paketleri duruyor, çünkü başka kodlar da kullanıyor olabilir.",
+    "remove.failed": "{pkg} kaldırılamadı.",
+    "remove.notInstalled": "{pkg} bu projede yok. Hiçbir şey değişmedi.",
+    "remove.changedList": "Bunları değiştirmişsin:\n  {list}",
+    "remove.confirm": "Bunlar da silinsin mi?",
+    "remove.kept": "{pkg} kaldırılmadı. Hiçbir şey değişmedi.",
+    "remove.needsYes": "Hiçbir şey değişmedi. Bunları da silmek için --yes ile tekrar çalıştır.",
     "add.untranslated": "Şu diller için İngilizce metin eklendi: {locales}. Hazır olduğunda çevirebilirsin.",
-    "scaffold.demoInit": "Users demosu ekleniyor...",
-    "scaffold.demoInitDone": "Users demosu eklendi.",
-    "scaffold.demoInitFailed": "Users demosu eklenemedi. Başlangıç sayfası onsuz da çalışır. Sonra eklemek için: virastack add users",
 
     help: `Kullanım:
   pnpm dlx virastack [init] [ad]     Yeni bir proje oluştur
-  pnpm dlx virastack add <araç>      Mevcut projeye bir ViraStack aracı ekle
+  pnpm dlx virastack add <ad>        Mevcut projeye bir ViraStack aracı veya modülü ekle
+  pnpm dlx virastack remove <modül>  Bir modülü kaldır
   pnpm dlx virastack add ai --agent <liste>  Seçilen araçlar için AI kurallarını ekle
 
 Araçlar:
   mask, password, address, ai
+
+Modüller:
+  users
 
 Seçenekler:
   --name <ad>           Proje adı (veya positional arg / ".")
