@@ -4,7 +4,9 @@
  *   node scripts/sync-templates.js           report drift, exit 1 when there is any
  *   node scripts/sync-templates.js --write   apply it: copy from the source, remove extras
  *
- * Features are out of scope: they move to the registry with `virastack add`.
+ * `templates-shared` is the source of what all four templates share. Framework pairs still copy
+ * from their base template. Feature files are listed one by one, because a feature differs per
+ * framework: a whole feature folder is refused.
  * This script never ships in the npm package and never runs on a user's machine.
  */
 import { execFileSync } from "node:child_process";
@@ -12,6 +14,7 @@ import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
+const SHARED = "templates-shared";
 const NEXT = "templates/nextjs";
 const TANSTACK = "templates/tanstack";
 const NEXT_I18N = "templates-i18n/nextjs";
@@ -25,8 +28,8 @@ const SKIPPED_NAMES = new Set(["node_modules", ".next", "dist", ".output", ".DS_
 export const GROUPS = [
   {
     name: "all templates",
-    source: NEXT,
-    targets: [TANSTACK, NEXT_I18N, TANSTACK_I18N],
+    source: SHARED,
+    targets: TEMPLATES,
     entries: [
       ".github/workflows/ci.yml",
       ".husky/commit-msg",
@@ -42,6 +45,32 @@ export const GROUPS = [
       "public/og.png",
       "src/components/ui/",
       "src/constants/.gitkeep",
+      "src/features/home/helpers/parse-version.test.ts",
+      "src/features/home/helpers/parse-version.ts",
+      "src/features/home/icons/react-hook-form.tsx",
+      "src/features/home/icons/react.tsx",
+      "src/features/home/icons/shadcn.tsx",
+      "src/features/home/icons/tailwind.tsx",
+      "src/features/home/icons/tanstack.tsx",
+      "src/features/home/icons/typescript.tsx",
+      "src/features/home/icons/zod.tsx",
+      "src/features/home/icons/zustand.tsx",
+      "src/features/users/api/add-user.api.test.ts",
+      "src/features/users/api/add-user.api.ts",
+      "src/features/users/api/get-users.api.test.ts",
+      "src/features/users/api/get-users.api.ts",
+      "src/features/users/api/query-keys.ts",
+      "src/features/users/api/user.queries.ts",
+      "src/features/users/components/AddUserForm.test.tsx",
+      "src/features/users/components/FavoriteButton.test.tsx",
+      "src/features/users/components/UsersDirectorySkeleton.tsx",
+      "src/features/users/components/UsersMessage.tsx",
+      "src/features/users/constants/users.constants.ts",
+      "src/features/users/helpers/get-initials.test.ts",
+      "src/features/users/hooks/use-add-user.ts",
+      "src/features/users/hooks/use-favorite-ids.ts",
+      "src/features/users/hooks/use-users.ts",
+      "src/features/users/stores/favorites.store.ts",
       "src/helpers/.gitkeep",
       "src/hooks/.gitkeep",
       "src/lib/",
@@ -50,7 +79,7 @@ export const GROUPS = [
       "src/test/server.ts",
       "src/test/setup.ts",
       "src/types/site-config.types.ts",
-      "vitest.config.ts",
+      "vitest.config.ts"
     ],
   },
   {
@@ -105,8 +134,8 @@ function assertEntry(entry) {
   if (path.posix.isAbsolute(entry) || normalized.startsWith("..")) {
     throw new Error(`Entry leaves the template: ${entry}`);
   }
-  if (normalized.startsWith("src/features")) {
-    throw new Error(`Features are out of scope: ${entry}`);
+  if (normalized.startsWith("src/features") && entry.endsWith("/")) {
+    throw new Error(`List feature files one by one: ${entry}`);
   }
 }
 

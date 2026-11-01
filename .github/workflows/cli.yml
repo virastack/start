@@ -11,6 +11,7 @@ on:
       - "package-lock.json"
       - "templates/**"
       - "templates-i18n/**"
+      - "templates-shared/**"
       - ".github/workflows/cli.yml"
   pull_request:
     branches: [main, master]
@@ -22,6 +23,7 @@ on:
       - "package-lock.json"
       - "templates/**"
       - "templates-i18n/**"
+      - "templates-shared/**"
       - ".github/workflows/cli.yml"
 
 jobs:

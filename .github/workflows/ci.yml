@@ -6,12 +6,14 @@ on:
     paths:
       - "templates/**"
       - "templates-i18n/**"
+      - "templates-shared/**"
       - ".github/workflows/ci.yml"
   pull_request:
     branches: [main, master]
     paths:
       - "templates/**"
       - "templates-i18n/**"
+      - "templates-shared/**"
       - ".github/workflows/ci.yml"
 
 jobs:

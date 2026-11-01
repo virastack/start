@@ -78,11 +78,19 @@ describe("planFiles", () => {
     expect(() => planFiles(root, group(["x.ts"]))).toThrow("Source file is missing");
   });
 
-  it("refuses features and paths that leave the template", () => {
+  it("refuses feature folders and paths that leave the template", () => {
     const root = fixture({ "templates/a/x.ts": "1" });
-    expect(() => planFiles(root, group(["src/features/users/"]))).toThrow("out of scope");
+    expect(() => planFiles(root, group(["src/features/users/"]))).toThrow("one by one");
     expect(() => planFiles(root, group(["../../secret"]))).toThrow("leaves the template");
     expect(() => planFiles(root, group(["/etc/passwd"]))).toThrow("leaves the template");
+  });
+
+  it("accepts a single feature file", () => {
+    const root = fixture({
+      "templates/a/src/features/users/a.ts": "1",
+      "templates/b/src/features/users/a.ts": "1"
+    });
+    expect(planFiles(root, group(["src/features/users/a.ts"]))).toEqual({ copies: [], removals: [] });
   });
 
   it("writes nothing while planning", () => {
@@ -166,13 +174,18 @@ describe("this repository", () => {
     expect(planDependencies(REPO)).toEqual([]);
   });
 
-  it("uses each template as a target or a source", () => {
-    const used = new Set(GROUPS.flatMap(({ source, targets }) => [source, ...targets]));
-    expect([...used].sort()).toEqual([...TEMPLATES].sort());
+  it("feeds all four templates from templates-shared", () => {
+    const shared = GROUPS.find(({ source }) => source === "templates-shared");
+    expect([...(shared?.targets ?? [])].sort()).toEqual([...TEMPLATES].sort());
   });
 
-  it("never syncs features", () => {
+  it("never syncs a whole feature folder", () => {
     const entries = GROUPS.flatMap((item) => item.entries);
-    expect(entries.filter((entry) => entry.includes("features"))).toEqual([]);
+    expect(entries.filter((entry) => entry.includes("features") && entry.endsWith("/"))).toEqual([]);
+  });
+
+  it("does not ship templates-shared in the npm package", () => {
+    const { files } = JSON.parse(readFileSync(path.join(REPO, "package.json"), "utf8"));
+    expect(files).not.toContain("templates-shared");
   });
 });
