@@ -14,12 +14,14 @@ type UsersPageProps = {
 export function UsersPage({ children }: UsersPageProps) {
   return (
     <main className="mx-auto flex w-full max-w-4xl flex-1 flex-col gap-6 px-4 py-6 sm:px-6 sm:py-10">
-      <div className="flex items-center justify-between gap-4">
+      <div className="absolute top-4 right-4 sm:top-6 sm:right-6">
+        <ThemeToggle />
+      </div>
+      <div>
         <Link href="/" className={buttonVariants({ variant: "ghost", size: "sm" })}>
           <ArrowLeftIcon aria-hidden />
           Start page
         </Link>
-        <ThemeToggle />
       </div>
       <header className="flex flex-wrap items-end justify-between gap-x-4 gap-y-2">
         <div>
