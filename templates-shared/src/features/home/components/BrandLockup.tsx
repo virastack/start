@@ -1,6 +1,7 @@
 /**
  * The brand lockup, drawn from Sora so the project never loads the font. Its size comes from the
- * viewBox, so it cannot shift the layout. The outline fades out behind "Start".
+ * viewBox, so it cannot shift the layout. The outline fades out behind "Start", and the fill
+ * covers the inner half of its stroke.
  */
 export function BrandLockup({ className }: { className?: string }) {
   return (
@@ -10,12 +11,12 @@ export function BrandLockup({ className }: { className?: string }) {
           id="brand-lockup-fade"
           gradientUnits="userSpaceOnUse"
           x1="0"
-          y1="-184"
+          y1="-160"
           x2="0"
-          y2="866"
+          y2="890"
         >
           <stop stopColor="white" />
-          <stop offset="1" stopColor="black" />
+          <stop offset="1" stopColor="white" stopOpacity="0" />
         </linearGradient>
         <mask
           id="brand-lockup-mask"
@@ -31,10 +32,8 @@ export function BrandLockup({ className }: { className?: string }) {
       <g mask="url(#brand-lockup-mask)">
         <path
           d="M2295 799q-99 0-167-31-68-32-103-86-35-55-35-126h159q0 28 15 52 16 24 48 38 32 15 83 15 46 0 77-12t47-33q16-22 16-50 0-35-30-56-30-20-97-26l-55-5q-109-9-174-68t-65-156q0-70 34-121 33-51 93-78 60-28 142-28 86 0 147 30 62 29 95 82 33 54 33 126h-160q0-27-13-50-13-22-39-36-25-14-63-14-36 0-61 12-24 12-36 32-12 21-12 45 0 31 22 54t72 27l56 5q80 7 141 35 61 27 95 74 35 48 35 116 0 70-37 122-36 53-103 82t-160 29M233 780 11 50h169l171 597h34L543 50h164L500 780Zm1561 0V675q-7 21-16 38-23 39-62 60-40 21-97 21-59 0-103-21-45-21-70-61-25-39-25-94 0-60 31-98 31-39 87-58 56-18 129-18h99v-2q0-42-20-63t-64-21l-58 1-74 3-69 4V231l54-4 64-3 62-1q84 0 142 24 57 24 87 73 30 48 30 124v336Zm1618 0V675q-7 21-16 38-23 39-62 60-40 21-97 21-59 0-103-21-45-21-70-61-25-39-25-94 0-60 31-98 31-39 87-58 56-18 129-18h99v-2q0-42-20-63t-64-21l-58 1-74 3-69 4V231l54-4 64-3 62-1q84 0 142 24 57 24 87 73 30 48 30 124v336Zm1210 0-173-256h-53v256h-160V50h160v443l199-261h168l-180 234 219 314Zm-726 19q-71 0-124-23-52-24-87-64t-52-90q-17-51-17-105v-19q0-56 18-108 18-51 53-91t87-63q53-23 121-23 74 0 131 29 57 28 91 79t38 117h-157q-4-37-30-62-25-26-73-26-40 0-67 20-26 20-39 55t-13 83q0 44 12 80 12 35 38 54 27 20 70 20 32 0 54-12 23-11 36-32 14-20 17-47h156q-3 68-38 119-35 52-93 80-58 29-132 29m-973-12q-83 0-134-21-51-20-75-68-23-49-23-132V349h-83V232h83V84h149v148h160v117h-160v223q0 39 20 60 21 20 59 20h81v135Zm-1853-7V232h127v181q9-78 47-125 49-63 143-63h21v138h-40q-66 0-102 35-36 36-36 103v279Zm-283 0V350h-73V232h233v548Zm62-602q-45 0-67-24-21-23-21-59 0-37 21-61 22-23 67-23t67 23q21 24 21 61 0 36-21 59-22 24-67 24m918 399v-44h-100q-42 0-65 21-22 20-22 55 0 33 22 53 23 21 65 21 27 0 49-9 21-10 35-33t16-64m1618 0v-44h-100q-42 0-65 21-22 20-22 55 0 33 22 53 23 21 65 21 27 0 49-9 21-10 35-33t16-64"
-          fill="none"
-          stroke="currentColor"
           vectorEffect="non-scaling-stroke"
-          className="[stroke-width:2px] text-primary sm:[stroke-width:3px]"
+          className="fill-background stroke-foreground [stroke-width:1.7px] [paint-order:stroke] sm:[stroke-width:2.5px]"
         />
       </g>
       <path
