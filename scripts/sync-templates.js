@@ -45,6 +45,7 @@ export const GROUPS = [
       "public/og.png",
       "src/components/ui/",
       "src/constants/.gitkeep",
+      "src/features/home/components/BrandLockup.tsx",
       "src/features/home/helpers/parse-version.test.ts",
       "src/features/home/helpers/parse-version.ts",
       "src/features/home/icons/react-hook-form.tsx",
