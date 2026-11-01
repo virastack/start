@@ -5,7 +5,8 @@ import { siteConfig } from "@/config/site.config"
 /**
  * Native `fetch` wrapper with no HTTP dependency, so framework `fetch` options keep working.
  * Retries belong to TanStack Query (`makeQueryClient`). Bodies are read as text, so file
- * downloads use `fetch` directly; long uploads raise `timeoutMs`.
+ * downloads use `fetch` directly; long uploads raise `timeoutMs`. The timeout signal opts out of
+ * React's `fetch` memoization, so share server requests through a QueryClient or `cache()`.
  */
 
 type ApiErrorKind = "http" | "network" | "timeout" | "parse"
@@ -25,6 +26,8 @@ export class ApiError extends Error {
 }
 
 type RequestOptions<TSchema extends z.ZodType> = Omit<RequestInit, "body" | "method"> & {
+  /** Added to the query string. `null` and `undefined` values are left out. */
+  params?: Record<string, string | number | boolean | null | undefined>
   /** Validates the response. Without it the result is `unknown`. */
   schema?: TSchema
   /** Fails the request after this long, so a stalled API cannot hold up a server render. */
@@ -34,17 +37,33 @@ type RequestOptions<TSchema extends z.ZodType> = Omit<RequestInit, "body" | "met
 type ApiConfig = {
   /** Prepended to paths that start with `/`. */
   baseUrl: string
-  /** Runs before every request. Return auth headers here: a token, or cookies on the server. */
+  /** Auth headers: a token, or cookies on the server. Never sent to absolute URLs. */
   getHeaders?: () => HeadersInit | Promise<HeadersInit>
+  /** Use `"include"` when an API on another origin relies on cookies. */
+  credentials?: RequestCredentials
 }
 
 const DEFAULT_TIMEOUT_MS = 10_000
+const INVALID_JSON = Symbol("invalid JSON")
 
 const isNativeBody = (body: unknown): body is BodyInit =>
   body instanceof FormData ||
   body instanceof Blob ||
   body instanceof URLSearchParams ||
-  body instanceof ArrayBuffer
+  body instanceof ArrayBuffer ||
+  ArrayBuffer.isView(body) ||
+  body instanceof ReadableStream
+
+function withParams(url: string, params: RequestOptions<z.ZodType>["params"] = {}) {
+  const query = new URLSearchParams()
+  for (const [key, value] of Object.entries(params)) {
+    if (value !== null && value !== undefined) query.set(key, String(value))
+  }
+  const queryString = query.toString()
+
+  if (!queryString) return url
+  return `${url}${url.includes("?") ? "&" : "?"}${queryString}`
+}
 
 function mergeHeaders(...sources: (HeadersInit | undefined)[]) {
   const merged = new Headers()
@@ -56,13 +75,14 @@ function mergeHeaders(...sources: (HeadersInit | undefined)[]) {
 
 /** Reads the body as text first, so a broken body cannot hide the response status. */
 function readPayload(text: string, contentType: string): unknown {
+  if (text === "") return undefined
   // Also covers `application/problem+json` (RFC 9457).
-  if (!contentType.includes("json") || text === "") return text
+  if (!contentType.includes("json")) return text
 
   try {
     return JSON.parse(text)
   } catch {
-    return undefined
+    return INVALID_JSON
   }
 }
 
@@ -74,8 +94,13 @@ function parseResponse<TSchema extends z.ZodType>(
   const { ok, status } = response
   const payload = readPayload(text, response.headers.get("content-type") ?? "")
 
-  if (!ok) throw new ApiError("http", `Request failed with status ${status}`, status, payload)
-  if (payload === undefined) throw new ApiError("parse", "Response is not valid JSON", status, text)
+  if (!ok) {
+    const data = payload === INVALID_JSON ? text : payload
+    throw new ApiError("http", `Request failed with status ${status}`, status, data)
+  }
+  if (payload === INVALID_JSON) {
+    throw new ApiError("parse", "Response is not valid JSON", status, text)
+  }
   // Without a schema, TSchema stays at its ZodUnknown default.
   if (!schema) return payload as z.output<TSchema>
 
@@ -87,7 +112,7 @@ function parseResponse<TSchema extends z.ZodType>(
   })
 }
 
-export function createApi({ baseUrl, getHeaders }: ApiConfig) {
+export function createApi({ baseUrl, getHeaders, credentials }: ApiConfig) {
   const base = baseUrl.replace(/\/+$/, "")
 
   async function request<TSchema extends z.ZodType>(
@@ -96,14 +121,16 @@ export function createApi({ baseUrl, getHeaders }: ApiConfig) {
     body: unknown,
     options: RequestOptions<TSchema> = {}
   ): Promise<z.output<TSchema>> {
-    const { schema, timeoutMs = DEFAULT_TIMEOUT_MS, signal, headers, ...rest } = options
+    const { params, schema, timeoutMs = DEFAULT_TIMEOUT_MS, signal, headers, ...rest } = options
     const isJson = body !== undefined && !isNativeBody(body)
-    const timeout = AbortSignal.timeout(timeoutMs)
+    const isOwnApi = path.startsWith("/")
     // Outside the try: a failing auth step is not a network error.
-    const authHeaders = await getHeaders?.()
+    const authHeaders = isOwnApi ? await getHeaders?.() : undefined
+    const timeout = AbortSignal.timeout(timeoutMs)
 
     try {
-      const response = await fetch(path.startsWith("/") ? `${base}${path}` : path, {
+      const response = await fetch(withParams(isOwnApi ? `${base}${path}` : path, params), {
+        credentials,
         ...rest,
         method,
         headers: mergeHeaders(
@@ -152,4 +179,5 @@ export function createApi({ baseUrl, getHeaders }: ApiConfig) {
   }
 }
 
+// Add getHeaders here. Reading cookies on the server needs its own instance in a server module.
 export const api = createApi({ baseUrl: siteConfig.apiUrl })

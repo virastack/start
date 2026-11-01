@@ -90,6 +90,65 @@ describe("api", () => {
     expect(seen).toEqual(["Bearer token", "Bearer other"])
   })
 
+  it("never sends getHeaders to an absolute URL", async () => {
+    const seen: (string | null)[] = []
+    server.use(
+      http.get("https://other.example.com/items", ({ request }) => {
+        seen.push(request.headers.get("authorization"))
+        return HttpResponse.json(null)
+      })
+    )
+    const getHeaders = vi.fn(() => ({ Authorization: "Bearer token" }))
+    const authed = createApi({ baseUrl: BASE_URL, getHeaders })
+
+    await authed.get("https://other.example.com/items")
+
+    expect(seen).toEqual([null])
+    expect(getHeaders).not.toHaveBeenCalled()
+  })
+
+  it("adds params to the query string and leaves out empty values", async () => {
+    const seen: string[] = []
+    server.use(
+      http.get(ITEMS_URL, ({ request }) => {
+        seen.push(new URL(request.url).search)
+        return HttpResponse.json(null)
+      })
+    )
+
+    await client.get("/items", { params: { page: 2, q: "a b", none: undefined, nil: null } })
+    await client.get("/items?sort=name", { params: { page: 2 } })
+    await client.get("/items", { params: { none: undefined } })
+
+    expect(seen).toEqual(["?page=2&q=a+b", "?sort=name&page=2", ""])
+  })
+
+  it("sends the configured credentials, and a call can override them", async () => {
+    const fetchSpy = vi
+      .spyOn(globalThis, "fetch")
+      .mockImplementation(() => Promise.resolve(new Response("ok")))
+    const withCookies = createApi({ baseUrl: BASE_URL, credentials: "include" })
+
+    await withCookies.get("/items")
+    await withCookies.get("/items", { credentials: "omit" })
+
+    expect(fetchSpy.mock.calls[0]?.[1]?.credentials).toBe("include")
+    expect(fetchSpy.mock.calls[1]?.[1]?.credentials).toBe("omit")
+  })
+
+  it("starts the timeout after getHeaders has finished", async () => {
+    server.use(http.get(ITEMS_URL, () => HttpResponse.json({ id: 1 })))
+    const slowAuth = createApi({
+      baseUrl: BASE_URL,
+      getHeaders: async () => {
+        await new Promise((resolve) => setTimeout(resolve, 60))
+        return {}
+      }
+    })
+
+    await expect(slowAuth.get("/items", { timeoutMs: 40 })).resolves.toEqual({ id: 1 })
+  })
+
   it("sends a JSON body and only then the content type", async () => {
     const seen: (string | null)[] = []
     server.use(
@@ -113,6 +172,20 @@ describe("api", () => {
     const init = fetchSpy.mock.calls[0]?.[1]
     expect(init?.body).toBe(form)
     expect(new Headers(init?.headers).has("content-type")).toBe(false)
+  })
+
+  it("passes binary bodies and streams through untouched", async () => {
+    const fetchSpy = vi
+      .spyOn(globalThis, "fetch")
+      .mockImplementation(() => Promise.resolve(new Response("ok")))
+    const bytes = new Uint8Array([1, 2, 3])
+    const stream = new ReadableStream()
+
+    await client.post("/items", bytes)
+    await client.post("/items", stream)
+
+    expect(fetchSpy.mock.calls[0]?.[1]?.body).toBe(bytes)
+    expect(fetchSpy.mock.calls[1]?.[1]?.body).toBe(stream)
   })
 
   it("turns an error response into an http error with its status and data", async () => {
@@ -184,10 +257,11 @@ describe("api", () => {
     await expect(client.get("/items")).rejects.toMatchObject({ kind: "parse", status: 200 })
   })
 
-  it("returns an empty body without failing", async () => {
+  it("returns undefined for an empty body, which z.void() accepts", async () => {
     server.use(http.delete(ITEMS_URL, () => new HttpResponse(null, { status: 204 })))
 
-    await expect(client.delete("/items")).resolves.toBe("")
+    await expect(client.delete("/items")).resolves.toBeUndefined()
+    await expect(client.delete("/items", { schema: z.void() })).resolves.toBeUndefined()
   })
 
   it("turns a network failure into a network error", async () => {
