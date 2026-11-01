@@ -4,11 +4,14 @@ import type { UserEvent } from "@testing-library/user-event"
 import { http, HttpResponse } from "msw/http"
 import { describe, expect, it } from "vitest"
 
+import { siteConfig } from "@/config/site.config"
+
 import { AddUserForm } from "@/features/users/components/AddUserForm"
+import { USERS_PATH } from "@/features/users/constants/users.constants"
 import { renderWithProviders } from "@/test/render"
 import { server } from "@/test/server"
 
-const ADD_USER_URL = "https://dummyjson.com/users/add"
+const ADD_USER_URL = `${siteConfig.apiUrl}${USERS_PATH}/add`
 
 async function fillAndSubmit(user: UserEvent) {
   await user.type(screen.getByLabelText("First name"), "Ada")

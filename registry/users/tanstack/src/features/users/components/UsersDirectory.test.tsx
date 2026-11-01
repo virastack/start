@@ -3,14 +3,16 @@ import userEvent from "@testing-library/user-event"
 import { http, HttpResponse } from "msw/http"
 import { describe, expect, it, vi } from "vitest"
 
+import { siteConfig } from "@/config/site.config"
+
 import { UsersDirectory } from "@/features/users/components/UsersDirectory"
-import { SEARCH_DEBOUNCE_MS } from "@/features/users/constants/users.constants"
+import { SEARCH_DEBOUNCE_MS, USERS_PATH } from "@/features/users/constants/users.constants"
 import { usersRouteSearch } from "@/features/users/schemas/users-params.schema"
 import { renderWithProviders } from "@/test/render"
 import type { UrlUpdateEvent } from "@/test/render"
 import { server } from "@/test/server"
 
-const USERS_URL = "https://dummyjson.com/users"
+const USERS_URL = `${siteConfig.apiUrl}${USERS_PATH}`
 
 function userNamed(id: number, firstName: string) {
   return {

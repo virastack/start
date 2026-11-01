@@ -266,8 +266,9 @@ export async function runInit(options = {}) {
       });
       demoOk = true;
       demoSpinner.stop(t("scaffold.demoInitDone"));
-    } catch {
+    } catch (error) {
       demoSpinner.stop(t("scaffold.demoInitFailed"));
+      p.log.warn(String(error?.message ?? error));
     }
   }
   if (!demoOk) await setDemoPath(targetDir, null);

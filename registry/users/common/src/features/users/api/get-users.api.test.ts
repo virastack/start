@@ -1,12 +1,15 @@
 import { http, HttpResponse } from "msw/http"
 import { describe, expect, it } from "vitest"
 
+import { siteConfig } from "@/config/site.config"
+
 import { ApiError } from "@/lib/api"
 
 import { getUsers } from "@/features/users/api/get-users.api"
+import { USERS_PATH } from "@/features/users/constants/users.constants"
 import { server } from "@/test/server"
 
-const USERS_URL = "https://dummyjson.com/users"
+const USERS_URL = `${siteConfig.apiUrl}${USERS_PATH}`
 
 const ada = {
   id: 1,

@@ -1,10 +1,13 @@
 import { http, HttpResponse } from "msw/http"
 import { describe, expect, it } from "vitest"
 
+import { siteConfig } from "@/config/site.config"
+
 import { addUser } from "@/features/users/api/add-user.api"
+import { USERS_PATH } from "@/features/users/constants/users.constants"
 import { server } from "@/test/server"
 
-const ADD_USER_URL = "https://dummyjson.com/users/add"
+const ADD_USER_URL = `${siteConfig.apiUrl}${USERS_PATH}/add`
 const input = { firstName: "Ada", lastName: "Lovelace", email: "ada@example.com" }
 
 describe("addUser", () => {
