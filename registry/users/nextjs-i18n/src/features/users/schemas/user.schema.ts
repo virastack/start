@@ -10,8 +10,9 @@ export const userSchema = z.object({
   lastName: z.string(),
   username: z.string(),
   email: z.email(),
-  image: z.string().optional(),
-  role: userRoleSchema.default("user")
+  role: userRoleSchema.default("user"),
+  // A new user comes back from `POST /users/add` without a company.
+  company: z.object({ title: z.string(), department: z.string() }).optional()
 })
 
 export const usersPageSchema = z.object({

@@ -34,7 +34,7 @@
     "no_users_title": "No users yet",
     "no_users_description": "The API returned an empty list.",
     "column_user": "User",
-    "column_email": "Email",
+    "column_position": "Position",
     "column_role": "Role",
     "role_admin": "Admin",
     "role_moderator": "Moderator",

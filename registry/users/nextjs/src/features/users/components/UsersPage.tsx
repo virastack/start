@@ -5,7 +5,6 @@ import { ArrowLeftIcon } from "lucide-react"
 
 import { ThemeToggle } from "@/components/shared/ThemeToggle"
 import { buttonVariants } from "@/components/ui/button"
-import { FavoritesCount } from "@/features/users/components/FavoritesCount"
 
 type UsersPageProps = {
   children: ReactNode
@@ -27,7 +26,6 @@ export function UsersPage({ children }: UsersPageProps) {
           <h1 className="text-3xl font-semibold tracking-tight">Users</h1>
           <p className="mt-1 text-pretty text-muted-foreground">Live data from DummyJSON.</p>
         </div>
-        <FavoritesCount />
       </header>
       {children}
       <footer className="flex flex-col gap-1 border-t pt-4 text-sm text-muted-foreground">

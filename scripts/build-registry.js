@@ -3,9 +3,10 @@
  * shared files in `common`, framework files and routes in `nextjs` and `tanstack`. The i18n layers
  * replace the `common` files that hold text, and carry the messages `virastack add` merges.
  *
- *   node scripts/build-registry.js [outDir]    default: registry-dist
+ *   node scripts/build-registry.js [outDir]    default: ../virastack.com/public/r, or registry-dist
  *
- * The output is what virastack.com serves at /r. This script never ships in the npm package.
+ * The output is what virastack.com serves at /r, and a deploy of the site publishes it: the CLI
+ * reads the registry on every run. This script never ships in the npm package.
  */
 import { spawnSync } from "node:child_process";
 import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
@@ -13,6 +14,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { SHADCN } from "../src/utils/features.js";
+import { syncSitePreview } from "./sync-site-preview.js";
 
 const SCHEMA = "https://ui.shadcn.com/schema/registry.json";
 const AUTHOR = "ViraStack <https://virastack.com>";
@@ -33,6 +35,8 @@ export const FEATURES = [
     title: "Users",
     description: "A searchable user list with pagination in the URL, a validated form and favorites.",
     frameworks: ["nextjs", "tanstack", "nextjs-i18n", "tanstack-i18n"],
+    demoPath: "/users",
+    minStartVersion: "2.0.0",
   },
 ];
 
@@ -111,7 +115,13 @@ export function buildItem(root, feature, framework) {
       pkg,
     ),
     files,
-    meta: { product: "virastack-start", framework: base, ...(messages && { messages }) },
+    meta: {
+      product: "virastack-start",
+      framework: base,
+      minStartVersion: feature.minStartVersion,
+      ...(feature.demoPath && { demoPath: feature.demoPath }),
+      ...(messages && { messages }),
+    },
   };
 }
 
@@ -133,12 +143,15 @@ function shadcn(root, args) {
 
 function main() {
   const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-  const outDir = path.resolve(root, process.argv[2] ?? "registry-dist");
+  const site = path.resolve(root, "../virastack.com/public/r");
+  const outDir = path.resolve(root, process.argv[2] ?? (existsSync(site) ? site : "registry-dist"));
   const registry = buildRegistry(root);
 
   writeFileSync(path.join(root, "registry.json"), `${JSON.stringify(registry, null, 2)}\n`);
   shadcn(root, ["registry", "validate"]);
   shadcn(root, ["build", "registry.json", "--output", outDir]);
+  // Without a target folder this is a release build, so the site's preview follows it.
+  if (!process.argv[2]) syncSitePreview(root);
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) main();

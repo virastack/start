@@ -4,14 +4,16 @@ import path from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
 import {
   compareMessages,
-  FEATURES,
   FeatureConflictError,
-  findFeature,
+  FeatureNotFoundError,
   installFeature,
+  listFeatures,
   mergeMessages,
+  isOlderVersion,
+  RegistryUnavailableError,
   setDemoPath,
+  StartTooOldError,
 } from "./features.js";
-import { TOOLS } from "./tools.js";
 
 const REPO = path.resolve(import.meta.dirname, "../..");
 const dirs = [];
@@ -30,15 +32,33 @@ afterEach(() => {
   for (const dir of dirs.splice(0)) rmSync(dir, { recursive: true, force: true });
 });
 
-describe("names", () => {
-  it("shares one namespace with tools", () => {
-    const names = [...TOOLS.map((tool) => tool.id), ...FEATURES.map((feature) => feature.id)];
-    expect(new Set(names).size).toBe(names.length);
+describe("the registry", () => {
+  const options = (cwd) => ({ cwd, packageManager: "pnpm", template: "nextjs", i18n: false, isYarnClassic: false });
+
+  afterEach(() => {
+    delete process.env.VIRASTACK_REGISTRY_URL;
   });
 
-  it("finds users", () => {
-    expect(findFeature("users")).toMatchObject({ demoPath: "/users" });
-    expect(findFeature("mask")).toBeUndefined();
+  it("lists modules from registry.json, one per framework group", async () => {
+    const items = ["users-nextjs", "users-tanstack-i18n", "products-nextjs"].map((name) => ({ name }));
+    process.env.VIRASTACK_REGISTRY_URL = project({ "registry.json": JSON.stringify({ items }) });
+    expect(await listFeatures()).toEqual(["users", "products"]);
+  });
+
+  it("lists nothing when it cannot be read", async () => {
+    process.env.VIRASTACK_REGISTRY_URL = "http://127.0.0.1:1";
+    expect(await listFeatures()).toEqual([]);
+  });
+
+  it("says a module does not exist, and refuses a name that is not one", async () => {
+    process.env.VIRASTACK_REGISTRY_URL = project({ "registry.json": "{}" });
+    await expect(installFeature("ali", options(project()))).rejects.toBeInstanceOf(FeatureNotFoundError);
+    await expect(installFeature("../secret", options(project()))).rejects.toBeInstanceOf(FeatureNotFoundError);
+  });
+
+  it("tells an unreachable registry apart from a missing module", async () => {
+    process.env.VIRASTACK_REGISTRY_URL = "http://127.0.0.1:1";
+    await expect(installFeature("users", options(project()))).rejects.toBeInstanceOf(RegistryUnavailableError);
   });
 });
 
@@ -66,6 +86,42 @@ describe("mergeMessages", () => {
   });
 });
 
+describe("isOlderVersion", () => {
+  it.each([
+    ["1.2.0", "2.0.0", true],
+    ["2.0.0", "2.0.0", false],
+    ["2.1.0", "2.0.5", false],
+    ["2.0.5", "2.1.0", true],
+    ["10.0.0", "9.0.0", false],
+    [undefined, "2.0.0", true],
+  ])("%s against %s", (version, than, expected) => {
+    expect(isOlderVersion(version, than)).toBe(expected);
+  });
+});
+
+describe("minimum Start version", () => {
+  afterEach(() => {
+    delete process.env.VIRASTACK_REGISTRY_URL;
+  });
+
+  it("stops before writing anything when the project is too old", async () => {
+    const item = { name: "users-nextjs", files: [], meta: { minStartVersion: "2.0.0" } };
+    process.env.VIRASTACK_REGISTRY_URL = project({ "users-nextjs.json": JSON.stringify(item) });
+    const cwd = project({ "package.json": JSON.stringify({ virastack: { template: "nextjs", version: "1.2.0" } }) });
+
+    const error = await installFeature("users", {
+      cwd,
+      packageManager: "pnpm",
+      template: "nextjs",
+      i18n: false,
+      isYarnClassic: false,
+    }).catch((caught) => caught);
+
+    expect(error).toBeInstanceOf(StartTooOldError);
+    expect(error.current).toBe("1.2.0");
+  });
+});
+
 describe("installFeature conflicts", () => {
   const registry = (item) => {
     const dir = project({ [`${item.name}.json`]: JSON.stringify(item) });
@@ -77,7 +133,7 @@ describe("installFeature conflicts", () => {
   ];
   const meta = { messages: { en: { Users: { title: "Users", search: "Search" } }, tr: { Users: { title: "Kullanıcılar", search: "Ara" } } } };
   const install = (cwd) =>
-    installFeature(findFeature("users"), {
+    installFeature("users", {
       cwd,
       packageManager: "pnpm",
       template: "nextjs",

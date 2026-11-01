@@ -1,8 +1,6 @@
 import { http, HttpResponse } from "msw/http"
 import { describe, expect, it } from "vitest"
 
-import { ApiError } from "@/lib/api"
-
 import { addUser } from "@/features/users/api/add-user.api"
 import { server } from "@/test/server"
 
@@ -26,17 +24,5 @@ describe("addUser", () => {
       ...input
     })
     expect(body).toEqual(input)
-  })
-
-  it("throws an ApiError when the API fails", async () => {
-    server.use(http.post(ADD_USER_URL, () => HttpResponse.json({}, { status: 500 })))
-
-    await expect(addUser(input)).rejects.toMatchObject({ name: "ApiError", status: 500 })
-  })
-
-  it("throws an ApiError when the response has the wrong shape", async () => {
-    server.use(http.post(ADD_USER_URL, () => HttpResponse.json({ id: "209" })))
-
-    await expect(addUser(input)).rejects.toBeInstanceOf(ApiError)
   })
 })

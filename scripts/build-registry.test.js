@@ -2,6 +2,7 @@ import { readFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
+import { TOOLS } from "../src/utils/tools.js";
 import { buildItem, buildRegistry, FEATURES, findDependencies, packageName } from "./build-registry.js";
 
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -72,6 +73,13 @@ describe.each(["nextjs", "tanstack", "nextjs-i18n", "tanstack-i18n"])("users for
     const names = item.dependencies.join(" ");
     if (framework.startsWith("nextjs")) expect(names).toContain("nuqs@");
     else expect(names).not.toContain("nuqs");
+  });
+});
+
+describe("module names", () => {
+  it("never hide a tool", () => {
+    const tools = TOOLS.map((tool) => tool.id);
+    expect(FEATURES.map((feature) => feature.name).filter((name) => tools.includes(name))).toEqual([]);
   });
 });
 

@@ -4,10 +4,17 @@ import { SearchIcon } from "lucide-react"
 import { cn } from "cn"
 
 import { Button } from "@/components/ui/button"
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyTitle
+} from "@/components/ui/empty"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { AddUserDialog } from "@/features/users/components/AddUserDialog"
-import { UsersMessage } from "@/features/users/components/UsersMessage"
+import { FavoritesCount } from "@/features/users/components/FavoritesCount"
 import { UsersPagination } from "@/features/users/components/UsersPagination"
 import { UsersTable } from "@/features/users/components/UsersTable"
 import { UsersTableSkeleton } from "@/features/users/components/UsersTableSkeleton"
@@ -46,39 +53,49 @@ export function UsersDirectory() {
       {users.isPending ? (
         <UsersTableSkeleton />
       ) : users.isError ? (
-        <UsersMessage
-          role="alert"
-          title="Could not load users"
-          description={getErrorMessage(users.error)}
-          action={
+        <Empty role="alert" className="border">
+          <EmptyHeader>
+            <EmptyTitle>Could not load users</EmptyTitle>
+            <EmptyDescription>{getErrorMessage(users.error)}</EmptyDescription>
+          </EmptyHeader>
+          <EmptyContent>
             <Button variant="outline" disabled={users.isFetching} onClick={() => users.refetch()}>
               {users.isFetching ? "Retrying…" : "Retry"}
             </Button>
-          }
-        />
+          </EmptyContent>
+        </Empty>
       ) : users.data.users.length === 0 ? (
         users.data.total > 0 ? (
-          <UsersMessage
-            title="This page is empty"
-            description={`The results end before page ${page}.`}
-            action={
+          <Empty className="border">
+            <EmptyHeader>
+              <EmptyTitle>This page is empty</EmptyTitle>
+              <EmptyDescription>{`The results end before page ${page}.`}</EmptyDescription>
+            </EmptyHeader>
+            <EmptyContent>
               <Button variant="outline" onClick={() => setPage(1)}>
                 Go to the first page
               </Button>
-            }
-          />
+            </EmptyContent>
+          </Empty>
         ) : debouncedQ.trim() ? (
-          <UsersMessage
-            title="No users found"
-            description={`Nothing matches “${debouncedQ.trim()}”.`}
-            action={
+          <Empty className="border">
+            <EmptyHeader>
+              <EmptyTitle>No users found</EmptyTitle>
+              <EmptyDescription>{`Nothing matches “${debouncedQ.trim()}”.`}</EmptyDescription>
+            </EmptyHeader>
+            <EmptyContent>
               <Button variant="outline" onClick={() => clearSearch()}>
                 Clear search
               </Button>
-            }
-          />
+            </EmptyContent>
+          </Empty>
         ) : (
-          <UsersMessage title="No users yet" description="The API returned an empty list." />
+          <Empty className="border">
+            <EmptyHeader>
+              <EmptyTitle>No users yet</EmptyTitle>
+              <EmptyDescription>The API returned an empty list.</EmptyDescription>
+            </EmptyHeader>
+          </Empty>
         )
       ) : (
         <div
@@ -91,7 +108,9 @@ export function UsersDirectory() {
             total={users.data.total}
             totalPages={Math.ceil(users.data.total / USERS_PAGE_SIZE)}
             onPageChange={setPage}
-          />
+          >
+            <FavoritesCount />
+          </UsersPagination>
         </div>
       )}
     </div>

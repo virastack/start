@@ -12,7 +12,10 @@ export function getUsers({ page, q }: UsersFilters, signal?: AbortSignal): Promi
     params: {
       limit: USERS_PAGE_SIZE,
       skip: (page - 1) * USERS_PAGE_SIZE,
-      q: search || undefined
+      q: search || undefined,
+      // DummyJSON lists its admins first; this order looks like a real team.
+      sortBy: "lastName",
+      order: "desc"
     },
     schema: usersPageSchema,
     signal

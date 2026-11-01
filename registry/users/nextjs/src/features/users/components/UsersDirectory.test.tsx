@@ -37,7 +37,10 @@ describe("UsersDirectory", () => {
 
     expect(await screen.findByText("Ada Test")).toBeInTheDocument()
     expect(screen.getByText("Page 1 of 3")).toBeInTheDocument()
-    expect(screen.getByRole("button", { name: "Previous" })).toBeDisabled()
+    expect(screen.getByRole("button", { name: "Previous" })).toHaveAttribute(
+      "aria-disabled",
+      "true"
+    )
   })
 
   it("opens the view stored in the URL", async () => {
@@ -152,5 +155,43 @@ describe("UsersDirectory", () => {
     await user.click(screen.getByRole("button", { name: "Retry" }))
 
     expect(await screen.findByText("Ada Test")).toBeInTheDocument()
+  })
+
+  it("shows the position, department and role of a user", async () => {
+    const ada = {
+      ...userNamed(1, "Ada"),
+      role: "admin",
+      company: { title: "Mathematician", department: "Research" }
+    }
+    server.use(
+      http.get(USERS_URL, () =>
+        HttpResponse.json({ users: [ada, userNamed(2, "Grace")], total: 2, skip: 0, limit: 10 })
+      )
+    )
+    renderDirectory()
+
+    expect(await screen.findByText("Mathematician")).toBeInTheDocument()
+    expect(screen.getByText("Research")).toBeInTheDocument()
+    expect(screen.getAllByText(/^admin$/i)[0]).toBeInTheDocument()
+    expect(screen.getByText("—")).toBeInTheDocument()
+  })
+
+  it("sends one search request for a burst of typing", async () => {
+    const user = userEvent.setup()
+    const searches: Array<string | null> = []
+    server.use(
+      http.get(USERS_URL, () => HttpResponse.json(pageOf("Ada"))),
+      http.get(`${USERS_URL}/search`, ({ request }) => {
+        searches.push(new URL(request.url).searchParams.get("q"))
+        return HttpResponse.json(pageOf("Grace"))
+      })
+    )
+    renderDirectory()
+    await screen.findByText("Ada Test")
+
+    await user.type(screen.getByLabelText("Search users"), "grace")
+
+    expect(await screen.findByText("Grace Test")).toBeInTheDocument()
+    expect(searches).toEqual(["grace"])
   })
 })

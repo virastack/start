@@ -4,10 +4,17 @@ import { SearchIcon } from "lucide-react"
 import { cn } from "cn"
 
 import { Button } from "@/components/ui/button"
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyTitle
+} from "@/components/ui/empty"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { AddUserDialog } from "@/features/users/components/AddUserDialog"
-import { UsersMessage } from "@/features/users/components/UsersMessage"
+import { FavoritesCount } from "@/features/users/components/FavoritesCount"
 import { UsersPagination } from "@/features/users/components/UsersPagination"
 import { UsersTable } from "@/features/users/components/UsersTable"
 import { UsersTableSkeleton } from "@/features/users/components/UsersTableSkeleton"
@@ -47,39 +54,51 @@ export function UsersDirectory() {
       {users.isPending ? (
         <UsersTableSkeleton />
       ) : users.isError ? (
-        <UsersMessage
-          role="alert"
-          title={m.users_load_error()}
-          description={getErrorMessage(users.error)}
-          action={
+        <Empty role="alert" className="border">
+          <EmptyHeader>
+            <EmptyTitle>{m.users_load_error()}</EmptyTitle>
+            <EmptyDescription>{getErrorMessage(users.error)}</EmptyDescription>
+          </EmptyHeader>
+          <EmptyContent>
             <Button variant="outline" disabled={users.isFetching} onClick={() => users.refetch()}>
               {users.isFetching ? m.users_retrying() : m.users_retry()}
             </Button>
-          }
-        />
+          </EmptyContent>
+        </Empty>
       ) : users.data.users.length === 0 ? (
         users.data.total > 0 ? (
-          <UsersMessage
-            title={m.users_page_empty_title()}
-            description={m.users_page_empty_description({ page })}
-            action={
+          <Empty className="border">
+            <EmptyHeader>
+              <EmptyTitle>{m.users_page_empty_title()}</EmptyTitle>
+              <EmptyDescription>{m.users_page_empty_description({ page })}</EmptyDescription>
+            </EmptyHeader>
+            <EmptyContent>
               <Button variant="outline" onClick={() => setPage(1)}>
                 {m.users_first_page()}
               </Button>
-            }
-          />
+            </EmptyContent>
+          </Empty>
         ) : debouncedQ.trim() ? (
-          <UsersMessage
-            title={m.users_no_results_title()}
-            description={m.users_no_results_description({ query: debouncedQ.trim() })}
-            action={
+          <Empty className="border">
+            <EmptyHeader>
+              <EmptyTitle>{m.users_no_results_title()}</EmptyTitle>
+              <EmptyDescription>
+                {m.users_no_results_description({ query: debouncedQ.trim() })}
+              </EmptyDescription>
+            </EmptyHeader>
+            <EmptyContent>
               <Button variant="outline" onClick={() => clearSearch()}>
                 {m.users_clear_search()}
               </Button>
-            }
-          />
+            </EmptyContent>
+          </Empty>
         ) : (
-          <UsersMessage title={m.users_empty_title()} description={m.users_empty_description()} />
+          <Empty className="border">
+            <EmptyHeader>
+              <EmptyTitle>{m.users_empty_title()}</EmptyTitle>
+              <EmptyDescription>{m.users_empty_description()}</EmptyDescription>
+            </EmptyHeader>
+          </Empty>
         )
       ) : (
         <div
@@ -92,7 +111,9 @@ export function UsersDirectory() {
             total={users.data.total}
             totalPages={Math.ceil(users.data.total / USERS_PAGE_SIZE)}
             onPageChange={setPage}
-          />
+          >
+            <FavoritesCount />
+          </UsersPagination>
         </div>
       )}
     </div>

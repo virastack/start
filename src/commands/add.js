@@ -9,7 +9,15 @@ import { detectPackageManager, getAddArgs } from "../utils/package-manager.js";
 import { trackEvent } from "../utils/telemetry.js";
 import { findTool, TOOLS } from "../utils/tools.js";
 import { getAiInitArgs } from "../utils/agents.js";
-import { FEATURES, FeatureConflictError, findFeature, installFeature, readProjectInfo } from "../utils/features.js";
+import {
+  FeatureConflictError,
+  FeatureNotFoundError,
+  installFeature,
+  listFeatures,
+  readProjectInfo,
+  RegistryUnavailableError,
+  StartTooOldError,
+} from "../utils/features.js";
 
 async function fileExists(filePath) {
   try {
@@ -20,7 +28,15 @@ async function fileExists(filePath) {
   }
 }
 
-async function addFeature(feature) {
+/** Tools come first, because the list of modules keeps growing. */
+async function formatAvailable(message) {
+  const features = await listFeatures();
+  const lines = [message, `  ${t("add.tools")}: ${TOOLS.map(({ id }) => id).join(", ")}`];
+  if (features.length > 0) lines.push(`  ${t("add.modules")}: ${features.join(", ")}`);
+  return lines.join("\n");
+}
+
+async function addFeature(id) {
   const cwd = process.cwd();
   if (!(await fileExists(path.join(cwd, "package.json")))) {
     p.log.error(t("add.notAProject"));
@@ -35,32 +51,47 @@ async function addFeature(feature) {
 
   const packageManager = detectPackageManager();
   const spinner = p.spinner();
-  spinner.start(t("add.installing", { pkg: feature.id }));
+  spinner.start(t("add.installing", { pkg: id }));
   try {
-    const { alreadyInstalled, untranslated } = await installFeature(feature, {
+    const { alreadyInstalled, untranslated } = await installFeature(id, {
       cwd,
       packageManager,
       template,
       i18n,
       isYarnClassic: (process.env.npm_config_user_agent ?? "").startsWith("yarn/1."),
     });
-    spinner.stop(t(alreadyInstalled ? "add.alreadyInstalled" : "add.done", { pkg: feature.id }));
+    spinner.stop(t(alreadyInstalled ? "add.alreadyInstalled" : "add.done", { pkg: id }));
     if (untranslated.length > 0) {
       p.log.warn(t("add.untranslated", { locales: untranslated.join(", ") }));
     }
   } catch (error) {
-    if (error instanceof FeatureConflictError) {
-      spinner.stop(t("add.conflict", { pkg: feature.id }));
-      p.log.warn(t("add.conflictList", { list: error.conflicts.join("\n  ") }));
-      if (feature.demoPath) p.log.info(t("add.conflictDemo"));
+    if (error instanceof FeatureNotFoundError) {
+      spinner.stop(t("add.installFailed", { pkg: id }));
+      p.log.error(await formatAvailable(t("add.toolInvalid", { tool: id })));
       process.exit(1);
     }
-    spinner.stop(t("add.installFailed", { pkg: feature.id }));
+    if (error instanceof StartTooOldError) {
+      spinner.stop(t("add.installFailed", { pkg: id }));
+      p.log.error(t("add.startTooOld", { pkg: id, required: error.required, current: error.current }));
+      process.exit(1);
+    }
+    if (error instanceof RegistryUnavailableError) {
+      spinner.stop(t("add.installFailed", { pkg: id }));
+      p.log.error(t("add.registryUnavailable"));
+      process.exit(1);
+    }
+    if (error instanceof FeatureConflictError) {
+      spinner.stop(t("add.conflict", { pkg: id }));
+      p.log.warn(t("add.conflictList", { list: error.conflicts.join("\n  ") }));
+      if (error.demoPath) p.log.info(t("add.conflictDemo"));
+      process.exit(1);
+    }
+    spinner.stop(t("add.installFailed", { pkg: id }));
     p.log.error(String(error?.message ?? error));
     process.exit(1);
   }
 
-  await trackEvent("add", { feature: feature.id, packageManager });
+  await trackEvent("add", { feature: id, packageManager });
 }
 
 /**
@@ -71,26 +102,15 @@ export async function runAdd(toolId, options = {}) {
   console.log();
   p.intro(pc.bgMagenta(pc.black(" ViraStack ")));
 
-  const available = {
-    features: FEATURES.map(({ id }) => id).join(", "),
-    tools: TOOLS.map(({ id }) => id).join(", "),
-  };
-
   if (!toolId) {
-    p.log.error(t("add.toolMissing", available));
+    p.log.error(await formatAvailable(t("add.toolMissing")));
     process.exit(1);
-  }
-
-  const feature = findFeature(toolId);
-  if (feature) {
-    await addFeature(feature);
-    return;
   }
 
   const tool = findTool(toolId);
   if (!tool) {
-    p.log.error(t("add.toolInvalid", { tool: toolId, ...available }));
-    process.exit(1);
+    await addFeature(toolId);
+    return;
   }
 
   const cwd = process.cwd();

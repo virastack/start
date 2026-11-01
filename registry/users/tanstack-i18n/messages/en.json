@@ -48,7 +48,7 @@
     }
   },
   "users_column_user": "User",
-  "users_column_email": "Email",
+  "users_column_position": "Position",
   "users_column_role": "Role",
   "users_role_admin": "Admin",
   "users_role_moderator": "Moderator",

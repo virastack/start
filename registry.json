@@ -93,11 +93,6 @@
           "target": "src/features/users/components/FavoritesCount.tsx"
         },
         {
-          "path": "registry/users/common/src/features/users/components/RoleBadge.tsx",
-          "type": "registry:file",
-          "target": "src/features/users/components/RoleBadge.tsx"
-        },
-        {
           "path": "registry/users/nextjs/src/features/users/components/UsersDirectory.test.tsx",
           "type": "registry:file",
           "target": "src/features/users/components/UsersDirectory.test.tsx"
@@ -111,11 +106,6 @@
           "path": "registry/users/common/src/features/users/components/UsersDirectorySkeleton.tsx",
           "type": "registry:file",
           "target": "src/features/users/components/UsersDirectorySkeleton.tsx"
-        },
-        {
-          "path": "registry/users/common/src/features/users/components/UsersMessage.tsx",
-          "type": "registry:file",
-          "target": "src/features/users/components/UsersMessage.tsx"
         },
         {
           "path": "registry/users/nextjs/src/features/users/components/UsersPage.tsx",
@@ -141,6 +131,11 @@
           "path": "registry/users/common/src/features/users/constants/users.constants.ts",
           "type": "registry:file",
           "target": "src/features/users/constants/users.constants.ts"
+        },
+        {
+          "path": "registry/users/common/src/features/users/helpers/get-avatar-tint.ts",
+          "type": "registry:file",
+          "target": "src/features/users/helpers/get-avatar-tint.ts"
         },
         {
           "path": "registry/users/nextjs/src/features/users/helpers/get-error-message.ts",
@@ -195,7 +190,9 @@
       ],
       "meta": {
         "product": "virastack-start",
-        "framework": "nextjs"
+        "framework": "nextjs",
+        "minStartVersion": "2.0.0",
+        "demoPath": "/users"
       }
     },
     {
@@ -282,11 +279,6 @@
           "target": "src/features/users/components/FavoritesCount.tsx"
         },
         {
-          "path": "registry/users/common/src/features/users/components/RoleBadge.tsx",
-          "type": "registry:file",
-          "target": "src/features/users/components/RoleBadge.tsx"
-        },
-        {
           "path": "registry/users/tanstack/src/features/users/components/UsersDirectory.test.tsx",
           "type": "registry:file",
           "target": "src/features/users/components/UsersDirectory.test.tsx"
@@ -300,11 +292,6 @@
           "path": "registry/users/common/src/features/users/components/UsersDirectorySkeleton.tsx",
           "type": "registry:file",
           "target": "src/features/users/components/UsersDirectorySkeleton.tsx"
-        },
-        {
-          "path": "registry/users/common/src/features/users/components/UsersMessage.tsx",
-          "type": "registry:file",
-          "target": "src/features/users/components/UsersMessage.tsx"
         },
         {
           "path": "registry/users/tanstack/src/features/users/components/UsersPage.tsx",
@@ -330,6 +317,11 @@
           "path": "registry/users/common/src/features/users/constants/users.constants.ts",
           "type": "registry:file",
           "target": "src/features/users/constants/users.constants.ts"
+        },
+        {
+          "path": "registry/users/common/src/features/users/helpers/get-avatar-tint.ts",
+          "type": "registry:file",
+          "target": "src/features/users/helpers/get-avatar-tint.ts"
         },
         {
           "path": "registry/users/tanstack/src/features/users/helpers/get-error-message.ts",
@@ -389,7 +381,9 @@
       ],
       "meta": {
         "product": "virastack-start",
-        "framework": "tanstack"
+        "framework": "tanstack",
+        "minStartVersion": "2.0.0",
+        "demoPath": "/users"
       }
     },
     {
@@ -487,11 +481,6 @@
           "target": "src/features/users/components/FavoritesCount.tsx"
         },
         {
-          "path": "registry/users/common/src/features/users/components/RoleBadge.tsx",
-          "type": "registry:file",
-          "target": "src/features/users/components/RoleBadge.tsx"
-        },
-        {
           "path": "registry/users/nextjs-i18n/src/features/users/components/UsersDirectory.test.tsx",
           "type": "registry:file",
           "target": "src/features/users/components/UsersDirectory.test.tsx"
@@ -505,11 +494,6 @@
           "path": "registry/users/common/src/features/users/components/UsersDirectorySkeleton.tsx",
           "type": "registry:file",
           "target": "src/features/users/components/UsersDirectorySkeleton.tsx"
-        },
-        {
-          "path": "registry/users/common/src/features/users/components/UsersMessage.tsx",
-          "type": "registry:file",
-          "target": "src/features/users/components/UsersMessage.tsx"
         },
         {
           "path": "registry/users/nextjs-i18n/src/features/users/components/UsersPage.tsx",
@@ -535,6 +519,11 @@
           "path": "registry/users/common/src/features/users/constants/users.constants.ts",
           "type": "registry:file",
           "target": "src/features/users/constants/users.constants.ts"
+        },
+        {
+          "path": "registry/users/common/src/features/users/helpers/get-avatar-tint.ts",
+          "type": "registry:file",
+          "target": "src/features/users/helpers/get-avatar-tint.ts"
         },
         {
           "path": "registry/users/common/src/features/users/helpers/get-initials.test.ts",
@@ -590,6 +579,8 @@
       "meta": {
         "product": "virastack-start",
         "framework": "nextjs",
+        "minStartVersion": "2.0.0",
+        "demoPath": "/users",
         "messages": {
           "en": {
             "Users": {
@@ -627,7 +618,7 @@
               "no_users_title": "No users yet",
               "no_users_description": "The API returned an empty list.",
               "column_user": "User",
-              "column_email": "Email",
+              "column_position": "Position",
               "column_role": "Role",
               "role_admin": "Admin",
               "role_moderator": "Moderator",
@@ -683,7 +674,7 @@
               "no_users_title": "Henüz kullanıcı yok",
               "no_users_description": "API boş bir liste döndürdü.",
               "column_user": "Kullanıcı",
-              "column_email": "E-posta",
+              "column_position": "Pozisyon",
               "column_role": "Rol",
               "role_admin": "Admin",
               "role_moderator": "Moderatör",
@@ -790,11 +781,6 @@
           "target": "src/features/users/components/FavoritesCount.tsx"
         },
         {
-          "path": "registry/users/common/src/features/users/components/RoleBadge.tsx",
-          "type": "registry:file",
-          "target": "src/features/users/components/RoleBadge.tsx"
-        },
-        {
           "path": "registry/users/tanstack-i18n/src/features/users/components/UsersDirectory.test.tsx",
           "type": "registry:file",
           "target": "src/features/users/components/UsersDirectory.test.tsx"
@@ -808,11 +794,6 @@
           "path": "registry/users/common/src/features/users/components/UsersDirectorySkeleton.tsx",
           "type": "registry:file",
           "target": "src/features/users/components/UsersDirectorySkeleton.tsx"
-        },
-        {
-          "path": "registry/users/common/src/features/users/components/UsersMessage.tsx",
-          "type": "registry:file",
-          "target": "src/features/users/components/UsersMessage.tsx"
         },
         {
           "path": "registry/users/tanstack-i18n/src/features/users/components/UsersPage.tsx",
@@ -838,6 +819,11 @@
           "path": "registry/users/common/src/features/users/constants/users.constants.ts",
           "type": "registry:file",
           "target": "src/features/users/constants/users.constants.ts"
+        },
+        {
+          "path": "registry/users/common/src/features/users/helpers/get-avatar-tint.ts",
+          "type": "registry:file",
+          "target": "src/features/users/helpers/get-avatar-tint.ts"
         },
         {
           "path": "registry/users/tanstack-i18n/src/features/users/helpers/get-error-message.ts",
@@ -898,6 +884,8 @@
       "meta": {
         "product": "virastack-start",
         "framework": "tanstack",
+        "minStartVersion": "2.0.0",
+        "demoPath": "/users",
         "messages": {
           "en": {
             "users_title": "Users",
@@ -949,7 +937,7 @@
               }
             },
             "users_column_user": "User",
-            "users_column_email": "Email",
+            "users_column_position": "Position",
             "users_column_role": "Role",
             "users_role_admin": "Admin",
             "users_role_moderator": "Moderator",
@@ -1003,7 +991,7 @@
             "users_page_of": "Sayfa {page} / {totalPages}",
             "users_total": "{count} kullanıcı",
             "users_column_user": "Kullanıcı",
-            "users_column_email": "E-posta",
+            "users_column_position": "Pozisyon",
             "users_column_role": "Rol",
             "users_role_admin": "Admin",
             "users_role_moderator": "Moderatör",

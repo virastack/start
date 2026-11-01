@@ -12,11 +12,40 @@ const MESSAGES_DIR = "src/messages";
 const HOME_CONSTANTS = "src/features/home/constants/home.constants.ts";
 const DEMO_LINE = /export const DEMO_PATH = .* as string \| null/;
 
-/** Installed through `virastack add <id>`. Names share one namespace with tools. */
-export const FEATURES = [{ id: "users", demoPath: "/users" }];
+const VALID_ID = /^[a-z0-9-]+$/;
+const ITEM_SUFFIX = /-(nextjs|tanstack)(-i18n)?$/;
 
-export function findFeature(id) {
-  return FEATURES.find((feature) => feature.id === id);
+/** The module `init` installs as the project's demo. */
+export const DEMO_FEATURE = "users";
+
+export class FeatureNotFoundError extends Error {
+  name = "FeatureNotFoundError";
+}
+
+export class RegistryUnavailableError extends Error {
+  name = "RegistryUnavailableError";
+}
+
+export class StartTooOldError extends Error {
+  name = "StartTooOldError";
+
+  constructor(required, current) {
+    super(`Needs Start ${required}, this project uses ${current}`);
+    this.required = required;
+    this.current = current;
+  }
+}
+
+/** Compares `major.minor.patch`. A version it cannot read counts as older than any other. */
+export function isOlderVersion(version, than) {
+  const parse = (value) => String(value).split(".").map(Number);
+  const [left, right] = [parse(version), parse(than)];
+  if (left.some(Number.isNaN)) return true;
+  for (let index = 0; index < 3; index += 1) {
+    const difference = (left[index] ?? 0) - (right[index] ?? 0);
+    if (difference !== 0) return difference < 0;
+  }
+  return false;
 }
 
 export function getRegistryUrl() {
@@ -34,25 +63,51 @@ async function exists(filePath) {
 
 export async function readProjectInfo(cwd) {
   const pkg = JSON.parse(await fs.readFile(path.join(cwd, "package.json"), "utf8"));
-  return { template: pkg.virastack?.template, i18n: pkg.virastack?.i18n === true };
+  return {
+    template: pkg.virastack?.template,
+    i18n: pkg.virastack?.i18n === true,
+    version: pkg.virastack?.version,
+  };
 }
 
-async function loadItem(name) {
+/** The registry is read on every run, so a new module needs no CLI release. */
+async function loadRegistryFile(file) {
   const base = getRegistryUrl();
-  const file = `${name}.json`;
-  if (!/^https?:/.test(base)) return JSON.parse(await fs.readFile(path.join(base, file), "utf8"));
+  if (!/^https?:/.test(base)) {
+    const filePath = path.join(base, file);
+    if (!(await exists(filePath))) return null;
+    return JSON.parse(await fs.readFile(filePath, "utf8"));
+  }
 
-  const response = await fetch(`${base}/${file}`, { signal: AbortSignal.timeout(15_000) });
-  if (!response.ok) throw new Error(`Registry answered ${response.status} for ${file}`);
+  let response;
+  try {
+    response = await fetch(`${base}/${file}`, { signal: AbortSignal.timeout(15_000) });
+  } catch (error) {
+    throw new RegistryUnavailableError(`Could not reach ${base}`, { cause: error });
+  }
+  if (response.status === 404) return null;
+  if (!response.ok) throw new RegistryUnavailableError(`${base} answered ${response.status}`);
   return response.json();
+}
+
+/** The modules the registry offers now. Empty when it cannot be reached. */
+export async function listFeatures() {
+  try {
+    const registry = await loadRegistryFile("registry.json");
+    const ids = (registry?.items ?? []).map((item) => item.name.replace(ITEM_SUFFIX, ""));
+    return [...new Set(ids)];
+  } catch {
+    return [];
+  }
 }
 
 /** A feature that cannot be installed without touching what the project already has. */
 export class FeatureConflictError extends Error {
-  constructor(conflicts) {
+  constructor(conflicts, demoPath) {
     super(conflicts.join(", "));
     this.name = "FeatureConflictError";
     this.conflicts = conflicts;
+    this.demoPath = demoPath;
   }
 }
 
@@ -156,13 +211,25 @@ async function formatFiles(packageManager, files, cwd) {
  * Installs a feature with shadcn and merges its messages. Checks everything first, so a conflict
  * changes nothing. Throws FeatureConflictError for one.
  */
-export async function installFeature(feature, { cwd, packageManager, template, i18n = false, isYarnClassic }) {
-  const item = await loadItem(`${feature.id}-${template}${i18n ? "-i18n" : ""}`);
+export async function installFeature(id, { cwd, packageManager, template, i18n = false, isYarnClassic }) {
+  const item = VALID_ID.test(id)
+    ? await loadRegistryFile(`${id}-${template}${i18n ? "-i18n" : ""}.json`)
+    : null;
+  if (!item) throw new FeatureNotFoundError(id);
+
+  const required = item.meta?.minStartVersion;
+  if (required) {
+    const { version } = await readProjectInfo(cwd);
+    if (isOlderVersion(version, required)) throw new StartTooOldError(required, version ?? "?");
+  }
+
+  const demoPath = item.meta?.demoPath;
+
   const files = await planFiles(item, cwd);
   const messages = await planMessages(item, cwd);
 
   const conflicts = [...files.conflicts, ...messages.conflicts];
-  if (conflicts.length > 0) throw new FeatureConflictError(conflicts);
+  if (conflicts.length > 0) throw new FeatureConflictError(conflicts, demoPath);
   if (files.installed && messages.writes.length === 0) return { alreadyInstalled: true, untranslated: [] };
 
   if (!files.installed) {
@@ -187,7 +254,7 @@ export async function installFeature(feature, { cwd, packageManager, template, i
     if (i18n) await runCommand(packageManager, ["run", "postinstall"], { cwd });
     await runCommand(packageManager, ["run", "generate-routes"], { cwd });
   }
-  if (feature.demoPath) await setDemoPath(cwd, feature.demoPath);
+  if (demoPath) await setDemoPath(cwd, demoPath);
 
   return { alreadyInstalled: false, untranslated: messages.untranslated };
 }

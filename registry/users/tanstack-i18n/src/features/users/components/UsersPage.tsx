@@ -8,7 +8,6 @@ import { getLangParam } from "@/helpers/localized-url"
 import { LanguageSwitcher } from "@/components/shared/LanguageSwitcher"
 import { ThemeToggle } from "@/components/shared/ThemeToggle"
 import { buttonVariants } from "@/components/ui/button"
-import { FavoritesCount } from "@/features/users/components/FavoritesCount"
 import * as m from "@/paraglide/messages.js"
 
 type UsersPageProps = {
@@ -38,7 +37,6 @@ export function UsersPage({ children }: UsersPageProps) {
           <h1 className="text-3xl font-semibold tracking-tight">{m.users_title()}</h1>
           <p className="mt-1 text-pretty text-muted-foreground">{m.users_subtitle()}</p>
         </div>
-        <FavoritesCount />
       </header>
       {children}
       <footer className="flex flex-col gap-1 border-t pt-4 text-sm text-muted-foreground">

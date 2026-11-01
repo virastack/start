@@ -26,7 +26,10 @@ export function FavoriteButton({ userId, userName }: FavoriteButtonProps) {
       aria-pressed={isFavorite}
       onClick={() => toggle(userId)}
     >
-      <StarIcon aria-hidden className={cn("size-4", isFavorite && "fill-current")} />
+      <StarIcon
+        aria-hidden
+        className={cn("size-4", isFavorite && "fill-amber-400 text-amber-400")}
+      />
     </Button>
   )
 }

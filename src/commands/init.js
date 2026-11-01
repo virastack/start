@@ -20,7 +20,7 @@ import { trackEvent, isTelemetryDisabled, hasSeenTelemetryNotice, markTelemetryN
 import { TOOLS, parseToolsFlag } from "../utils/tools.js";
 import { setupEnvFile } from "../utils/setup-env.js";
 import { setupPackageManager } from "../utils/setup-package-manager.js";
-import { findFeature, installFeature, setDemoPath } from "../utils/features.js";
+import { DEMO_FEATURE, installFeature, setDemoPath } from "../utils/features.js";
 import { updatePackageJson } from "../utils/update-package-json.js";
 import { updateReadme } from "../utils/update-readme.js";
 import { validateProjectName } from "../utils/validate-project-name.js";
@@ -257,7 +257,7 @@ export async function runInit(options = {}) {
     const demoSpinner = p.spinner();
     demoSpinner.start(t("scaffold.demoInit"));
     try {
-      await installFeature(findFeature("users"), {
+      await installFeature(DEMO_FEATURE, {
         cwd: targetDir,
         packageManager,
         template,

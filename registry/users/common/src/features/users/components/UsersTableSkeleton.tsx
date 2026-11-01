@@ -10,7 +10,7 @@ export function UsersTableSkeleton() {
         <Skeleton className="m-3 h-5 w-24" />
         {ROWS.map((row) => (
           <div key={row} className="flex h-14.5 items-center gap-3 border-t px-4">
-            <Skeleton className="size-8 shrink-0 rounded-full" />
+            <Skeleton className="size-9 shrink-0 rounded-full" />
             <Skeleton className="h-4 w-40" />
             <Skeleton className="ml-auto size-6 shrink-0" />
           </div>

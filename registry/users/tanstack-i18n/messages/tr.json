@@ -24,7 +24,7 @@
   "users_page_of": "Sayfa {page} / {totalPages}",
   "users_total": "{count} kullanıcı",
   "users_column_user": "Kullanıcı",
-  "users_column_email": "E-posta",
+  "users_column_position": "Pozisyon",
   "users_column_role": "Rol",
   "users_role_admin": "Admin",
   "users_role_moderator": "Moderatör",

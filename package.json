@@ -1,6 +1,6 @@
 {
   "name": "virastack",
-  "version": "1.2.0",
+  "version": "2.0.0",
   "description": "Scaffolding CLI for Next.js and TanStack Start: ViraStack tools and AI rules in one command",
   "author": {
     "name": "\u00d6mer G\u00fcl\u00e7i\u00e7ek (ViraStack)",
@@ -48,7 +48,8 @@
     "prepublishOnly": "npm run check && npm run clean:templates",
     "check:templates": "node scripts/sync-templates.js",
     "sync:templates": "node scripts/sync-templates.js --write",
-    "build:registry": "node scripts/build-registry.js"
+    "build:registry": "node scripts/build-registry.js",
+    "sync:preview": "node scripts/sync-site-preview.js"
   },
   "keywords": [
     "virastack",

@@ -5,10 +5,17 @@ import { cn } from "cn"
 import { useTranslations } from "next-intl"
 
 import { Button } from "@/components/ui/button"
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyTitle
+} from "@/components/ui/empty"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { AddUserDialog } from "@/features/users/components/AddUserDialog"
-import { UsersMessage } from "@/features/users/components/UsersMessage"
+import { FavoritesCount } from "@/features/users/components/FavoritesCount"
 import { UsersPagination } from "@/features/users/components/UsersPagination"
 import { UsersTable } from "@/features/users/components/UsersTable"
 import { UsersTableSkeleton } from "@/features/users/components/UsersTableSkeleton"
@@ -49,39 +56,51 @@ export function UsersDirectory() {
       {users.isPending ? (
         <UsersTableSkeleton />
       ) : users.isError ? (
-        <UsersMessage
-          role="alert"
-          title={t("load_error_title")}
-          description={getErrorMessage(users.error)}
-          action={
+        <Empty role="alert" className="border">
+          <EmptyHeader>
+            <EmptyTitle>{t("load_error_title")}</EmptyTitle>
+            <EmptyDescription>{getErrorMessage(users.error)}</EmptyDescription>
+          </EmptyHeader>
+          <EmptyContent>
             <Button variant="outline" disabled={users.isFetching} onClick={() => users.refetch()}>
               {users.isFetching ? t("retrying") : t("retry")}
             </Button>
-          }
-        />
+          </EmptyContent>
+        </Empty>
       ) : users.data.users.length === 0 ? (
         users.data.total > 0 ? (
-          <UsersMessage
-            title={t("empty_page_title")}
-            description={t("empty_page_description", { page })}
-            action={
+          <Empty className="border">
+            <EmptyHeader>
+              <EmptyTitle>{t("empty_page_title")}</EmptyTitle>
+              <EmptyDescription>{t("empty_page_description", { page })}</EmptyDescription>
+            </EmptyHeader>
+            <EmptyContent>
               <Button variant="outline" onClick={() => setPage(1)}>
                 {t("go_to_first_page")}
               </Button>
-            }
-          />
+            </EmptyContent>
+          </Empty>
         ) : debouncedQ.trim() ? (
-          <UsersMessage
-            title={t("no_results_title")}
-            description={t("no_results_description", { query: debouncedQ.trim() })}
-            action={
+          <Empty className="border">
+            <EmptyHeader>
+              <EmptyTitle>{t("no_results_title")}</EmptyTitle>
+              <EmptyDescription>
+                {t("no_results_description", { query: debouncedQ.trim() })}
+              </EmptyDescription>
+            </EmptyHeader>
+            <EmptyContent>
               <Button variant="outline" onClick={() => clearSearch()}>
                 {t("clear_search")}
               </Button>
-            }
-          />
+            </EmptyContent>
+          </Empty>
         ) : (
-          <UsersMessage title={t("no_users_title")} description={t("no_users_description")} />
+          <Empty className="border">
+            <EmptyHeader>
+              <EmptyTitle>{t("no_users_title")}</EmptyTitle>
+              <EmptyDescription>{t("no_users_description")}</EmptyDescription>
+            </EmptyHeader>
+          </Empty>
         )
       ) : (
         <div
@@ -94,7 +113,9 @@ export function UsersDirectory() {
             total={users.data.total}
             totalPages={Math.ceil(users.data.total / USERS_PAGE_SIZE)}
             onPageChange={setPage}
-          />
+          >
+            <FavoritesCount />
+          </UsersPagination>
         </div>
       )}
     </div>
