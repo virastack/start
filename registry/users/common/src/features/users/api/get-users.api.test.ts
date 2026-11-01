@@ -13,7 +13,9 @@ const ada = {
   firstName: "Ada",
   lastName: "Lovelace",
   username: "ada",
-  email: "ada@example.com"
+  email: "ada@example.com",
+  image: "https://dummyjson.com/icon/ada/128",
+  role: "admin"
 }
 
 function pageOf(users: unknown[], skip = 0) {
@@ -34,6 +36,15 @@ describe("getUsers", () => {
     expect(params?.get("limit")).toBe("10")
     expect(params?.get("skip")).toBe("20")
     expect(params?.has("q")).toBe(false)
+  })
+
+  it("falls back to the user role when the API sends none", async () => {
+    const { role: _role, ...noRole } = ada
+    server.use(http.get(USERS_URL, () => HttpResponse.json(pageOf([noRole]))))
+
+    const { users } = await getUsers({ page: 1, q: "" })
+
+    expect(users[0]?.role).toBe("user")
   })
 
   it("uses the search endpoint and encodes the term", async () => {

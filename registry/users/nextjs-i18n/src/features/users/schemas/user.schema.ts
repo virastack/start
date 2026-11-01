@@ -1,13 +1,17 @@
 import type { useTranslations } from "next-intl"
 import { z } from "zod"
 
+export const userRoleSchema = z.enum(["admin", "moderator", "user"])
+
 // Unknown keys are dropped on purpose: DummyJSON also returns passwords, bank and SSN fields.
 export const userSchema = z.object({
   id: z.number(),
   firstName: z.string(),
   lastName: z.string(),
   username: z.string(),
-  email: z.email()
+  email: z.email(),
+  image: z.string().optional(),
+  role: userRoleSchema.default("user")
 })
 
 export const usersPageSchema = z.object({
@@ -35,5 +39,6 @@ export function createAddUserSchema(t: ReturnType<typeof useTranslations<"Users"
 }
 
 export type User = z.infer<typeof userSchema>
+export type UserRole = z.infer<typeof userRoleSchema>
 export type UsersPage = z.infer<typeof usersPageSchema>
 export type AddUserInput = z.infer<ReturnType<typeof createAddUserSchema>>

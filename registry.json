@@ -93,6 +93,11 @@
           "target": "src/features/users/components/FavoritesCount.tsx"
         },
         {
+          "path": "registry/users/common/src/features/users/components/RoleBadge.tsx",
+          "type": "registry:file",
+          "target": "src/features/users/components/RoleBadge.tsx"
+        },
+        {
           "path": "registry/users/nextjs/src/features/users/components/UsersDirectory.test.tsx",
           "type": "registry:file",
           "target": "src/features/users/components/UsersDirectory.test.tsx"
@@ -275,6 +280,11 @@
           "path": "registry/users/common/src/features/users/components/FavoritesCount.tsx",
           "type": "registry:file",
           "target": "src/features/users/components/FavoritesCount.tsx"
+        },
+        {
+          "path": "registry/users/common/src/features/users/components/RoleBadge.tsx",
+          "type": "registry:file",
+          "target": "src/features/users/components/RoleBadge.tsx"
         },
         {
           "path": "registry/users/tanstack/src/features/users/components/UsersDirectory.test.tsx",
@@ -477,6 +487,11 @@
           "target": "src/features/users/components/FavoritesCount.tsx"
         },
         {
+          "path": "registry/users/common/src/features/users/components/RoleBadge.tsx",
+          "type": "registry:file",
+          "target": "src/features/users/components/RoleBadge.tsx"
+        },
+        {
           "path": "registry/users/nextjs-i18n/src/features/users/components/UsersDirectory.test.tsx",
           "type": "registry:file",
           "target": "src/features/users/components/UsersDirectory.test.tsx"
@@ -613,6 +628,10 @@
               "no_users_description": "The API returned an empty list.",
               "column_user": "User",
               "column_email": "Email",
+              "column_role": "Role",
+              "role_admin": "Admin",
+              "role_moderator": "Moderator",
+              "role_user": "User",
               "column_favorite": "Favorite",
               "favorite_user": "Favorite {name}",
               "pagination_label": "Pagination",
@@ -665,6 +684,10 @@
               "no_users_description": "API boş bir liste döndürdü.",
               "column_user": "Kullanıcı",
               "column_email": "E-posta",
+              "column_role": "Rol",
+              "role_admin": "Admin",
+              "role_moderator": "Moderatör",
+              "role_user": "Kullanıcı",
               "column_favorite": "Favori",
               "favorite_user": "Favori: {name}",
               "pagination_label": "Sayfalama",
@@ -765,6 +788,11 @@
           "path": "registry/users/tanstack-i18n/src/features/users/components/FavoritesCount.tsx",
           "type": "registry:file",
           "target": "src/features/users/components/FavoritesCount.tsx"
+        },
+        {
+          "path": "registry/users/common/src/features/users/components/RoleBadge.tsx",
+          "type": "registry:file",
+          "target": "src/features/users/components/RoleBadge.tsx"
         },
         {
           "path": "registry/users/tanstack-i18n/src/features/users/components/UsersDirectory.test.tsx",
@@ -922,6 +950,10 @@
             },
             "users_column_user": "User",
             "users_column_email": "Email",
+            "users_column_role": "Role",
+            "users_role_admin": "Admin",
+            "users_role_moderator": "Moderator",
+            "users_role_user": "User",
             "users_column_favorite": "Favorite",
             "users_add": "Add user",
             "users_adding": "Adding…",
@@ -972,6 +1004,10 @@
             "users_total": "{count} kullanıcı",
             "users_column_user": "Kullanıcı",
             "users_column_email": "E-posta",
+            "users_column_role": "Rol",
+            "users_role_admin": "Admin",
+            "users_role_moderator": "Moderatör",
+            "users_role_user": "Kullanıcı",
             "users_column_favorite": "Favori",
             "users_add": "Kullanıcı ekle",
             "users_adding": "Ekleniyor…",

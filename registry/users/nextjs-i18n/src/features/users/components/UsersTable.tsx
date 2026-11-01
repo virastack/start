@@ -1,6 +1,6 @@
 import { useTranslations } from "next-intl"
 
-import { Avatar, AvatarFallback } from "@/components/ui/avatar"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import {
   Table,
   TableBody,
@@ -10,6 +10,7 @@ import {
   TableRow
 } from "@/components/ui/table"
 import { FavoriteButton } from "@/features/users/components/FavoriteButton"
+import { RoleBadge } from "@/features/users/components/RoleBadge"
 import { getInitials } from "@/features/users/helpers/get-initials"
 import type { User } from "@/features/users/schemas/user.schema"
 
@@ -26,6 +27,7 @@ export function UsersTable({ users }: UsersTableProps) {
         <TableHeader>
           <TableRow>
             <TableHead>{t("column_user")}</TableHead>
+            <TableHead className="hidden w-28 sm:table-cell">{t("column_role")}</TableHead>
             <TableHead className="hidden sm:table-cell">{t("column_email")}</TableHead>
             <TableHead className="w-14">
               <span className="sr-only">{t("column_favorite")}</span>
@@ -41,6 +43,7 @@ export function UsersTable({ users }: UsersTableProps) {
                 <TableCell>
                   <div className="flex items-center gap-3">
                     <Avatar className="size-8">
+                      <AvatarImage src={user.image} alt="" />
                       <AvatarFallback>{getInitials(name)}</AvatarFallback>
                     </Avatar>
                     <div className="min-w-0">
@@ -48,6 +51,9 @@ export function UsersTable({ users }: UsersTableProps) {
                       <p className="truncate text-xs text-muted-foreground">@{user.username}</p>
                     </div>
                   </div>
+                </TableCell>
+                <TableCell className="hidden sm:table-cell">
+                  <RoleBadge role={user.role}>{t(`role_${user.role}`)}</RoleBadge>
                 </TableCell>
                 <TableCell className="hidden truncate text-muted-foreground sm:table-cell">
                   {user.email}

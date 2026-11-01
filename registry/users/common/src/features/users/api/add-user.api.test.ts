@@ -19,7 +19,12 @@ describe("addUser", () => {
       })
     )
 
-    await expect(addUser(input)).resolves.toEqual({ id: 209, username: "", ...input })
+    await expect(addUser(input)).resolves.toEqual({
+      id: 209,
+      username: "",
+      role: "user",
+      ...input
+    })
     expect(body).toEqual(input)
   })
 

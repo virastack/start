@@ -13,26 +13,27 @@ const Avatar = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElem
 )
 Avatar.displayName = "Avatar"
 
-const AvatarImage = React.forwardRef<
-  HTMLImageElement,
-  React.ImgHTMLAttributes<HTMLImageElement> & {
-    onLoadingStatusChange?: (status: "loading" | "loaded" | "error") => void
-  }
->(({ className, src, alt = "", ...props }, ref) => {
-  const [status, setStatus] = React.useState<"loading" | "loaded" | "error">("loading")
+const AvatarImage = React.forwardRef<HTMLImageElement, React.ImgHTMLAttributes<HTMLImageElement>>(
+  ({ className, src, alt = "", ...props }, ref) => {
+    const [failed, setFailed] = React.useState(false)
 
-  return (
-    <img
-      ref={ref}
-      src={src}
-      alt={alt}
-      className={cn("aspect-square h-full w-full", status !== "loaded" && "hidden", className)}
-      onLoad={() => setStatus("loaded")}
-      onError={() => setStatus("error")}
-      {...props}
-    />
-  )
-})
+    // Opaque, because transparent images would show the initials behind them.
+    return (
+      <img
+        ref={ref}
+        src={src}
+        alt={alt}
+        className={cn(
+          "absolute inset-0 aspect-square size-full bg-background object-cover",
+          (failed || !src) && "hidden",
+          className
+        )}
+        onError={() => setFailed(true)}
+        {...props}
+      />
+    )
+  }
+)
 AvatarImage.displayName = "AvatarImage"
 
 const AvatarFallback = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
