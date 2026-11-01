@@ -18,7 +18,7 @@ export function HomePage() {
       <header className="flex flex-col items-center gap-6 text-center">
         <h1 className="flex w-full justify-center">
           <span className="sr-only">ViraStack Start</span>
-          <BrandLockup className="w-[min(82vw,578px)] overflow-visible" />
+          <BrandLockup className="w-[85.2vw] overflow-visible sm:w-[521px] lg:w-[601px]" />
         </h1>
         <p className="text-balance text-muted-foreground">{siteConfig.description}</p>
         {DEMO_PATH && (
