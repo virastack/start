@@ -39,26 +39,35 @@ export function UsersPage({ children }: UsersPageProps) {
         </div>
       </header>
       {children}
-      <footer className="flex flex-col gap-1 border-t pt-4 text-sm text-muted-foreground">
-        <p>
-          {m.users_guide_source()}{" "}
-          <code className="font-mono text-xs break-all">src/features/users</code>
-        </p>
-        <p>
-          {m.users_guide_api()}{" "}
-          <code className="font-mono text-xs break-all">
-            VITE_API_URL, api/, schemas/, AddUserForm
-          </code>
-        </p>
-        <p>
-          {m.users_guide_remove()}{" "}
-          <code className="font-mono text-xs break-all">
-            {
-              "src/features/users, src/routes/{-$lang}/users.tsx, users_* in src/messages, DEMO_PATH = null"
-            }
-          </code>
-        </p>
+      <footer className="flex flex-col gap-2 border-t pt-4 text-sm text-muted-foreground">
+        <GuideRow label={m.users_guide_source()} items={["src/features/users"]} />
+        <GuideRow
+          label={m.users_guide_api()}
+          items={["VITE_API_URL", "api/", "schemas/", "AddUserForm"]}
+        />
+        <GuideRow
+          label={m.users_guide_remove()}
+          items={[
+            "src/features/users",
+            "src/routes/{-$lang}/users.tsx",
+            "users_* in src/messages",
+            "DEMO_PATH = null"
+          ]}
+        />
       </footer>
     </main>
+  )
+}
+
+function GuideRow({ label, items }: { label: string; items: string[] }) {
+  return (
+    <p className="flex flex-wrap items-center gap-1.5">
+      {label}
+      {items.map((item) => (
+        <code key={item} className="rounded bg-muted px-1.5 py-0.5 font-mono text-xs break-all">
+          {item}
+        </code>
+      ))}
+    </p>
   )
 }

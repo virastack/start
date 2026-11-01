@@ -28,23 +28,27 @@ export function UsersPage({ children }: UsersPageProps) {
         </div>
       </header>
       {children}
-      <footer className="flex flex-col gap-1 border-t pt-4 text-sm text-muted-foreground">
-        <p>
-          This demo: <code className="font-mono text-xs break-all">src/features/users</code>
-        </p>
-        <p>
-          Your API:{" "}
-          <code className="font-mono text-xs break-all">
-            VITE_API_URL, api/, schemas/, AddUserForm
-          </code>
-        </p>
-        <p>
-          To remove:{" "}
-          <code className="font-mono text-xs break-all">
-            src/features/users, src/routes/users.tsx, DEMO_PATH = null
-          </code>
-        </p>
+      <footer className="flex flex-col gap-2 border-t pt-4 text-sm text-muted-foreground">
+        <GuideRow label="This demo:" items={["src/features/users"]} />
+        <GuideRow label="Your API:" items={["VITE_API_URL", "api/", "schemas/", "AddUserForm"]} />
+        <GuideRow
+          label="To remove:"
+          items={["src/features/users", "src/routes/users.tsx", "DEMO_PATH = null"]}
+        />
       </footer>
     </main>
+  )
+}
+
+function GuideRow({ label, items }: { label: string; items: string[] }) {
+  return (
+    <p className="flex flex-wrap items-center gap-1.5">
+      {label}
+      {items.map((item) => (
+        <code key={item} className="rounded bg-muted px-1.5 py-0.5 font-mono text-xs break-all">
+          {item}
+        </code>
+      ))}
+    </p>
   )
 }

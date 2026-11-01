@@ -35,24 +35,35 @@ export function UsersPage({ children }: UsersPageProps) {
         </div>
       </header>
       {children}
-      <footer className="flex flex-col gap-1 border-t pt-4 text-sm text-muted-foreground">
-        <p>
-          {t("guide_source")}{" "}
-          <code className="font-mono text-xs break-all">src/features/users</code>
-        </p>
-        <p>
-          {t("guide_api")}{" "}
-          <code className="font-mono text-xs break-all">
-            NEXT_PUBLIC_API_URL, api/, schemas/, AddUserForm
-          </code>
-        </p>
-        <p>
-          {t("guide_remove")}{" "}
-          <code className="font-mono text-xs break-all">
-            src/features/users, src/app/[locale]/users, Users in src/messages, DEMO_PATH = null
-          </code>
-        </p>
+      <footer className="flex flex-col gap-2 border-t pt-4 text-sm text-muted-foreground">
+        <GuideRow label={t("guide_source")} items={["src/features/users"]} />
+        <GuideRow
+          label={t("guide_api")}
+          items={["NEXT_PUBLIC_API_URL", "api/", "schemas/", "AddUserForm"]}
+        />
+        <GuideRow
+          label={t("guide_remove")}
+          items={[
+            "src/features/users",
+            "src/app/[locale]/users",
+            "Users in src/messages",
+            "DEMO_PATH = null"
+          ]}
+        />
       </footer>
     </main>
+  )
+}
+
+function GuideRow({ label, items }: { label: string; items: string[] }) {
+  return (
+    <p className="flex flex-wrap items-center gap-1.5">
+      {label}
+      {items.map((item) => (
+        <code key={item} className="rounded bg-muted px-1.5 py-0.5 font-mono text-xs break-all">
+          {item}
+        </code>
+      ))}
+    </p>
   )
 }
