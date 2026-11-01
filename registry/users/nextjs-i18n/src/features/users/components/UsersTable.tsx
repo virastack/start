@@ -47,7 +47,7 @@ export function UsersTable({ users }: UsersTableProps) {
             <TableHead className="hidden h-11 w-28 px-3 font-medium text-foreground sm:table-cell">
               {t("column_role")}
             </TableHead>
-            <TableHead className="h-11 w-12">
+            <TableHead className="h-11 w-16">
               <span className="sr-only">{t("column_favorite")}</span>
             </TableHead>
           </TableRow>
@@ -91,7 +91,7 @@ export function UsersTable({ users }: UsersTableProps) {
                   </p>
                 </TableCell>
                 <TableCell className="hidden px-3 py-3 sm:table-cell">{roleBadge}</TableCell>
-                <TableCell className="py-3">
+                <TableCell className="px-0 py-3 text-center">
                   <FavoriteButton userId={user.id} userName={name} />
                 </TableCell>
               </TableRow>

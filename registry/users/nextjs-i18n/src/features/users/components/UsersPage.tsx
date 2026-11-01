@@ -3,8 +3,6 @@ import type { ReactNode } from "react"
 import { ArrowLeftIcon } from "lucide-react"
 import { useTranslations } from "next-intl"
 
-import { LanguageSwitcher } from "@/components/shared/LanguageSwitcher"
-import { ThemeToggle } from "@/components/shared/ThemeToggle"
 import { buttonVariants } from "@/components/ui/button"
 import { Link } from "@/i18n/routing"
 
@@ -17,11 +15,7 @@ export function UsersPage({ children }: UsersPageProps) {
   const t = useTranslations("Users")
 
   return (
-    <main className="mx-auto flex w-full max-w-4xl flex-1 flex-col gap-6 px-4 py-6 sm:px-6 sm:py-10">
-      <div className="absolute top-4 right-4 flex items-center gap-2 sm:top-6 sm:right-6">
-        <LanguageSwitcher />
-        <ThemeToggle />
-      </div>
+    <main className="mx-auto flex w-full max-w-4xl flex-1 flex-col gap-6 px-4 pb-6 sm:px-6 sm:pb-10">
       <div>
         <Link href="/" className={buttonVariants({ variant: "ghost", size: "sm" })}>
           <ArrowLeftIcon aria-hidden />

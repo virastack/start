@@ -14,6 +14,7 @@ import { Providers } from "@/providers/Providers"
 
 import { DefaultCatchBoundary } from "@/components/shared/DefaultCatchBoundary"
 import { NotFound } from "@/components/shared/NotFound"
+import { SiteHeader } from "@/components/shared/SiteHeader"
 
 interface RouterContext {
   queryClient: QueryClient
@@ -51,6 +52,7 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 function RootComponent() {
   return (
     <Providers>
+      <SiteHeader />
       <Outlet />
     </Providers>
   )

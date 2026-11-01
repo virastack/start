@@ -1,22 +1,17 @@
+import { Link } from "@tanstack/react-router"
 import { ArrowRightIcon, ArrowUpRightIcon } from "lucide-react"
 
-import { LanguageSwitcher } from "@/components/shared/LanguageSwitcher"
-import { ThemeToggle } from "@/components/shared/ThemeToggle"
+import { getLangParam } from "@/helpers/localized-url"
+
 import { buttonVariants } from "@/components/ui/button"
 import { BrandLockup } from "@/features/home/components/BrandLockup"
 import { StackList } from "@/features/home/components/StackList"
 import { DEMO_PATH, getNextSteps, getResourceLinks } from "@/features/home/constants/home.constants"
 import * as m from "@/paraglide/messages.js"
-import { localizeHref } from "@/paraglide/runtime.js"
 
 export function HomePage() {
   return (
-    <main className="mx-auto flex w-full max-w-2xl flex-1 flex-col gap-14 px-4 pt-[280px] pb-20 sm:gap-16 sm:px-6 sm:pb-24">
-      <div className="absolute top-4 right-4 flex items-center gap-2 sm:top-6 sm:right-6">
-        <LanguageSwitcher />
-        <ThemeToggle />
-      </div>
-
+    <main className="mx-auto flex w-full max-w-2xl flex-1 flex-col gap-14 px-4 pt-12 pb-20 sm:gap-16 sm:px-6 sm:pt-[216px] sm:pb-24">
       <header className="flex flex-col items-center gap-6 text-center">
         <h1 className="flex w-full justify-center">
           <span className="sr-only">ViraStack Start</span>
@@ -24,8 +19,9 @@ export function HomePage() {
         </h1>
         <p className="text-balance text-muted-foreground">{m.site_description()}</p>
         {DEMO_PATH && (
-          <a
-            href={localizeHref(DEMO_PATH)}
+          <Link
+            to={`/{-$lang}${DEMO_PATH}` as "/{-$lang}"}
+            params={{ lang: getLangParam() }}
             className={buttonVariants({ size: "lg", className: "group" })}
           >
             {m.home_cta()}
@@ -33,19 +29,19 @@ export function HomePage() {
               aria-hidden
               className="transition-transform duration-150 ease-out group-hover:translate-x-0.5 motion-reduce:transition-none"
             />
-          </a>
+          </Link>
         )}
       </header>
 
       <section aria-labelledby="next-steps-heading" className="flex flex-col gap-3">
-        <h2 id="next-steps-heading" className="font-semibold">
+        <h2 id="next-steps-heading" className="text-center font-semibold sm:text-left">
           {m.home_next_steps()}
         </h2>
         <ol className="flex flex-col gap-3">
           {getNextSteps().map(({ title, path }) => (
             <li
               key={path}
-              className="flex flex-col gap-1 text-sm sm:flex-row sm:items-baseline sm:justify-between sm:gap-6"
+              className="flex flex-col items-center gap-1 text-center text-sm sm:flex-row sm:items-baseline sm:justify-between sm:gap-6 sm:text-left"
             >
               {title}
               <code className="font-mono text-xs break-all text-muted-foreground">{path}</code>
@@ -56,7 +52,10 @@ export function HomePage() {
 
       <StackList />
 
-      <nav aria-label={m.home_links_label()} className="flex flex-wrap justify-center gap-2">
+      <nav
+        aria-label={m.home_links_label()}
+        className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:justify-center"
+      >
         {getResourceLinks().map(({ label, href }) => (
           <a
             key={href}

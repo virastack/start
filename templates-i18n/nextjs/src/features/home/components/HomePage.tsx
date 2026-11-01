@@ -1,8 +1,6 @@
 import { ArrowRightIcon, ArrowUpRightIcon } from "lucide-react"
 import { useTranslations } from "next-intl"
 
-import { LanguageSwitcher } from "@/components/shared/LanguageSwitcher"
-import { ThemeToggle } from "@/components/shared/ThemeToggle"
 import { buttonVariants } from "@/components/ui/button"
 import { BrandLockup } from "@/features/home/components/BrandLockup"
 import { StackList } from "@/features/home/components/StackList"
@@ -14,12 +12,7 @@ export function HomePage() {
   const tCommon = useTranslations("Common")
 
   return (
-    <main className="mx-auto flex w-full max-w-2xl flex-1 flex-col gap-14 px-4 pt-[280px] pb-20 sm:gap-16 sm:px-6 sm:pb-24">
-      <div className="absolute top-4 right-4 flex items-center gap-2 sm:top-6 sm:right-6">
-        <LanguageSwitcher />
-        <ThemeToggle />
-      </div>
-
+    <main className="mx-auto flex w-full max-w-2xl flex-1 flex-col gap-14 px-4 pt-12 pb-20 sm:gap-16 sm:px-6 sm:pt-[216px] sm:pb-24">
       <header className="flex flex-col items-center gap-6 text-center">
         <h1 className="flex w-full justify-center">
           <span className="sr-only">ViraStack Start</span>
@@ -38,14 +31,14 @@ export function HomePage() {
       </header>
 
       <section aria-labelledby="next-steps-heading" className="flex flex-col gap-3">
-        <h2 id="next-steps-heading" className="font-semibold">
+        <h2 id="next-steps-heading" className="text-center font-semibold sm:text-left">
           {t("next_steps_title")}
         </h2>
         <ol className="flex flex-col gap-3">
           {NEXT_STEPS.map(({ titleKey, path }) => (
             <li
               key={titleKey}
-              className="flex flex-col gap-1 text-sm sm:flex-row sm:items-baseline sm:justify-between sm:gap-6"
+              className="flex flex-col items-center gap-1 text-center text-sm sm:flex-row sm:items-baseline sm:justify-between sm:gap-6 sm:text-left"
             >
               {t(titleKey)}
               <code className="font-mono text-xs break-all text-muted-foreground">{path}</code>
@@ -56,7 +49,10 @@ export function HomePage() {
 
       <StackList />
 
-      <nav aria-label={t("links_label")} className="flex flex-wrap justify-center gap-2">
+      <nav
+        aria-label={t("links_label")}
+        className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:justify-center"
+      >
         {RESOURCE_LINKS.map(({ labelKey, href }) => (
           <a
             key={href}

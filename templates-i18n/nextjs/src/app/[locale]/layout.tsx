@@ -10,6 +10,7 @@ import { getLocalizedMetadata } from "@/config/seo.config"
 
 import { Providers } from "@/providers/Providers"
 
+import { SiteHeader } from "@/components/shared/SiteHeader"
 import { routing } from "@/i18n/routing"
 
 import "@/styles/tailwind.css"
@@ -58,7 +59,10 @@ export default async function RootLayout({
       <body className="flex min-h-full flex-col antialiased" suppressHydrationWarning>
         <NextIntlClientProvider>
           <NuqsAdapter>
-            <Providers>{children}</Providers>
+            <Providers>
+              <SiteHeader />
+              {children}
+            </Providers>
           </NuqsAdapter>
         </NextIntlClientProvider>
       </body>

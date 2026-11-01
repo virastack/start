@@ -7,6 +7,8 @@ import { defaultMetadata } from "@/config/seo.config"
 
 import { Providers } from "@/providers/Providers"
 
+import { SiteHeader } from "@/components/shared/SiteHeader"
+
 import "@/styles/tailwind.css"
 
 const inter = Inter({
@@ -29,7 +31,10 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     >
       <body className="flex min-h-full flex-col antialiased" suppressHydrationWarning>
         <NuqsAdapter>
-          <Providers>{children}</Providers>
+          <Providers>
+            <SiteHeader />
+            {children}
+          </Providers>
         </NuqsAdapter>
       </body>
     </html>
