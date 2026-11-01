@@ -35,7 +35,10 @@ export function UsersPage({ children }: UsersPageProps) {
           This demo: <code className="font-mono text-xs break-all">src/features/users</code>
         </p>
         <p>
-          Your API: <code className="font-mono text-xs break-all">api/, schemas/, AddUserForm</code>
+          Your API:{" "}
+          <code className="font-mono text-xs break-all">
+            NEXT_PUBLIC_API_URL, api/, schemas/, AddUserForm
+          </code>
         </p>
         <p>
           To remove:{" "}

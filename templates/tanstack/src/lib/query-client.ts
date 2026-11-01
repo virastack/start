@@ -4,11 +4,15 @@ import { ApiError } from "@/lib/api"
 
 const MAX_RETRIES = 1
 
-/** A client error (4xx) stays the same on retry; server and network failures may pass. */
+/** Only failures that can pass on their own are retried: not client errors or bad responses. */
 function shouldRetry(failureCount: number, error: Error) {
-  const isClientError = error instanceof ApiError && error.status >= 400 && error.status < 500
+  const isTemporary =
+    error instanceof ApiError &&
+    (error.kind === "network" ||
+      error.kind === "timeout" ||
+      (error.kind === "http" && error.status !== null && error.status >= 500))
 
-  return !isClientError && failureCount < MAX_RETRIES
+  return isTemporary && failureCount < MAX_RETRIES
 }
 
 /**

@@ -44,7 +44,9 @@ export function UsersPage({ children }: UsersPageProps) {
         </p>
         <p>
           {t("guide_api")}{" "}
-          <code className="font-mono text-xs break-all">api/, schemas/, AddUserForm</code>
+          <code className="font-mono text-xs break-all">
+            NEXT_PUBLIC_API_URL, api/, schemas/, AddUserForm
+          </code>
         </p>
         <p>
           {t("guide_remove")}{" "}

@@ -1,5 +1,6 @@
 import { http, HttpResponse } from "msw/http"
 import { describe, expect, it } from "vitest"
+import { z } from "zod"
 
 import { api } from "@/lib/api"
 import { makeQueryClient } from "@/lib/query-client"
@@ -37,6 +38,26 @@ describe("makeQueryClient retries", () => {
 
   it("retries a network failure once", async () => {
     expect(await attemptsFor(() => HttpResponse.error())).toBe(2)
+  })
+
+  it("does not retry a response that fails its schema", async () => {
+    let attempts = 0
+    server.use(
+      http.get(ITEMS_URL, () => {
+        attempts += 1
+        return HttpResponse.json({ id: "1" })
+      })
+    )
+
+    await makeQueryClient()
+      .fetchQuery({
+        queryKey: ["items"],
+        queryFn: () => api.get(ITEMS_URL, { schema: z.object({ id: z.number() }) }),
+        retryDelay: 0
+      })
+      .catch(() => undefined)
+
+    expect(attempts).toBe(1)
   })
 
   it("stops retrying once a request succeeds", async () => {

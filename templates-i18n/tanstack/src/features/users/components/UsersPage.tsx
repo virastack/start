@@ -48,7 +48,9 @@ export function UsersPage({ children }: UsersPageProps) {
         </p>
         <p>
           {m.users_guide_api()}{" "}
-          <code className="font-mono text-xs break-all">api/, schemas/, AddUserForm</code>
+          <code className="font-mono text-xs break-all">
+            VITE_API_URL, api/, schemas/, AddUserForm
+          </code>
         </p>
         <p>
           {m.users_guide_remove()}{" "}

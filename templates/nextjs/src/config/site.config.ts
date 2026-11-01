@@ -7,6 +7,7 @@ export const siteConfig: SiteConfig = {
   description:
     "Next.js boilerplate built for scalable UI/UX, clean architecture, and agent-ready developer experience.",
   url: env.NEXT_PUBLIC_APP_URL,
+  apiUrl: env.NEXT_PUBLIC_API_URL,
   ogImage: `${env.NEXT_PUBLIC_APP_URL}/og.png`,
   links: {
     github: "https://github.com/virastack/start",
