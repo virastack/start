@@ -9,23 +9,13 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
-import { Route as LangRouteImport } from './routes/$lang'
 import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
 import { Route as SiteDotwebmanifestRouteImport } from './routes/site[.]webmanifest'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
-import { Route as LangIndexRouteImport } from './routes/$lang/index'
+import { Route as Char123LangChar125RouteImport } from './routes/{-$lang}'
+import { Route as Char123LangChar125IndexRouteImport } from './routes/{-$lang}/index'
+import { Route as Char123LangChar125UsersRouteImport } from './routes/{-$lang}/users'
 
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LangRoute = LangRouteImport.update({
-  id: '/$lang',
-  path: '/$lang',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const RobotsDottxtRoute = RobotsDottxtRouteImport.update({
   id: '/robots.txt',
   path: '/robots.txt',
@@ -41,81 +31,81 @@ const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
-const LangIndexRoute = LangIndexRouteImport.update({
+const Char123LangChar125Route = Char123LangChar125RouteImport.update({
+  id: '/{-$lang}',
+  path: '/{-$lang}',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const Char123LangChar125IndexRoute = Char123LangChar125IndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => LangRoute,
+  getParentRoute: () => Char123LangChar125Route,
+} as any)
+const Char123LangChar125UsersRoute = Char123LangChar125UsersRouteImport.update({
+  id: '/users',
+  path: '/users',
+  getParentRoute: () => Char123LangChar125Route,
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/$lang': typeof LangRouteWithChildren
   '/robots.txt': typeof RobotsDottxtRoute
   '/site.webmanifest': typeof SiteDotwebmanifestRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
-  '/$lang/': typeof LangIndexRoute
+  '/{-$lang}': typeof Char123LangChar125RouteWithChildren
+  '/{-$lang}/users': typeof Char123LangChar125UsersRoute
+  '/{-$lang}/': typeof Char123LangChar125IndexRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/site.webmanifest': typeof SiteDotwebmanifestRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
-  '/$lang': typeof LangIndexRoute
+  '/{-$lang}/users': typeof Char123LangChar125UsersRoute
+  '/{-$lang}': typeof Char123LangChar125IndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
-  '/$lang': typeof LangRouteWithChildren
   '/robots.txt': typeof RobotsDottxtRoute
   '/site.webmanifest': typeof SiteDotwebmanifestRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
-  '/$lang/': typeof LangIndexRoute
+  '/{-$lang}': typeof Char123LangChar125RouteWithChildren
+  '/{-$lang}/users': typeof Char123LangChar125UsersRoute
+  '/{-$lang}/': typeof Char123LangChar125IndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    | '/'
-    | '/$lang'
     | '/robots.txt'
     | '/site.webmanifest'
     | '/sitemap.xml'
-    | '/$lang/'
+    | '/{-$lang}'
+    | '/{-$lang}/users'
+    | '/{-$lang}/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/robots.txt' | '/site.webmanifest' | '/sitemap.xml' | '/$lang'
+  to:
+    | '/robots.txt'
+    | '/site.webmanifest'
+    | '/sitemap.xml'
+    | '/{-$lang}/users'
+    | '/{-$lang}'
   id:
     | '__root__'
-    | '/'
-    | '/$lang'
     | '/robots.txt'
     | '/site.webmanifest'
     | '/sitemap.xml'
-    | '/$lang/'
+    | '/{-$lang}'
+    | '/{-$lang}/users'
+    | '/{-$lang}/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  LangRoute: typeof LangRouteWithChildren
   RobotsDottxtRoute: typeof RobotsDottxtRoute
   SiteDotwebmanifestRoute: typeof SiteDotwebmanifestRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  Char123LangChar125Route: typeof Char123LangChar125RouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/$lang': {
-      id: '/$lang'
-      path: '/$lang'
-      fullPath: '/$lang'
-      preLoaderRoute: typeof LangRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/robots.txt': {
       id: '/robots.txt'
       path: '/robots.txt'
@@ -137,32 +127,48 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/$lang/': {
-      id: '/$lang/'
+    '/{-$lang}': {
+      id: '/{-$lang}'
+      path: '/{-$lang}'
+      fullPath: '/{-$lang}'
+      preLoaderRoute: typeof Char123LangChar125RouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/{-$lang}/': {
+      id: '/{-$lang}/'
       path: '/'
-      fullPath: '/$lang/'
-      preLoaderRoute: typeof LangIndexRouteImport
-      parentRoute: typeof LangRoute
+      fullPath: '/{-$lang}/'
+      preLoaderRoute: typeof Char123LangChar125IndexRouteImport
+      parentRoute: typeof Char123LangChar125Route
+    }
+    '/{-$lang}/users': {
+      id: '/{-$lang}/users'
+      path: '/users'
+      fullPath: '/{-$lang}/users'
+      preLoaderRoute: typeof Char123LangChar125UsersRouteImport
+      parentRoute: typeof Char123LangChar125Route
     }
   }
 }
 
-interface LangRouteChildren {
-  LangIndexRoute: typeof LangIndexRoute
+interface Char123LangChar125RouteChildren {
+  Char123LangChar125UsersRoute: typeof Char123LangChar125UsersRoute
+  Char123LangChar125IndexRoute: typeof Char123LangChar125IndexRoute
 }
 
-const LangRouteChildren: LangRouteChildren = {
-  LangIndexRoute: LangIndexRoute,
+const Char123LangChar125RouteChildren: Char123LangChar125RouteChildren = {
+  Char123LangChar125UsersRoute: Char123LangChar125UsersRoute,
+  Char123LangChar125IndexRoute: Char123LangChar125IndexRoute,
 }
 
-const LangRouteWithChildren = LangRoute._addFileChildren(LangRouteChildren)
+const Char123LangChar125RouteWithChildren =
+  Char123LangChar125Route._addFileChildren(Char123LangChar125RouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
-  LangRoute: LangRouteWithChildren,
   RobotsDottxtRoute: RobotsDottxtRoute,
   SiteDotwebmanifestRoute: SiteDotwebmanifestRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
+  Char123LangChar125Route: Char123LangChar125RouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

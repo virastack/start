@@ -15,8 +15,17 @@ const config = defineConfig({
     paraglideVitePlugin({
       project: "./project.inlang",
       outdir: "./src/paraglide",
-      strategy: ["url", "cookie", "baseLocale"],
+      // The URL alone decides the language: no redirect ever comes from a cookie or a header.
+      strategy: ["url", "baseLocale"],
       urlPatterns: [
+        // Without this entry, the Turkish home page comes out as `/tr/`, which the router redirects.
+        {
+          pattern: "/",
+          localized: [
+            ["tr", "/tr"],
+            ["en", "/"]
+          ]
+        },
         {
           pattern: "/:path(.*)?",
           localized: [

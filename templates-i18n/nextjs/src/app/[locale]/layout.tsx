@@ -3,10 +3,10 @@ import { Inter } from "next/font/google"
 import { notFound } from "next/navigation"
 
 import { hasLocale, NextIntlClientProvider } from "next-intl"
-import { setRequestLocale } from "next-intl/server"
+import { getTranslations, setRequestLocale } from "next-intl/server"
 import { NuqsAdapter } from "nuqs/adapters/next/app"
 
-import { defaultMetadata } from "@/config/seo.config"
+import { getLocalizedMetadata } from "@/config/seo.config"
 
 import { Providers } from "@/providers/Providers"
 
@@ -22,7 +22,12 @@ const inter = Inter({
   adjustFontFallback: true
 })
 
-export const metadata: Metadata = defaultMetadata
+export async function generateMetadata({ params }: LayoutProps<"/[locale]">): Promise<Metadata> {
+  const { locale } = await params
+  const t = await getTranslations({ locale, namespace: "Common" })
+
+  return getLocalizedMetadata(locale, t("site_description"))
+}
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }))

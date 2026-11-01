@@ -4,7 +4,6 @@ import { createRootRouteWithContext, HeadContent, Outlet, Scripts } from "@tanst
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools"
 import interLatin from "@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url"
 import interCss from "@fontsource-variable/inter/index.css?url"
-import { NuqsAdapter } from "nuqs/adapters/tanstack-router"
 
 import { seoHeadMeta } from "@/config/seo.config"
 
@@ -52,11 +51,9 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 
 function RootComponent() {
   return (
-    <NuqsAdapter>
-      <Providers>
-        <Outlet />
-      </Providers>
-    </NuqsAdapter>
+    <Providers>
+      <Outlet />
+    </Providers>
   )
 }
 

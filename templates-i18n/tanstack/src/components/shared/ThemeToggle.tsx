@@ -6,6 +6,7 @@ import { useIsClient } from "usehooks-ts"
 import { useTheme } from "@/providers/ThemeProvider"
 
 import { Button } from "@/components/ui/button"
+import * as m from "@/paraglide/messages.js"
 
 export function ThemeToggle() {
   const { resolvedTheme, setTheme } = useTheme()
@@ -22,7 +23,7 @@ export function ThemeToggle() {
       variant="outline"
       size="icon"
       className="size-8"
-      aria-label={isDark ? "Switch to light theme" : "Switch to dark theme"}
+      aria-label={isDark ? m.theme_to_light() : m.theme_to_dark()}
       onClick={() => setTheme(isDark ? "light" : "dark")}
     >
       {isDark ? <SunIcon className="size-3.5" /> : <MoonIcon className="size-3.5" />}

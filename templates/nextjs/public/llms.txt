@@ -2,16 +2,16 @@
 
 > Next.js 16 + React 19 + Tailwind CSS 4 boilerplate focused on clean architecture, UI/UX, and agent-ready developer experience. Auth, database/ORM, and i18n are intentionally omitted — bring the solution that fits your project.
 
-Built on the App Router with Server/Client Components, streaming, and the Metadata API. UI primitives use **Base UI** (unstyled, accessible) styled with Tailwind CSS 4 design tokens. State is split by job: TanStack Query for server state, Zustand for client state, `nuqs` for URL state. Forms use React Hook Form + Zod. The home route renders a deletable `features/landing` demo that follows the canonical ViraStack feature tree. **ViraStack AI** (`@virastack/ai`) adds agent rules on scaffold; design skills come from [emilkowalski/skills](https://github.com/emilkowalski/skills) and [make-interfaces-feel-better](https://github.com/jakubkrehel/make-interfaces-feel-better).
+Built on the App Router with Server/Client Components, streaming, and the Metadata API. UI primitives use **Base UI** (unstyled, accessible) styled with Tailwind CSS 4 design tokens. State is split by job: TanStack Query for server state, Zustand for client state, `nuqs` for URL state. Forms use React Hook Form + Zod. The home route renders a deletable `features/home` start page and `/users` renders a deletable `features/users` demo; both follow the canonical ViraStack feature tree. **ViraStack AI** (`@virastack/ai`) adds agent rules on scaffold; design skills come from [emilkowalski/skills](https://github.com/emilkowalski/skills) and [make-interfaces-feel-better](https://github.com/jakubkrehel/make-interfaces-feel-better).
 
-- Tech stack: Next.js 16, React 19, Tailwind CSS 4, TypeScript 6 (strict + `noUncheckedIndexedAccess`), Node.js `>=20.9`
-- UI: Base UI, Motion, Sonner, Lucide React, `next-themes`, `class-variance-authority`
+- Tech stack: Next.js 16, React 19, Tailwind CSS 4, TypeScript 6 (strict + `noUncheckedIndexedAccess`), Node.js `>=22.13.0`
+- UI: Base UI, Sonner, Lucide React, `next-themes`, `class-variance-authority`
 - Data & state: TanStack Query 5, Zustand, `nuqs`
 - Forms: React Hook Form + Zod (+ `@hookform/resolvers`)
 - Testing: Vitest, React Testing Library, user-event, jest-dom, MSW (`src/test/`)
 - API: Native `fetch` wrapper in `src/lib/api.ts` (`ApiError` with `message`, `status`, `data`); Axios is optional, not installed
 - Env: Hand-rolled Zod schema in `src/env.ts` (no `@t3-oss/env-nextjs`)
-- Tooling: ESLint 9, Prettier 3, Husky, Knip, Commitlint, Changesets, `@next/bundle-analyzer`
+- Tooling: ESLint 10, Prettier 3, Husky, Knip, Commitlint, Changesets, `@next/bundle-analyzer`
 - Quality scripts: `pnpm typecheck`, `pnpm lint` / `lint:ci`, `pnpm knip`, `pnpm test`, `pnpm build`
 - ViraStack AI (via `npx @virastack/ai init`): `AGENTS.md`, `CLAUDE.md`, `.claude/rules/virastack/`, `.cursor/rules/virastack/`, `.virastack/ai.json`
 - Not included by default: Auth, DB/ORM, i18n (`next-intl` not installed), CSP
@@ -26,7 +26,7 @@ Built on the App Router with Server/Client Components, streaming, and the Metada
 
 ## Key Files & Entry Points
 - [`src/app/layout.tsx`](https://github.com/virastack/start/blob/main/templates/nextjs/src/app/layout.tsx): Root layout, fonts, providers
-- [`src/app/page.tsx`](https://github.com/virastack/start/blob/main/templates/nextjs/src/app/page.tsx): Home route → `<LandingPage />`
+- [`src/app/page.tsx`](https://github.com/virastack/start/blob/main/templates/nextjs/src/app/page.tsx): Home route → `<HomePage />`
 - [`src/app/loading.tsx`](https://github.com/virastack/start/blob/main/templates/nextjs/src/app/loading.tsx): Route-level skeleton
 - [`src/app/error.tsx`](https://github.com/virastack/start/blob/main/templates/nextjs/src/app/error.tsx): Route-level error boundary
 - [`src/app/not-found.tsx`](https://github.com/virastack/start/blob/main/templates/nextjs/src/app/not-found.tsx): 404 boundary
@@ -43,31 +43,24 @@ Built on the App Router with Server/Client Components, streaming, and the Metada
 - [`src/providers/Providers.tsx`](https://github.com/virastack/start/blob/main/templates/nextjs/src/providers/Providers.tsx): App-wide providers (Theme, Query, Nuqs, Toaster)
 - [`next.config.ts`](https://github.com/virastack/start/blob/main/templates/nextjs/next.config.ts): Next config + baseline security headers (no CSP by default)
 
-## Landing Feature (demo — delete when building)
-Canonical tree under `src/features/landing/`. Home page composes `LandingPage`.
+## Start Page and Users Demo (delete when building)
+The home page composes `HomePage`; `/users` composes `UsersPage` and `UsersDirectory`.
 
-- [`src/features/landing/components/LandingPage.tsx`](https://github.com/virastack/start/blob/main/templates/nextjs/src/features/landing/components/LandingPage.tsx): Page component (`LandingPage`)
-- [`src/features/landing/components/LandingPage.tsx`](https://github.com/virastack/start/blob/main/templates/nextjs/src/features/landing/components/LandingPage.tsx): Page composition (Header + sections + Footer)
-- [`src/features/landing/components/Hero.tsx`](https://github.com/virastack/start/blob/main/templates/nextjs/src/features/landing/components/Hero.tsx): Hero section
-- [`src/features/landing/components/Features.tsx`](https://github.com/virastack/start/blob/main/templates/nextjs/src/features/landing/components/Features.tsx): Feature grid
-- [`src/features/landing/components/Showcase.tsx`](https://github.com/virastack/start/blob/main/templates/nextjs/src/features/landing/components/Showcase.tsx): Stack demos host (Query, Zustand, forms, nuqs)
-- [`src/features/landing/components/UsersDemo.tsx`](https://github.com/virastack/start/blob/main/templates/nextjs/src/features/landing/components/UsersDemo.tsx): TanStack Query + `nuqs` demo
-- [`src/features/landing/components/CartDemo.tsx`](https://github.com/virastack/start/blob/main/templates/nextjs/src/features/landing/components/CartDemo.tsx): Zustand demo
-- [`src/features/landing/components/ProjectFormDemo.tsx`](https://github.com/virastack/start/blob/main/templates/nextjs/src/features/landing/components/ProjectFormDemo.tsx): RHF + Zod demo
-- [`src/features/landing/api/get-users.api.ts`](https://github.com/virastack/start/blob/main/templates/nextjs/src/features/landing/api/get-users.api.ts): Feature API function
-- [`src/features/landing/hooks/use-users.ts`](https://github.com/virastack/start/blob/main/templates/nextjs/src/features/landing/hooks/use-users.ts): Feature TanStack Query hook
-- [`src/features/landing/stores/counter.store.ts`](https://github.com/virastack/start/blob/main/templates/nextjs/src/features/landing/stores/counter.store.ts): Feature Zustand store
-- [`src/features/landing/schemas/project.schema.ts`](https://github.com/virastack/start/blob/main/templates/nextjs/src/features/landing/schemas/project.schema.ts): Feature Zod schema
-- [`src/features/landing/constants/features.constants.tsx`](https://github.com/virastack/start/blob/main/templates/nextjs/src/features/landing/constants/features.constants.tsx): Feature static lists
-- [`src/features/landing/helpers/`](https://github.com/virastack/start/tree/main/templates/nextjs/src/features/landing/helpers): Feature helpers (motion tokens, initials)
-- [`src/features/landing/icons/`](https://github.com/virastack/start/tree/main/templates/nextjs/src/features/landing/icons): Brand SVGs used only by the landing demo
-- [`src/features/landing/types/user.types.ts`](https://github.com/virastack/start/blob/main/templates/nextjs/src/features/landing/types/user.types.ts): Feature types
+- [`src/features/home/components/HomePage.tsx`](https://github.com/virastack/start/blob/main/templates/nextjs/src/features/home/components/HomePage.tsx): Start page
+- [`src/features/home/constants/home.constants.ts`](https://github.com/virastack/start/blob/main/templates/nextjs/src/features/home/constants/home.constants.ts): Stack map data and links
+- [`src/app/users/page.tsx`](https://github.com/virastack/start/blob/main/templates/nextjs/src/app/users/page.tsx): Demo route with server prefetch
+- [`src/features/users/components/UsersDirectory.tsx`](https://github.com/virastack/start/blob/main/templates/nextjs/src/features/users/components/UsersDirectory.tsx): List, search, pagination and states
+- [`src/features/users/components/AddUserForm.tsx`](https://github.com/virastack/start/blob/main/templates/nextjs/src/features/users/components/AddUserForm.tsx): RHF + Zod form
+- [`src/features/users/api/get-users.api.ts`](https://github.com/virastack/start/blob/main/templates/nextjs/src/features/users/api/get-users.api.ts): DummyJSON list and search
+- [`src/features/users/api/add-user.api.ts`](https://github.com/virastack/start/blob/main/templates/nextjs/src/features/users/api/add-user.api.ts): DummyJSON add (does not save)
+- [`src/features/users/hooks/use-users-params.ts`](https://github.com/virastack/start/blob/main/templates/nextjs/src/features/users/hooks/use-users-params.ts): `nuqs` page and search
+- [`src/features/users/stores/favorites.store.ts`](https://github.com/virastack/start/blob/main/templates/nextjs/src/features/users/stores/favorites.store.ts): Zustand favorites
+- [`src/features/users/schemas/user.schema.ts`](https://github.com/virastack/start/blob/main/templates/nextjs/src/features/users/schemas/user.schema.ts): Zod schemas
 
-Quick start: delete `src/features/landing`, replace `src/app/page.tsx`, keep `components/layout` if you still want chrome.
+To remove the demo: delete `src/features/users` and `src/app/users`, then update `src/features/home`. To remove the start page: also delete `src/features/home` and replace `src/app/page.tsx`.
 
 ## UI & Shared Layers
 - [`src/components/ui`](https://github.com/virastack/start/tree/main/templates/nextjs/src/components/ui): Base UI primitives (Button, Input, Field, Dialog, Tabs, Skeleton, Label, Avatar, Table)
-- [`src/components/layout`](https://github.com/virastack/start/tree/main/templates/nextjs/src/components/layout): Header / Footer (reusable; Header accepts optional `links`)
 - [`src/components/shared`](https://github.com/virastack/start/tree/main/templates/nextjs/src/components/shared): Cross-feature components (ThemeToggle)
 - [`src/hooks`](https://github.com/virastack/start/tree/main/templates/nextjs/src/hooks), [`src/stores`](https://github.com/virastack/start/tree/main/templates/nextjs/src/stores), [`src/schemas`](https://github.com/virastack/start/tree/main/templates/nextjs/src/schemas): Shared barrels (promote via Rule of Three)
 - [`src/helpers`](https://github.com/virastack/start/tree/main/templates/nextjs/src/helpers): Shared helpers

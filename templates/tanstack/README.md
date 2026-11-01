@@ -31,7 +31,7 @@ Production-grade TanStack Start starter with feature-based architecture, strict 
 - **Opinionated, not opaque** — clear folder rules and placement conventions; nothing important is hidden behind magic
 - **Agent-ready by default** — `AGENTS.md`, rules for Claude Code and Cursor, `llms.txt`, and agent skills ship with every project
 - **Own your UI** — Base UI primitives in `components/ui` (shadcn-style), fully editable
-- **State triad** — TanStack Query (server), Zustand (client), nuqs (URL) — each with a dedicated job
+- **State triad** — TanStack Query (server), Zustand (client), TanStack Router search params (URL) — each with a dedicated job
 - **DX that sticks** — ESLint, Prettier, Knip, Vitest, Husky, Commitlint, and GitHub Actions CI out of the box
 
 ## Features
@@ -41,7 +41,7 @@ Production-grade TanStack Start starter with feature-based architecture, strict 
 - ⚡ **TanStack Start** — file-based TanStack Router, type-safe loaders, SSR
 - ⚛️ **React 19** + TypeScript strict (`noUncheckedIndexedAccess`)
 - 🎨 **Tailwind CSS 4** + Base UI primitives
-- 🔄 **TanStack Query** · **Zustand** · **nuqs**
+- 🔄 **TanStack Query** · **Zustand**
 - 📋 **React Hook Form** + **Zod** — validated forms end to end
 - 🤖 **ViraStack AI** — agent context, scoped rules, design skills
 - ✅ **Quality built in** — ESLint, Prettier, Knip, Husky, Commitlint, Vitest + Testing Library + MSW, CI (typecheck → lint → knip → test → build)
@@ -60,7 +60,7 @@ Once your project is scaffolded, start the development server:
 pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000). The home route renders `LandingPage` from `src/features/landing` — a full demo of the stack (theme toggle, TanStack Query, Zustand, Zod forms, nuqs). Delete that feature when you are ready to build.
+Open [http://localhost:3000](http://localhost:3000). `/` is a short start page from `src/features/home`: the first file to edit and a list of the stack. `/users` is a working demo from `src/features/users`: a paginated, searchable user list, an Add user form and favorites, backed by the [DummyJSON](https://dummyjson.com) demo API. Delete both when you are ready to build.
 
 ## Environment variables
 
@@ -94,19 +94,21 @@ CI runs the same gates: typecheck → lint → knip → test → build (see `.gi
 src/
 ├── routes/               # File-based TanStack Router routes
 ├── features/
-│   └── landing/          # Demo feature (canonical folder layout)
-│       ├── api/
-│       ├── components/   # Hero, Features, Showcase, demos, LandingPage
+│   ├── home/             # Start page at `/` (deletable)
+│   │   ├── components/   # HomePage, StackList
+│   │   ├── constants/    # Stack list data and links
+│   │   ├── helpers/      # Parses versions read from package.json
+│   │   └── icons/        # Brand SVGs used by the stack list
+│   └── users/            # Demo feature at `/users` (deletable)
+│       ├── api/          # DummyJSON calls, query options and keys
+│       ├── components/   # UsersPage, UsersDirectory, AddUserForm, FavoriteButton, ...
 │       ├── constants/
 │       ├── helpers/
 │       ├── hooks/
-│       ├── icons/        # Brand SVGs used only by the landing demo
-│       ├── schemas/
-│       ├── stores/
-│       └── types/
+│       ├── schemas/      # Zod schemas and URL search params
+│       └── stores/       # Favorites (Zustand)
 ├── components/
 │   ├── ui/               # Base UI primitives (Button, Dialog, Tabs, …)
-│   ├── layout/           # Header, Footer (reusable chrome)
 │   └── shared/           # Cross-feature components (ThemeToggle, …)
 ├── hooks/                # Shared hooks (promote via Rule of Three)
 ├── stores/
@@ -119,19 +121,31 @@ src/
 ├── types/
 ├── styles/
 ├── test/                 # Vitest setup, MSW server, renderWithProviders
-├── integrations/         # Framework integrations (TanStack Query)
 ├── router.tsx
 ├── start.ts              # Global request middleware (security headers)
 └── env.ts
 ```
 
-The bundled `landing` feature follows the ViraStack AI feature tree and is meant to be deleted when you start building.
+Both bundled features follow the ViraStack AI feature tree and are meant to be deleted when you start building.
 
-**Quick start (strip the demo)**
+**About the users demo**
 
-1. Delete `src/features/landing`
+- Page and search stay in the URL (`/users?page=2&q=ann`), so a shared link opens the same view
+- `POST /users/add` on DummyJSON returns the new user but does not save it, so the user never appears in the list
+- Favorites stay in this browser (`localStorage`) through a Zustand store
+- The route prefetches on the server at request time, so `vite build` does not need DummyJSON
+
+**Remove the demo**
+
+1. Delete `src/features/users` and `src/routes/users.tsx`
+2. In `src/features/home`, remove the `/users` link from `components/HomePage.tsx` and point the next-step paths in `constants/home.constants.ts` at your own files
+
+**Remove the start page too**
+
+1. Do the steps above, skipping step 2, and delete `src/features/home`
 2. Replace `src/routes/index.tsx` with your own route
-3. Keep `components/layout` Header/Footer if you still want site chrome — pass `links` only when you need nav items
+
+Then run `pnpm knip` and remove what it reports as unused.
 
 **Rules of thumb**
 
@@ -194,7 +208,7 @@ Works with [Netlify](https://www.netlify.com/), [Cloudflare](https://developers.
 
 Ideas and bug reports welcome — open an [issue](https://github.com/virastack/start/issues).
 
-PRs that improve DX, architecture docs, or the landing showcase are especially appreciated.
+PRs that improve DX, architecture docs, or the bundled demo are especially appreciated.
 
 ---
 

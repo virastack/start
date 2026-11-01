@@ -7,7 +7,9 @@ const config = {
   project: ["src/**/*.{ts,tsx,js,jsx}"],
   ignore: [
     "src/components/ui/**",
-    "src/features/**/constants/*.constants.tsx",
+    // components.json points shadcn at this file.
+    "src/lib/utils.ts",
+    // Exposes the whole next-intl navigation API, including what the app does not use yet.
     "src/i18n/routing.ts"
   ],
   ignoreDependencies: ["tailwindcss", "tw-animate-css"],

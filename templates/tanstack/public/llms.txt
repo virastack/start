@@ -2,16 +2,16 @@
 
 > TanStack Start + React 19 + Tailwind CSS 4 boilerplate focused on clean architecture, UI/UX, and agent-ready developer experience. Auth, database/ORM, and i18n are intentionally omitted — bring the solution that fits your project.
 
-Built on TanStack Router file-based routing with type-safe loaders, nested layouts, and SSR via TanStack Start. UI primitives use **Base UI** (unstyled, accessible) styled with Tailwind CSS 4 design tokens. State is split by job: TanStack Query for server state, Zustand for client state, `nuqs` for URL state. Forms use React Hook Form + Zod. The home route renders a deletable `features/landing` demo that follows the canonical ViraStack feature tree. **ViraStack AI** (`@virastack/ai`) adds agent rules on scaffold; design skills come from [emilkowalski/skills](https://github.com/emilkowalski/skills) and [make-interfaces-feel-better](https://github.com/jakubkrehel/make-interfaces-feel-better).
+Built on TanStack Router file-based routing with type-safe loaders, nested layouts, and SSR via TanStack Start. UI primitives use **Base UI** (unstyled, accessible) styled with Tailwind CSS 4 design tokens. State is split by job: TanStack Query for server state, Zustand for client state, TanStack Router search params validated by Zod for URL state. Forms use React Hook Form + Zod. The home route renders a deletable `features/home` start page and `/users` renders a deletable `features/users` demo; both follow the canonical ViraStack feature tree. **ViraStack AI** (`@virastack/ai`) adds agent rules on scaffold; design skills come from [emilkowalski/skills](https://github.com/emilkowalski/skills) and [make-interfaces-feel-better](https://github.com/jakubkrehel/make-interfaces-feel-better).
 
-- Tech stack: TanStack Start, TanStack Router, React 19, Tailwind CSS 4, TypeScript 6 (strict + `noUncheckedIndexedAccess`), Node.js `>=20.9`
-- UI: Base UI, Motion, Sonner, Lucide React, `next-themes`, `class-variance-authority`
-- Data & state: TanStack Query 5, Zustand, `nuqs`
+- Tech stack: TanStack Start, TanStack Router, React 19, Tailwind CSS 4, TypeScript 6 (strict + `noUncheckedIndexedAccess`), Node.js `>=22.13.0`
+- UI: Base UI, Sonner, Lucide React, `class-variance-authority`
+- Data & state: TanStack Query 5, Zustand, TanStack Router search params
 - Forms: React Hook Form + Zod (+ `@hookform/resolvers`)
 - Testing: Vitest, React Testing Library, user-event, jest-dom, MSW (`src/test/`)
 - API: Native `fetch` wrapper in `src/lib/api.ts` (`ApiError` with `message`, `status`, `data`); Axios is optional, not installed
 - Env: Hand-rolled Zod schema in `src/env.ts` (`VITE_*` public vars)
-- Tooling: ESLint 9, Prettier 3, Husky, Knip, Commitlint, Changesets, Vite 8
+- Tooling: ESLint 10, Prettier 3, Husky, Knip, Commitlint, Changesets, Vite 8
 - Quality scripts: `pnpm typecheck`, `pnpm lint` / `lint:ci`, `pnpm knip`, `pnpm test`, `pnpm build`
 - ViraStack AI (via `npx @virastack/ai init`): `AGENTS.md`, `CLAUDE.md`, `.claude/rules/virastack/`, `.cursor/rules/virastack/`, `.virastack/ai.json`
 - Not included by default: Auth, DB/ORM, i18n, CSP
@@ -26,7 +26,7 @@ Built on TanStack Router file-based routing with type-safe loaders, nested layou
 
 ## Key Files & Entry Points
 - [`src/routes/__root.tsx`](https://github.com/virastack/start/blob/main/templates/tanstack/src/routes/__root.tsx): Root route, document shell, providers, SEO head
-- [`src/routes/index.tsx`](https://github.com/virastack/start/blob/main/templates/tanstack/src/routes/index.tsx): Home route → `<LandingPage />`
+- [`src/routes/index.tsx`](https://github.com/virastack/start/blob/main/templates/tanstack/src/routes/index.tsx): Home route → `<HomePage />`
 - [`src/routes/robots[.]txt.ts`](https://github.com/virastack/start/blob/main/templates/tanstack/src/routes/robots%5B.%5Dtxt.ts): Dynamic robots.txt from `siteConfig`
 - [`src/routes/sitemap[.]xml.ts`](https://github.com/virastack/start/blob/main/templates/tanstack/src/routes/sitemap%5B.%5Dxml.ts): Dynamic sitemap from `siteConfig`
 - [`src/routes/site[.]webmanifest.ts`](https://github.com/virastack/start/blob/main/templates/tanstack/src/routes/site%5B.%5Dwebmanifest.ts): Dynamic web manifest from `siteConfig`
@@ -37,29 +37,30 @@ Built on TanStack Router file-based routing with type-safe loaders, nested layou
 - [`src/config/seo.config.ts`](https://github.com/virastack/start/blob/main/templates/tanstack/src/config/seo.config.ts): Default SEO meta helpers
 - [`src/lib/api.ts`](https://github.com/virastack/start/blob/main/templates/tanstack/src/lib/api.ts): Native `fetch` wrapper with retry & typed `ApiError`
 - [`src/lib/query-client.ts`](https://github.com/virastack/start/blob/main/templates/tanstack/src/lib/query-client.ts): QueryClient factory & defaults
-- [`src/providers/Providers.tsx`](https://github.com/virastack/start/blob/main/templates/tanstack/src/providers/Providers.tsx): App-wide providers (Theme, Nuqs, Toaster)
+- [`src/providers/Providers.tsx`](https://github.com/virastack/start/blob/main/templates/tanstack/src/providers/Providers.tsx): App-wide providers (Theme, Toaster)
 - [`vite.config.ts`](https://github.com/virastack/start/blob/main/templates/tanstack/vite.config.ts): Vite + TanStack Start + Tailwind
 
-## Landing Feature (demo — delete when building)
-Canonical tree under `src/features/landing/`. Home route composes `LandingPage`.
+## Start Page and Users Demo (delete when building)
+The home route composes `HomePage`; `/users` composes `UsersPage` and `UsersDirectory`.
 
-- [`src/features/landing/components/LandingPage.tsx`](https://github.com/virastack/start/blob/main/templates/tanstack/src/features/landing/components/LandingPage.tsx): Page component (`LandingPage`)
-- [`src/features/landing/components/LandingPage.tsx`](https://github.com/virastack/start/blob/main/templates/tanstack/src/features/landing/components/LandingPage.tsx): Page composition (Header + sections + Footer)
-- [`src/features/landing/components/Hero.tsx`](https://github.com/virastack/start/blob/main/templates/tanstack/src/features/landing/components/Hero.tsx): Hero section
-- [`src/features/landing/components/Features.tsx`](https://github.com/virastack/start/blob/main/templates/tanstack/src/features/landing/components/Features.tsx): Feature grid
-- [`src/features/landing/components/Showcase.tsx`](https://github.com/virastack/start/blob/main/templates/tanstack/src/features/landing/components/Showcase.tsx): Stack demos host (Query, Zustand, forms, nuqs)
-- [`src/features/landing/components/UsersDemo.tsx`](https://github.com/virastack/start/blob/main/templates/tanstack/src/features/landing/components/UsersDemo.tsx): TanStack Query + `nuqs` demo
-- [`src/features/landing/components/CartDemo.tsx`](https://github.com/virastack/start/blob/main/templates/tanstack/src/features/landing/components/CartDemo.tsx): Zustand demo
-- [`src/features/landing/components/ProjectFormDemo.tsx`](https://github.com/virastack/start/blob/main/templates/tanstack/src/features/landing/components/ProjectFormDemo.tsx): RHF + Zod demo
+- [`src/features/home/components/HomePage.tsx`](https://github.com/virastack/start/blob/main/templates/tanstack/src/features/home/components/HomePage.tsx): Start page
+- [`src/features/home/constants/home.constants.ts`](https://github.com/virastack/start/blob/main/templates/tanstack/src/features/home/constants/home.constants.ts): Stack list data and links
+- [`src/features/home/components/StackList.tsx`](https://github.com/virastack/start/blob/main/templates/tanstack/src/features/home/components/StackList.tsx): Reads stack versions from package.json
+- [`src/routes/users.tsx`](https://github.com/virastack/start/blob/main/templates/tanstack/src/routes/users.tsx): Demo route with loader prefetch and validated search params
+- [`src/features/users/components/UsersDirectory.tsx`](https://github.com/virastack/start/blob/main/templates/tanstack/src/features/users/components/UsersDirectory.tsx): List, search, pagination and states
+- [`src/features/users/components/AddUserForm.tsx`](https://github.com/virastack/start/blob/main/templates/tanstack/src/features/users/components/AddUserForm.tsx): RHF + Zod form
+- [`src/features/users/api/get-users.api.ts`](https://github.com/virastack/start/blob/main/templates/tanstack/src/features/users/api/get-users.api.ts): DummyJSON list and search
+- [`src/features/users/api/add-user.api.ts`](https://github.com/virastack/start/blob/main/templates/tanstack/src/features/users/api/add-user.api.ts): DummyJSON add (does not save)
+- [`src/features/users/hooks/use-users-params.ts`](https://github.com/virastack/start/blob/main/templates/tanstack/src/features/users/hooks/use-users-params.ts): Page and search in the URL
+- [`src/features/users/stores/favorites.store.ts`](https://github.com/virastack/start/blob/main/templates/tanstack/src/features/users/stores/favorites.store.ts): Zustand favorites
+- [`src/features/users/schemas/user.schema.ts`](https://github.com/virastack/start/blob/main/templates/tanstack/src/features/users/schemas/user.schema.ts): Zod schemas
+- [`src/features/users/schemas/users-params.schema.ts`](https://github.com/virastack/start/blob/main/templates/tanstack/src/features/users/schemas/users-params.schema.ts): Zod schema for the URL search params
 
-Quick start: delete `src/features/landing`, replace `src/routes/index.tsx`, keep `components/layout` if you still want chrome.
+To remove the demo: delete `src/features/users` and `src/routes/users.tsx`, then update `src/features/home`. To remove the start page: also delete `src/features/home` and replace `src/routes/index.tsx`.
 
 ## UI & Shared Layers
 - [`src/components/ui`](https://github.com/virastack/start/tree/main/templates/tanstack/src/components/ui): Base UI primitives (Button, Input, Field, Dialog, Tabs, Skeleton, Label, Avatar, Table)
-- [`src/components/layout`](https://github.com/virastack/start/tree/main/templates/tanstack/src/components/layout): Header / Footer (reusable; Header accepts optional `links`)
 - [`src/components/shared`](https://github.com/virastack/start/tree/main/templates/tanstack/src/components/shared): Cross-feature components (ThemeToggle, NotFound, DefaultCatchBoundary)
-- [`src/hooks`](https://github.com/virastack/start/tree/main/templates/tanstack/src/hooks), [`src/stores`](https://github.com/virastack/start/tree/main/templates/tanstack/src/stores), [`src/schemas`](https://github.com/virastack/start/tree/main/templates/tanstack/src/schemas): Shared barrels (promote via Rule of Three)
-- [`src/helpers`](https://github.com/virastack/start/tree/main/templates/tanstack/src/helpers): Shared helpers
 - [`src/styles/tailwind.css`](https://github.com/virastack/start/blob/main/templates/tanstack/src/styles/tailwind.css): Tailwind v4 entry + design tokens
 - Assets: [`public/logo.webp`](https://github.com/virastack/start/blob/main/templates/tanstack/public/logo.webp), [`public/og.png`](https://github.com/virastack/start/blob/main/templates/tanstack/public/og.png), [`public/favicon.ico`](https://github.com/virastack/start/blob/main/templates/tanstack/public/favicon.ico)
 
@@ -85,6 +86,5 @@ Quick start: delete `src/features/landing`, replace `src/routes/index.tsx`, keep
 - [Tailwind CSS v4](https://tailwindcss.com/): Design tokens & utility-first styling
 - [Base UI](https://base-ui.com/): Unstyled, accessible React components
 - [TanStack Query](https://tanstack.com/query/latest): Server-state syncing & caching
-- [nuqs](https://nuqs.dev/): Type-safe URL search param state
 - [Zod](https://zod.dev/): Runtime validation and parsing
 - [ViraStack AI](https://github.com/virastack/ai): Shared agent rules package (`@virastack/ai`)

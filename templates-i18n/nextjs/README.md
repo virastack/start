@@ -22,7 +22,7 @@ _The Next.js boilerplate that feels effortless._
 
 **Docs:** [See the docs](https://virastack.com/start/docs)
 
-**Contents:** [Why](#why-virastack) · [Features](#features) · [Getting started](#getting-started) · [Environment](#environment-variables) · [Scripts](#scripts) · [Project structure](#project-structure) · [Customization](#customization) · [ViraStack AI](#virastack-ai) · [Deployment](#deployment)
+**Contents:** [Why](#why-virastack) · [Features](#features) · [Getting started](#getting-started) · [Environment](#environment-variables) · [Scripts](#scripts) · [Project structure](#project-structure) · [Internationalization](#internationalization) · [Customization](#customization) · [ViraStack AI](#virastack-ai) · [Deployment](#deployment)
 
 Production-grade Next.js starter with feature-based architecture, strict TypeScript, and a pre-configured [**ViraStack AI**](https://github.com/virastack/ai) layer — so you and your coding agents ship consistent code from day one.
 
@@ -42,13 +42,14 @@ Production-grade Next.js starter with feature-based architecture, strict TypeScr
 - ⚛️ **React 19** + TypeScript strict (`noUncheckedIndexedAccess`)
 - 🎨 **Tailwind CSS 4** + Base UI primitives
 - 🔄 **TanStack Query** · **Zustand** · **nuqs**
+- 🌍 **next-intl** — English and Turkish, typed message keys, `hreflang` alternates
 - 📋 **React Hook Form** + **Zod** — validated forms end to end
 - 🤖 **ViraStack AI** — agent context, scoped rules, design skills
 - ✅ **Quality built in** — ESLint, Prettier, Knip, Husky, Commitlint, Vitest + Testing Library + MSW, CI (typecheck → lint → knip → test → build)
 
 **Optional / bring your own**
 
-- Auth, database, i18n, analytics, and monitoring — wire them in when you need them; the architecture is ready
+- Auth, database, analytics, and monitoring — wire them in when you need them; the architecture is ready
 
 ## Getting started
 
@@ -60,7 +61,7 @@ Once your project is scaffolded, start the development server:
 pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000). The home route renders `LandingPage` from `src/features/landing` — a full demo of the stack (theme toggle, TanStack Query, Zustand, Zod forms, nuqs). Delete that feature when you are ready to build.
+Open [http://localhost:3000](http://localhost:3000). `/` is a short start page from `src/features/home`: the first file to edit and a map of the stack. `/users` is a working demo from `src/features/users`: a paginated, searchable user list, an Add user form and favorites, backed by the [DummyJSON](https://dummyjson.com) demo API. Delete both when you are ready to build. Turkish lives at `/tr` and `/tr/users`.
 
 ## Environment variables
 
@@ -95,20 +96,24 @@ CI runs the same gates: typecheck → lint → knip → test → build (see `.gi
 src/
 ├── app/                  # Routes, layouts, metadata (App Router only)
 ├── features/
-│   └── landing/          # Demo feature (canonical folder layout)
-│       ├── api/
-│       ├── components/   # Hero, Features, Showcase, demos, LandingPage
+│   ├── home/             # Start page at `/` (deletable)
+│   │   ├── components/   # HomePage, StackList
+│   │   ├── constants/    # Stack list data and links
+│   │   ├── helpers/      # Reads versions from package.json ranges
+│   │   └── icons/        # Brand SVGs used by the stack list
+│   └── users/            # Demo feature at `/users` (deletable)
+│       ├── api/          # DummyJSON calls, query options and keys
+│       ├── components/   # UsersPage, UsersDirectory, AddUserForm, FavoriteButton, ...
 │       ├── constants/
 │       ├── helpers/
 │       ├── hooks/
-│       ├── icons/        # Brand SVGs used only by the landing demo
-│       ├── schemas/
-│       ├── stores/
-│       └── types/
+│       ├── schemas/      # Zod schemas and URL params
+│       └── stores/       # Favorites (Zustand)
 ├── components/
 │   ├── ui/               # Base UI primitives (Button, Dialog, Tabs, …)
-│   ├── layout/           # Header, Footer (reusable chrome)
-│   └── shared/           # Cross-feature components (ThemeToggle, …)
+│   └── shared/           # Cross-feature components (ThemeToggle, LanguageSwitcher)
+├── i18n/                 # next-intl routing and request config
+├── messages/             # en.json, tr.json
 ├── hooks/                # Shared hooks (promote via Rule of Three)
 ├── stores/
 ├── schemas/
@@ -123,13 +128,27 @@ src/
 └── env.ts
 ```
 
-The bundled `landing` feature follows the ViraStack AI feature tree and is meant to be deleted when you start building.
+Both bundled features follow the ViraStack AI feature tree and are meant to be deleted when you start building.
 
-**Quick start (strip the demo)**
+**About the users demo**
 
-1. Delete `src/features/landing`
-2. Replace `src/app/page.tsx` with your own page
-3. Keep `components/layout` Header/Footer if you still want site chrome — pass `links` only when you need nav items
+- Page and search stay in the URL (`/users?page=2&q=ann`), so a shared link opens the same view
+- `POST /users/add` on DummyJSON returns the new user but does not save it, so the user never appears in the list
+- Favorites stay in this browser (`localStorage`) through a Zustand store
+- The route prefetches on the server at request time, so `next build` does not need DummyJSON
+
+**Remove the demo**
+
+1. Delete `src/features/users` and `src/app/[locale]/users`
+2. Remove `/users` from `src/app/sitemap.ts` and the `Users` block from both files in `src/messages`
+3. In `src/features/home`, remove the `/users` link from `components/HomePage.tsx` and update the next steps in `constants/home.constants.ts`
+
+**Remove the start page too**
+
+1. Do the steps above, skipping step 3, and delete `src/features/home`
+2. Replace `src/app/[locale]/page.tsx` with your own page and remove the `Home` block from both files in `src/messages`
+
+Then run `pnpm knip` and remove what it reports as unused.
 
 **Rules of thumb**
 
@@ -141,6 +160,21 @@ The bundled `landing` feature follows the ViraStack AI feature tree and is meant
 
 See the ViraStack AI `architecture` rule (`.claude/rules/virastack/` or `.cursor/rules/virastack/`) for placement rules and import conventions.
 
+## Internationalization
+
+Text lives in `src/messages/en.json` and `src/messages/tr.json`, one namespace per feature.
+
+| URL                | Language                    |
+| :----------------- | :-------------------------- |
+| `/`, `/users`      | English                     |
+| `/tr`, `/tr/users` | Turkish                     |
+| `/en`, `/en/users` | Redirect to the English URL |
+
+- The URL alone decides the language. Cookies and `Accept-Language` never redirect a visitor, because Google advises against automatic language redirects (`localeDetection: false` in `src/i18n/routing.ts`)
+- `src/types/next-intl.d.ts` registers the messages with `AppConfig`, so a missing key is a type error
+- `src/i18n/messages.test.ts` fails when the two files do not have the same keys
+- Pages add `hreflang` alternates with `getPageAlternates` from `src/config/seo.config.ts`; add new routes to `src/app/sitemap.ts`
+
 ## Customization
 
 Search the repo for `FIXME:` to find the first things to own:
@@ -148,6 +182,7 @@ Search the repo for `FIXME:` to find the first things to own:
 | File                          | What to change                           |
 | :---------------------------- | :--------------------------------------- |
 | `src/config/site.config.ts`   | Site name, description, metadata         |
+| `src/messages/*.json`         | All text, including the site description |
 | `next.config.ts`              | Remote image domains and Next.js options |
 | `src/lib/api.ts`              | Auth header / API client wiring          |
 | `src/env.ts` + `.env.example` | New environment variables                |
@@ -192,7 +227,7 @@ Optimized for [Vercel](https://vercel.com/):
 
 Ideas and bug reports welcome — open an [issue](https://github.com/virastack/start/issues).
 
-PRs that improve DX, architecture docs, or the landing showcase are especially appreciated.
+PRs that improve DX, architecture docs, or the bundled demo are especially appreciated.
 
 ---
 

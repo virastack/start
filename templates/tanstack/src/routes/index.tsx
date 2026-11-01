@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router"
 
 import { Pending } from "@/components/shared/Pending"
-import { LandingPage } from "@/features/landing/components/LandingPage"
+import { HomePage } from "@/features/home/components/HomePage"
 
 export const Route = createFileRoute("/")({
   pendingComponent: Pending,
@@ -9,5 +9,5 @@ export const Route = createFileRoute("/")({
 })
 
 function Home() {
-  return <LandingPage />
+  return <HomePage />
 }
