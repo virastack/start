@@ -1,0 +1,386 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "virastack",
+  "homepage": "https://virastack.com",
+  "items": [
+    {
+      "name": "users-nextjs",
+      "type": "registry:item",
+      "title": "Users",
+      "description": "A searchable user list with pagination in the URL, a validated form and favorites.",
+      "author": "ViraStack <https://virastack.com>",
+      "dependencies": [
+        "@hookform/resolvers@^6.0.2",
+        "@tanstack/react-query@^5.105.0",
+        "cn@^0.5.1",
+        "lucide-react@^1.66.0",
+        "nuqs@^2.10.2",
+        "react-hook-form@^7.91.0",
+        "usehooks-ts@^3.1.1",
+        "zod@^4.6.7",
+        "zustand@^5.0.16"
+      ],
+      "devDependencies": [
+        "@testing-library/react@^16.3.3",
+        "@testing-library/user-event@^14.6.8",
+        "msw@^3.0.3",
+        "vitest@^5.0.5"
+      ],
+      "files": [
+        {
+          "path": "registry/users/nextjs/src/app/users/page.tsx",
+          "type": "registry:file",
+          "target": "src/app/users/page.tsx"
+        },
+        {
+          "path": "registry/users/common/src/features/users/api/add-user.api.test.ts",
+          "type": "registry:file",
+          "target": "src/features/users/api/add-user.api.test.ts"
+        },
+        {
+          "path": "registry/users/common/src/features/users/api/add-user.api.ts",
+          "type": "registry:file",
+          "target": "src/features/users/api/add-user.api.ts"
+        },
+        {
+          "path": "registry/users/common/src/features/users/api/get-users.api.test.ts",
+          "type": "registry:file",
+          "target": "src/features/users/api/get-users.api.test.ts"
+        },
+        {
+          "path": "registry/users/common/src/features/users/api/get-users.api.ts",
+          "type": "registry:file",
+          "target": "src/features/users/api/get-users.api.ts"
+        },
+        {
+          "path": "registry/users/common/src/features/users/api/query-keys.ts",
+          "type": "registry:file",
+          "target": "src/features/users/api/query-keys.ts"
+        },
+        {
+          "path": "registry/users/common/src/features/users/api/user.queries.ts",
+          "type": "registry:file",
+          "target": "src/features/users/api/user.queries.ts"
+        },
+        {
+          "path": "registry/users/common/src/features/users/components/AddUserDialog.tsx",
+          "type": "registry:file",
+          "target": "src/features/users/components/AddUserDialog.tsx"
+        },
+        {
+          "path": "registry/users/common/src/features/users/components/AddUserForm.test.tsx",
+          "type": "registry:file",
+          "target": "src/features/users/components/AddUserForm.test.tsx"
+        },
+        {
+          "path": "registry/users/common/src/features/users/components/AddUserForm.tsx",
+          "type": "registry:file",
+          "target": "src/features/users/components/AddUserForm.tsx"
+        },
+        {
+          "path": "registry/users/common/src/features/users/components/FavoriteButton.test.tsx",
+          "type": "registry:file",
+          "target": "src/features/users/components/FavoriteButton.test.tsx"
+        },
+        {
+          "path": "registry/users/common/src/features/users/components/FavoriteButton.tsx",
+          "type": "registry:file",
+          "target": "src/features/users/components/FavoriteButton.tsx"
+        },
+        {
+          "path": "registry/users/common/src/features/users/components/FavoritesCount.tsx",
+          "type": "registry:file",
+          "target": "src/features/users/components/FavoritesCount.tsx"
+        },
+        {
+          "path": "registry/users/nextjs/src/features/users/components/UsersDirectory.test.tsx",
+          "type": "registry:file",
+          "target": "src/features/users/components/UsersDirectory.test.tsx"
+        },
+        {
+          "path": "registry/users/common/src/features/users/components/UsersDirectory.tsx",
+          "type": "registry:file",
+          "target": "src/features/users/components/UsersDirectory.tsx"
+        },
+        {
+          "path": "registry/users/common/src/features/users/components/UsersDirectorySkeleton.tsx",
+          "type": "registry:file",
+          "target": "src/features/users/components/UsersDirectorySkeleton.tsx"
+        },
+        {
+          "path": "registry/users/common/src/features/users/components/UsersMessage.tsx",
+          "type": "registry:file",
+          "target": "src/features/users/components/UsersMessage.tsx"
+        },
+        {
+          "path": "registry/users/nextjs/src/features/users/components/UsersPage.tsx",
+          "type": "registry:file",
+          "target": "src/features/users/components/UsersPage.tsx"
+        },
+        {
+          "path": "registry/users/common/src/features/users/components/UsersPagination.tsx",
+          "type": "registry:file",
+          "target": "src/features/users/components/UsersPagination.tsx"
+        },
+        {
+          "path": "registry/users/common/src/features/users/components/UsersTable.tsx",
+          "type": "registry:file",
+          "target": "src/features/users/components/UsersTable.tsx"
+        },
+        {
+          "path": "registry/users/common/src/features/users/components/UsersTableSkeleton.tsx",
+          "type": "registry:file",
+          "target": "src/features/users/components/UsersTableSkeleton.tsx"
+        },
+        {
+          "path": "registry/users/common/src/features/users/constants/users.constants.ts",
+          "type": "registry:file",
+          "target": "src/features/users/constants/users.constants.ts"
+        },
+        {
+          "path": "registry/users/common/src/features/users/helpers/get-error-message.ts",
+          "type": "registry:file",
+          "target": "src/features/users/helpers/get-error-message.ts"
+        },
+        {
+          "path": "registry/users/common/src/features/users/helpers/get-initials.test.ts",
+          "type": "registry:file",
+          "target": "src/features/users/helpers/get-initials.test.ts"
+        },
+        {
+          "path": "registry/users/common/src/features/users/helpers/get-initials.ts",
+          "type": "registry:file",
+          "target": "src/features/users/helpers/get-initials.ts"
+        },
+        {
+          "path": "registry/users/common/src/features/users/hooks/use-add-user.ts",
+          "type": "registry:file",
+          "target": "src/features/users/hooks/use-add-user.ts"
+        },
+        {
+          "path": "registry/users/common/src/features/users/hooks/use-favorite-ids.ts",
+          "type": "registry:file",
+          "target": "src/features/users/hooks/use-favorite-ids.ts"
+        },
+        {
+          "path": "registry/users/nextjs/src/features/users/hooks/use-users-params.ts",
+          "type": "registry:file",
+          "target": "src/features/users/hooks/use-users-params.ts"
+        },
+        {
+          "path": "registry/users/common/src/features/users/hooks/use-users.ts",
+          "type": "registry:file",
+          "target": "src/features/users/hooks/use-users.ts"
+        },
+        {
+          "path": "registry/users/common/src/features/users/schemas/user.schema.ts",
+          "type": "registry:file",
+          "target": "src/features/users/schemas/user.schema.ts"
+        },
+        {
+          "path": "registry/users/nextjs/src/features/users/schemas/users-params.schema.ts",
+          "type": "registry:file",
+          "target": "src/features/users/schemas/users-params.schema.ts"
+        },
+        {
+          "path": "registry/users/common/src/features/users/stores/favorites.store.ts",
+          "type": "registry:file",
+          "target": "src/features/users/stores/favorites.store.ts"
+        }
+      ],
+      "meta": {
+        "product": "virastack-start",
+        "framework": "nextjs"
+      }
+    },
+    {
+      "name": "users-tanstack",
+      "type": "registry:item",
+      "title": "Users",
+      "description": "A searchable user list with pagination in the URL, a validated form and favorites.",
+      "author": "ViraStack <https://virastack.com>",
+      "dependencies": [
+        "@hookform/resolvers@^6.0.2",
+        "@tanstack/react-query@^5.105.0",
+        "cn@^0.5.1",
+        "lucide-react@^1.66.0",
+        "react-hook-form@^7.91.0",
+        "usehooks-ts@^3.1.1",
+        "zod@^4.6.7",
+        "zustand@^5.0.16"
+      ],
+      "devDependencies": [
+        "@testing-library/react@^16.3.3",
+        "@testing-library/user-event@^14.6.8",
+        "msw@^3.0.3",
+        "vitest@^5.0.5"
+      ],
+      "files": [
+        {
+          "path": "registry/users/common/src/features/users/api/add-user.api.test.ts",
+          "type": "registry:file",
+          "target": "src/features/users/api/add-user.api.test.ts"
+        },
+        {
+          "path": "registry/users/common/src/features/users/api/add-user.api.ts",
+          "type": "registry:file",
+          "target": "src/features/users/api/add-user.api.ts"
+        },
+        {
+          "path": "registry/users/common/src/features/users/api/get-users.api.test.ts",
+          "type": "registry:file",
+          "target": "src/features/users/api/get-users.api.test.ts"
+        },
+        {
+          "path": "registry/users/common/src/features/users/api/get-users.api.ts",
+          "type": "registry:file",
+          "target": "src/features/users/api/get-users.api.ts"
+        },
+        {
+          "path": "registry/users/common/src/features/users/api/query-keys.ts",
+          "type": "registry:file",
+          "target": "src/features/users/api/query-keys.ts"
+        },
+        {
+          "path": "registry/users/common/src/features/users/api/user.queries.ts",
+          "type": "registry:file",
+          "target": "src/features/users/api/user.queries.ts"
+        },
+        {
+          "path": "registry/users/common/src/features/users/components/AddUserDialog.tsx",
+          "type": "registry:file",
+          "target": "src/features/users/components/AddUserDialog.tsx"
+        },
+        {
+          "path": "registry/users/common/src/features/users/components/AddUserForm.test.tsx",
+          "type": "registry:file",
+          "target": "src/features/users/components/AddUserForm.test.tsx"
+        },
+        {
+          "path": "registry/users/common/src/features/users/components/AddUserForm.tsx",
+          "type": "registry:file",
+          "target": "src/features/users/components/AddUserForm.tsx"
+        },
+        {
+          "path": "registry/users/common/src/features/users/components/FavoriteButton.test.tsx",
+          "type": "registry:file",
+          "target": "src/features/users/components/FavoriteButton.test.tsx"
+        },
+        {
+          "path": "registry/users/common/src/features/users/components/FavoriteButton.tsx",
+          "type": "registry:file",
+          "target": "src/features/users/components/FavoriteButton.tsx"
+        },
+        {
+          "path": "registry/users/common/src/features/users/components/FavoritesCount.tsx",
+          "type": "registry:file",
+          "target": "src/features/users/components/FavoritesCount.tsx"
+        },
+        {
+          "path": "registry/users/tanstack/src/features/users/components/UsersDirectory.test.tsx",
+          "type": "registry:file",
+          "target": "src/features/users/components/UsersDirectory.test.tsx"
+        },
+        {
+          "path": "registry/users/common/src/features/users/components/UsersDirectory.tsx",
+          "type": "registry:file",
+          "target": "src/features/users/components/UsersDirectory.tsx"
+        },
+        {
+          "path": "registry/users/common/src/features/users/components/UsersDirectorySkeleton.tsx",
+          "type": "registry:file",
+          "target": "src/features/users/components/UsersDirectorySkeleton.tsx"
+        },
+        {
+          "path": "registry/users/common/src/features/users/components/UsersMessage.tsx",
+          "type": "registry:file",
+          "target": "src/features/users/components/UsersMessage.tsx"
+        },
+        {
+          "path": "registry/users/tanstack/src/features/users/components/UsersPage.tsx",
+          "type": "registry:file",
+          "target": "src/features/users/components/UsersPage.tsx"
+        },
+        {
+          "path": "registry/users/common/src/features/users/components/UsersPagination.tsx",
+          "type": "registry:file",
+          "target": "src/features/users/components/UsersPagination.tsx"
+        },
+        {
+          "path": "registry/users/common/src/features/users/components/UsersTable.tsx",
+          "type": "registry:file",
+          "target": "src/features/users/components/UsersTable.tsx"
+        },
+        {
+          "path": "registry/users/common/src/features/users/components/UsersTableSkeleton.tsx",
+          "type": "registry:file",
+          "target": "src/features/users/components/UsersTableSkeleton.tsx"
+        },
+        {
+          "path": "registry/users/common/src/features/users/constants/users.constants.ts",
+          "type": "registry:file",
+          "target": "src/features/users/constants/users.constants.ts"
+        },
+        {
+          "path": "registry/users/common/src/features/users/helpers/get-error-message.ts",
+          "type": "registry:file",
+          "target": "src/features/users/helpers/get-error-message.ts"
+        },
+        {
+          "path": "registry/users/common/src/features/users/helpers/get-initials.test.ts",
+          "type": "registry:file",
+          "target": "src/features/users/helpers/get-initials.test.ts"
+        },
+        {
+          "path": "registry/users/common/src/features/users/helpers/get-initials.ts",
+          "type": "registry:file",
+          "target": "src/features/users/helpers/get-initials.ts"
+        },
+        {
+          "path": "registry/users/common/src/features/users/hooks/use-add-user.ts",
+          "type": "registry:file",
+          "target": "src/features/users/hooks/use-add-user.ts"
+        },
+        {
+          "path": "registry/users/common/src/features/users/hooks/use-favorite-ids.ts",
+          "type": "registry:file",
+          "target": "src/features/users/hooks/use-favorite-ids.ts"
+        },
+        {
+          "path": "registry/users/tanstack/src/features/users/hooks/use-users-params.ts",
+          "type": "registry:file",
+          "target": "src/features/users/hooks/use-users-params.ts"
+        },
+        {
+          "path": "registry/users/common/src/features/users/hooks/use-users.ts",
+          "type": "registry:file",
+          "target": "src/features/users/hooks/use-users.ts"
+        },
+        {
+          "path": "registry/users/common/src/features/users/schemas/user.schema.ts",
+          "type": "registry:file",
+          "target": "src/features/users/schemas/user.schema.ts"
+        },
+        {
+          "path": "registry/users/tanstack/src/features/users/schemas/users-params.schema.ts",
+          "type": "registry:file",
+          "target": "src/features/users/schemas/users-params.schema.ts"
+        },
+        {
+          "path": "registry/users/common/src/features/users/stores/favorites.store.ts",
+          "type": "registry:file",
+          "target": "src/features/users/stores/favorites.store.ts"
+        },
+        {
+          "path": "registry/users/tanstack/src/routes/users.tsx",
+          "type": "registry:file",
+          "target": "src/routes/users.tsx"
+        }
+      ],
+      "meta": {
+        "product": "virastack-start",
+        "framework": "tanstack"
+      }
+    }
+  ]
+}

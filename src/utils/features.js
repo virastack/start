@@ -5,9 +5,9 @@ import path from "node:path";
 import { runCommand } from "./exec.js";
 import { getDlxCommand } from "./package-manager.js";
 
-const DEFAULT_REGISTRY = "https://virastack.com/r/v2";
+const DEFAULT_REGISTRY = "https://virastack.com/r";
 /** The version the registry was last tested with. Raised on purpose, never `latest`. */
-const SHADCN = "shadcn@4.23.0";
+export const SHADCN = "shadcn@4.23.0";
 const HOME_CONSTANTS = "src/features/home/constants/home.constants.ts";
 const DEMO_LINE = /export const DEMO_PATH = .* as string \| null/;
 

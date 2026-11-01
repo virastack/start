@@ -1,7 +1,8 @@
+import { readFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
-import { buildItem, FEATURES, findDependencies, packageName } from "./build-registry.js";
+import { buildItem, buildRegistry, FEATURES, findDependencies, packageName } from "./build-registry.js";
 
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const users = FEATURES.find((feature) => feature.name === "users");
@@ -37,7 +38,7 @@ describe.each(["nextjs", "tanstack"])("users for %s", (framework) => {
   const item = buildItem(REPO, users, framework);
 
   it("installs into the same paths as the template", () => {
-    for (const file of item.files) expect(file.target).toBe(file.path);
+    for (const file of item.files) expect(file.path.endsWith(`/${file.target}`)).toBe(true);
     expect(item.files.some((file) => file.target.startsWith("src/features/users/"))).toBe(true);
   });
 
@@ -46,9 +47,26 @@ describe.each(["nextjs", "tanstack"])("users for %s", (framework) => {
     expect(item.files.map((file) => file.target)).toContain(route);
   });
 
+  it("names its maker", () => {
+    expect(item.author).toContain("ViraStack");
+    expect(item.meta).toEqual({ product: "virastack-start", framework });
+  });
+
   it("uses the framework's own URL state", () => {
     const names = item.dependencies.join(" ");
     if (framework === "nextjs") expect(names).toContain("nuqs@");
     else expect(names).not.toContain("nuqs");
+  });
+});
+
+describe("registry.json", () => {
+  it("matches the sources; run npm run build:registry", () => {
+    const saved = JSON.parse(readFileSync(path.join(REPO, "registry.json"), "utf8"));
+    expect(saved).toEqual(buildRegistry(REPO));
+  });
+
+  it("is a flat registry with unique names", () => {
+    const names = buildRegistry(REPO).items.map((item) => item.name);
+    expect(new Set(names).size).toBe(names.length);
   });
 });

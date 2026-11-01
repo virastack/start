@@ -13,6 +13,7 @@ on:
       - "templates-i18n/**"
       - "templates-shared/**"
       - "registry/**"
+      - "registry.json"
       - ".github/workflows/cli.yml"
   pull_request:
     branches: [main, master]
@@ -26,6 +27,7 @@ on:
       - "templates-i18n/**"
       - "templates-shared/**"
       - "registry/**"
+      - "registry.json"
       - ".github/workflows/cli.yml"
 
 jobs:
@@ -53,6 +55,9 @@ jobs:
 
       - name: Template drift
         run: npm run check:templates
+
+      - name: Registry
+        run: npm run build:registry
 
       - name: Unit tests
         run: npm test
