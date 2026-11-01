@@ -38,7 +38,7 @@
     "lint": "eslint . --cache",
     "lint:fix": "eslint . --fix --cache && prettier --write .",
     "lint:ci": "eslint . --max-warnings=0 && prettier --check .",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "next typegen && tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
     "prepare": "husky",

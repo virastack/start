@@ -2,6 +2,7 @@ import { TanStackDevtools } from "@tanstack/react-devtools"
 import type { QueryClient } from "@tanstack/react-query"
 import { createRootRouteWithContext, HeadContent, Outlet, Scripts } from "@tanstack/react-router"
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools"
+import interLatin from "@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url"
 import interCss from "@fontsource-variable/inter/index.css?url"
 import { NuqsAdapter } from "nuqs/adapters/tanstack-router"
 
@@ -29,6 +30,14 @@ export const Route = createRootRouteWithContext<RouterContext>()({
     ],
     links: [
       { rel: "stylesheet", href: appCss },
+      // Preloading the Latin file keeps the swap from shifting the first paint.
+      {
+        rel: "preload",
+        href: interLatin,
+        as: "font",
+        type: "font/woff2",
+        crossOrigin: "anonymous"
+      },
       { rel: "stylesheet", href: interCss },
       { rel: "icon", href: "/logo.webp" },
       { rel: "apple-touch-icon", href: "/logo.webp" },

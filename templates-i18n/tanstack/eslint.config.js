@@ -3,6 +3,7 @@
 import { existsSync, readdirSync } from "node:fs"
 
 import { tanstackConfig } from "@tanstack/eslint-config"
+import reactHooks from "eslint-plugin-react-hooks"
 
 const PARENT_IMPORT = {
   group: ["../*"],
@@ -63,6 +64,7 @@ const boundaries = [
 
 export default [
   ...tanstackConfig,
+  reactHooks.configs.flat.recommended,
   // UI primitives come from shadcn; `shadcn add` must not fail lint on its own output.
   {
     files: ["src/components/ui/**/*.tsx"],
@@ -78,7 +80,10 @@ export default [
       "sort-imports": "off",
       "@typescript-eslint/array-type": "off",
       "@typescript-eslint/require-await": "off",
-      "pnpm/json-enforce-catalog": "off"
+      "pnpm/json-enforce-catalog": "off",
+      "@typescript-eslint/no-explicit-any": "error",
+      "@typescript-eslint/no-non-null-assertion": "error",
+      "no-console": ["warn", { allow: ["warn", "error"] }]
     }
   },
   ...boundaries,

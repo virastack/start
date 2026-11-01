@@ -11,7 +11,7 @@ const withBundleAnalyzer = createBundleAnalyzer({
 })
 
 const nextConfig: NextConfig = {
-  reactCompiler: process.env.NODE_ENV === "production",
+  reactCompiler: true,
   turbopack: {
     root: path.join(import.meta.dirname)
   },

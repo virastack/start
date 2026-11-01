@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { render } from "@testing-library/react"
 import type { RenderOptions } from "@testing-library/react"
 import { NextIntlClientProvider } from "next-intl"
+import { NuqsTestingAdapter } from "nuqs/adapters/testing"
 
 import messages from "@/messages/en.json"
 
@@ -17,7 +18,9 @@ export function renderWithProviders(ui: ReactElement, options?: Omit<RenderOptio
   function Wrapper({ children }: { children: ReactNode }) {
     return (
       <NextIntlClientProvider locale="en" messages={messages}>
-        <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+        <QueryClientProvider client={queryClient}>
+          <NuqsTestingAdapter>{children}</NuqsTestingAdapter>
+        </QueryClientProvider>
       </NextIntlClientProvider>
     )
   }

@@ -99,7 +99,7 @@
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
 
-  --font-inter: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-inter: "Inter Variable", "Inter Fallback", ui-sans-serif, system-ui, sans-serif;
   --font-sans: var(--font-inter);
 }
 
@@ -120,4 +120,14 @@
   [role="button"]:not(:disabled) {
     cursor: pointer;
   }
+}
+
+/* Arial sized to Inter's metrics (the values next/font generates), so the swap does not move text. */
+@font-face {
+  font-family: "Inter Fallback";
+  src: local("Arial");
+  size-adjust: 107.12%;
+  ascent-override: 90.44%;
+  descent-override: 22.52%;
+  line-gap-override: 0%;
 }

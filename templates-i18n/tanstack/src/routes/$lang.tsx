@@ -13,10 +13,11 @@ export const Route = createFileRoute("/$lang")({
 
     setLocale(lang as (typeof locales)[number], { reload: false })
   },
-  component: () => {
-    const { lang } = Route.useParams()
-    // key={lang} sayesinde dil değiştiğinde React tüm alt componentleri (sayfayı) yeniden render eder.
-    // Bu sayede çeviriler anında güncellenir.
-    return <Outlet key={lang} />
-  }
+  component: LangLayout
 })
+
+function LangLayout() {
+  const { lang } = Route.useParams()
+  // key re-renders the page with the new messages when the language changes.
+  return <Outlet key={lang} />
+}
