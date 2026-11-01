@@ -22,8 +22,6 @@ const AvatarImage = React.forwardRef<
   const [status, setStatus] = React.useState<"loading" | "loaded" | "error">("loading")
 
   return (
-    // Avatar primitives accept arbitrary remote URLs; next/image needs a configured domain list.
-    // eslint-disable-next-line @next/next/no-img-element -- intentional for flexible avatar sources
     <img
       ref={ref}
       src={src}

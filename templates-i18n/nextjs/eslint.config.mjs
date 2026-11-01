@@ -73,6 +73,11 @@ const eslintConfig = defineConfig([
       "no-console": ["warn", { allow: ["warn", "error"] }]
     }
   },
+  // UI primitives accept any image source, so next/image does not fit them.
+  {
+    files: ["src/components/ui/**/*.tsx"],
+    rules: { "@next/next/no-img-element": "off" }
+  },
   ...boundaries,
   // Override default ignores of eslint-config-next.
   globalIgnores([

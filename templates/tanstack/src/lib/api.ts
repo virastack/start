@@ -1,8 +1,7 @@
 /**
  * Lightweight native `fetch` wrapper.
  *
- * Zero external HTTP dependencies (no axios/ofetch). Works in both browser
- * and TanStack Start server contexts.
+ * Zero external HTTP dependencies (no axios/ofetch), so framework `fetch` options keep working.
  */
 
 export class ApiError extends Error {

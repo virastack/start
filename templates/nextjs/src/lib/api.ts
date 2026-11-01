@@ -1,8 +1,7 @@
 /**
  * Lightweight native `fetch` wrapper.
  *
- * Zero external HTTP dependencies (no axios/ofetch) so it stays 100%
- * compatible with Next.js `fetch` caching/revalidation (`cache`, `next.revalidate`, `next.tags`).
+ * Zero external HTTP dependencies (no axios/ofetch), so framework `fetch` options keep working.
  */
 
 export class ApiError extends Error {
@@ -61,7 +60,7 @@ async function request<T>(url: string, options: RequestOptions = {}): Promise<T>
 
   let attempt = 0
 
-  while (true) {
+  for (;;) {
     try {
       const response = await fetch(url, {
         ...rest,

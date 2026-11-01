@@ -6,6 +6,7 @@ on:
     paths:
       - "bin/**"
       - "src/**"
+      - "scripts/**"
       - "package.json"
       - "package-lock.json"
       - "templates/**"
@@ -16,6 +17,7 @@ on:
     paths:
       - "bin/**"
       - "src/**"
+      - "scripts/**"
       - "package.json"
       - "package-lock.json"
       - "templates/**"
@@ -44,6 +46,9 @@ jobs:
 
       - name: Lint
         run: npm run lint
+
+      - name: Template drift
+        run: npm run check:templates
 
       - name: Unit tests
         run: npm test

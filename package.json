@@ -3,7 +3,7 @@
   "version": "1.2.0",
   "description": "Scaffolding CLI for Next.js and TanStack Start: ViraStack tools and AI rules in one command",
   "author": {
-    "name": "Ömer Gülçiçek (ViraStack)",
+    "name": "\u00d6mer G\u00fcl\u00e7i\u00e7ek (ViraStack)",
     "email": "iletisim@omergulcicek.com",
     "url": "https://omergulcicek.com"
   },
@@ -40,9 +40,11 @@
     "test:e2e": "node scripts/e2e.js",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
-    "check": "npm run typecheck && npm run lint && npm test",
+    "check": "npm run typecheck && npm run lint && npm run check:templates && npm test",
     "clean:templates": "find templates templates-i18n -type d \\( -name 'node_modules' -o -name '.next' -o -name 'dist' -o -name '.vinxi' -o -name '.output' -o -name '.turbo' \\) -prune -exec rm -rf '{}' + && find templates templates-i18n -name '.eslintcache' -type f -delete",
-    "prepublishOnly": "npm run check && npm run clean:templates"
+    "prepublishOnly": "npm run check && npm run clean:templates",
+    "check:templates": "node scripts/sync-templates.js",
+    "sync:templates": "node scripts/sync-templates.js --write"
   },
   "keywords": [
     "virastack",
