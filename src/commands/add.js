@@ -9,7 +9,7 @@ import { detectPackageManager, getAddArgs } from "../utils/package-manager.js";
 import { trackEvent } from "../utils/telemetry.js";
 import { findTool, TOOLS } from "../utils/tools.js";
 import { getAiInitArgs } from "../utils/agents.js";
-import { FeatureConflictError, findFeature, installFeature, readProjectInfo } from "../utils/features.js";
+import { FEATURES, FeatureConflictError, findFeature, installFeature, readProjectInfo } from "../utils/features.js";
 
 async function fileExists(filePath) {
   try {
@@ -71,10 +71,13 @@ export async function runAdd(toolId, options = {}) {
   console.log();
   p.intro(pc.bgMagenta(pc.black(" ViraStack ")));
 
-  const toolList = TOOLS.map((tool) => tool.id).join(", ");
+  const available = {
+    features: FEATURES.map(({ id }) => id).join(", "),
+    tools: TOOLS.map(({ id }) => id).join(", "),
+  };
 
   if (!toolId) {
-    p.log.error(t("add.toolMissing", { list: toolList }));
+    p.log.error(t("add.toolMissing", available));
     process.exit(1);
   }
 
@@ -86,7 +89,7 @@ export async function runAdd(toolId, options = {}) {
 
   const tool = findTool(toolId);
   if (!tool) {
-    p.log.error(t("add.toolInvalid", { tool: toolId, list: toolList }));
+    p.log.error(t("add.toolInvalid", { tool: toolId, ...available }));
     process.exit(1);
   }
 

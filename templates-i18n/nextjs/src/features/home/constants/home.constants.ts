@@ -28,7 +28,7 @@ export const NEXT_STEPS = [
     ? ([
         {
           titleKey: "step_remove_demo",
-          path: "src/features/users, src/app/[locale]/users, Users in src/messages"
+          path: "src/features/users, src/app/[locale]/users, Users in src/messages, DEMO_PATH = null"
         }
       ] as const)
     : [])

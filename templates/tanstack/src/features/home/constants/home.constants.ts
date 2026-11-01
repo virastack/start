@@ -23,7 +23,12 @@ export const NEXT_STEPS = [
   { title: "Replace this page", path: "src/routes/index.tsx" },
   { title: "Add your first feature", path: "src/features/<name>" },
   ...(DEMO_PATH
-    ? [{ title: "Remove the demo", path: "src/features/users, src/routes/users.tsx" }]
+    ? [
+        {
+          title: "Remove the demo",
+          path: "src/features/users, src/routes/users.tsx, DEMO_PATH = null"
+        }
+      ]
     : [])
 ]
 

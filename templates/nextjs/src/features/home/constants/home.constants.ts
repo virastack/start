@@ -24,7 +24,9 @@ export const DEMO_PATH = "/users" as string | null
 export const NEXT_STEPS = [
   { title: "Replace this page", path: "src/app/page.tsx" },
   { title: "Add your first feature", path: "src/features/<name>" },
-  ...(DEMO_PATH ? [{ title: "Remove the demo", path: "src/features/users, src/app/users" }] : [])
+  ...(DEMO_PATH
+    ? [{ title: "Remove the demo", path: "src/features/users, src/app/users, DEMO_PATH = null" }]
+    : [])
 ]
 
 export const STACK: readonly StackItem[] = [

@@ -28,7 +28,7 @@ export const getNextSteps = () => [
     ? [
         {
           title: m.home_next_remove(),
-          path: "src/features/users, src/routes/{-$lang}/users.tsx, users_* in src/messages"
+          path: "src/features/users, src/routes/{-$lang}/users.tsx, users_* in src/messages, DEMO_PATH = null"
         }
       ]
     : [])

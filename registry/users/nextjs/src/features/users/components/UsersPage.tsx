@@ -43,7 +43,7 @@ export function UsersPage({ children }: UsersPageProps) {
         <p>
           To remove:{" "}
           <code className="font-mono text-xs break-all">
-            src/features/users, src/app/users, home link, then knip
+            src/features/users, src/app/users, DEMO_PATH = null
           </code>
         </p>
       </footer>

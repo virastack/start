@@ -83,8 +83,8 @@ const dictionaries = {
     "done.manualSkills": "  {cmd}",
     "done.dev": "  {cmd}",
 
-    "add.toolMissing": "Please specify a tool to add. Available tools: {list}.",
-    "add.toolInvalid": 'Unknown tool "{tool}". Available tools: {list}.',
+    "add.toolMissing": "Please specify what to add.\n  Tools: {tools}\n  Modules: {features}",
+    "add.toolInvalid": '"{tool}" is not available.\n  Tools: {tools}\n  Modules: {features}',
     "add.notAProject": "No package.json found in the current directory.",
     "add.installing": "Adding {pkg}...",
     "add.done": "{pkg} added.",
@@ -206,8 +206,8 @@ Examples:
     "done.dev": "  {cmd}",
 
     "add.toolMissing":
-      "Lütfen eklemek istediğiniz aracı belirtin. Kullanılabilir araçlar: {list}.",
-    "add.toolInvalid": '"{tool}" bilinmeyen bir araç. Kullanılabilir araçlar: {list}.',
+      "Lütfen neyi eklemek istediğinizi belirtin.\n  Araçlar: {tools}\n  Modüller: {features}",
+    "add.toolInvalid": '"{tool}" bulunamadı.\n  Araçlar: {tools}\n  Modüller: {features}',
     "add.notAProject": "Bu dizinde package.json bulunamadı.",
     "add.installing": "{pkg} ekleniyor...",
     "add.done": "{pkg} eklendi.",

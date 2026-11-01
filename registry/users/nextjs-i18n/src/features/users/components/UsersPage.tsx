@@ -51,7 +51,7 @@ export function UsersPage({ children }: UsersPageProps) {
         <p>
           {t("guide_remove")}{" "}
           <code className="font-mono text-xs break-all">
-            src/features/users, src/app/[locale]/users, home link, then knip
+            src/features/users, src/app/[locale]/users, Users in src/messages, DEMO_PATH = null
           </code>
         </p>
       </footer>
