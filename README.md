@@ -26,6 +26,7 @@
 - **Built-in AI Protocols:** Asks which AI coding tools you use (Claude Code, Cursor) and sets up [**ViraStack AI**](https://github.com/virastack/ai) for them — architecture rules in each tool's native format, `AGENTS.md`, and design skills from [**Emil Kowalski**](https://github.com/emilkowalski/skills) and [**Jakub Krehel**](https://github.com/jakubkrehel/skills) — giving your coding agents a strict "constitution" from day one.
 - **End-to-End Type Safety:** Strict TypeScript rules, Zod validation, and native package manager alignment (pnpm, npm, yarn, bun).
 - **Ecosystem Integration:** Add optional ViraStack tools (`@virastack/mask`, `@virastack/password`, `@virastack/address`) seamlessly.
+- **Modules:** Add a working feature (`users`, `checkout-address`, `checkout-payment`) to your project, and remove it again, with one command.
 
 ## Quick Start
 
@@ -94,7 +95,8 @@ Select none to get plain rules in `.agents/rules/` that any agent can read throu
 | Command / flag | Description |
 | :--- | :--- |
 | `init [name]` | Create a new project (default; also runs with no command) |
-| `add <tool>` | Add a tool to an existing project (`mask`, `password`, `address`, `ai`) |
+| `add <name>` | Add a tool (`mask`, `password`, `address`, `ai`) or a [module](https://virastack.com/start/docs/modules) to an existing project |
+| `remove <module>` | Remove a module. Its packages stay |
 | `--name <name>` | Project name (or pass as positional / `.`) |
 | `--template <name>` | `nextjs` or `tanstack` |
 | `--tools <list>` | Comma-separated tools (`mask,password,address`) |
@@ -113,7 +115,11 @@ pnpm dlx virastack add password
 pnpm dlx virastack add address
 pnpm dlx virastack add ai
 pnpm dlx virastack add ai --agent cursor
+pnpm dlx virastack add users
+pnpm dlx virastack remove users
 ```
+
+`add` installs a module's feature and creates no page. It prints the import line and a link with the steps for your framework. See the [module docs](https://virastack.com/start/docs/modules).
 
 ## Included by default
 
@@ -121,10 +127,10 @@ Every template ships with this stack already installed:
 
 | Area | Packages |
 | :--- | :--- |
-| **State** | TanStack Query, Zustand, nuqs |
+| **State** | TanStack Query, Zustand, nuqs (Next.js; TanStack Start uses `validateSearch`) |
 | **Form** | React Hook Form, Zod |
 | **Hooks** | `usehooks-ts` |
-| **UI** | Base UI, Motion, Lucide React |
+| **UI** | Base UI, Lucide React |
 | **Test** | Vitest, Testing Library, MSW |
 
 [ViraStack AI](https://github.com/virastack/ai) encodes these choices as agent rules so assistants follow the same stack from day one.
