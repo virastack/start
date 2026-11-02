@@ -28,11 +28,6 @@
       ],
       "files": [
         {
-          "path": "registry/users/nextjs/src/app/users/page.tsx",
-          "type": "registry:file",
-          "target": "src/app/users/page.tsx"
-        },
-        {
           "path": "registry/users/common/src/features/users/api/add-user.api.test.ts",
           "type": "registry:file",
           "target": "src/features/users/api/add-user.api.test.ts"
@@ -106,11 +101,6 @@
           "path": "registry/users/common/src/features/users/components/UsersDirectorySkeleton.tsx",
           "type": "registry:file",
           "target": "src/features/users/components/UsersDirectorySkeleton.tsx"
-        },
-        {
-          "path": "registry/users/nextjs/src/features/users/components/UsersPage.tsx",
-          "type": "registry:file",
-          "target": "src/features/users/components/UsersPage.tsx"
         },
         {
           "path": "registry/users/common/src/features/users/components/UsersPagination.tsx",
@@ -192,7 +182,10 @@
         "product": "virastack-start",
         "framework": "nextjs",
         "minStartVersion": "2.0.0",
-        "pagePath": "/users"
+        "entry": {
+          "name": "UsersDirectory",
+          "file": "@/features/users/components/UsersDirectory"
+        }
       }
     },
     {
@@ -294,11 +287,6 @@
           "target": "src/features/users/components/UsersDirectorySkeleton.tsx"
         },
         {
-          "path": "registry/users/tanstack/src/features/users/components/UsersPage.tsx",
-          "type": "registry:file",
-          "target": "src/features/users/components/UsersPage.tsx"
-        },
-        {
           "path": "registry/users/common/src/features/users/components/UsersPagination.tsx",
           "type": "registry:file",
           "target": "src/features/users/components/UsersPagination.tsx"
@@ -372,18 +360,16 @@
           "path": "registry/users/common/src/features/users/stores/favorites.store.ts",
           "type": "registry:file",
           "target": "src/features/users/stores/favorites.store.ts"
-        },
-        {
-          "path": "registry/users/tanstack/src/routes/users.tsx",
-          "type": "registry:file",
-          "target": "src/routes/users.tsx"
         }
       ],
       "meta": {
         "product": "virastack-start",
         "framework": "tanstack",
         "minStartVersion": "2.0.0",
-        "pagePath": "/users"
+        "entry": {
+          "name": "UsersDirectory",
+          "file": "@/features/users/components/UsersDirectory"
+        }
       }
     },
     {
@@ -410,16 +396,6 @@
         "vitest@^5.0.5"
       ],
       "files": [
-        {
-          "path": "registry/users/nextjs-i18n/src/app/[locale]/users/loading.tsx",
-          "type": "registry:file",
-          "target": "src/app/[locale]/users/loading.tsx"
-        },
-        {
-          "path": "registry/users/nextjs-i18n/src/app/[locale]/users/page.tsx",
-          "type": "registry:file",
-          "target": "src/app/[locale]/users/page.tsx"
-        },
         {
           "path": "registry/users/common/src/features/users/api/add-user.api.test.ts",
           "type": "registry:file",
@@ -494,11 +470,6 @@
           "path": "registry/users/common/src/features/users/components/UsersDirectorySkeleton.tsx",
           "type": "registry:file",
           "target": "src/features/users/components/UsersDirectorySkeleton.tsx"
-        },
-        {
-          "path": "registry/users/nextjs-i18n/src/features/users/components/UsersPage.tsx",
-          "type": "registry:file",
-          "target": "src/features/users/components/UsersPage.tsx"
         },
         {
           "path": "registry/users/nextjs-i18n/src/features/users/components/UsersPagination.tsx",
@@ -580,15 +551,13 @@
         "product": "virastack-start",
         "framework": "nextjs",
         "minStartVersion": "2.0.0",
-        "pagePath": "/users",
+        "entry": {
+          "name": "UsersDirectory",
+          "file": "@/features/users/components/UsersDirectory"
+        },
         "messages": {
           "en": {
             "Users": {
-              "meta_title": "Users",
-              "meta_description": "A demo feature with a searchable user list, a validated form and favorites.",
-              "back_to_start": "Start page",
-              "title": "Users",
-              "subtitle": "Live data from DummyJSON.",
               "favorites_count": "<number>{count}</number> {count, plural, one {favorite} other {favorites}}",
               "search_label": "Search users",
               "add_user": "Add user",
@@ -632,19 +601,11 @@
               "total_users": "{total, plural, one {# user} other {# users}}",
               "error_network": "Network request failed",
               "error_status": "Request failed with status {status}",
-              "error_unknown": "Something went wrong.",
-              "guide_source": "This demo:",
-              "guide_api": "Your API:",
-              "guide_remove": "To remove:"
+              "error_unknown": "Something went wrong."
             }
           },
           "tr": {
             "Users": {
-              "meta_title": "Kullanıcılar",
-              "meta_description": "Aranabilir kullanıcı listesi, doğrulamalı form ve favoriler içeren bir demo feature.",
-              "back_to_start": "Başlangıç sayfası",
-              "title": "Kullanıcılar",
-              "subtitle": "Veriler canlı olarak DummyJSON'dan geliyor.",
               "favorites_count": "<number>{count}</number> favori",
               "search_label": "Kullanıcı ara",
               "add_user": "Kullanıcı ekle",
@@ -688,10 +649,7 @@
               "total_users": "{total} kullanıcı",
               "error_network": "İstek gönderilemedi. İnternet bağlantınızı kontrol edin.",
               "error_status": "İstek başarısız oldu (durum kodu: {status})",
-              "error_unknown": "Bir şeyler ters gitti.",
-              "guide_source": "Bu demo:",
-              "guide_api": "Kendi API'n:",
-              "guide_remove": "Kaldırmak için:"
+              "error_unknown": "Bir şeyler ters gitti."
             }
           }
         }
@@ -796,11 +754,6 @@
           "target": "src/features/users/components/UsersDirectorySkeleton.tsx"
         },
         {
-          "path": "registry/users/tanstack-i18n/src/features/users/components/UsersPage.tsx",
-          "type": "registry:file",
-          "target": "src/features/users/components/UsersPage.tsx"
-        },
-        {
           "path": "registry/users/tanstack-i18n/src/features/users/components/UsersPagination.tsx",
           "type": "registry:file",
           "target": "src/features/users/components/UsersPagination.tsx"
@@ -874,24 +827,18 @@
           "path": "registry/users/common/src/features/users/stores/favorites.store.ts",
           "type": "registry:file",
           "target": "src/features/users/stores/favorites.store.ts"
-        },
-        {
-          "path": "registry/users/tanstack-i18n/src/routes/{-$lang}/users.tsx",
-          "type": "registry:file",
-          "target": "src/routes/{-$lang}/users.tsx"
         }
       ],
       "meta": {
         "product": "virastack-start",
         "framework": "tanstack",
         "minStartVersion": "2.0.0",
-        "pagePath": "/users",
+        "entry": {
+          "name": "UsersDirectory",
+          "file": "@/features/users/components/UsersDirectory"
+        },
         "messages": {
           "en": {
-            "users_title": "Users",
-            "users_subtitle": "Live data from DummyJSON.",
-            "users_meta_description": "A demo feature with a searchable user list, a validated form and favorites.",
-            "users_back": "Start page",
             "users_favorites_count": {
               "declarations": [
                 "input count",
@@ -960,16 +907,9 @@
             "users_error_email": "Enter a valid email address",
             "users_error_generic": "Something went wrong.",
             "users_error_network": "Network request failed",
-            "users_error_status": "Request failed with status {status}",
-            "users_guide_source": "This demo:",
-            "users_guide_api": "Your API:",
-            "users_guide_remove": "To remove:"
+            "users_error_status": "Request failed with status {status}"
           },
           "tr": {
-            "users_title": "Kullanıcılar",
-            "users_subtitle": "Veriler canlı olarak DummyJSON'dan geliyor.",
-            "users_meta_description": "Aranabilir kullanıcı listesi, doğrulamalı form ve favoriler içeren bir demo feature.",
-            "users_back": "Başlangıç sayfası",
             "users_favorites_count": "{count} favori",
             "users_favorite": "Favori: {name}",
             "users_search": "Kullanıcı ara",
@@ -1014,10 +954,1303 @@
             "users_error_email": "Geçerli bir e-posta adresi girin",
             "users_error_generic": "Bir şeyler ters gitti.",
             "users_error_network": "Sunucuya ulaşılamadı.",
-            "users_error_status": "İstek başarısız oldu (durum kodu: {status}).",
-            "users_guide_source": "Bu demo:",
-            "users_guide_api": "Kendi API'n:",
-            "users_guide_remove": "Kaldırmak için:"
+            "users_error_status": "İstek başarısız oldu (durum kodu: {status})."
+          }
+        }
+      }
+    },
+    {
+      "name": "checkout-address-nextjs",
+      "type": "registry:item",
+      "title": "Checkout address",
+      "description": "Choose, add and edit shipping and billing addresses, with Turkish address data.",
+      "author": "ViraStack <https://virastack.com>",
+      "dependencies": [
+        "@hookform/resolvers@^6.0.2",
+        "@tanstack/react-query@^5.105.0",
+        "@virastack/address@^1.0.0",
+        "@virastack/mask@^2.1.0",
+        "lucide-react@^1.66.0",
+        "react-hook-form@^7.91.0",
+        "zod@^4.6.7",
+        "zustand@^5.0.16"
+      ],
+      "devDependencies": [
+        "@testing-library/react@^16.3.3",
+        "@testing-library/user-event@^14.6.8",
+        "msw@^3.0.3",
+        "vitest@^5.0.5"
+      ],
+      "files": [
+        {
+          "path": "registry/checkout-address/common/src/features/checkout-address/api/address.queries.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-address/api/address.queries.ts"
+        },
+        {
+          "path": "registry/checkout-address/common/src/features/checkout-address/api/get-addresses.api.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-address/api/get-addresses.api.ts"
+        },
+        {
+          "path": "registry/checkout-address/common/src/features/checkout-address/api/query-keys.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-address/api/query-keys.ts"
+        },
+        {
+          "path": "registry/checkout-address/common/src/features/checkout-address/api/save-address.api.test.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-address/api/save-address.api.test.ts"
+        },
+        {
+          "path": "registry/checkout-address/common/src/features/checkout-address/api/save-address.api.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-address/api/save-address.api.ts"
+        },
+        {
+          "path": "registry/checkout-address/common/src/features/checkout-address/components/AddressDetails.tsx",
+          "type": "registry:file",
+          "target": "src/features/checkout-address/components/AddressDetails.tsx"
+        },
+        {
+          "path": "registry/checkout-address/common/src/features/checkout-address/components/AddressForm.tsx",
+          "type": "registry:file",
+          "target": "src/features/checkout-address/components/AddressForm.tsx"
+        },
+        {
+          "path": "registry/checkout-address/common/src/features/checkout-address/components/AddressPicker.tsx",
+          "type": "registry:file",
+          "target": "src/features/checkout-address/components/AddressPicker.tsx"
+        },
+        {
+          "path": "registry/checkout-address/common/src/features/checkout-address/components/AddressSummary.tsx",
+          "type": "registry:file",
+          "target": "src/features/checkout-address/components/AddressSummary.tsx"
+        },
+        {
+          "path": "registry/checkout-address/common/src/features/checkout-address/components/CheckoutAddress.test.tsx",
+          "type": "registry:file",
+          "target": "src/features/checkout-address/components/CheckoutAddress.test.tsx"
+        },
+        {
+          "path": "registry/checkout-address/common/src/features/checkout-address/components/CheckoutAddress.tsx",
+          "type": "registry:file",
+          "target": "src/features/checkout-address/components/CheckoutAddress.tsx"
+        },
+        {
+          "path": "registry/checkout-address/common/src/features/checkout-address/constants/addresses.constants.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-address/constants/addresses.constants.ts"
+        },
+        {
+          "path": "registry/checkout-address/common/src/features/checkout-address/hooks/use-addresses.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-address/hooks/use-addresses.ts"
+        },
+        {
+          "path": "registry/checkout-address/common/src/features/checkout-address/hooks/use-checkout-address.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-address/hooks/use-checkout-address.ts"
+        },
+        {
+          "path": "registry/checkout-address/common/src/features/checkout-address/hooks/use-save-address.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-address/hooks/use-save-address.ts"
+        },
+        {
+          "path": "registry/checkout-address/common/src/features/checkout-address/schemas/address.schema.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-address/schemas/address.schema.ts"
+        },
+        {
+          "path": "registry/checkout-address/common/src/features/checkout-address/stores/address-selection.store.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-address/stores/address-selection.store.ts"
+        }
+      ],
+      "meta": {
+        "product": "virastack-start",
+        "framework": "nextjs",
+        "minStartVersion": "2.0.0",
+        "entry": {
+          "name": "CheckoutAddress",
+          "file": "@/features/checkout-address/components/CheckoutAddress"
+        }
+      }
+    },
+    {
+      "name": "checkout-address-tanstack",
+      "type": "registry:item",
+      "title": "Checkout address",
+      "description": "Choose, add and edit shipping and billing addresses, with Turkish address data.",
+      "author": "ViraStack <https://virastack.com>",
+      "dependencies": [
+        "@hookform/resolvers@^6.0.2",
+        "@tanstack/react-query@^5.105.0",
+        "@virastack/address@^1.0.0",
+        "@virastack/mask@^2.1.0",
+        "lucide-react@^1.66.0",
+        "react-hook-form@^7.91.0",
+        "zod@^4.6.7",
+        "zustand@^5.0.16"
+      ],
+      "devDependencies": [
+        "@testing-library/react@^16.3.3",
+        "@testing-library/user-event@^14.6.8",
+        "msw@^3.0.3",
+        "vitest@^5.0.5"
+      ],
+      "files": [
+        {
+          "path": "registry/checkout-address/common/src/features/checkout-address/api/address.queries.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-address/api/address.queries.ts"
+        },
+        {
+          "path": "registry/checkout-address/common/src/features/checkout-address/api/get-addresses.api.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-address/api/get-addresses.api.ts"
+        },
+        {
+          "path": "registry/checkout-address/common/src/features/checkout-address/api/query-keys.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-address/api/query-keys.ts"
+        },
+        {
+          "path": "registry/checkout-address/common/src/features/checkout-address/api/save-address.api.test.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-address/api/save-address.api.test.ts"
+        },
+        {
+          "path": "registry/checkout-address/common/src/features/checkout-address/api/save-address.api.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-address/api/save-address.api.ts"
+        },
+        {
+          "path": "registry/checkout-address/common/src/features/checkout-address/components/AddressDetails.tsx",
+          "type": "registry:file",
+          "target": "src/features/checkout-address/components/AddressDetails.tsx"
+        },
+        {
+          "path": "registry/checkout-address/common/src/features/checkout-address/components/AddressForm.tsx",
+          "type": "registry:file",
+          "target": "src/features/checkout-address/components/AddressForm.tsx"
+        },
+        {
+          "path": "registry/checkout-address/common/src/features/checkout-address/components/AddressPicker.tsx",
+          "type": "registry:file",
+          "target": "src/features/checkout-address/components/AddressPicker.tsx"
+        },
+        {
+          "path": "registry/checkout-address/common/src/features/checkout-address/components/AddressSummary.tsx",
+          "type": "registry:file",
+          "target": "src/features/checkout-address/components/AddressSummary.tsx"
+        },
+        {
+          "path": "registry/checkout-address/common/src/features/checkout-address/components/CheckoutAddress.test.tsx",
+          "type": "registry:file",
+          "target": "src/features/checkout-address/components/CheckoutAddress.test.tsx"
+        },
+        {
+          "path": "registry/checkout-address/common/src/features/checkout-address/components/CheckoutAddress.tsx",
+          "type": "registry:file",
+          "target": "src/features/checkout-address/components/CheckoutAddress.tsx"
+        },
+        {
+          "path": "registry/checkout-address/common/src/features/checkout-address/constants/addresses.constants.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-address/constants/addresses.constants.ts"
+        },
+        {
+          "path": "registry/checkout-address/common/src/features/checkout-address/hooks/use-addresses.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-address/hooks/use-addresses.ts"
+        },
+        {
+          "path": "registry/checkout-address/common/src/features/checkout-address/hooks/use-checkout-address.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-address/hooks/use-checkout-address.ts"
+        },
+        {
+          "path": "registry/checkout-address/common/src/features/checkout-address/hooks/use-save-address.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-address/hooks/use-save-address.ts"
+        },
+        {
+          "path": "registry/checkout-address/common/src/features/checkout-address/schemas/address.schema.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-address/schemas/address.schema.ts"
+        },
+        {
+          "path": "registry/checkout-address/common/src/features/checkout-address/stores/address-selection.store.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-address/stores/address-selection.store.ts"
+        }
+      ],
+      "meta": {
+        "product": "virastack-start",
+        "framework": "tanstack",
+        "minStartVersion": "2.0.0",
+        "entry": {
+          "name": "CheckoutAddress",
+          "file": "@/features/checkout-address/components/CheckoutAddress"
+        }
+      }
+    },
+    {
+      "name": "checkout-address-nextjs-i18n",
+      "type": "registry:item",
+      "title": "Checkout address",
+      "description": "Choose, add and edit shipping and billing addresses, with Turkish address data.",
+      "author": "ViraStack <https://virastack.com>",
+      "dependencies": [
+        "@hookform/resolvers@^6.0.2",
+        "@tanstack/react-query@^5.105.0",
+        "@virastack/address@^1.0.0",
+        "@virastack/mask@^2.1.0",
+        "lucide-react@^1.66.0",
+        "react-hook-form@^7.91.0",
+        "zod@^4.6.7",
+        "zustand@^5.0.16"
+      ],
+      "devDependencies": [
+        "@testing-library/react@^16.3.3",
+        "@testing-library/user-event@^14.6.8",
+        "msw@^3.0.3",
+        "vitest@^5.0.5"
+      ],
+      "files": [
+        {
+          "path": "registry/checkout-address/common/src/features/checkout-address/api/address.queries.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-address/api/address.queries.ts"
+        },
+        {
+          "path": "registry/checkout-address/common/src/features/checkout-address/api/get-addresses.api.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-address/api/get-addresses.api.ts"
+        },
+        {
+          "path": "registry/checkout-address/common/src/features/checkout-address/api/query-keys.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-address/api/query-keys.ts"
+        },
+        {
+          "path": "registry/checkout-address/common/src/features/checkout-address/api/save-address.api.test.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-address/api/save-address.api.test.ts"
+        },
+        {
+          "path": "registry/checkout-address/common/src/features/checkout-address/api/save-address.api.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-address/api/save-address.api.ts"
+        },
+        {
+          "path": "registry/checkout-address/nextjs-i18n/src/features/checkout-address/components/AddressDetails.tsx",
+          "type": "registry:file",
+          "target": "src/features/checkout-address/components/AddressDetails.tsx"
+        },
+        {
+          "path": "registry/checkout-address/nextjs-i18n/src/features/checkout-address/components/AddressForm.tsx",
+          "type": "registry:file",
+          "target": "src/features/checkout-address/components/AddressForm.tsx"
+        },
+        {
+          "path": "registry/checkout-address/nextjs-i18n/src/features/checkout-address/components/AddressPicker.tsx",
+          "type": "registry:file",
+          "target": "src/features/checkout-address/components/AddressPicker.tsx"
+        },
+        {
+          "path": "registry/checkout-address/nextjs-i18n/src/features/checkout-address/components/AddressSummary.tsx",
+          "type": "registry:file",
+          "target": "src/features/checkout-address/components/AddressSummary.tsx"
+        },
+        {
+          "path": "registry/checkout-address/common/src/features/checkout-address/components/CheckoutAddress.test.tsx",
+          "type": "registry:file",
+          "target": "src/features/checkout-address/components/CheckoutAddress.test.tsx"
+        },
+        {
+          "path": "registry/checkout-address/nextjs-i18n/src/features/checkout-address/components/CheckoutAddress.tsx",
+          "type": "registry:file",
+          "target": "src/features/checkout-address/components/CheckoutAddress.tsx"
+        },
+        {
+          "path": "registry/checkout-address/common/src/features/checkout-address/constants/addresses.constants.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-address/constants/addresses.constants.ts"
+        },
+        {
+          "path": "registry/checkout-address/common/src/features/checkout-address/hooks/use-addresses.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-address/hooks/use-addresses.ts"
+        },
+        {
+          "path": "registry/checkout-address/common/src/features/checkout-address/hooks/use-checkout-address.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-address/hooks/use-checkout-address.ts"
+        },
+        {
+          "path": "registry/checkout-address/common/src/features/checkout-address/hooks/use-save-address.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-address/hooks/use-save-address.ts"
+        },
+        {
+          "path": "registry/checkout-address/nextjs-i18n/src/features/checkout-address/schemas/address.schema.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-address/schemas/address.schema.ts"
+        },
+        {
+          "path": "registry/checkout-address/common/src/features/checkout-address/stores/address-selection.store.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-address/stores/address-selection.store.ts"
+        }
+      ],
+      "meta": {
+        "product": "virastack-start",
+        "framework": "nextjs",
+        "minStartVersion": "2.0.0",
+        "entry": {
+          "name": "CheckoutAddress",
+          "file": "@/features/checkout-address/components/CheckoutAddress"
+        },
+        "messages": {
+          "en": {
+            "CheckoutAddress": {
+              "loading": "Loading addresses",
+              "load_error": "Could not load your addresses",
+              "retry": "Retry",
+              "shipping_title": "Shipping address",
+              "billing_title": "Billing address",
+              "same_billing": "Use my shipping address for billing",
+              "add_new": "Add new address",
+              "default_badge": "Default",
+              "dialog_description": "Sends a request to the DummyJSON demo API. The address stays only on this page.",
+              "field_phone": "Mobile phone for delivery",
+              "field_line": "Address line",
+              "field_province": "Province",
+              "field_district": "District",
+              "field_neighbourhood": "Neighbourhood",
+              "field_postal_code": "Postal code",
+              "field_title": "Address title",
+              "field_default": "Make this my default address",
+              "placeholder_province": "Select a province",
+              "placeholder_district": "Select a district",
+              "placeholder_neighbourhood": "Select a neighbourhood",
+              "postal_code_unknown": "This postal code was not found.",
+              "save": "Save address",
+              "saving": "Saving…",
+              "save_error": "Could not save the address. Try again.",
+              "error_phone": "Enter a mobile phone number",
+              "error_phone_invalid": "Enter all 10 digits of the phone number",
+              "error_line": "Enter the address line",
+              "error_province": "Select a province",
+              "error_district": "Select a district",
+              "error_neighbourhood": "Select a neighbourhood",
+              "error_postal_code": "Enter the postal code",
+              "error_title": "Enter an address title",
+              "error_too_long": "This is too long",
+              "field_first_name": "First name",
+              "field_last_name": "Last name",
+              "error_first_name": "Enter a first name",
+              "error_last_name": "Enter a last name",
+              "change": "Change",
+              "edit": "Edit",
+              "picker_title": "Choose an address",
+              "use_address": "Use this address",
+              "back": "Back to addresses",
+              "form_add_title": "Add new address",
+              "form_edit_title": "Edit address",
+              "no_address": "No address yet.",
+              "edit_label": "Edit {title}",
+              "change_label": "Change {title}",
+              "add": "Add address",
+              "add_label": "Add {title}"
+            }
+          },
+          "tr": {
+            "CheckoutAddress": {
+              "loading": "Adresler yükleniyor",
+              "load_error": "Adresler yüklenemedi",
+              "retry": "Tekrar dene",
+              "shipping_title": "Teslimat adresi",
+              "billing_title": "Fatura adresi",
+              "same_billing": "Fatura adresim teslimat adresimle aynı",
+              "add_new": "Yeni adres ekle",
+              "default_badge": "Varsayılan",
+              "dialog_description": "DummyJSON demo API'sine istek atar. Adres yalnızca bu sayfada kalır.",
+              "field_phone": "Teslimat için cep telefonu",
+              "field_line": "Adres satırı",
+              "field_province": "İl",
+              "field_district": "İlçe",
+              "field_neighbourhood": "Mahalle",
+              "field_postal_code": "Posta kodu",
+              "field_title": "Adres başlığı",
+              "field_default": "Bunu varsayılan adresim yap",
+              "placeholder_province": "İl seç",
+              "placeholder_district": "İlçe seç",
+              "placeholder_neighbourhood": "Mahalle seç",
+              "postal_code_unknown": "Bu posta kodu bulunamadı.",
+              "save": "Adresi kaydet",
+              "saving": "Kaydediliyor…",
+              "save_error": "Adres kaydedilemedi. Tekrar dene.",
+              "error_phone": "Cep telefonu gir",
+              "error_phone_invalid": "Telefon numarasının 10 hanesini de gir",
+              "error_line": "Adres satırını gir",
+              "error_province": "İl seç",
+              "error_district": "İlçe seç",
+              "error_neighbourhood": "Mahalle seç",
+              "error_postal_code": "Posta kodunu gir",
+              "error_title": "Adres başlığı gir",
+              "error_too_long": "Bu alan çok uzun",
+              "field_first_name": "Ad",
+              "field_last_name": "Soyad",
+              "error_first_name": "Ad gir",
+              "error_last_name": "Soyad gir",
+              "change": "Değiştir",
+              "edit": "Düzenle",
+              "picker_title": "Adres seç",
+              "use_address": "Bu adresi kullan",
+              "back": "Adreslere dön",
+              "form_add_title": "Yeni adres ekle",
+              "form_edit_title": "Adresi düzenle",
+              "no_address": "Henüz adres yok.",
+              "edit_label": "{title} adresini düzenle",
+              "change_label": "{title} değiştir",
+              "add": "Adres ekle",
+              "add_label": "{title} ekle"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "checkout-address-tanstack-i18n",
+      "type": "registry:item",
+      "title": "Checkout address",
+      "description": "Choose, add and edit shipping and billing addresses, with Turkish address data.",
+      "author": "ViraStack <https://virastack.com>",
+      "dependencies": [
+        "@hookform/resolvers@^6.0.2",
+        "@tanstack/react-query@^5.105.0",
+        "@virastack/address@^1.0.0",
+        "@virastack/mask@^2.1.0",
+        "lucide-react@^1.66.0",
+        "react-hook-form@^7.91.0",
+        "zod@^4.6.7",
+        "zustand@^5.0.16"
+      ],
+      "devDependencies": [
+        "@testing-library/react@^16.3.3",
+        "@testing-library/user-event@^14.6.8",
+        "msw@^3.0.3",
+        "vitest@^5.0.5"
+      ],
+      "files": [
+        {
+          "path": "registry/checkout-address/common/src/features/checkout-address/api/address.queries.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-address/api/address.queries.ts"
+        },
+        {
+          "path": "registry/checkout-address/common/src/features/checkout-address/api/get-addresses.api.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-address/api/get-addresses.api.ts"
+        },
+        {
+          "path": "registry/checkout-address/common/src/features/checkout-address/api/query-keys.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-address/api/query-keys.ts"
+        },
+        {
+          "path": "registry/checkout-address/common/src/features/checkout-address/api/save-address.api.test.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-address/api/save-address.api.test.ts"
+        },
+        {
+          "path": "registry/checkout-address/common/src/features/checkout-address/api/save-address.api.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-address/api/save-address.api.ts"
+        },
+        {
+          "path": "registry/checkout-address/tanstack-i18n/src/features/checkout-address/components/AddressDetails.tsx",
+          "type": "registry:file",
+          "target": "src/features/checkout-address/components/AddressDetails.tsx"
+        },
+        {
+          "path": "registry/checkout-address/tanstack-i18n/src/features/checkout-address/components/AddressForm.tsx",
+          "type": "registry:file",
+          "target": "src/features/checkout-address/components/AddressForm.tsx"
+        },
+        {
+          "path": "registry/checkout-address/tanstack-i18n/src/features/checkout-address/components/AddressPicker.tsx",
+          "type": "registry:file",
+          "target": "src/features/checkout-address/components/AddressPicker.tsx"
+        },
+        {
+          "path": "registry/checkout-address/tanstack-i18n/src/features/checkout-address/components/AddressSummary.tsx",
+          "type": "registry:file",
+          "target": "src/features/checkout-address/components/AddressSummary.tsx"
+        },
+        {
+          "path": "registry/checkout-address/common/src/features/checkout-address/components/CheckoutAddress.test.tsx",
+          "type": "registry:file",
+          "target": "src/features/checkout-address/components/CheckoutAddress.test.tsx"
+        },
+        {
+          "path": "registry/checkout-address/tanstack-i18n/src/features/checkout-address/components/CheckoutAddress.tsx",
+          "type": "registry:file",
+          "target": "src/features/checkout-address/components/CheckoutAddress.tsx"
+        },
+        {
+          "path": "registry/checkout-address/common/src/features/checkout-address/constants/addresses.constants.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-address/constants/addresses.constants.ts"
+        },
+        {
+          "path": "registry/checkout-address/common/src/features/checkout-address/hooks/use-addresses.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-address/hooks/use-addresses.ts"
+        },
+        {
+          "path": "registry/checkout-address/common/src/features/checkout-address/hooks/use-checkout-address.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-address/hooks/use-checkout-address.ts"
+        },
+        {
+          "path": "registry/checkout-address/common/src/features/checkout-address/hooks/use-save-address.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-address/hooks/use-save-address.ts"
+        },
+        {
+          "path": "registry/checkout-address/tanstack-i18n/src/features/checkout-address/schemas/address.schema.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-address/schemas/address.schema.ts"
+        },
+        {
+          "path": "registry/checkout-address/common/src/features/checkout-address/stores/address-selection.store.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-address/stores/address-selection.store.ts"
+        }
+      ],
+      "meta": {
+        "product": "virastack-start",
+        "framework": "tanstack",
+        "minStartVersion": "2.0.0",
+        "entry": {
+          "name": "CheckoutAddress",
+          "file": "@/features/checkout-address/components/CheckoutAddress"
+        },
+        "messages": {
+          "en": {
+            "checkout_address_loading": "Loading addresses",
+            "checkout_address_load_error": "Could not load your addresses",
+            "checkout_address_retry": "Retry",
+            "checkout_address_shipping_title": "Shipping address",
+            "checkout_address_billing_title": "Billing address",
+            "checkout_address_same_billing": "Use my shipping address for billing",
+            "checkout_address_add_new": "Add new address",
+            "checkout_address_default_badge": "Default",
+            "checkout_address_dialog_description": "Sends a request to the DummyJSON demo API. The address stays only on this page.",
+            "checkout_address_field_phone": "Mobile phone for delivery",
+            "checkout_address_field_line": "Address line",
+            "checkout_address_field_province": "Province",
+            "checkout_address_field_district": "District",
+            "checkout_address_field_neighbourhood": "Neighbourhood",
+            "checkout_address_field_postal_code": "Postal code",
+            "checkout_address_field_title": "Address title",
+            "checkout_address_field_default": "Make this my default address",
+            "checkout_address_placeholder_province": "Select a province",
+            "checkout_address_placeholder_district": "Select a district",
+            "checkout_address_placeholder_neighbourhood": "Select a neighbourhood",
+            "checkout_address_postal_code_unknown": "This postal code was not found.",
+            "checkout_address_save": "Save address",
+            "checkout_address_saving": "Saving…",
+            "checkout_address_save_error": "Could not save the address. Try again.",
+            "checkout_address_error_phone": "Enter a mobile phone number",
+            "checkout_address_error_phone_invalid": "Enter all 10 digits of the phone number",
+            "checkout_address_error_line": "Enter the address line",
+            "checkout_address_error_province": "Select a province",
+            "checkout_address_error_district": "Select a district",
+            "checkout_address_error_neighbourhood": "Select a neighbourhood",
+            "checkout_address_error_postal_code": "Enter the postal code",
+            "checkout_address_error_title": "Enter an address title",
+            "checkout_address_error_too_long": "This is too long",
+            "checkout_address_field_first_name": "First name",
+            "checkout_address_field_last_name": "Last name",
+            "checkout_address_error_first_name": "Enter a first name",
+            "checkout_address_error_last_name": "Enter a last name",
+            "checkout_address_change": "Change",
+            "checkout_address_edit": "Edit",
+            "checkout_address_picker_title": "Choose an address",
+            "checkout_address_use_address": "Use this address",
+            "checkout_address_back": "Back to addresses",
+            "checkout_address_form_add_title": "Add new address",
+            "checkout_address_form_edit_title": "Edit address",
+            "checkout_address_no_address": "No address yet.",
+            "checkout_address_edit_label": "Edit {title}",
+            "checkout_address_change_label": "Change {title}",
+            "checkout_address_add": "Add address",
+            "checkout_address_add_label": "Add {title}"
+          },
+          "tr": {
+            "checkout_address_loading": "Adresler yükleniyor",
+            "checkout_address_load_error": "Adresler yüklenemedi",
+            "checkout_address_retry": "Tekrar dene",
+            "checkout_address_shipping_title": "Teslimat adresi",
+            "checkout_address_billing_title": "Fatura adresi",
+            "checkout_address_same_billing": "Fatura adresim teslimat adresimle aynı",
+            "checkout_address_add_new": "Yeni adres ekle",
+            "checkout_address_default_badge": "Varsayılan",
+            "checkout_address_dialog_description": "DummyJSON demo API'sine istek atar. Adres yalnızca bu sayfada kalır.",
+            "checkout_address_field_phone": "Teslimat için cep telefonu",
+            "checkout_address_field_line": "Adres satırı",
+            "checkout_address_field_province": "İl",
+            "checkout_address_field_district": "İlçe",
+            "checkout_address_field_neighbourhood": "Mahalle",
+            "checkout_address_field_postal_code": "Posta kodu",
+            "checkout_address_field_title": "Adres başlığı",
+            "checkout_address_field_default": "Bunu varsayılan adresim yap",
+            "checkout_address_placeholder_province": "İl seç",
+            "checkout_address_placeholder_district": "İlçe seç",
+            "checkout_address_placeholder_neighbourhood": "Mahalle seç",
+            "checkout_address_postal_code_unknown": "Bu posta kodu bulunamadı.",
+            "checkout_address_save": "Adresi kaydet",
+            "checkout_address_saving": "Kaydediliyor…",
+            "checkout_address_save_error": "Adres kaydedilemedi. Tekrar dene.",
+            "checkout_address_error_phone": "Cep telefonu gir",
+            "checkout_address_error_phone_invalid": "Telefon numarasının 10 hanesini de gir",
+            "checkout_address_error_line": "Adres satırını gir",
+            "checkout_address_error_province": "İl seç",
+            "checkout_address_error_district": "İlçe seç",
+            "checkout_address_error_neighbourhood": "Mahalle seç",
+            "checkout_address_error_postal_code": "Posta kodunu gir",
+            "checkout_address_error_title": "Adres başlığı gir",
+            "checkout_address_error_too_long": "Bu alan çok uzun",
+            "checkout_address_field_first_name": "Ad",
+            "checkout_address_field_last_name": "Soyad",
+            "checkout_address_error_first_name": "Ad gir",
+            "checkout_address_error_last_name": "Soyad gir",
+            "checkout_address_change": "Değiştir",
+            "checkout_address_edit": "Düzenle",
+            "checkout_address_picker_title": "Adres seç",
+            "checkout_address_use_address": "Bu adresi kullan",
+            "checkout_address_back": "Adreslere dön",
+            "checkout_address_form_add_title": "Yeni adres ekle",
+            "checkout_address_form_edit_title": "Adresi düzenle",
+            "checkout_address_no_address": "Henüz adres yok.",
+            "checkout_address_edit_label": "{title} adresini düzenle",
+            "checkout_address_change_label": "{title} değiştir",
+            "checkout_address_add": "Adres ekle",
+            "checkout_address_add_label": "{title} ekle"
+          }
+        }
+      }
+    },
+    {
+      "name": "checkout-payment-nextjs",
+      "type": "registry:item",
+      "title": "Checkout payment",
+      "description": "Choose or add a credit card, with the card number and CVV kept off the network.",
+      "author": "ViraStack <https://virastack.com>",
+      "dependencies": [
+        "@hookform/resolvers@^6.0.2",
+        "@tanstack/react-query@^5.105.0",
+        "@virastack/mask@^2.1.0",
+        "lucide-react@^1.66.0",
+        "react-hook-form@^7.91.0",
+        "zod@^4.6.7",
+        "zustand@^5.0.16"
+      ],
+      "devDependencies": [
+        "@testing-library/react@^16.3.3",
+        "@testing-library/user-event@^14.6.8",
+        "msw@^3.0.3",
+        "vitest@^5.0.5"
+      ],
+      "files": [
+        {
+          "path": "registry/checkout-payment/common/src/features/checkout-payment/api/card.queries.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-payment/api/card.queries.ts"
+        },
+        {
+          "path": "registry/checkout-payment/common/src/features/checkout-payment/api/get-cards.api.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-payment/api/get-cards.api.ts"
+        },
+        {
+          "path": "registry/checkout-payment/common/src/features/checkout-payment/api/query-keys.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-payment/api/query-keys.ts"
+        },
+        {
+          "path": "registry/checkout-payment/common/src/features/checkout-payment/api/save-card.api.test.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-payment/api/save-card.api.test.ts"
+        },
+        {
+          "path": "registry/checkout-payment/common/src/features/checkout-payment/api/save-card.api.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-payment/api/save-card.api.ts"
+        },
+        {
+          "path": "registry/checkout-payment/common/src/features/checkout-payment/api/tokenize-card.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-payment/api/tokenize-card.ts"
+        },
+        {
+          "path": "registry/checkout-payment/common/src/features/checkout-payment/components/CardDetails.tsx",
+          "type": "registry:file",
+          "target": "src/features/checkout-payment/components/CardDetails.tsx"
+        },
+        {
+          "path": "registry/checkout-payment/common/src/features/checkout-payment/components/CardForm.tsx",
+          "type": "registry:file",
+          "target": "src/features/checkout-payment/components/CardForm.tsx"
+        },
+        {
+          "path": "registry/checkout-payment/common/src/features/checkout-payment/components/CardPicker.tsx",
+          "type": "registry:file",
+          "target": "src/features/checkout-payment/components/CardPicker.tsx"
+        },
+        {
+          "path": "registry/checkout-payment/common/src/features/checkout-payment/components/CheckoutPayment.test.tsx",
+          "type": "registry:file",
+          "target": "src/features/checkout-payment/components/CheckoutPayment.test.tsx"
+        },
+        {
+          "path": "registry/checkout-payment/common/src/features/checkout-payment/components/CheckoutPayment.tsx",
+          "type": "registry:file",
+          "target": "src/features/checkout-payment/components/CheckoutPayment.tsx"
+        },
+        {
+          "path": "registry/checkout-payment/common/src/features/checkout-payment/constants/cards.constants.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-payment/constants/cards.constants.ts"
+        },
+        {
+          "path": "registry/checkout-payment/common/src/features/checkout-payment/hooks/use-add-card.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-payment/hooks/use-add-card.ts"
+        },
+        {
+          "path": "registry/checkout-payment/common/src/features/checkout-payment/hooks/use-cards.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-payment/hooks/use-cards.ts"
+        },
+        {
+          "path": "registry/checkout-payment/common/src/features/checkout-payment/hooks/use-checkout-payment.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-payment/hooks/use-checkout-payment.ts"
+        },
+        {
+          "path": "registry/checkout-payment/common/src/features/checkout-payment/schemas/card.schema.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-payment/schemas/card.schema.ts"
+        },
+        {
+          "path": "registry/checkout-payment/common/src/features/checkout-payment/stores/card-selection.store.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-payment/stores/card-selection.store.ts"
+        }
+      ],
+      "meta": {
+        "product": "virastack-start",
+        "framework": "nextjs",
+        "minStartVersion": "2.0.0",
+        "entry": {
+          "name": "CheckoutPayment",
+          "file": "@/features/checkout-payment/components/CheckoutPayment"
+        }
+      }
+    },
+    {
+      "name": "checkout-payment-tanstack",
+      "type": "registry:item",
+      "title": "Checkout payment",
+      "description": "Choose or add a credit card, with the card number and CVV kept off the network.",
+      "author": "ViraStack <https://virastack.com>",
+      "dependencies": [
+        "@hookform/resolvers@^6.0.2",
+        "@tanstack/react-query@^5.105.0",
+        "@virastack/mask@^2.1.0",
+        "lucide-react@^1.66.0",
+        "react-hook-form@^7.91.0",
+        "zod@^4.6.7",
+        "zustand@^5.0.16"
+      ],
+      "devDependencies": [
+        "@testing-library/react@^16.3.3",
+        "@testing-library/user-event@^14.6.8",
+        "msw@^3.0.3",
+        "vitest@^5.0.5"
+      ],
+      "files": [
+        {
+          "path": "registry/checkout-payment/common/src/features/checkout-payment/api/card.queries.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-payment/api/card.queries.ts"
+        },
+        {
+          "path": "registry/checkout-payment/common/src/features/checkout-payment/api/get-cards.api.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-payment/api/get-cards.api.ts"
+        },
+        {
+          "path": "registry/checkout-payment/common/src/features/checkout-payment/api/query-keys.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-payment/api/query-keys.ts"
+        },
+        {
+          "path": "registry/checkout-payment/common/src/features/checkout-payment/api/save-card.api.test.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-payment/api/save-card.api.test.ts"
+        },
+        {
+          "path": "registry/checkout-payment/common/src/features/checkout-payment/api/save-card.api.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-payment/api/save-card.api.ts"
+        },
+        {
+          "path": "registry/checkout-payment/common/src/features/checkout-payment/api/tokenize-card.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-payment/api/tokenize-card.ts"
+        },
+        {
+          "path": "registry/checkout-payment/common/src/features/checkout-payment/components/CardDetails.tsx",
+          "type": "registry:file",
+          "target": "src/features/checkout-payment/components/CardDetails.tsx"
+        },
+        {
+          "path": "registry/checkout-payment/common/src/features/checkout-payment/components/CardForm.tsx",
+          "type": "registry:file",
+          "target": "src/features/checkout-payment/components/CardForm.tsx"
+        },
+        {
+          "path": "registry/checkout-payment/common/src/features/checkout-payment/components/CardPicker.tsx",
+          "type": "registry:file",
+          "target": "src/features/checkout-payment/components/CardPicker.tsx"
+        },
+        {
+          "path": "registry/checkout-payment/common/src/features/checkout-payment/components/CheckoutPayment.test.tsx",
+          "type": "registry:file",
+          "target": "src/features/checkout-payment/components/CheckoutPayment.test.tsx"
+        },
+        {
+          "path": "registry/checkout-payment/common/src/features/checkout-payment/components/CheckoutPayment.tsx",
+          "type": "registry:file",
+          "target": "src/features/checkout-payment/components/CheckoutPayment.tsx"
+        },
+        {
+          "path": "registry/checkout-payment/common/src/features/checkout-payment/constants/cards.constants.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-payment/constants/cards.constants.ts"
+        },
+        {
+          "path": "registry/checkout-payment/common/src/features/checkout-payment/hooks/use-add-card.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-payment/hooks/use-add-card.ts"
+        },
+        {
+          "path": "registry/checkout-payment/common/src/features/checkout-payment/hooks/use-cards.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-payment/hooks/use-cards.ts"
+        },
+        {
+          "path": "registry/checkout-payment/common/src/features/checkout-payment/hooks/use-checkout-payment.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-payment/hooks/use-checkout-payment.ts"
+        },
+        {
+          "path": "registry/checkout-payment/common/src/features/checkout-payment/schemas/card.schema.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-payment/schemas/card.schema.ts"
+        },
+        {
+          "path": "registry/checkout-payment/common/src/features/checkout-payment/stores/card-selection.store.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-payment/stores/card-selection.store.ts"
+        }
+      ],
+      "meta": {
+        "product": "virastack-start",
+        "framework": "tanstack",
+        "minStartVersion": "2.0.0",
+        "entry": {
+          "name": "CheckoutPayment",
+          "file": "@/features/checkout-payment/components/CheckoutPayment"
+        }
+      }
+    },
+    {
+      "name": "checkout-payment-nextjs-i18n",
+      "type": "registry:item",
+      "title": "Checkout payment",
+      "description": "Choose or add a credit card, with the card number and CVV kept off the network.",
+      "author": "ViraStack <https://virastack.com>",
+      "dependencies": [
+        "@hookform/resolvers@^6.0.2",
+        "@tanstack/react-query@^5.105.0",
+        "@virastack/mask@^2.1.0",
+        "lucide-react@^1.66.0",
+        "react-hook-form@^7.91.0",
+        "zod@^4.6.7",
+        "zustand@^5.0.16"
+      ],
+      "devDependencies": [
+        "@testing-library/react@^16.3.3",
+        "@testing-library/user-event@^14.6.8",
+        "msw@^3.0.3",
+        "vitest@^5.0.5"
+      ],
+      "files": [
+        {
+          "path": "registry/checkout-payment/common/src/features/checkout-payment/api/card.queries.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-payment/api/card.queries.ts"
+        },
+        {
+          "path": "registry/checkout-payment/common/src/features/checkout-payment/api/get-cards.api.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-payment/api/get-cards.api.ts"
+        },
+        {
+          "path": "registry/checkout-payment/common/src/features/checkout-payment/api/query-keys.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-payment/api/query-keys.ts"
+        },
+        {
+          "path": "registry/checkout-payment/common/src/features/checkout-payment/api/save-card.api.test.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-payment/api/save-card.api.test.ts"
+        },
+        {
+          "path": "registry/checkout-payment/common/src/features/checkout-payment/api/save-card.api.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-payment/api/save-card.api.ts"
+        },
+        {
+          "path": "registry/checkout-payment/common/src/features/checkout-payment/api/tokenize-card.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-payment/api/tokenize-card.ts"
+        },
+        {
+          "path": "registry/checkout-payment/nextjs-i18n/src/features/checkout-payment/components/CardDetails.tsx",
+          "type": "registry:file",
+          "target": "src/features/checkout-payment/components/CardDetails.tsx"
+        },
+        {
+          "path": "registry/checkout-payment/nextjs-i18n/src/features/checkout-payment/components/CardForm.tsx",
+          "type": "registry:file",
+          "target": "src/features/checkout-payment/components/CardForm.tsx"
+        },
+        {
+          "path": "registry/checkout-payment/nextjs-i18n/src/features/checkout-payment/components/CardPicker.tsx",
+          "type": "registry:file",
+          "target": "src/features/checkout-payment/components/CardPicker.tsx"
+        },
+        {
+          "path": "registry/checkout-payment/common/src/features/checkout-payment/components/CheckoutPayment.test.tsx",
+          "type": "registry:file",
+          "target": "src/features/checkout-payment/components/CheckoutPayment.test.tsx"
+        },
+        {
+          "path": "registry/checkout-payment/nextjs-i18n/src/features/checkout-payment/components/CheckoutPayment.tsx",
+          "type": "registry:file",
+          "target": "src/features/checkout-payment/components/CheckoutPayment.tsx"
+        },
+        {
+          "path": "registry/checkout-payment/common/src/features/checkout-payment/constants/cards.constants.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-payment/constants/cards.constants.ts"
+        },
+        {
+          "path": "registry/checkout-payment/common/src/features/checkout-payment/hooks/use-add-card.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-payment/hooks/use-add-card.ts"
+        },
+        {
+          "path": "registry/checkout-payment/common/src/features/checkout-payment/hooks/use-cards.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-payment/hooks/use-cards.ts"
+        },
+        {
+          "path": "registry/checkout-payment/common/src/features/checkout-payment/hooks/use-checkout-payment.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-payment/hooks/use-checkout-payment.ts"
+        },
+        {
+          "path": "registry/checkout-payment/nextjs-i18n/src/features/checkout-payment/schemas/card.schema.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-payment/schemas/card.schema.ts"
+        },
+        {
+          "path": "registry/checkout-payment/common/src/features/checkout-payment/stores/card-selection.store.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-payment/stores/card-selection.store.ts"
+        }
+      ],
+      "meta": {
+        "product": "virastack-start",
+        "framework": "nextjs",
+        "minStartVersion": "2.0.0",
+        "entry": {
+          "name": "CheckoutPayment",
+          "file": "@/features/checkout-payment/components/CheckoutPayment"
+        },
+        "messages": {
+          "en": {
+            "CheckoutPayment": {
+              "loading": "Loading cards",
+              "load_error": "Could not load your cards",
+              "retry": "Retry",
+              "title": "Payment method",
+              "change": "Change",
+              "change_label": "Change payment method",
+              "no_card": "No saved card yet.",
+              "picker_title": "Choose a card",
+              "use_card": "Use this card",
+              "add_new": "Add new card",
+              "back": "Back to cards",
+              "form_title": "Add new card",
+              "form_description": "Card details never leave this browser. The request carries only a dummy token and the last four digits.",
+              "field_number": "Card number",
+              "field_holder": "Name on card",
+              "field_expiry": "Expiry (MM/YY)",
+              "field_cvv": "CVV",
+              "save": "Save card",
+              "saving": "Saving…",
+              "save_error": "Could not save the card. Try again.",
+              "expires": "Expires",
+              "error_number": "Enter the card number",
+              "error_number_invalid": "Check the card number",
+              "error_holder": "Enter the name on the card",
+              "error_expiry": "Enter the expiry date",
+              "error_expiry_invalid": "Enter a valid future date",
+              "error_cvv": "Enter the CVV",
+              "error_cvv_invalid": "Check the CVV",
+              "error_too_long": "This is too long",
+              "add": "Add card"
+            }
+          },
+          "tr": {
+            "CheckoutPayment": {
+              "loading": "Kartlar yükleniyor",
+              "load_error": "Kartlar yüklenemedi",
+              "retry": "Tekrar dene",
+              "title": "Ödeme yöntemi",
+              "change": "Değiştir",
+              "change_label": "Ödeme yöntemini değiştir",
+              "no_card": "Henüz kayıtlı kart yok.",
+              "picker_title": "Kart seç",
+              "use_card": "Bu kartı kullan",
+              "add_new": "Yeni kart ekle",
+              "back": "Kartlara dön",
+              "form_title": "Yeni kart ekle",
+              "form_description": "Kart bilgileri bu tarayıcıdan çıkmaz. İstek yalnızca dummy token ve son dört haneyi taşır.",
+              "field_number": "Kart numarası",
+              "field_holder": "Kart üzerindeki ad",
+              "field_expiry": "Son kullanma (AA/YY)",
+              "field_cvv": "CVV",
+              "save": "Kartı kaydet",
+              "saving": "Kaydediliyor…",
+              "save_error": "Kart kaydedilemedi. Tekrar dene.",
+              "expires": "Son kullanma",
+              "error_number": "Kart numarasını gir",
+              "error_number_invalid": "Kart numarasını kontrol et",
+              "error_holder": "Kart üzerindeki adı gir",
+              "error_expiry": "Son kullanma tarihini gir",
+              "error_expiry_invalid": "Geçerli ve ileri bir tarih gir",
+              "error_cvv": "CVV gir",
+              "error_cvv_invalid": "CVV'yi kontrol et",
+              "error_too_long": "Bu alan çok uzun",
+              "add": "Kart ekle"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "checkout-payment-tanstack-i18n",
+      "type": "registry:item",
+      "title": "Checkout payment",
+      "description": "Choose or add a credit card, with the card number and CVV kept off the network.",
+      "author": "ViraStack <https://virastack.com>",
+      "dependencies": [
+        "@hookform/resolvers@^6.0.2",
+        "@tanstack/react-query@^5.105.0",
+        "@virastack/mask@^2.1.0",
+        "lucide-react@^1.66.0",
+        "react-hook-form@^7.91.0",
+        "zod@^4.6.7",
+        "zustand@^5.0.16"
+      ],
+      "devDependencies": [
+        "@testing-library/react@^16.3.3",
+        "@testing-library/user-event@^14.6.8",
+        "msw@^3.0.3",
+        "vitest@^5.0.5"
+      ],
+      "files": [
+        {
+          "path": "registry/checkout-payment/common/src/features/checkout-payment/api/card.queries.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-payment/api/card.queries.ts"
+        },
+        {
+          "path": "registry/checkout-payment/common/src/features/checkout-payment/api/get-cards.api.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-payment/api/get-cards.api.ts"
+        },
+        {
+          "path": "registry/checkout-payment/common/src/features/checkout-payment/api/query-keys.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-payment/api/query-keys.ts"
+        },
+        {
+          "path": "registry/checkout-payment/common/src/features/checkout-payment/api/save-card.api.test.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-payment/api/save-card.api.test.ts"
+        },
+        {
+          "path": "registry/checkout-payment/common/src/features/checkout-payment/api/save-card.api.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-payment/api/save-card.api.ts"
+        },
+        {
+          "path": "registry/checkout-payment/common/src/features/checkout-payment/api/tokenize-card.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-payment/api/tokenize-card.ts"
+        },
+        {
+          "path": "registry/checkout-payment/tanstack-i18n/src/features/checkout-payment/components/CardDetails.tsx",
+          "type": "registry:file",
+          "target": "src/features/checkout-payment/components/CardDetails.tsx"
+        },
+        {
+          "path": "registry/checkout-payment/tanstack-i18n/src/features/checkout-payment/components/CardForm.tsx",
+          "type": "registry:file",
+          "target": "src/features/checkout-payment/components/CardForm.tsx"
+        },
+        {
+          "path": "registry/checkout-payment/tanstack-i18n/src/features/checkout-payment/components/CardPicker.tsx",
+          "type": "registry:file",
+          "target": "src/features/checkout-payment/components/CardPicker.tsx"
+        },
+        {
+          "path": "registry/checkout-payment/common/src/features/checkout-payment/components/CheckoutPayment.test.tsx",
+          "type": "registry:file",
+          "target": "src/features/checkout-payment/components/CheckoutPayment.test.tsx"
+        },
+        {
+          "path": "registry/checkout-payment/tanstack-i18n/src/features/checkout-payment/components/CheckoutPayment.tsx",
+          "type": "registry:file",
+          "target": "src/features/checkout-payment/components/CheckoutPayment.tsx"
+        },
+        {
+          "path": "registry/checkout-payment/common/src/features/checkout-payment/constants/cards.constants.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-payment/constants/cards.constants.ts"
+        },
+        {
+          "path": "registry/checkout-payment/common/src/features/checkout-payment/hooks/use-add-card.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-payment/hooks/use-add-card.ts"
+        },
+        {
+          "path": "registry/checkout-payment/common/src/features/checkout-payment/hooks/use-cards.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-payment/hooks/use-cards.ts"
+        },
+        {
+          "path": "registry/checkout-payment/common/src/features/checkout-payment/hooks/use-checkout-payment.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-payment/hooks/use-checkout-payment.ts"
+        },
+        {
+          "path": "registry/checkout-payment/tanstack-i18n/src/features/checkout-payment/schemas/card.schema.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-payment/schemas/card.schema.ts"
+        },
+        {
+          "path": "registry/checkout-payment/common/src/features/checkout-payment/stores/card-selection.store.ts",
+          "type": "registry:file",
+          "target": "src/features/checkout-payment/stores/card-selection.store.ts"
+        }
+      ],
+      "meta": {
+        "product": "virastack-start",
+        "framework": "tanstack",
+        "minStartVersion": "2.0.0",
+        "entry": {
+          "name": "CheckoutPayment",
+          "file": "@/features/checkout-payment/components/CheckoutPayment"
+        },
+        "messages": {
+          "en": {
+            "checkout_payment_loading": "Loading cards",
+            "checkout_payment_load_error": "Could not load your cards",
+            "checkout_payment_retry": "Retry",
+            "checkout_payment_title": "Payment method",
+            "checkout_payment_change": "Change",
+            "checkout_payment_change_label": "Change payment method",
+            "checkout_payment_no_card": "No saved card yet.",
+            "checkout_payment_picker_title": "Choose a card",
+            "checkout_payment_use_card": "Use this card",
+            "checkout_payment_add_new": "Add new card",
+            "checkout_payment_back": "Back to cards",
+            "checkout_payment_form_title": "Add new card",
+            "checkout_payment_form_description": "Card details never leave this browser. The request carries only a dummy token and the last four digits.",
+            "checkout_payment_field_number": "Card number",
+            "checkout_payment_field_holder": "Name on card",
+            "checkout_payment_field_expiry": "Expiry (MM/YY)",
+            "checkout_payment_field_cvv": "CVV",
+            "checkout_payment_save": "Save card",
+            "checkout_payment_saving": "Saving…",
+            "checkout_payment_save_error": "Could not save the card. Try again.",
+            "checkout_payment_expires": "Expires",
+            "checkout_payment_error_number": "Enter the card number",
+            "checkout_payment_error_number_invalid": "Check the card number",
+            "checkout_payment_error_holder": "Enter the name on the card",
+            "checkout_payment_error_expiry": "Enter the expiry date",
+            "checkout_payment_error_expiry_invalid": "Enter a valid future date",
+            "checkout_payment_error_cvv": "Enter the CVV",
+            "checkout_payment_error_cvv_invalid": "Check the CVV",
+            "checkout_payment_error_too_long": "This is too long",
+            "checkout_payment_add": "Add card"
+          },
+          "tr": {
+            "checkout_payment_loading": "Kartlar yükleniyor",
+            "checkout_payment_load_error": "Kartlar yüklenemedi",
+            "checkout_payment_retry": "Tekrar dene",
+            "checkout_payment_title": "Ödeme yöntemi",
+            "checkout_payment_change": "Değiştir",
+            "checkout_payment_change_label": "Ödeme yöntemini değiştir",
+            "checkout_payment_no_card": "Henüz kayıtlı kart yok.",
+            "checkout_payment_picker_title": "Kart seç",
+            "checkout_payment_use_card": "Bu kartı kullan",
+            "checkout_payment_add_new": "Yeni kart ekle",
+            "checkout_payment_back": "Kartlara dön",
+            "checkout_payment_form_title": "Yeni kart ekle",
+            "checkout_payment_form_description": "Kart bilgileri bu tarayıcıdan çıkmaz. İstek yalnızca dummy token ve son dört haneyi taşır.",
+            "checkout_payment_field_number": "Kart numarası",
+            "checkout_payment_field_holder": "Kart üzerindeki ad",
+            "checkout_payment_field_expiry": "Son kullanma (AA/YY)",
+            "checkout_payment_field_cvv": "CVV",
+            "checkout_payment_save": "Kartı kaydet",
+            "checkout_payment_saving": "Kaydediliyor…",
+            "checkout_payment_save_error": "Kart kaydedilemedi. Tekrar dene.",
+            "checkout_payment_expires": "Son kullanma",
+            "checkout_payment_error_number": "Kart numarasını gir",
+            "checkout_payment_error_number_invalid": "Kart numarasını kontrol et",
+            "checkout_payment_error_holder": "Kart üzerindeki adı gir",
+            "checkout_payment_error_expiry": "Son kullanma tarihini gir",
+            "checkout_payment_error_expiry_invalid": "Geçerli ve ileri bir tarih gir",
+            "checkout_payment_error_cvv": "CVV gir",
+            "checkout_payment_error_cvv_invalid": "CVV'yi kontrol et",
+            "checkout_payment_error_too_long": "Bu alan çok uzun",
+            "checkout_payment_add": "Kart ekle"
           }
         }
       }

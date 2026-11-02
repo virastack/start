@@ -1,7 +1,8 @@
 /**
  * Keeps `registry.json` in step with `registry/<name>` and the templates, then builds it with shadcn:
- * shared files in `common`, framework files and routes in `nextjs` and `tanstack`. The i18n layers
- * replace the `common` files that hold text, and carry the messages `virastack add` merges.
+ * shared files in `common`, framework files in `nextjs` and `tanstack`. The i18n layers replace the
+ * `common` files that hold text, and carry the messages `virastack add` merges. A module never
+ * brings a route: the person adds it to a page of their own.
  *
  *   node scripts/build-registry.js [outDir]    default: ../virastack.com/public/r, or registry-dist
  *
@@ -35,7 +36,31 @@ export const FEATURES = [
     title: "Users",
     description: "A searchable user list with pagination in the URL, a validated form and favorites.",
     frameworks: ["nextjs", "tanstack", "nextjs-i18n", "tanstack-i18n"],
-    pagePath: "/users",
+    route: {
+      feature: "users",
+      component: "UsersDirectory",
+      fallback: "UsersDirectorySkeleton",
+      routeSearch: { name: "usersRouteSearch", file: "users-params.schema" },
+    },
+    minStartVersion: "2.0.0",
+  },
+  {
+    name: "checkout-address",
+    title: "Checkout address",
+    description: "Choose, add and edit shipping and billing addresses, with Turkish address data.",
+    frameworks: ["nextjs", "tanstack", "nextjs-i18n", "tanstack-i18n"],
+    route: { feature: "checkout-address", component: "CheckoutAddress" },
+    /** ViraStack packages the module brings; a template only has them when chosen at `init`. */
+    packages: { "@virastack/address": "^1.0.0", "@virastack/mask": "^2.1.0" },
+    minStartVersion: "2.0.0",
+  },
+  {
+    name: "checkout-payment",
+    title: "Checkout payment",
+    description: "Choose or add a credit card, with the card number and CVV kept off the network.",
+    frameworks: ["nextjs", "tanstack", "nextjs-i18n", "tanstack-i18n"],
+    route: { feature: "checkout-payment", component: "CheckoutPayment" },
+    packages: { "@virastack/mask": "^2.1.0" },
     minStartVersion: "2.0.0",
   },
 ];
@@ -57,7 +82,7 @@ export function packageName(specifier) {
   return specifier.startsWith("@") ? parts.slice(0, 2).join("/") : parts[0];
 }
 
-export function findDependencies(contents, pkg) {
+export function findDependencies(contents, pkg, packages = {}) {
   const dependencies = new Set();
   const devDependencies = new Set();
   for (const content of contents) {
@@ -65,7 +90,7 @@ export function findDependencies(contents, pkg) {
       const name = packageName(specifier);
       if (!name || BUILT_IN.has(name)) continue;
       const dev = pkg.devDependencies?.[name];
-      const prod = pkg.dependencies?.[name];
+      const prod = packages[name] ?? pkg.dependencies?.[name];
       if (prod) dependencies.add(`${name}@${prod}`);
       else if (dev) devDependencies.add(`${name}@${dev}`);
       else throw new Error(`"${name}" is imported but missing from the template's package.json`);
@@ -95,6 +120,8 @@ export function buildItem(root, feature, framework) {
   // A later layer replaces the same file of an earlier one.
   const byTarget = new Map();
   for (const layer of ["common", framework]) {
+    // A module with no framework-specific code has no layer for it.
+    if (!existsSync(path.join(root, source, layer))) continue;
     for (const target of listFiles(path.join(root, source, layer), "src")) {
       byTarget.set(target, path.posix.join(source, layer, target));
     }
@@ -113,13 +140,17 @@ export function buildItem(root, feature, framework) {
     ...findDependencies(
       files.map((file) => readFileSync(path.join(root, file.path), "utf8")),
       pkg,
+      feature.packages,
     ),
     files,
     meta: {
       product: "virastack-start",
       framework: base,
       minStartVersion: feature.minStartVersion,
-      ...(feature.pagePath && { pagePath: feature.pagePath }),
+      entry: {
+        name: feature.route.component,
+        file: `@/features/${feature.name}/components/${feature.route.component}`,
+      },
       ...(messages && { messages }),
     },
   };

@@ -1,8 +1,4 @@
 {
-  "users_title": "Kullanıcılar",
-  "users_subtitle": "Veriler canlı olarak DummyJSON'dan geliyor.",
-  "users_meta_description": "Aranabilir kullanıcı listesi, doğrulamalı form ve favoriler içeren bir demo feature.",
-  "users_back": "Başlangıç sayfası",
   "users_favorites_count": "{count} favori",
   "users_favorite": "Favori: {name}",
   "users_search": "Kullanıcı ara",
@@ -47,8 +43,5 @@
   "users_error_email": "Geçerli bir e-posta adresi girin",
   "users_error_generic": "Bir şeyler ters gitti.",
   "users_error_network": "Sunucuya ulaşılamadı.",
-  "users_error_status": "İstek başarısız oldu (durum kodu: {status}).",
-  "users_guide_source": "Bu demo:",
-  "users_guide_api": "Kendi API'n:",
-  "users_guide_remove": "Kaldırmak için:"
+  "users_error_status": "İstek başarısız oldu (durum kodu: {status})."
 }

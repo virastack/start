@@ -1,10 +1,5 @@
 {
   "Users": {
-    "meta_title": "Kullanıcılar",
-    "meta_description": "Aranabilir kullanıcı listesi, doğrulamalı form ve favoriler içeren bir demo feature.",
-    "back_to_start": "Başlangıç sayfası",
-    "title": "Kullanıcılar",
-    "subtitle": "Veriler canlı olarak DummyJSON'dan geliyor.",
     "favorites_count": "<number>{count}</number> favori",
     "search_label": "Kullanıcı ara",
     "add_user": "Kullanıcı ekle",
@@ -48,9 +43,6 @@
     "total_users": "{total} kullanıcı",
     "error_network": "İstek gönderilemedi. İnternet bağlantınızı kontrol edin.",
     "error_status": "İstek başarısız oldu (durum kodu: {status})",
-    "error_unknown": "Bir şeyler ters gitti.",
-    "guide_source": "Bu demo:",
-    "guide_api": "Kendi API'n:",
-    "guide_remove": "Kaldırmak için:"
+    "error_unknown": "Bir şeyler ters gitti."
   }
 }

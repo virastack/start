@@ -19,8 +19,7 @@ import {
   StartTooOldError,
 } from "../utils/features.js";
 
-/** Both frameworks' `dev` scripts start here in a new project. */
-const DEV_URL = "http://localhost:3000";
+const FEATURES_URL = "https://virastack.com/start/features";
 
 async function fileExists(filePath) {
   try {
@@ -56,7 +55,7 @@ async function addFeature(id) {
   const spinner = p.spinner();
   spinner.start(t("add.installing", { pkg: id }));
   try {
-    const { alreadyInstalled, untranslated, pagePath } = await installFeature(id, {
+    const { alreadyInstalled, untranslated, entry } = await installFeature(id, {
       cwd,
       packageManager,
       template,
@@ -64,7 +63,14 @@ async function addFeature(id) {
       isYarnClassic: (process.env.npm_config_user_agent ?? "").startsWith("yarn/1."),
     });
     spinner.stop(t(alreadyInstalled ? "add.alreadyInstalled" : "add.done", { pkg: id }));
-    if (pagePath) p.log.info(t("add.openPage", { url: `${DEV_URL}${pagePath}` }));
+    if (entry) {
+      p.log.info(
+        t("add.useInPage", {
+          code: `import { ${entry.name} } from "${entry.file}"`,
+          url: `${FEATURES_URL}/${id}`,
+        }),
+      );
+    }
     if (untranslated.length > 0) {
       p.log.warn(t("add.untranslated", { locales: untranslated.join(", ") }));
     }

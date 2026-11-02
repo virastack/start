@@ -4,17 +4,21 @@
  *   node scripts/e2e.js            16 runs: 2 templates x i18n on/off x 4 agent choices,
  *                                  with --skip-install (files, git, agent folders and skills)
  *   node scripts/e2e.js --full     4 runs with install, skills, typecheck, lint:ci and test,
- *                                  then `add users`, the same checks and `remove users`
+ *                                  then `add users`, the same checks with and without the page
+ *                                  the site tells people to write, a build and `remove users`
  *   --only <text>                  only runs whose name contains <text> (e.g. tanstack-i18n)
  *
  * Set VIRASTACK_AI_SPEC to test an unpublished ViraStack AI (e.g. file:/path/to.tgz
  * from `npm pack`); otherwise the published channel is used.
  */
 import { spawnSync } from "node:child_process";
-import { existsSync, lstatSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { existsSync, lstatSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+
+import { FEATURES } from "./build-registry.js";
+import { buildFeatureRoute } from "./feature-route.ts";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const CLI = path.join(ROOT, "bin", "virastack.js");
@@ -41,7 +45,7 @@ function run(command, args, cwd) {
   return { ok: result.status === 0, output: `${result.stdout ?? ""}${result.stderr ?? ""}` };
 }
 
-function checkProject(dir, { agents }) {
+function checkProject(dir, { agents, template, i18n }) {
   const errors = [];
   const expect = (condition, message) => condition || errors.push(message);
   const has = (file) => existsSync(path.join(dir, file));
@@ -82,7 +86,7 @@ function checkProject(dir, { agents }) {
   }
 
   if (FULL) {
-    // A new project has no module; the users module has to work in it and leave no trace.
+    // A new project has no module; each module has to work in it and leave no trace.
     const checkScripts = () => {
       for (const script of ["typecheck", "lint:ci", "test"]) {
         const result = run("pnpm", ["run", script], dir);
@@ -92,15 +96,36 @@ function checkProject(dir, { agents }) {
     checkScripts();
     expect(!has("src/features/users"), "init installed the users module");
 
-    const added = run(process.execPath, [CLI, "add", "users"], dir);
-    expect(added.ok, `add users failed:\n${added.output.slice(-2000)}`);
-    expect(has("src/features/users"), "add users wrote no files");
-    checkScripts();
+    for (const { name, route } of FEATURES) {
+      const added = run(process.execPath, [CLI, "add", name], dir);
+      expect(added.ok, `add ${name} failed:\n${added.output.slice(-2000)}`);
+      expect(has(`src/features/${name}`), `add ${name} wrote no files`);
+      const pages = run("git", ["status", "--porcelain", "src/app", "src/routes"], dir).output.trim();
+      expect(pages === "", `add ${name} touched the routes:\n${pages}`);
+      checkScripts();
 
-    const removed = run(process.execPath, [CLI, "remove", "users"], dir);
-    expect(removed.ok, `remove users failed:\n${removed.output.slice(-2000)}`);
-    const left = run("git", ["status", "--porcelain"], dir).output.trim();
-    expect(left === "", `remove users left changes:\n${left}`);
+      // Not the module's default path: what the site shows has to work on any page.
+      const { file, code } = buildFeatureRoute(route, { framework: template, i18n, path: "/team/members" });
+      mkdirSync(path.dirname(path.join(dir, file)), { recursive: true });
+      writeFileSync(path.join(dir, file), code);
+      const refreshRoutes = () => template === "tanstack" && run("pnpm", ["run", "generate-routes"], dir);
+      refreshRoutes();
+      checkScripts();
+      const built = run("pnpm", ["run", "build"], dir);
+      expect(built.ok, `pnpm run build with the ${name} page failed:\n${built.output.slice(-3000)}`);
+
+      rmSync(path.join(dir, file));
+      rmSync(path.join(dir, "src", template === "nextjs" ? "app" : "routes", ...(i18n ? [template === "nextjs" ? "[locale]" : "{-$lang}"] : []), "team"), { recursive: true, force: true });
+      refreshRoutes();
+
+      const removed = run(process.execPath, [CLI, "remove", name], dir);
+      expect(removed.ok, `remove ${name} failed:\n${removed.output.slice(-2000)}`);
+      // Packages stay after `remove`, because other code may use them.
+      run("git", ["checkout", "--", "package.json", "pnpm-lock.yaml"], dir);
+      run("pnpm", ["install", "--frozen-lockfile"], dir);
+      const left = run("git", ["status", "--porcelain"], dir).output.trim();
+      expect(left === "", `remove ${name} left changes:\n${left}`);
+    }
   }
   return errors;
 }
@@ -118,7 +143,7 @@ for (const template of TEMPLATES) {
       const result = run(process.execPath, args, work);
       const agents = agentFlag === "none" ? [] : agentFlag.split(",");
       const errors = result.ok
-        ? checkProject(path.join(work, name), { agents })
+        ? checkProject(path.join(work, name), { agents, template, i18n })
         : [`CLI failed:\n${result.output.slice(-2000)}`];
       failures += errors.length > 0 ? 1 : 0;
       console.log(`${errors.length ? "FAIL" : "ok  "} ${name}`);

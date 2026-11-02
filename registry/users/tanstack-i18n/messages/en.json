@@ -1,8 +1,4 @@
 {
-  "users_title": "Users",
-  "users_subtitle": "Live data from DummyJSON.",
-  "users_meta_description": "A demo feature with a searchable user list, a validated form and favorites.",
-  "users_back": "Start page",
   "users_favorites_count": {
     "declarations": [
       "input count",
@@ -71,8 +67,5 @@
   "users_error_email": "Enter a valid email address",
   "users_error_generic": "Something went wrong.",
   "users_error_network": "Network request failed",
-  "users_error_status": "Request failed with status {status}",
-  "users_guide_source": "This demo:",
-  "users_guide_api": "Your API:",
-  "users_guide_remove": "To remove:"
+  "users_error_status": "Request failed with status {status}"
 }

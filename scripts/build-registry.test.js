@@ -43,14 +43,16 @@ describe.each(["nextjs", "tanstack", "nextjs-i18n", "tanstack-i18n"])("users for
     expect(item.files.some((file) => file.target.startsWith("src/features/users/"))).toBe(true);
   });
 
-  it("brings its route", () => {
-    const route = {
-      nextjs: "src/app/users/page.tsx",
-      tanstack: "src/routes/users.tsx",
-      "nextjs-i18n": "src/app/[locale]/users/page.tsx",
-      "tanstack-i18n": "src/routes/{-$lang}/users.tsx",
-    }[framework];
-    expect(item.files.map((file) => file.target)).toContain(route);
+  it("brings only the feature, never a route", () => {
+    expect(item.files.filter((file) => !file.target.startsWith("src/features/users/"))).toEqual([]);
+  });
+
+  it("names the component to import", () => {
+    expect(item.meta.entry).toEqual({
+      name: "UsersDirectory",
+      file: "@/features/users/components/UsersDirectory",
+    });
+    expect(item.files.map((file) => file.target)).toContain(`src/features/users/components/UsersDirectory.tsx`);
   });
 
   it("names its maker", () => {

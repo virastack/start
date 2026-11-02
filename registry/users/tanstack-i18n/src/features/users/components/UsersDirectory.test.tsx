@@ -30,8 +30,8 @@ function pageOf(firstName: string, total = 25) {
 
 function renderDirectory(searchParams = "", onUrlUpdate?: (event: UrlUpdateEvent) => void) {
   return renderWithProviders(<UsersDirectory />, {
-    route: { path: "/{-$lang}/users", ...usersRouteSearch },
-    initialPath: "/users",
+    route: { path: "/{-$lang}/team/members", ...usersRouteSearch },
+    initialPath: "/team/members",
     searchParams,
     onUrlUpdate
   })

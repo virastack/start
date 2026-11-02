@@ -1,10 +1,5 @@
 {
   "Users": {
-    "meta_title": "Users",
-    "meta_description": "A demo feature with a searchable user list, a validated form and favorites.",
-    "back_to_start": "Start page",
-    "title": "Users",
-    "subtitle": "Live data from DummyJSON.",
     "favorites_count": "<number>{count}</number> {count, plural, one {favorite} other {favorites}}",
     "search_label": "Search users",
     "add_user": "Add user",
@@ -48,9 +43,6 @@
     "total_users": "{total, plural, one {# user} other {# users}}",
     "error_network": "Network request failed",
     "error_status": "Request failed with status {status}",
-    "error_unknown": "Something went wrong.",
-    "guide_source": "This demo:",
-    "guide_api": "Your API:",
-    "guide_remove": "To remove:"
+    "error_unknown": "Something went wrong."
   }
 }

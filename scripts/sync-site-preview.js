@@ -11,32 +11,44 @@ import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, statSync, wri
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
+import { FEATURES } from "./build-registry.js";
+
 const LAYERS = ["common", "nextjs"];
+/** The site speaks two languages, so these previews use their i18n layer and its messages. */
+const I18N_PREVIEWS = new Set(["checkout-address", "checkout-payment"]);
+const I18N_LAYERS = ["common", "nextjs-i18n"];
 const UI = [
   "avatar",
   "badge",
   "button",
+  "checkbox",
   "dialog",
   "empty",
   "field",
   "input",
   "label",
   "pagination",
+  "radio-group",
+  "select",
   "separator",
   "skeleton",
   "table",
+  "textarea",
 ];
 const FOLDERS = ["api", "components", "constants", "helpers", "hooks", "schemas", "stores"];
-/** The template's page frame; the site has its own. */
-const SKIPPED = new Set(["UsersPage.tsx"]);
-const PREVIEW = "src/features/start/demos/users";
+const DEMOS = "src/features/start/demos";
+const USERS_PREVIEW = `${DEMOS}/users`;
+const ROUTE_HELPER = "src/features/start/helpers/feature-route.ts";
 
+/** Every demo shares the UI and API copies in the users preview. */
 export function toPreviewImports(source) {
   return source
-    .replaceAll('"@/features/users/', `"@/${PREVIEW.slice(4)}/`)
-    .replaceAll('"@/components/ui/', `"@/${PREVIEW.slice(4)}/ui/`)
-    .replaceAll('"@/lib/api"', `"@/${PREVIEW.slice(4)}/lib/api"`)
-    .replaceAll('"@/lib/query-client"', `"@/${PREVIEW.slice(4)}/lib/query-client"`)
+    .replaceAll('"@/features/users/', `"@/${USERS_PREVIEW.slice(4)}/`)
+    .replaceAll('"@/features/checkout-address/', `"@/${DEMOS.slice(4)}/checkout-address/`)
+    .replaceAll('"@/features/checkout-payment/', `"@/${DEMOS.slice(4)}/checkout-payment/`)
+    .replaceAll('"@/components/ui/', `"@/${USERS_PREVIEW.slice(4)}/ui/`)
+    .replaceAll('"@/lib/api"', `"@/${USERS_PREVIEW.slice(4)}/lib/api"`)
+    .replaceAll('"@/lib/query-client"', `"@/${USERS_PREVIEW.slice(4)}/lib/query-client"`)
     .replaceAll('from "cn"', 'from "@/lib/utils"');
 }
 
@@ -49,33 +61,57 @@ function copyTree(from, to) {
   for (const entry of readdirSync(from)) {
     const source = path.join(from, entry);
     if (statSync(source).isDirectory()) copyTree(source, path.join(to, entry));
-    else if (!entry.includes(".test.") && !SKIPPED.has(entry)) copyFile(source, path.join(to, entry));
+    else if (!entry.includes(".test.")) copyFile(source, path.join(to, entry));
   }
 }
 
-/** The list behind the page's file tree, so it always matches what `virastack add` installs. */
-function writeInstallFiles(root, preview) {
+/** The lists behind the pages' file trees, so they always match what `virastack add` installs. */
+function writeInstallFiles(root, site) {
   const registry = JSON.parse(readFileSync(path.join(root, "registry.json"), "utf8"));
-  const targets = (name) => registry.items.find((item) => item.name === name).files.map(({ target }) => target);
-  const tanstack = new Set(targets("users-tanstack"));
-  // Only what both frameworks share: the route differs, and the page says so in a note.
-  const files = targets("users-nextjs")
-    .filter((target) => target.startsWith("src/features/") && tanstack.has(target))
-    .sort();
-  writeFileSync(
-    path.join(preview, "install-files.ts"),
-    `// Written by \`npm run sync:preview\` in the Start repo.\nexport const USERS_INSTALL_FILES = ${JSON.stringify(files)};\n`,
-  );
+  for (const { name, route } of FEATURES) {
+    const targets = (framework) =>
+      registry.items.find((item) => item.name === `${name}-${framework}`).files.map(({ target }) => target);
+    const tanstack = new Set(targets("tanstack"));
+    // Only what both frameworks share.
+    const files = targets("nextjs")
+      .filter((target) => target.startsWith("src/features/") && tanstack.has(target))
+      .sort();
+    writeFileSync(
+      path.join(site, DEMOS, name, "install-files.ts"),
+      [
+        "// Written by `npm run sync:preview` in the Start repo.",
+        `export const INSTALL_FILES = ${JSON.stringify(files)};`,
+        `export const INSTALL_ROUTE = ${JSON.stringify(route)};`,
+        "",
+      ].join("\n"),
+    );
+  }
+}
+
+/** Adds a preview's messages to the site's own files, replacing its namespace there. */
+function mergeSiteMessages(root, site, name) {
+  const source = path.join(root, "registry", name, "nextjs-i18n/messages");
+  for (const file of readdirSync(source)) {
+    const target = path.join(site, "src/messages", file);
+    const messages = { ...JSON.parse(readFileSync(target, "utf8")), ...JSON.parse(readFileSync(path.join(source, file), "utf8")) };
+    writeFileSync(target, `${JSON.stringify(messages, null, 2)}\n`);
+  }
 }
 
 export function syncSitePreview(root) {
   const site = path.resolve(root, "../virastack.com");
   if (!existsSync(site)) return false;
-  const preview = path.join(site, PREVIEW);
+  const preview = path.join(site, USERS_PREVIEW);
   const shared = path.join(root, "templates-shared/src/lib");
 
-  for (const folder of FOLDERS) rmSync(path.join(preview, folder), { recursive: true, force: true });
-  for (const layer of LAYERS) copyTree(path.join(root, "registry/users", layer, "src/features/users"), preview);
+  for (const { name } of FEATURES) {
+    const demo = path.join(site, DEMOS, name);
+    for (const folder of FOLDERS) rmSync(path.join(demo, folder), { recursive: true, force: true });
+    for (const layer of I18N_PREVIEWS.has(name) ? I18N_LAYERS : LAYERS) {
+      const source = path.join(root, "registry", name, layer, "src/features", name);
+      if (existsSync(source)) copyTree(source, demo);
+    }
+  }
 
   for (const name of UI) {
     copyFile(path.join(root, "templates/nextjs/src/components/ui", `${name}.tsx`), path.join(preview, "ui", `${name}.tsx`));
@@ -87,9 +123,11 @@ export function syncSitePreview(root) {
       .replace("baseUrl: siteConfig.apiUrl", 'baseUrl: "https://dummyjson.com"'),
   );
 
-  writeInstallFiles(root, preview);
+  for (const name of I18N_PREVIEWS) mergeSiteMessages(root, site, name);
+  writeInstallFiles(root, site);
+  copyFile(path.join(root, "scripts/feature-route.ts"), path.join(site, ROUTE_HELPER), (source) => source);
 
-  spawnSync("npx", ["--no", "--", "prettier", "--write", PREVIEW], { cwd: site, stdio: "ignore" });
+  spawnSync("npx", ["--no", "--", "prettier", "--write", DEMOS, ROUTE_HELPER], { cwd: site, stdio: "ignore" });
   return true;
 }
 

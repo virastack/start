@@ -202,11 +202,9 @@ async function loadItem(id, template, i18n) {
   return item;
 }
 
-/** Paraglide compiles the messages; the router has to see the changed routes. */
+/** Paraglide compiles the messages. */
 async function refreshGenerated({ cwd, packageManager, template, i18n }) {
-  if (template !== "tanstack") return;
-  if (i18n) await runCommand(packageManager, ["run", "postinstall"], { cwd });
-  await runCommand(packageManager, ["run", "generate-routes"], { cwd });
+  if (template === "tanstack" && i18n) await runCommand(packageManager, ["run", "postinstall"], { cwd });
 }
 
 /**
@@ -248,7 +246,7 @@ export async function installFeature(id, { cwd, packageManager, template, i18n =
 
   await refreshGenerated({ cwd, packageManager, template, i18n });
 
-  return { alreadyInstalled: false, untranslated: messages.untranslated, pagePath: item.meta?.pagePath };
+  return { alreadyInstalled: false, untranslated: messages.untranslated, entry: item.meta?.entry };
 }
 
 /** Takes out what `incoming` added. A text the project changed goes too, and is reported. */
