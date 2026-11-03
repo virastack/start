@@ -2,10 +2,10 @@
 
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 
-import { cardKeys } from "@/features/checkout-payment/api/query-keys"
-import { saveCard } from "@/features/checkout-payment/api/save-card.api"
-import { tokenizeCard } from "@/features/checkout-payment/api/tokenize-card"
-import type { CardFormInput, SavedCard } from "@/features/checkout-payment/schemas/card.schema"
+import { cardKeys } from "@/features/checkout-card/api/query-keys"
+import { saveCard } from "@/features/checkout-card/api/save-card.api"
+import { tokenizeCard } from "@/features/checkout-card/api/tokenize-card"
+import type { CardFormInput, SavedCard } from "@/features/checkout-card/schemas/card.schema"
 
 export function useAddCard() {
   const queryClient = useQueryClient()

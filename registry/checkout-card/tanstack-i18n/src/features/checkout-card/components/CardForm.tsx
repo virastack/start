@@ -9,10 +9,10 @@ import { useForm } from "react-hook-form"
 import { Button } from "@/components/ui/button"
 import { Field, FieldError, FieldLabel } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
-import { CARD_MASKS } from "@/features/checkout-payment/constants/cards.constants"
-import { useAddCard } from "@/features/checkout-payment/hooks/use-add-card"
-import { cardFormSchema } from "@/features/checkout-payment/schemas/card.schema"
-import type { CardFormInput, SavedCard } from "@/features/checkout-payment/schemas/card.schema"
+import { CARD_MASKS } from "@/features/checkout-card/constants/cards.constants"
+import { useAddCard } from "@/features/checkout-card/hooks/use-add-card"
+import { cardFormSchema } from "@/features/checkout-card/schemas/card.schema"
+import type { CardFormInput, SavedCard } from "@/features/checkout-card/schemas/card.schema"
 import * as m from "@/paraglide/messages.js"
 
 /** The mask reports a key such as `card.invalid`, for the form to word. Others are the schema's. */
@@ -26,23 +26,36 @@ export function CardForm({ onSaved }: { onSaved: (saved: SavedCard) => void }) {
     resolver: maskResolver(CARD_MASKS, zodResolver(cardFormSchema)),
     defaultValues: { cardNumber: "", holderName: "", expiry: "", cvv: "" }
   })
-  const { cardNumber, expiry, cvv } = useViraMask(form, CARD_MASKS)
+  const { holderName, cardNumber, expiry, cvv } = useViraMask(form, CARD_MASKS)
   const { errors, isSubmitting } = form.formState
 
   const onSubmit = form.handleSubmit(async (input) => {
     try {
       onSaved(await addCard.mutateAsync(input))
     } catch {
-      form.setError("root.server", { message: m.checkout_payment_save_error() })
+      form.setError("root.server", { message: m.checkout_card_save_error() })
     }
   })
 
   return (
     <form onSubmit={onSubmit} noValidate className="flex flex-col gap-4">
       <FormField
+        name="holderName"
+        label={m.checkout_card_field_holder()}
+        error={errors.holderName?.message}
+      >
+        <Input
+          {...holderName}
+          id="holderName"
+          autoComplete="cc-name"
+          aria-invalid={Boolean(errors.holderName)}
+          aria-describedby={errors.holderName ? "holderName-error" : undefined}
+        />
+      </FormField>
+      <FormField
         name="cardNumber"
-        label={m.checkout_payment_field_number()}
-        error={wordMaskError(errors.cardNumber?.message, m.checkout_payment_error_number_invalid())}
+        label={m.checkout_card_field_number()}
+        error={wordMaskError(errors.cardNumber?.message, m.checkout_card_error_number_invalid())}
       >
         <Input
           {...cardNumber}
@@ -50,25 +63,14 @@ export function CardForm({ onSaved }: { onSaved: (saved: SavedCard) => void }) {
           autoComplete="cc-number"
           placeholder="0000 0000 0000 0000"
           aria-invalid={Boolean(errors.cardNumber)}
-        />
-      </FormField>
-      <FormField
-        name="holderName"
-        label={m.checkout_payment_field_holder()}
-        error={errors.holderName?.message}
-      >
-        <Input
-          id="holderName"
-          autoComplete="cc-name"
-          aria-invalid={Boolean(errors.holderName)}
-          {...form.register("holderName")}
+          aria-describedby={errors.cardNumber ? "cardNumber-error" : undefined}
         />
       </FormField>
       <div className="grid gap-4 sm:grid-cols-2">
         <FormField
           name="expiry"
-          label={m.checkout_payment_field_expiry()}
-          error={wordMaskError(errors.expiry?.message, m.checkout_payment_error_expiry_invalid())}
+          label={m.checkout_card_field_expiry()}
+          error={wordMaskError(errors.expiry?.message, m.checkout_card_error_expiry_invalid())}
         >
           <Input
             {...expiry}
@@ -76,12 +78,13 @@ export function CardForm({ onSaved }: { onSaved: (saved: SavedCard) => void }) {
             autoComplete="cc-exp"
             placeholder="12/30"
             aria-invalid={Boolean(errors.expiry)}
+            aria-describedby={errors.expiry ? "expiry-error" : undefined}
           />
         </FormField>
         <FormField
           name="cvv"
-          label={m.checkout_payment_field_cvv()}
-          error={wordMaskError(errors.cvv?.message, m.checkout_payment_error_cvv_invalid())}
+          label={m.checkout_card_field_cvv()}
+          error={wordMaskError(errors.cvv?.message, m.checkout_card_error_cvv_invalid())}
         >
           <Input
             {...cvv}
@@ -89,6 +92,7 @@ export function CardForm({ onSaved }: { onSaved: (saved: SavedCard) => void }) {
             autoComplete="cc-csc"
             placeholder="123"
             aria-invalid={Boolean(errors.cvv)}
+            aria-describedby={errors.cvv ? "cvv-error" : undefined}
           />
         </FormField>
       </div>
@@ -98,7 +102,7 @@ export function CardForm({ onSaved }: { onSaved: (saved: SavedCard) => void }) {
         </p>
       ) : null}
       <Button type="submit" className="self-start" disabled={isSubmitting}>
-        {isSubmitting ? m.checkout_payment_saving() : m.checkout_payment_save()}
+        {isSubmitting ? m.checkout_card_saving() : m.checkout_card_save()}
       </Button>
     </form>
   )
@@ -116,7 +120,7 @@ function FormField({ name, label, error, children }: FormFieldProps) {
     <Field data-invalid={Boolean(error)}>
       <FieldLabel htmlFor={name}>{label}</FieldLabel>
       {children}
-      {error ? <FieldError>{error}</FieldError> : null}
+      {error ? <FieldError id={`${name}-error`}>{error}</FieldError> : null}
     </Field>
   )
 }

@@ -1,13 +1,13 @@
 import { create } from "zustand"
 
 type CardSelectionState = {
-  /** Only the id: the cards themselves stay in the Query cache. */
-  selectedId: number | null
-  setSelectedId: (id: number) => void
+  /** Only the token: the cards themselves stay in the Query cache. */
+  selectedToken: string | null
+  setSelectedToken: (token: string) => void
 }
 
 // Client-only UI state, so a module-level store is fine. Not persisted, and never holds card data.
 export const useCardSelectionStore = create<CardSelectionState>()((set) => ({
-  selectedId: null,
-  setSelectedId: (selectedId) => set({ selectedId })
+  selectedToken: null,
+  setSelectedToken: (selectedToken) => set({ selectedToken })
 }))

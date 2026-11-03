@@ -6,19 +6,19 @@ import { beforeEach, describe, expect, it, vi } from "vitest"
 
 import { siteConfig } from "@/config/site.config"
 
-import { getCards } from "@/features/checkout-payment/api/get-cards.api"
-import { CheckoutPayment } from "@/features/checkout-payment/components/CheckoutPayment"
-import { CARDS_PATH } from "@/features/checkout-payment/constants/cards.constants"
-import { useCardSelectionStore } from "@/features/checkout-payment/stores/card-selection.store"
+import { getCards } from "@/features/checkout-card/api/get-cards.api"
+import { CheckoutCard } from "@/features/checkout-card/components/CheckoutCard"
+import { CARDS_PATH } from "@/features/checkout-card/constants/cards.constants"
+import { useCardSelectionStore } from "@/features/checkout-card/stores/card-selection.store"
 import { renderWithProviders } from "@/test/render"
 import { server } from "@/test/server"
 
-vi.mock("@/features/checkout-payment/api/get-cards.api", { spy: true })
+vi.mock("@/features/checkout-card/api/get-cards.api", { spy: true })
 
-const ADD_URL = `${siteConfig.apiUrl}${CARDS_PATH}/add`
+const ADD_URL = `${siteConfig.apiUrl}${CARDS_PATH}`
 
 async function renderPayment() {
-  renderWithProviders(<CheckoutPayment />)
+  renderWithProviders(<CheckoutCard />)
   return screen.findByRole("region", { name: "Payment method" })
 }
 
@@ -39,9 +39,26 @@ async function fillCard(user: UserEvent, number: string, expiry: string, cvv: st
   await user.type(screen.getByLabelText("CVV"), cvv)
 }
 
-describe("CheckoutPayment", () => {
+describe("CheckoutCard", () => {
   beforeEach(() => {
-    useCardSelectionStore.setState({ selectedId: null })
+    useCardSelectionStore.setState({ selectedToken: null })
+  })
+
+  it("starts with the name, focuses it on an empty submit and keeps only letters", async () => {
+    const user = userEvent.setup()
+    await renderPayment()
+    await openForm(user)
+
+    const name = await screen.findByLabelText("Name on card")
+    const inputs = within(screen.getByRole("dialog")).getAllByRole("textbox")
+    expect(inputs[0]).toBe(name)
+
+    await user.click(screen.getByRole("button", { name: "Save card" }))
+    expect(name).toHaveFocus()
+    expect(name).toHaveAccessibleDescription("Enter the name on the card")
+
+    await user.type(name, "Ömer123  Gül")
+    expect(name).toHaveValue("Ömer Gül")
   })
 
   it("opens straight on the form when there is no card yet", async () => {
@@ -76,7 +93,7 @@ describe("CheckoutPayment", () => {
     await user.click(within(dialog).getByRole("button", { name: "Use this card" }))
 
     expect(await within(payment).findByText(/Akbank/)).toBeInTheDocument()
-    expect(useCardSelectionStore.getState().selectedId).toBe(2)
+    expect(useCardSelectionStore.getState().selectedToken).toBe("tok_dummy_akbank")
   })
 
   it("sends nothing while the fields are empty", async () => {
@@ -84,7 +101,7 @@ describe("CheckoutPayment", () => {
     server.use(
       http.post(ADD_URL, () => {
         requests += 1
-        return HttpResponse.json({ id: 209 })
+        return HttpResponse.json({ status: 201, message: "Created" }, { status: 201 })
       })
     )
     const user = userEvent.setup()
@@ -129,7 +146,7 @@ describe("CheckoutPayment", () => {
     server.use(
       http.post(ADD_URL, async ({ request }) => {
         body = await request.text()
-        return HttpResponse.json({ id: 209 }, { status: 201 })
+        return HttpResponse.json({ status: 201, message: "Created" }, { status: 201 })
       })
     )
     const user = userEvent.setup()

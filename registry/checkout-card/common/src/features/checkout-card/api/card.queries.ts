@@ -1,7 +1,7 @@
 import { queryOptions } from "@tanstack/react-query"
 
-import { getCards } from "@/features/checkout-payment/api/get-cards.api"
-import { cardKeys } from "@/features/checkout-payment/api/query-keys"
+import { getCards } from "@/features/checkout-card/api/get-cards.api"
+import { cardKeys } from "@/features/checkout-card/api/query-keys"
 
 export const cardsQueryOptions = queryOptions({
   queryKey: cardKeys.all,

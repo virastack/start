@@ -2,7 +2,7 @@ import type { useTranslations } from "next-intl"
 import { z } from "zod"
 
 /** A factory, so validation errors come in the visitor's language. */
-export function createCardFormSchema(t: ReturnType<typeof useTranslations<"CheckoutPayment">>) {
+export function createCardFormSchema(t: ReturnType<typeof useTranslations<"CheckoutCard">>) {
   return z.object({
     cardNumber: z.string().min(1, t("error_number")),
     holderName: z.string().trim().min(1, t("error_holder")).max(60, t("error_too_long")),
@@ -11,17 +11,26 @@ export function createCardFormSchema(t: ReturnType<typeof useTranslations<"Check
   })
 }
 
-export const savedCardResponseSchema = z.object({ id: z.number() })
+export const savedCardResponseSchema = z.object({ status: z.number() })
 
 export type CardFormInput = z.infer<ReturnType<typeof createCardFormSchema>>
 
-/** What may be kept and shown. There is no field for a card number or CVV on purpose. */
+/** iyzico's card networks. */
+export type CardAssociation = "VISA" | "MASTER_CARD" | "AMERICAN_EXPRESS" | "TROY"
+
+/**
+ * What may be kept and shown, named after iyzico's card storage so its answer maps over:
+ * https://docs.iyzico.com/en/advanced/card-storage
+ * There is no field for a card number or CVV on purpose.
+ */
 export type SavedCard = {
-  id: number
-  token: string
-  bank: string | null
-  brand: "visa" | "mastercard" | "amex" | "troy" | "unknown"
-  last4: string
-  expiry: string
-  holderName: string
+  cardToken: string
+  /** `null` when the number belongs to none of iyzico's networks. */
+  cardAssociation: CardAssociation | null
+  lastFourDigits: string
+  expireMonth: string
+  expireYear: string
+  cardHolderName: string
+  /** iyzico returns it for cards issued in Türkiye. */
+  cardBankName: string | null
 }

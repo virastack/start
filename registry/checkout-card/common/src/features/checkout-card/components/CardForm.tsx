@@ -9,10 +9,10 @@ import { useForm } from "react-hook-form"
 import { Button } from "@/components/ui/button"
 import { Field, FieldError, FieldLabel } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
-import { CARD_MASKS } from "@/features/checkout-payment/constants/cards.constants"
-import { useAddCard } from "@/features/checkout-payment/hooks/use-add-card"
-import { cardFormSchema } from "@/features/checkout-payment/schemas/card.schema"
-import type { CardFormInput, SavedCard } from "@/features/checkout-payment/schemas/card.schema"
+import { CARD_MASKS } from "@/features/checkout-card/constants/cards.constants"
+import { useAddCard } from "@/features/checkout-card/hooks/use-add-card"
+import { cardFormSchema } from "@/features/checkout-card/schemas/card.schema"
+import type { CardFormInput, SavedCard } from "@/features/checkout-card/schemas/card.schema"
 
 /** The mask reports a key such as `card.invalid`, for the form to word. Others are the schema's. */
 function wordMaskError(message: string | undefined, maskMessage: string) {
@@ -25,7 +25,7 @@ export function CardForm({ onSaved }: { onSaved: (saved: SavedCard) => void }) {
     resolver: maskResolver(CARD_MASKS, zodResolver(cardFormSchema)),
     defaultValues: { cardNumber: "", holderName: "", expiry: "", cvv: "" }
   })
-  const { cardNumber, expiry, cvv } = useViraMask(form, CARD_MASKS)
+  const { holderName, cardNumber, expiry, cvv } = useViraMask(form, CARD_MASKS)
   const { errors, isSubmitting } = form.formState
 
   const onSubmit = form.handleSubmit(async (input) => {
@@ -38,6 +38,15 @@ export function CardForm({ onSaved }: { onSaved: (saved: SavedCard) => void }) {
 
   return (
     <form onSubmit={onSubmit} noValidate className="flex flex-col gap-4">
+      <FormField name="holderName" label={"Name on card"} error={errors.holderName?.message}>
+        <Input
+          {...holderName}
+          id="holderName"
+          autoComplete="cc-name"
+          aria-invalid={Boolean(errors.holderName)}
+          aria-describedby={errors.holderName ? "holderName-error" : undefined}
+        />
+      </FormField>
       <FormField
         name="cardNumber"
         label={"Card number"}
@@ -49,14 +58,7 @@ export function CardForm({ onSaved }: { onSaved: (saved: SavedCard) => void }) {
           autoComplete="cc-number"
           placeholder="0000 0000 0000 0000"
           aria-invalid={Boolean(errors.cardNumber)}
-        />
-      </FormField>
-      <FormField name="holderName" label={"Name on card"} error={errors.holderName?.message}>
-        <Input
-          id="holderName"
-          autoComplete="cc-name"
-          aria-invalid={Boolean(errors.holderName)}
-          {...form.register("holderName")}
+          aria-describedby={errors.cardNumber ? "cardNumber-error" : undefined}
         />
       </FormField>
       <div className="grid gap-4 sm:grid-cols-2">
@@ -71,6 +73,7 @@ export function CardForm({ onSaved }: { onSaved: (saved: SavedCard) => void }) {
             autoComplete="cc-exp"
             placeholder="12/30"
             aria-invalid={Boolean(errors.expiry)}
+            aria-describedby={errors.expiry ? "expiry-error" : undefined}
           />
         </FormField>
         <FormField
@@ -84,6 +87,7 @@ export function CardForm({ onSaved }: { onSaved: (saved: SavedCard) => void }) {
             autoComplete="cc-csc"
             placeholder="123"
             aria-invalid={Boolean(errors.cvv)}
+            aria-describedby={errors.cvv ? "cvv-error" : undefined}
           />
         </FormField>
       </div>
@@ -111,7 +115,7 @@ function FormField({ name, label, error, children }: FormFieldProps) {
     <Field data-invalid={Boolean(error)}>
       <FieldLabel htmlFor={name}>{label}</FieldLabel>
       {children}
-      {error ? <FieldError>{error}</FieldError> : null}
+      {error ? <FieldError id={`${name}-error`}>{error}</FieldError> : null}
     </Field>
   )
 }

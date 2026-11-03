@@ -14,16 +14,16 @@ import {
 } from "@/components/ui/dialog"
 import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { CardDetails } from "@/features/checkout-payment/components/CardDetails"
-import { CardForm } from "@/features/checkout-payment/components/CardForm"
-import type { SavedCard } from "@/features/checkout-payment/schemas/card.schema"
+import { CardDetails } from "@/features/checkout-card/components/CardDetails"
+import { CardForm } from "@/features/checkout-card/components/CardForm"
+import type { SavedCard } from "@/features/checkout-card/schemas/card.schema"
 
 type CardPickerProps = {
   isOpen: boolean
   onOpenChange: (isOpen: boolean) => void
   cards: SavedCard[]
-  selectedId: number | null
-  onSelect: (id: number) => void
+  selectedToken: string | null
+  onSelect: (token: string) => void
 }
 
 export function CardPicker({ isOpen, onOpenChange, ...props }: CardPickerProps) {
@@ -42,8 +42,8 @@ type CardPickerContentProps = Omit<CardPickerProps, "isOpen" | "onOpenChange"> &
 }
 
 /** A saved card has no edit: its number is gone, so a changed card is a new card. */
-function CardPickerContent({ cards, selectedId, onSelect, onClose }: CardPickerContentProps) {
-  const [draftId, setDraftId] = useState(selectedId)
+function CardPickerContent({ cards, selectedToken, onSelect, onClose }: CardPickerContentProps) {
+  const [draftToken, setDraftToken] = useState(selectedToken)
   const [isAdding, setIsAdding] = useState(cards.length === 0)
 
   if (isAdding) {
@@ -52,8 +52,8 @@ function CardPickerContent({ cards, selectedId, onSelect, onClose }: CardPickerC
         <DialogHeader>
           <DialogTitle>Add new card</DialogTitle>
           <DialogDescription>
-            Card details never leave this browser. The request carries only a dummy token and the
-            last four digits.
+            The card number and CVV never leave this browser. The request carries a dummy token, the
+            brand, the last four digits, the expiry and the name on the card.
           </DialogDescription>
         </DialogHeader>
         {cards.length > 0 ? (
@@ -69,7 +69,7 @@ function CardPickerContent({ cards, selectedId, onSelect, onClose }: CardPickerC
         ) : null}
         <CardForm
           onSaved={(saved) => {
-            onSelect(saved.id)
+            onSelect(saved.cardToken)
             onClose()
           }}
         />
@@ -84,15 +84,15 @@ function CardPickerContent({ cards, selectedId, onSelect, onClose }: CardPickerC
       </DialogHeader>
       <RadioGroup
         aria-label={"Choose a card"}
-        value={String(draftId)}
-        onValueChange={(value) => setDraftId(Number(value))}
+        value={draftToken ?? ""}
+        onValueChange={(value) => setDraftToken(String(value))}
       >
         {cards.map((card) => (
           <Label
-            key={card.id}
+            key={card.cardToken}
             className="flex cursor-pointer items-start gap-3 rounded-lg border p-4 font-normal has-data-checked:border-foreground/40 has-data-checked:bg-muted/40"
           >
-            <RadioGroupItem value={String(card.id)} className="mt-0.5" />
+            <RadioGroupItem value={card.cardToken} className="mt-0.5" />
             <CardDetails card={card} />
           </Label>
         ))}
@@ -103,9 +103,9 @@ function CardPickerContent({ cards, selectedId, onSelect, onClose }: CardPickerC
           Add new card
         </Button>
         <Button
-          disabled={draftId === null}
+          disabled={draftToken === null}
           onClick={() => {
-            if (draftId !== null) onSelect(draftId)
+            if (draftToken !== null) onSelect(draftToken)
             onClose()
           }}
         >

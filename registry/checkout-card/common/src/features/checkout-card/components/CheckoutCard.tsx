@@ -4,17 +4,17 @@ import { useState } from "react"
 
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
-import { CardDetails } from "@/features/checkout-payment/components/CardDetails"
-import { CardPicker } from "@/features/checkout-payment/components/CardPicker"
-import { useCards } from "@/features/checkout-payment/hooks/use-cards"
-import { useCheckoutPayment } from "@/features/checkout-payment/hooks/use-checkout-payment"
-import { useCardSelectionStore } from "@/features/checkout-payment/stores/card-selection.store"
+import { CardDetails } from "@/features/checkout-card/components/CardDetails"
+import { CardPicker } from "@/features/checkout-card/components/CardPicker"
+import { useCards } from "@/features/checkout-card/hooks/use-cards"
+import { useCheckoutCard } from "@/features/checkout-card/hooks/use-checkout-card"
+import { useCardSelectionStore } from "@/features/checkout-card/stores/card-selection.store"
 
 /** Only the chosen card shows on the page; the rest wait in the picker. */
-export function CheckoutPayment() {
+export function CheckoutCard() {
   const cards = useCards()
-  const { card } = useCheckoutPayment()
-  const setSelectedId = useCardSelectionStore((state) => state.setSelectedId)
+  const { card } = useCheckoutCard()
+  const setSelectedToken = useCardSelectionStore((state) => state.setSelectedToken)
   const [isPickerOpen, setIsPickerOpen] = useState(false)
 
   if (cards.isPending) {
@@ -59,8 +59,8 @@ export function CheckoutPayment() {
         isOpen={isPickerOpen}
         onOpenChange={setIsPickerOpen}
         cards={cards.data}
-        selectedId={card?.id ?? null}
-        onSelect={setSelectedId}
+        selectedToken={card?.cardToken ?? null}
+        onSelect={setSelectedToken}
       />
     </section>
   )

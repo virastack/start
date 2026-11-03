@@ -1,12 +1,12 @@
 "use client"
 
-import { useCards } from "@/features/checkout-payment/hooks/use-cards"
-import { useCardSelectionStore } from "@/features/checkout-payment/stores/card-selection.store"
+import { useCards } from "@/features/checkout-card/hooks/use-cards"
+import { useCardSelectionStore } from "@/features/checkout-card/stores/card-selection.store"
 
 /** What the module gives the next checkout step: the chosen card, with no card number or CVV. */
-export function useCheckoutPayment() {
+export function useCheckoutCard() {
   const { data: cards = [] } = useCards()
-  const selectedId = useCardSelectionStore((state) => state.selectedId)
+  const selectedToken = useCardSelectionStore((state) => state.selectedToken)
 
-  return { card: cards.find(({ id }) => id === selectedId) ?? cards[0] ?? null }
+  return { card: cards.find(({ cardToken }) => cardToken === selectedToken) ?? cards[0] ?? null }
 }

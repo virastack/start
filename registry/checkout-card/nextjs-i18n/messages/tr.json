@@ -1,5 +1,5 @@
 {
-  "CheckoutPayment": {
+  "CheckoutCard": {
     "loading": "Kartlar yükleniyor",
     "load_error": "Kartlar yüklenemedi",
     "retry": "Tekrar dene",
@@ -12,7 +12,7 @@
     "add_new": "Yeni kart ekle",
     "back": "Kartlara dön",
     "form_title": "Yeni kart ekle",
-    "form_description": "Kart bilgileri bu tarayıcıdan çıkmaz. İstek yalnızca dummy token ve son dört haneyi taşır.",
+    "form_description": "Kart numarası ve CVV bu tarayıcıdan çıkmaz. İstek dummy token, marka, son dört hane, son kullanma tarihi ve kart üzerindeki adı taşır.",
     "field_number": "Kart numarası",
     "field_holder": "Kart üzerindeki ad",
     "field_expiry": "Son kullanma (AA/YY)",
@@ -29,6 +29,7 @@
     "error_cvv": "CVV gir",
     "error_cvv_invalid": "CVV'yi kontrol et",
     "error_too_long": "Bu alan çok uzun",
-    "add": "Kart ekle"
+    "add": "Kart ekle",
+    "brand_unknown": "Kart"
   }
 }

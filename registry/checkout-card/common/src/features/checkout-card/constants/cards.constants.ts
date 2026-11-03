@@ -1,7 +1,7 @@
-import type { SavedCard } from "@/features/checkout-payment/schemas/card.schema"
+import type { CardAssociation, SavedCard } from "@/features/checkout-card/schemas/card.schema"
 
-/** DummyJSON has no card API, so its users stand in. Point this at your own API. */
-export const CARDS_PATH = "/users"
+/** DummyJSON has no card API; this address only answers 201 Created. Point it at your own API. */
+export const CARDS_PATH = "/http/201"
 
 /**
  * Starting data until you connect an API. Like a real saved card, each keeps only its last four
@@ -10,45 +10,45 @@ export const CARDS_PATH = "/users"
  */
 export const DUMMY_CARDS: SavedCard[] = [
   {
-    id: 1,
-    token: "tok_dummy_garanti",
-    bank: "Garanti BBVA",
-    brand: "mastercard",
-    last4: "0003",
-    expiry: "1230",
-    holderName: "Ömer Gülçiçek"
+    cardToken: "tok_dummy_garanti",
+    cardAssociation: "MASTER_CARD",
+    lastFourDigits: "0003",
+    expireMonth: "12",
+    expireYear: "2030",
+    cardHolderName: "Ömer Gülçiçek",
+    cardBankName: "Garanti BBVA"
   },
   {
-    id: 2,
-    token: "tok_dummy_akbank",
-    bank: "Akbank",
-    brand: "mastercard",
-    last4: "0006",
-    expiry: "1230",
-    holderName: "Ömer Gülçiçek"
+    cardToken: "tok_dummy_akbank",
+    cardAssociation: "MASTER_CARD",
+    lastFourDigits: "0006",
+    expireMonth: "12",
+    expireYear: "2030",
+    cardHolderName: "Ömer Gülçiçek",
+    cardBankName: "Akbank"
   },
   {
-    id: 3,
-    token: "tok_dummy_is_bankasi",
-    bank: "Türkiye İş Bankası",
-    brand: "visa",
-    last4: "0006",
-    expiry: "1230",
-    holderName: "Ömer Gülçiçek"
+    cardToken: "tok_dummy_is_bankasi",
+    cardAssociation: "VISA",
+    lastFourDigits: "0006",
+    expireMonth: "12",
+    expireYear: "2030",
+    cardHolderName: "Ömer Gülçiçek",
+    cardBankName: "Türkiye İş Bankası"
   }
 ]
 
 /** The masks, shared by the form and its resolver. The CVV follows the card's network. */
 export const CARD_MASKS = {
+  holderName: { preset: "fullName", autoComplete: "cc-name" },
   cardNumber: "card",
   expiry: "expiry",
   cvv: { preset: "cvv", from: "cardNumber" }
 } as const
 
-export const BRAND_NAMES: Record<SavedCard["brand"], string> = {
-  visa: "Visa",
-  mastercard: "Mastercard",
-  amex: "American Express",
-  troy: "Troy",
-  unknown: "Card"
+export const BRAND_NAMES: Record<CardAssociation, string> = {
+  VISA: "Visa",
+  MASTER_CARD: "Mastercard",
+  AMERICAN_EXPRESS: "American Express",
+  TROY: "Troy"
 }
