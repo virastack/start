@@ -48,6 +48,19 @@
     "edit_label": "{title} adresini düzenle",
     "change_label": "{title} değiştir",
     "add": "Adres ekle",
-    "add_label": "{title} ekle"
+    "add_label": "{title} ekle",
+    "field_type": "Fatura türü",
+    "type_individual": "Bireysel",
+    "type_corporate": "Kurumsal",
+    "field_company": "Firma adı",
+    "field_tax_number": "Vergi numarası (VKN)",
+    "field_tax_office": "Vergi dairesi",
+    "error_company": "Firma adını gir",
+    "error_tax_number": "Vergi numarasını gir",
+    "error_tax_number_invalid": "Vergi numarasını kontrol et",
+    "error_tax_office": "Vergi dairesini gir",
+    "tax_summary": "{office} V.D., {number}",
+    "dummy_home": "Ev",
+    "dummy_work": "İş"
   }
 }

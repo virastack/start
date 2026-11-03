@@ -47,5 +47,18 @@
   "checkout_address_edit_label": "{title} adresini düzenle",
   "checkout_address_change_label": "{title} değiştir",
   "checkout_address_add": "Adres ekle",
-  "checkout_address_add_label": "{title} ekle"
+  "checkout_address_add_label": "{title} ekle",
+  "checkout_address_field_type": "Fatura türü",
+  "checkout_address_type_individual": "Bireysel",
+  "checkout_address_type_corporate": "Kurumsal",
+  "checkout_address_field_company": "Firma adı",
+  "checkout_address_field_tax_number": "Vergi numarası (VKN)",
+  "checkout_address_field_tax_office": "Vergi dairesi",
+  "checkout_address_error_company": "Firma adını gir",
+  "checkout_address_error_tax_number": "Vergi numarasını gir",
+  "checkout_address_error_tax_number_invalid": "Vergi numarasını kontrol et",
+  "checkout_address_error_tax_office": "Vergi dairesini gir",
+  "checkout_address_tax_summary": "{office} V.D., {number}",
+  "checkout_address_dummy_home": "Ev",
+  "checkout_address_dummy_work": "İş"
 }

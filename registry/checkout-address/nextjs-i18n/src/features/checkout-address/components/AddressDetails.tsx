@@ -23,6 +23,12 @@ export function AddressDetails({ address }: { address: Address }) {
       <span className="text-pretty text-muted-foreground">
         {address.addressLine}, {formatAddress(address, { postalCode: true })}
       </span>
+      {address.addressType === "corporate" ? (
+        <span className="text-pretty text-muted-foreground">
+          {address.companyName} ·{" "}
+          {t("tax_summary", { office: address.taxOffice, number: address.taxNumber })}
+        </span>
+      ) : null}
     </span>
   )
 }

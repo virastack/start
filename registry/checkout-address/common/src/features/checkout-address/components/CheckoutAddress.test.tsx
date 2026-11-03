@@ -47,6 +47,36 @@ describe("CheckoutAddress", () => {
     })
   })
 
+  it("asks for the corporate details only on a corporate address", async () => {
+    const user = userEvent.setup()
+    await renderAddresses()
+    await openNewForm(user)
+
+    expect(screen.queryByLabelText("Company name")).not.toBeInTheDocument()
+
+    await user.click(screen.getByRole("radio", { name: "Corporate" }))
+    await user.click(screen.getByRole("button", { name: "Save address" }))
+
+    expect(await screen.findByText("Enter the company name")).toBeInTheDocument()
+    expect(screen.getByLabelText("Company name")).toHaveAccessibleDescription(
+      "Enter the company name"
+    )
+    expect(screen.getByRole("combobox", { name: "Province" })).toHaveAccessibleDescription(
+      "Select a province"
+    )
+    expect(screen.getByText("Enter the tax number")).toBeInTheDocument()
+    expect(screen.getByText("Enter the tax office")).toBeInTheDocument()
+
+    const taxNumber = screen.getByLabelText("Tax number (VKN)")
+    await user.type(taxNumber, "12ab345")
+    expect(taxNumber).toHaveValue("12345")
+    expect(await screen.findByText("Check the tax number")).toBeInTheDocument()
+
+    await user.click(screen.getByRole("radio", { name: "Individual" }))
+    expect(screen.queryByLabelText("Company name")).not.toBeInTheDocument()
+    expect(screen.queryByText("Check the tax number")).not.toBeInTheDocument()
+  })
+
   it("opens straight on the form when there is no address yet", async () => {
     vi.mocked(getAddresses).mockResolvedValueOnce([])
     const user = userEvent.setup()

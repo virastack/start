@@ -18,7 +18,11 @@ const input = {
   district: "KADIKÖY",
   neighbourhood: "CAFERAĞA MAH.",
   postalCode: "34710",
-  isDefault: false
+  isDefault: false,
+  addressType: "individual" as const,
+  companyName: "",
+  taxNumber: "",
+  taxOffice: ""
 }
 
 describe("saveAddress", () => {

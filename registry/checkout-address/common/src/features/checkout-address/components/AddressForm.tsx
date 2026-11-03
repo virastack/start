@@ -5,13 +5,15 @@ import type { ReactNode } from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useViraAddress } from "@virastack/address"
 import { maskResolver, useViraMask } from "@virastack/mask"
-import { Controller, useForm } from "react-hook-form"
+import { Controller, useForm, useWatch } from "react-hook-form"
+import type { UseFormReturn } from "react-hook-form"
 
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Field, FieldError, FieldLabel } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import {
   Select,
   SelectContent,
@@ -20,9 +22,12 @@ import {
   SelectValue
 } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
-import { PHONE_MASKS } from "@/features/checkout-address/constants/addresses.constants"
+import { PHONE_MASKS, TAX_MASKS } from "@/features/checkout-address/constants/addresses.constants"
 import { useSaveAddress } from "@/features/checkout-address/hooks/use-save-address"
-import { addressFormSchema } from "@/features/checkout-address/schemas/address.schema"
+import {
+  ADDRESS_TAX_TYPES,
+  addressFormSchema
+} from "@/features/checkout-address/schemas/address.schema"
 import type {
   Address,
   AddressFormInput,
@@ -40,8 +45,16 @@ const EMPTY_VALUES: AddressFormInput = {
   district: "",
   neighbourhood: "",
   postalCode: "",
-  isDefault: false
+  isDefault: false,
+  addressType: "individual",
+  companyName: "",
+  taxNumber: "",
+  taxOffice: ""
 }
+
+const FORM_MASKS = { ...PHONE_MASKS, ...TAX_MASKS }
+
+const ADDRESS_TAX_LABELS = { individual: "Individual", corporate: "Corporate" } as const
 
 const ADDRESS_NAMES = {
   province: "province",
@@ -62,10 +75,11 @@ type AddressFormProps = {
 export function AddressForm({ type, address, onSaved }: AddressFormProps) {
   const saveAddress = useSaveAddress()
   const form = useForm<AddressFormInput>({
-    resolver: maskResolver(PHONE_MASKS, zodResolver(addressFormSchema)),
+    resolver: maskResolver(FORM_MASKS, zodResolver(addressFormSchema)),
     defaultValues: address ?? EMPTY_VALUES
   })
   const { errors, isSubmitted, isSubmitting } = form.formState
+  const addressType = useWatch({ control: form.control, name: "addressType" })
   // A failed submit focuses the first registered field with an error, and the mask registers the
   // phone while rendering, so the fields above it on screen must register first.
   form.register("firstName")
@@ -104,6 +118,7 @@ export function AddressForm({ type, address, onSaved }: AddressFormProps) {
             id="firstName"
             autoComplete={`${type} given-name`}
             aria-invalid={Boolean(errors.firstName)}
+            aria-describedby={errors.firstName ? "firstName-error" : undefined}
             {...form.register("firstName")}
           />
         </FormField>
@@ -112,6 +127,7 @@ export function AddressForm({ type, address, onSaved }: AddressFormProps) {
             id="lastName"
             autoComplete={`${type} family-name`}
             aria-invalid={Boolean(errors.lastName)}
+            aria-describedby={errors.lastName ? "lastName-error" : undefined}
             {...form.register("lastName")}
           />
         </FormField>
@@ -122,6 +138,7 @@ export function AddressForm({ type, address, onSaved }: AddressFormProps) {
           id="phone"
           autoComplete={`${type} tel-national`}
           aria-invalid={Boolean(errors.phone)}
+          aria-describedby={errors.phone ? "phone-error" : undefined}
         />
       </FormField>
       <FormField name="addressLine" label={"Address line"} error={errors.addressLine?.message}>
@@ -130,6 +147,7 @@ export function AddressForm({ type, address, onSaved }: AddressFormProps) {
           rows={3}
           autoComplete={`${type} street-address`}
           aria-invalid={Boolean(errors.addressLine)}
+          aria-describedby={errors.addressLine ? "addressLine-error" : undefined}
           {...form.register("addressLine")}
         />
       </FormField>
@@ -176,6 +194,9 @@ export function AddressForm({ type, address, onSaved }: AddressFormProps) {
             inputMode="numeric"
             autoComplete={`${type} postal-code`}
             aria-invalid={postalCodeStatus === "unknown" || Boolean(errors.postalCode)}
+            aria-describedby={
+              postalCodeStatus === "unknown" || errors.postalCode ? "postalCode-error" : undefined
+            }
           />
         </FormField>
       </div>
@@ -185,6 +206,7 @@ export function AddressForm({ type, address, onSaved }: AddressFormProps) {
           id="addressName"
           autoComplete="off"
           aria-invalid={Boolean(errors.addressName)}
+          aria-describedby={errors.addressName ? "addressName-error" : undefined}
           {...form.register("addressName")}
         />
       </FormField>
@@ -198,6 +220,38 @@ export function AddressForm({ type, address, onSaved }: AddressFormProps) {
           </Label>
         )}
       />
+      <Controller
+        name="addressType"
+        control={form.control}
+        render={({ field }) => (
+          <Field>
+            <FieldLabel id="addressType-label">Invoice type</FieldLabel>
+            <RadioGroup
+              aria-labelledby="addressType-label"
+              className="flex flex-wrap gap-6"
+              value={field.value}
+              onValueChange={(value) => {
+                field.onChange(value)
+                // A hidden field must not keep a value that fails, with no error in sight.
+                if (value === "individual") {
+                  form.setValue("companyName", "")
+                  form.setValue("taxNumber", "")
+                  form.setValue("taxOffice", "")
+                  form.clearErrors(["companyName", "taxNumber", "taxOffice"])
+                }
+              }}
+            >
+              {ADDRESS_TAX_TYPES.map((value) => (
+                <Label key={value} className="flex items-center gap-2 font-normal">
+                  <RadioGroupItem value={value} />
+                  {ADDRESS_TAX_LABELS[value]}
+                </Label>
+              ))}
+            </RadioGroup>
+          </Field>
+        )}
+      />
+      {addressType === "corporate" ? <CorporateFields form={form} type={type} /> : null}
       {errors.root?.server ? (
         <p role="alert" className="text-sm text-destructive">
           {errors.root.server.message}
@@ -207,6 +261,55 @@ export function AddressForm({ type, address, onSaved }: AddressFormProps) {
         {isSubmitting ? "Saving…" : "Save address"}
       </Button>
     </form>
+  )
+}
+
+type CorporateFieldsProps = {
+  form: UseFormReturn<AddressFormInput>
+  type: AddressType
+}
+
+/** Its own component, so the mask registers the tax number after the fields above it on screen. */
+function CorporateFields({ form, type }: CorporateFieldsProps) {
+  const { errors } = form.formState
+  form.register("companyName")
+  const { taxNumber } = useViraMask(form, TAX_MASKS)
+  const taxNumberError = errors.taxNumber?.message?.startsWith("vkn.")
+    ? "Check the tax number"
+    : errors.taxNumber?.message
+
+  return (
+    <div className="flex flex-col gap-4">
+      <FormField name="companyName" label={"Company name"} error={errors.companyName?.message}>
+        <Input
+          id="companyName"
+          autoComplete={`${type} organization`}
+          aria-invalid={Boolean(errors.companyName)}
+          aria-describedby={errors.companyName ? "companyName-error" : undefined}
+          {...form.register("companyName")}
+        />
+      </FormField>
+      <div className="grid gap-4 sm:grid-cols-2">
+        <FormField name="taxNumber" label={"Tax number (VKN)"} error={taxNumberError}>
+          <Input
+            {...taxNumber}
+            id="taxNumber"
+            autoComplete="off"
+            aria-invalid={Boolean(errors.taxNumber)}
+            aria-describedby={errors.taxNumber ? "taxNumber-error" : undefined}
+          />
+        </FormField>
+        <FormField name="taxOffice" label={"Tax office"} error={errors.taxOffice?.message}>
+          <Input
+            id="taxOffice"
+            autoComplete="off"
+            aria-invalid={Boolean(errors.taxOffice)}
+            aria-describedby={errors.taxOffice ? "taxOffice-error" : undefined}
+            {...form.register("taxOffice")}
+          />
+        </FormField>
+      </div>
+    </div>
   )
 }
 
@@ -222,7 +325,7 @@ function FormField({ name, label, error, children }: FormFieldProps) {
     <Field data-invalid={Boolean(error)}>
       <FieldLabel htmlFor={name}>{label}</FieldLabel>
       {children}
-      {error ? <FieldError>{error}</FieldError> : null}
+      {error ? <FieldError id={`${name}-error`}>{error}</FieldError> : null}
     </Field>
   )
 }
@@ -249,7 +352,12 @@ function AddressSelect({
   return (
     <FormField name={name} label={label} error={error}>
       <Select {...selectProps} name={name} autoComplete={autoComplete} items={options}>
-        <SelectTrigger id={name} className="w-full" aria-invalid={Boolean(error)}>
+        <SelectTrigger
+          id={name}
+          className="w-full"
+          aria-invalid={Boolean(error)}
+          aria-describedby={error ? `${name}-error` : undefined}
+        >
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>
         <SelectContent>

@@ -48,6 +48,19 @@
     "edit_label": "Edit {title}",
     "change_label": "Change {title}",
     "add": "Add address",
-    "add_label": "Add {title}"
+    "add_label": "Add {title}",
+    "field_type": "Invoice type",
+    "type_individual": "Individual",
+    "type_corporate": "Corporate",
+    "field_company": "Company name",
+    "field_tax_number": "Tax number (VKN)",
+    "field_tax_office": "Tax office",
+    "error_company": "Enter the company name",
+    "error_tax_number": "Enter the tax number",
+    "error_tax_number_invalid": "Check the tax number",
+    "error_tax_office": "Enter the tax office",
+    "tax_summary": "{office} tax office, {number}",
+    "dummy_home": "Home",
+    "dummy_work": "Work"
   }
 }

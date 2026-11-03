@@ -20,7 +20,11 @@ export const DUMMY_ADDRESSES: Address[] = [
     district: "KADIKÖY",
     neighbourhood: "CAFERAĞA MAH.",
     postalCode: "34710",
-    isDefault: true
+    isDefault: true,
+    addressType: "individual",
+    companyName: "",
+    taxNumber: "",
+    taxOffice: ""
   },
   {
     id: 2,
@@ -34,7 +38,11 @@ export const DUMMY_ADDRESSES: Address[] = [
     district: "ÇANKAYA",
     neighbourhood: "KIZILAY MAH.",
     postalCode: "06420",
-    isDefault: false
+    isDefault: false,
+    addressType: "corporate",
+    companyName: "Örnek Yazılım A.Ş.",
+    taxNumber: "1234567890",
+    taxOffice: "Çankaya"
   }
 ]
 
@@ -42,3 +50,6 @@ export const COUNTRY_CODE = "TR"
 
 /** The phone mask, shared by the form and its resolver. */
 export const PHONE_MASKS = { phone: { preset: "phone", country: "TR" } } as const
+
+/** The tax number mask. It checks the digits, so an empty field is left to the schema. */
+export const TAX_MASKS = { taxNumber: "vkn" } as const
