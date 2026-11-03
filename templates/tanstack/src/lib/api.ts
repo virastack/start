@@ -1,97 +1,196 @@
+import type { z } from "zod"
+
+import { siteConfig } from "@/config/site.config"
+
 /**
- * Lightweight native `fetch` wrapper.
- *
- * Zero external HTTP dependencies (no axios/ofetch). Works in both browser
- * and TanStack Start server contexts.
+ * Native `fetch` wrapper with no HTTP dependency, so framework `fetch` options keep working.
+ * Retries belong to TanStack Query (`makeQueryClient`). Bodies are read as text, so file
+ * downloads use `fetch` directly; long uploads raise `timeoutMs`. The timeout signal opts out of
+ * React's `fetch` memoization, so share server requests through a QueryClient or `cache()`.
+ * Stream uploads need HTTP/2 in Chrome and cannot be retried.
  */
 
+type ApiErrorKind = "http" | "network" | "timeout" | "parse"
+
 export class ApiError extends Error {
-  readonly status: number;
-  readonly data: unknown;
-
-  constructor(message: string, status: number, data: unknown) {
-    super(message);
-    this.name = "ApiError";
-    this.status = status;
-    this.data = data;
+  constructor(
+    readonly kind: ApiErrorKind,
+    message: string,
+    /** `null` when no response arrived. */
+    readonly status: number | null = null,
+    readonly data: unknown = null,
+    options?: ErrorOptions
+  ) {
+    super(message, options)
+    this.name = "ApiError"
   }
 }
 
-type RequestOptions = Omit<RequestInit, "body"> & {
-  body?: unknown;
-  retry?: number;
-  retryDelayMs?: number;
-};
+type QueryParams = Record<string, string | number | boolean | null | undefined>
 
-const DEFAULT_RETRY = 0;
-const DEFAULT_RETRY_DELAY_MS = 300;
+type RequestOptions<TSchema extends z.ZodType> = Omit<RequestInit, "body" | "method"> & {
+  /** Added to the query string. `null` and `undefined` values are left out. */
+  params?: QueryParams
+  /** Validates the response. Without it the result is `unknown`. */
+  schema?: TSchema
+  /** Fails the request after this long, so a stalled API cannot hold up a server render. */
+  timeoutMs?: number
+}
 
-function buildHeaders(init?: HeadersInit): Headers {
-  const headers = new Headers(init);
+type ApiConfig = {
+  /** Prepended to paths that start with `/`. */
+  baseUrl: string
+  /** Auth headers: a token, or cookies on the server. Never sent to absolute URLs. */
+  getHeaders?: () => HeadersInit | Promise<HeadersInit>
+  /** Use `"include"` when an API on another origin relies on cookies. Absolute URLs never get it. */
+  credentials?: RequestCredentials
+}
 
-  if (!headers.has("Content-Type")) {
-    headers.set("Content-Type", "application/json");
+const DEFAULT_TIMEOUT_MS = 10_000
+const INVALID_JSON = Symbol("invalid JSON")
+
+const isNativeBody = (body: unknown): body is BodyInit =>
+  body instanceof FormData ||
+  body instanceof Blob ||
+  body instanceof URLSearchParams ||
+  body instanceof ArrayBuffer ||
+  ArrayBuffer.isView(body) ||
+  body instanceof ReadableStream
+
+function withParams(url: string, params: QueryParams = {}) {
+  const query = new URLSearchParams()
+  for (const [key, value] of Object.entries(params)) {
+    if (value !== null && value !== undefined) query.set(key, String(value))
   }
+  const queryString = query.toString()
 
-  // FIXME: attach auth token once an auth solution is chosen, e.g.:
-  // const token = await getAuthToken();
-  // if (token) headers.set("Authorization", `Bearer ${token}`);
-
-  return headers;
+  if (!queryString) return url
+  return `${url}${url.includes("?") ? "&" : "?"}${queryString}`
 }
 
-async function parseResponse<T>(response: Response): Promise<T> {
-  const contentType = response.headers.get("content-type") ?? "";
-  const isJson = contentType.includes("application/json");
-  const payload = isJson ? await response.json() : await response.text();
-
-  if (!response.ok) {
-    throw new ApiError(`Request failed with status ${response.status}`, response.status, payload);
+function mergeHeaders(...sources: (HeadersInit | undefined)[]) {
+  const merged = new Headers()
+  for (const source of sources) {
+    new Headers(source).forEach((value, key) => merged.set(key, value))
   }
-
-  return payload as T;
+  return merged
 }
 
-async function sleep(ms: number) {
-  await new Promise((resolve) => setTimeout(resolve, ms));
+/** Reads the body as text first, so a broken body cannot hide the response status. */
+function readPayload(text: string, contentType: string): unknown {
+  if (text === "") return undefined
+  // Also covers `application/problem+json` (RFC 9457).
+  if (!contentType.includes("json")) return text
+
+  try {
+    return JSON.parse(text)
+  } catch {
+    return INVALID_JSON
+  }
 }
 
-async function request<T>(url: string, options: RequestOptions = {}): Promise<T> {
-  const { body, retry = DEFAULT_RETRY, retryDelayMs = DEFAULT_RETRY_DELAY_MS, ...rest } = options;
+function parseResponse<TSchema extends z.ZodType>(
+  response: Response,
+  text: string,
+  schema?: TSchema
+): z.output<TSchema> {
+  const { ok, status } = response
+  const payload = readPayload(text, response.headers.get("content-type") ?? "")
 
-  let attempt = 0;
+  if (!ok) {
+    const data = payload === INVALID_JSON ? text : payload
+    throw new ApiError("http", `Request failed with status ${status}`, status, data)
+  }
+  if (payload === INVALID_JSON) {
+    throw new ApiError("parse", "Response is not valid JSON", status, text)
+  }
+  // Without a schema, TSchema stays at its ZodUnknown default.
+  if (!schema) return payload as z.output<TSchema>
 
-  for (;;) {
+  const result = schema.safeParse(payload)
+  if (result.success) return result.data
+
+  throw new ApiError("parse", "Response does not match its schema", status, result.error.issues, {
+    cause: result.error
+  })
+}
+
+export function createApi({ baseUrl, getHeaders, credentials }: ApiConfig) {
+  const base = baseUrl.replace(/\/+$/, "")
+
+  async function request<TSchema extends z.ZodType>(
+    method: string,
+    path: string,
+    body: unknown,
+    options: RequestOptions<TSchema> = {}
+  ): Promise<z.output<TSchema>> {
+    const { params, schema, timeoutMs = DEFAULT_TIMEOUT_MS, signal, headers, ...rest } = options
+    const isOwnApi = path.startsWith("/")
+    if (!isOwnApi && !/^https?:\/\//.test(path)) {
+      throw new TypeError(`Path must start with "/" or be an absolute URL: ${path}`)
+    }
+
+    // Prepared outside the try: a bad body or a failing auth step is not a network error.
+    const isJson = body !== undefined && !isNativeBody(body)
+    const url = withParams(isOwnApi ? `${base}${path}` : path, params)
+    const payload = isJson ? JSON.stringify(body) : body
+    const mergedHeaders = mergeHeaders(
+      { Accept: "application/json" },
+      isJson ? { "Content-Type": "application/json" } : undefined,
+      isOwnApi ? await getHeaders?.() : undefined,
+      headers
+    )
+    const timeout = AbortSignal.timeout(timeoutMs)
+
     try {
       const response = await fetch(url, {
+        credentials: isOwnApi ? credentials : undefined,
+        // Fetch rejects a stream body without this.
+        ...(body instanceof ReadableStream && { duplex: "half" }),
         ...rest,
-        headers: buildHeaders(rest.headers),
-        body: body !== undefined ? JSON.stringify(body) : undefined,
-      });
+        method,
+        headers: mergedHeaders,
+        signal: signal ? AbortSignal.any([signal, timeout]) : timeout,
+        body: payload
+      })
 
-      return await parseResponse<T>(response);
+      return parseResponse(response, await response.text(), schema)
     } catch (error) {
-      const isLastAttempt = attempt >= retry;
-      const isServerOrNetworkError = !(error instanceof ApiError) || error.status >= 500;
+      if (error instanceof ApiError) throw error
 
-      if (isLastAttempt || !isServerOrNetworkError) {
-        throw error;
+      const name = error instanceof Error ? error.name : ""
+      if (name === "TimeoutError") {
+        throw new ApiError("timeout", "The request timed out", null, null, { cause: error })
       }
+      // A cancelled request is not a failure: TanStack Query expects this error untouched.
+      if (name === "AbortError" || signal?.aborted) throw error
 
-      attempt += 1;
-      await sleep(retryDelayMs * attempt);
+      throw new ApiError("network", "Network request failed", null, null, { cause: error })
     }
+  }
+
+  const read =
+    (method: string) =>
+    <TSchema extends z.ZodType = z.ZodUnknown>(path: string, options?: RequestOptions<TSchema>) =>
+      request<TSchema>(method, path, undefined, options)
+
+  const write =
+    (method: string) =>
+    <TSchema extends z.ZodType = z.ZodUnknown>(
+      path: string,
+      body?: unknown,
+      options?: RequestOptions<TSchema>
+    ) =>
+      request<TSchema>(method, path, body, options)
+
+  return {
+    get: read("GET"),
+    post: write("POST"),
+    put: write("PUT"),
+    patch: write("PATCH"),
+    delete: read("DELETE")
   }
 }
 
-export const api = {
-  get: <T>(url: string, options?: RequestOptions) => request<T>(url, { ...options, method: "GET" }),
-  post: <T>(url: string, body?: unknown, options?: RequestOptions) =>
-    request<T>(url, { ...options, method: "POST", body }),
-  put: <T>(url: string, body?: unknown, options?: RequestOptions) =>
-    request<T>(url, { ...options, method: "PUT", body }),
-  patch: <T>(url: string, body?: unknown, options?: RequestOptions) =>
-    request<T>(url, { ...options, method: "PATCH", body }),
-  delete: <T>(url: string, options?: RequestOptions) =>
-    request<T>(url, { ...options, method: "DELETE" }),
-};
+// Add getHeaders here. Reading cookies on the server needs its own instance in a server module.
+export const api = createApi({ baseUrl: siteConfig.apiUrl })

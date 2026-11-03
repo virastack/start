@@ -1,5 +1,47 @@
 # Changelog
 
+## [v2.0.0] - 2026-11-03
+
+This release does not change existing projects. To move a 1.x project, apply the breaking changes by hand.
+
+### Breaking changes
+
+- **Node**: Templates require `^22.22.2 || ^24.15.0 || >=26.0.0`. The previous floor was `>=20.9.0`.
+- **Alias**: Only `@/*` remains. `@/ui`, `@/layout`, `@/hooks`, `@/schemas` and `#/*` are gone.
+- **Barrels**: `index.ts` barrels are gone from application code.
+- **One-way imports**: ESLint fails when shared folders import features or routes, or when features import routes.
+- **Messages**: i18n messages moved from `messages/` to `src/messages/`. Paraglide settings use `baseLocale`, `locales` and `{locale}`.
+- **`api.ts`**: The `retry` option is gone, and retries live in `makeQueryClient`. Without a schema the result is `unknown`. When no response arrives, `status` is `null`; use `kind` to tell errors apart.
+- **Packages**: `cn` replaces `clsx` and `tailwind-merge`. `motion` is gone. TanStack Start templates use `validateSearch` instead of nuqs.
+- **MSW 3**: `onUnhandledFrame` replaces `onUnhandledRequest`, and imports go through `msw/http`.
+- **pnpm**: The `pnpm` field in `package.json` is gone; settings live in `pnpm-workspace.yaml` with `allowBuilds`.
+- **Removed files**: `public/llms.txt`, `.changeset` and, in the non-i18n Next.js template, `proxy.ts`.
+
+### CLI
+
+- **`virastack add <module>`**: Installs `users`, `checkout-address` or `checkout-card` from the `virastack.com/r` registry. It installs only the feature and creates no page; it prints the import line and the module's link. With i18n, messages are merged into `src/messages`. If anything conflicts, no file changes.
+- **`virastack remove <module>`**: Deletes the module's files, the folders they leave empty and its messages, and keeps the packages. It asks first if you changed those files; in a script, pass `--yes`.
+- **`init`**: Installs no module.
+- **Package managers**: `init` writes `ci.yml` and the husky hooks for npm, Yarn, bun or pnpm, and adds the config file it needs.
+
+### Modules
+
+- **`users`**: A user table with pagination, search, a shared add and edit form, and row actions for details, editing and deleting.
+- **`checkout-address`**: Choose shipping and billing addresses, and add or edit them in a popup, with `@virastack/address` and `@virastack/mask`.
+- **`checkout-card`**: Choose a saved card or add a new one, with `@virastack/mask`. The card number and CVV stay off the network; the POST carries a dummy token, the brand, the last four digits, the expiry and the name. Field names follow iyzico's card storage.
+
+### Templates
+
+- **Start page**: A short page with the next steps and your stack replaces the landing page. The brand logo is an inline SVG.
+- **API layer**: `api.get(path, { schema })` validates the response and infers its type. `ApiError.kind` separates `http`, `network`, `timeout` and `parse`. `createApi({ baseUrl, getHeaders })` sends auth headers only to your own API. The default timeout is 10 seconds.
+- **React Compiler**: On in both frameworks. On Next.js it is no longer production only.
+- **Tools**: ESLint 10, MSW 3, Vitest 5 and pnpm 12. `tsc` runs on TypeScript 7; `typescript-eslint` and `next build` run on TypeScript 6.
+- **Prettier**: `semi: false` and `trailingComma: "none"` in all four templates.
+- **shadcn**: `components.json` in all four templates. `alert-dialog`, `checkbox`, `dropdown-menu`, `radio-group`, `select` and `textarea` were added to `components/ui`.
+- **SEO**: The start page has a canonical, a missing `APP_URL` warns in production, and the fixed root `og:url` is gone. Next.js no longer sends `X-Powered-By`.
+- **i18n**: The default language lives at `/` and the other at `/tr`. Only the URL decides the language, and `hreflang` tags are included.
+- **Layout shift**: TanStack Start templates use a metric-matched fallback and a preload for Inter.
+
 ## [v1.2.0] - 2026-10-31
 
 ### Security

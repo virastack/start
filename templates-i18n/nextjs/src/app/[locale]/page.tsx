@@ -1,10 +1,20 @@
-import { setRequestLocale } from "next-intl/server";
+import type { Metadata } from "next"
 
-import { LandingPage } from "@/features/landing";
+import { setRequestLocale } from "next-intl/server"
 
-export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
-  const { locale } = await params;
-  setRequestLocale(locale);
+import { getPageAlternates } from "@/config/seo.config"
 
-  return <LandingPage />;
+import { HomePage } from "@/features/home/components/HomePage"
+
+export async function generateMetadata({ params }: PageProps<"/[locale]">): Promise<Metadata> {
+  const { locale } = await params
+
+  return { alternates: getPageAlternates(locale, "/") }
+}
+
+export default async function Page({ params }: PageProps<"/[locale]">) {
+  const { locale } = await params
+  setRequestLocale(locale)
+
+  return <HomePage />
 }

@@ -66,7 +66,7 @@ const dictionaries = {
     "scaffold.offline":
       "You appear to be offline. Skipping dependency install and AI setup — run them manually when you're back online.",
     "scaffold.aiInit": "Configuring ViraStack AI rules...",
-    "scaffold.aiInitDone": "🤖 ViraStack AI agent rules successfully integrated.",
+    "scaffold.aiInitDone": "ViraStack AI rules added.",
     "scaffold.aiInitFailed":
       "Failed to configure ViraStack AI rules.",
     "scaffold.skillsInit": "Installing design skills...",
@@ -83,20 +83,44 @@ const dictionaries = {
     "done.manualSkills": "  {cmd}",
     "done.dev": "  {cmd}",
 
-    "add.toolMissing": "Please specify a tool to add. Available tools: {list}.",
-    "add.toolInvalid": 'Unknown tool "{tool}". Available tools: {list}.',
+    "add.toolMissing": "Please specify what to add.",
+    "add.startTooOld": "{pkg} needs ViraStack Start {required} or newer. This project was created with {current}.",
+    "add.tools": "Tools",
+    "add.modules": "Modules",
+    "add.registryUnavailable": "Could not reach the ViraStack registry. Check your connection and try again.",
+    "add.toolInvalid": '"{tool}" is not available.',
     "add.notAProject": "No package.json found in the current directory.",
     "add.installing": "Adding {pkg}...",
     "add.done": "{pkg} added.",
     "add.installFailed": "Failed to add {pkg}.",
+    "add.notStart": "This command works in projects created with ViraStack Start.",
+    "add.alreadyInstalled": "{pkg} is already in this project. Nothing changed.",
+    "add.conflict": "{pkg} was not added. Nothing changed.",
+    "add.conflictList": "This project already has files or messages with the same names:\n  {list}",
+        "add.useInPage": "Add it to a page of yours:\n  {code}\nSteps for your framework: {url}",
+    "remove.missing": "Please specify what to remove.",
+    "remove.removing": "Removing {pkg}...",
+    "remove.done": "{pkg} removed.",
+    "remove.packagesKept": "Its packages stay, because other code may use them.",
+    "remove.failed": "Failed to remove {pkg}.",
+    "remove.notInstalled": "{pkg} is not in this project. Nothing changed.",
+    "remove.changedList": "You changed these:\n  {list}",
+    "remove.confirm": "Delete them too?",
+    "remove.kept": "{pkg} was not removed. Nothing changed.",
+    "remove.needsYes": "Nothing changed. Run it again with --yes to delete them too.",
+    "add.untranslated": "Added English text for: {locales}. Translate it when you are ready.",
 
     help: `Usage:
   pnpm dlx virastack [init] [name]   Scaffold a new project
-  pnpm dlx virastack add <tool>      Add a ViraStack tool to an existing project
+  pnpm dlx virastack add <name>      Add a ViraStack tool or module to an existing project
+  pnpm dlx virastack remove <module> Remove a module
   pnpm dlx virastack add ai --agent <list>  Add AI rules for the given tools
 
 Tools:
   mask, password, address, ai
+
+Modules:
+  {modules}
 
 Options:
   --name <name>         Project name (or pass as positional arg / ".")
@@ -179,7 +203,7 @@ Examples:
     "scaffold.offline":
       "İnternet bağlantısı yok gibi görünüyor. Bağımlılık kurulumu ve AI yapılandırması atlandı — çevrimiçi olduğunuzda manuel çalıştırın.",
     "scaffold.aiInit": "ViraStack AI kuralları yapılandırılıyor...",
-    "scaffold.aiInitDone": "🤖 ViraStack AI ajan kuralları projeye başarıyla entegre edildi.",
+    "scaffold.aiInitDone": "ViraStack AI kuralları eklendi.",
     "scaffold.aiInitFailed":
       "ViraStack AI kuralları yapılandırılamadı.",
     "scaffold.skillsInit": "Tasarım skill'leri kuruluyor...",
@@ -197,20 +221,44 @@ Examples:
     "done.dev": "  {cmd}",
 
     "add.toolMissing":
-      "Lütfen eklemek istediğiniz aracı belirtin. Kullanılabilir araçlar: {list}.",
-    "add.toolInvalid": '"{tool}" bilinmeyen bir araç. Kullanılabilir araçlar: {list}.',
+      "Lütfen neyi eklemek istediğinizi belirtin.",
+    "add.startTooOld": "{pkg} için ViraStack Start {required} veya üstü gerekiyor. Bu proje {current} ile kuruldu.",
+    "add.tools": "Araçlar",
+    "add.modules": "Modüller",
+    "add.registryUnavailable": "ViraStack registry'sine ulaşılamadı. Bağlantını kontrol edip tekrar dene.",
+    "add.toolInvalid": '"{tool}" bulunamadı.',
     "add.notAProject": "Bu dizinde package.json bulunamadı.",
     "add.installing": "{pkg} ekleniyor...",
     "add.done": "{pkg} eklendi.",
     "add.installFailed": "{pkg} eklenemedi.",
+    "add.notStart": "Bu komut ViraStack Start ile kurulan projelerde çalışır.",
+    "add.alreadyInstalled": "{pkg} bu projede zaten var. Hiçbir şey değişmedi.",
+    "add.conflict": "{pkg} eklenmedi. Hiçbir şey değişmedi.",
+    "add.conflictList": "Bu projede aynı adlı dosya veya çeviriler var:\n  {list}",
+        "add.useInPage": "Kendi sayfana ekle:\n  {code}\nFramework'üne göre adımlar: {url}",
+    "remove.missing": "Lütfen neyi kaldırmak istediğinizi belirtin.",
+    "remove.removing": "{pkg} kaldırılıyor...",
+    "remove.done": "{pkg} kaldırıldı.",
+    "remove.packagesKept": "Paketleri duruyor, çünkü başka kodlar da kullanıyor olabilir.",
+    "remove.failed": "{pkg} kaldırılamadı.",
+    "remove.notInstalled": "{pkg} bu projede yok. Hiçbir şey değişmedi.",
+    "remove.changedList": "Bunları değiştirmişsin:\n  {list}",
+    "remove.confirm": "Bunlar da silinsin mi?",
+    "remove.kept": "{pkg} kaldırılmadı. Hiçbir şey değişmedi.",
+    "remove.needsYes": "Hiçbir şey değişmedi. Bunları da silmek için --yes ile tekrar çalıştır.",
+    "add.untranslated": "Şu diller için İngilizce metin eklendi: {locales}. Hazır olduğunda çevirebilirsin.",
 
     help: `Kullanım:
   pnpm dlx virastack [init] [ad]     Yeni bir proje oluştur
-  pnpm dlx virastack add <araç>      Mevcut projeye bir ViraStack aracı ekle
+  pnpm dlx virastack add <ad>        Mevcut projeye bir ViraStack aracı veya modülü ekle
+  pnpm dlx virastack remove <modül>  Bir modülü kaldır
   pnpm dlx virastack add ai --agent <liste>  Seçilen araçlar için AI kurallarını ekle
 
 Araçlar:
   mask, password, address, ai
+
+Modüller:
+  {modules}
 
 Seçenekler:
   --name <ad>           Proje adı (veya positional arg / ".")

@@ -1,13 +1,12 @@
-import type { ComponentProps } from "react";
+import type { ComponentProps } from "react"
 
-import { Tabs as BaseTabs } from "@base-ui/react/tabs";
-
-import { cn } from "@/lib/utils";
+import { Tabs as BaseTabs } from "@base-ui/react/tabs"
+import { cn } from "cn"
 
 export function Tabs({ className, ...props }: ComponentProps<typeof BaseTabs.Root>) {
   return (
     <BaseTabs.Root data-slot="tabs" className={cn("flex flex-col gap-3", className)} {...props} />
-  );
+  )
 }
 
 export function TabsList({ className, ...props }: ComponentProps<typeof BaseTabs.List>) {
@@ -16,11 +15,11 @@ export function TabsList({ className, ...props }: ComponentProps<typeof BaseTabs
       data-slot="tabs-list"
       className={cn(
         "relative inline-flex h-9 w-fit items-center rounded-lg bg-muted p-[3px] text-muted-foreground",
-        className,
+        className
       )}
       {...props}
     />
-  );
+  )
 }
 
 export function TabsTrigger({ className, ...props }: ComponentProps<typeof BaseTabs.Tab>) {
@@ -32,15 +31,15 @@ export function TabsTrigger({ className, ...props }: ComponentProps<typeof BaseT
         "text-foreground data-[selected]:bg-background data-[selected]:shadow-sm",
         "focus-visible:ring-[3px] focus-visible:ring-ring/50",
         "disabled:pointer-events-none disabled:opacity-50",
-        className,
+        className
       )}
       {...props}
     />
-  );
+  )
 }
 
 export function TabsContent({ className, ...props }: ComponentProps<typeof BaseTabs.Panel>) {
   return (
     <BaseTabs.Panel data-slot="tabs-content" className={cn("outline-none", className)} {...props} />
-  );
+  )
 }

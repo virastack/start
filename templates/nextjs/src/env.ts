@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from "zod"
 
 /**
  * Type-safe environment variable schema.
@@ -9,33 +9,45 @@ import { z } from "zod";
  * (Next.js inlines these at build time; dynamic access does not work).
  */
 const serverSchema = z.object({
-  NODE_ENV: z.enum(["development", "production", "test"]).default("development"),
-});
+  NODE_ENV: z.enum(["development", "production", "test"]).default("development")
+})
 
 const clientSchema = z.object({
-  NEXT_PUBLIC_APP_URL: z.string().url().default("http://localhost:3000"),
-  NEXT_PUBLIC_APP_NAME: z.string().min(1).default("ViraStack Start - Next.js Edition"),
-});
+  NEXT_PUBLIC_APP_URL: z.url().default("http://localhost:3000"),
+  NEXT_PUBLIC_API_URL: z.url().default("https://dummyjson.com"),
+  NEXT_PUBLIC_APP_NAME: z.string().min(1).default("ViraStack Start - Next.js Edition")
+})
 
 const serverParsed = serverSchema.safeParse({
-  NODE_ENV: process.env.NODE_ENV,
-});
+  NODE_ENV: process.env.NODE_ENV
+})
 
 const clientParsed = clientSchema.safeParse({
   NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
-  NEXT_PUBLIC_APP_NAME: process.env.NEXT_PUBLIC_APP_NAME,
-});
+  NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
+  NEXT_PUBLIC_APP_NAME: process.env.NEXT_PUBLIC_APP_NAME
+})
 
 if (!serverParsed.success || !clientParsed.success) {
   console.error(
     "❌ Invalid environment variables:",
-    serverParsed.error?.flatten().fieldErrors,
-    clientParsed.error?.flatten().fieldErrors,
-  );
-  throw new Error("Invalid environment variables. Check src/env.ts");
+    serverParsed.error && z.flattenError(serverParsed.error).fieldErrors,
+    clientParsed.error && z.flattenError(clientParsed.error).fieldErrors
+  )
+  throw new Error("Invalid environment variables. Check src/env.ts")
+}
+
+if (
+  serverParsed.data.NODE_ENV === "production" &&
+  typeof window === "undefined" &&
+  !process.env.NEXT_PUBLIC_APP_URL
+) {
+  console.warn(
+    "⚠️ NEXT_PUBLIC_APP_URL is not set, so the sitemap and social links point to localhost."
+  )
 }
 
 export const env = {
   ...serverParsed.data,
-  ...clientParsed.data,
-};
+  ...clientParsed.data
+}

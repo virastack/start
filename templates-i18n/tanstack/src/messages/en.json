@@ -1,0 +1,22 @@
+{
+  "$schema": "https://inlang.com/schema/inlang-message-format",
+  "site_description": "TanStack Start boilerplate built for scalable UI/UX, clean architecture, and agent-ready developer experience.",
+  "language": "Language",
+  "theme_to_light": "Switch to light theme",
+  "theme_to_dark": "Switch to dark theme",
+  "go_home": "Go home",
+  "not_found_title": "Page not found",
+  "not_found_description": "The page you're looking for doesn't exist or has been moved.",
+  "error_title": "Something went wrong",
+  "error_description": "An unexpected error occurred while rendering this page. You can try again, or head back to the homepage.",
+  "error_retry": "Try again",
+  "error_go_back": "Go back",
+  "home_cta": "Explore ready-to-run modules",
+  "home_next_steps": "Next steps",
+  "home_next_replace": "Replace this page",
+  "home_next_feature": "Add your first feature",
+  "home_next_module": "Add a ready-to-run module",
+  "home_stack_label": "Tech stack",
+  "home_links_label": "Project links",
+  "home_link_docs": "Docs"
+}

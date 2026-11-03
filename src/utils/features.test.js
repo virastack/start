@@ -1,0 +1,300 @@
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import os from "node:os";
+import path from "node:path";
+import { afterEach, describe, expect, it } from "vitest";
+import {
+  compareMessages,
+  FeatureConflictError,
+  FeatureNotFoundError,
+  applyRemoval,
+  installFeature,
+  listFeatures,
+  mergeMessages,
+  planRemoval,
+  removeMessages,
+  isOlderVersion,
+  RegistryUnavailableError,
+  StartTooOldError,
+} from "./features.js";
+
+const dirs = [];
+
+function project(files = {}) {
+  const dir = mkdtempSync(path.join(os.tmpdir(), "virastack-features-"));
+  dirs.push(dir);
+  for (const [file, content] of Object.entries(files)) {
+    mkdirSync(path.dirname(path.join(dir, file)), { recursive: true });
+    writeFileSync(path.join(dir, file), content);
+  }
+  return dir;
+}
+
+afterEach(() => {
+  for (const dir of dirs.splice(0)) rmSync(dir, { recursive: true, force: true });
+});
+
+describe("the registry", () => {
+  const options = (cwd) => ({ cwd, packageManager: "pnpm", template: "nextjs", i18n: false, isYarnClassic: false });
+
+  afterEach(() => {
+    delete process.env.VIRASTACK_REGISTRY_URL;
+  });
+
+  it("lists modules from registry.json, one per framework group", async () => {
+    const items = ["users-nextjs", "users-tanstack-i18n", "products-nextjs"].map((name) => ({ name }));
+    process.env.VIRASTACK_REGISTRY_URL = project({ "registry.json": JSON.stringify({ items }) });
+    expect(await listFeatures()).toEqual(["users", "products"]);
+  });
+
+  it("lists nothing when it cannot be read", async () => {
+    process.env.VIRASTACK_REGISTRY_URL = "http://127.0.0.1:1";
+    expect(await listFeatures()).toEqual([]);
+  });
+
+  it("says a module does not exist, and refuses a name that is not one", async () => {
+    process.env.VIRASTACK_REGISTRY_URL = project({ "registry.json": "{}" });
+    await expect(installFeature("ali", options(project()))).rejects.toBeInstanceOf(FeatureNotFoundError);
+    await expect(installFeature("../secret", options(project()))).rejects.toBeInstanceOf(FeatureNotFoundError);
+  });
+
+  it("tells an unreachable registry apart from a missing module", async () => {
+    process.env.VIRASTACK_REGISTRY_URL = "http://127.0.0.1:1";
+    await expect(installFeature("users", options(project()))).rejects.toBeInstanceOf(RegistryUnavailableError);
+  });
+});
+
+describe("compareMessages", () => {
+  it("reads nested and flat messages", () => {
+    const incoming = { Users: { title: "Users", search: "Search" }, users_x: "x" };
+    const current = { Users: { title: "Mine" } };
+    expect(compareMessages(current, incoming)).toEqual([
+      { name: "Users.title", state: "present" },
+      { name: "Users.search", state: "missing" },
+      { name: "users_x", state: "missing" },
+    ]);
+  });
+
+  it("calls a text where a group belongs a conflict, and the other way round", () => {
+    expect(compareMessages({ Users: "x" }, { Users: { a: "1" } })).toEqual([{ name: "Users", state: "conflict" }]);
+    expect(compareMessages({ a: { b: "1" } }, { a: "x" })).toEqual([{ name: "a", state: "conflict" }]);
+  });
+});
+
+describe("mergeMessages", () => {
+  it("adds next to the project's own messages and keeps them", () => {
+    const merged = mergeMessages({ Common: { a: "1" }, Users: { mine: "2" } }, { Users: { title: "Users" } });
+    expect(merged).toEqual({ Common: { a: "1" }, Users: { mine: "2", title: "Users" } });
+  });
+});
+
+describe("isOlderVersion", () => {
+  it.each([
+    ["1.2.0", "2.0.0", true],
+    ["2.0.0", "2.0.0", false],
+    ["2.1.0", "2.0.5", false],
+    ["2.0.5", "2.1.0", true],
+    ["10.0.0", "9.0.0", false],
+    [undefined, "2.0.0", true],
+  ])("%s against %s", (version, than, expected) => {
+    expect(isOlderVersion(version, than)).toBe(expected);
+  });
+});
+
+describe("minimum Start version", () => {
+  afterEach(() => {
+    delete process.env.VIRASTACK_REGISTRY_URL;
+  });
+
+  it("stops before writing anything when the project is too old", async () => {
+    const item = { name: "users-nextjs", files: [], meta: { minStartVersion: "2.0.0" } };
+    process.env.VIRASTACK_REGISTRY_URL = project({ "users-nextjs.json": JSON.stringify(item) });
+    const cwd = project({ "package.json": JSON.stringify({ virastack: { template: "nextjs", version: "1.2.0" } }) });
+
+    const error = await installFeature("users", {
+      cwd,
+      packageManager: "pnpm",
+      template: "nextjs",
+      i18n: false,
+      isYarnClassic: false,
+    }).catch((caught) => caught);
+
+    expect(error).toBeInstanceOf(StartTooOldError);
+    expect(error.current).toBe("1.2.0");
+  });
+});
+
+describe("installFeature conflicts", () => {
+  const registry = (item) => {
+    const dir = project({ [`${item.name}.json`]: JSON.stringify(item) });
+    process.env.VIRASTACK_REGISTRY_URL = dir;
+  };
+  const files = [
+    { path: "a", type: "registry:file", target: "src/features/users/a.ts", content: "a" },
+    { path: "b", type: "registry:file", target: "src/features/users/b.ts", content: "b" },
+  ];
+  const meta = { messages: { en: { Users: { title: "Users", search: "Search" } }, tr: { Users: { title: "Kullanıcılar", search: "Ara" } } } };
+  const install = (cwd) =>
+    installFeature("users", {
+      cwd,
+      packageManager: "pnpm",
+      template: "nextjs",
+      i18n: true,
+      isYarnClassic: false,
+    });
+
+  afterEach(() => {
+    delete process.env.VIRASTACK_REGISTRY_URL;
+  });
+
+  it("stops on a part of the files and writes nothing", async () => {
+    registry({ name: "users-nextjs-i18n", files, meta });
+    const en = JSON.stringify({ Common: {} });
+    const cwd = project({ "src/features/users/a.ts": "mine", "src/messages/en.json": en });
+    await expect(install(cwd)).rejects.toBeInstanceOf(FeatureConflictError);
+    expect(readFileSync(path.join(cwd, "src/messages/en.json"), "utf8")).toBe(en);
+  });
+
+  it("stops on a part of the messages even without the feature folder", async () => {
+    registry({ name: "users-nextjs-i18n", files, meta });
+    const en = JSON.stringify({ Users: { title: "Customers" } });
+    const cwd = project({ "src/messages/en.json": en });
+    const error = await install(cwd).catch((caught) => caught);
+    expect(error.conflicts).toEqual(["src/messages/en.json: Users.title"]);
+    expect(readFileSync(path.join(cwd, "src/messages/en.json"), "utf8")).toBe(en);
+  });
+
+  it("stops before writing when one message file is broken", async () => {
+    registry({ name: "users-nextjs-i18n", files, meta });
+    const cwd = project({ "src/messages/en.json": "{}", "src/messages/tr.json": "{ broken" });
+    await expect(install(cwd)).rejects.toThrow("src/messages/tr.json could not be read");
+    expect(readFileSync(path.join(cwd, "src/messages/en.json"), "utf8")).toBe("{}");
+  });
+
+  it("changes nothing when everything is already there", async () => {
+    registry({ name: "users-nextjs-i18n", files, meta });
+    const en = JSON.stringify({ Users: { title: "Mine", search: "Mine too" } });
+    const cwd = project({
+      "src/features/users/a.ts": "a",
+      "src/features/users/b.ts": "b",
+      "src/messages/en.json": en,
+    });
+    expect(await install(cwd)).toEqual({ alreadyInstalled: true, untranslated: [] });
+    expect(readFileSync(path.join(cwd, "src/messages/en.json"), "utf8")).toBe(en);
+  });
+});
+
+
+describe("removeMessages", () => {
+  it("takes out only what the module added", () => {
+    const current = { Home: { title: "Home" }, Users: { title: "Users", own: "Mine" } };
+    const { kept, removed, changed } = removeMessages(current, { Users: { title: "Users" } });
+
+    expect(kept).toEqual({ Home: { title: "Home" }, Users: { own: "Mine" } });
+    expect(removed).toEqual(["Users.title"]);
+    expect(changed).toEqual([]);
+  });
+
+  it("reads a message with variants as unchanged", () => {
+    const count = { declarations: ["input count"], selectors: ["count"], match: { "count=one": "1" } };
+    const { kept, changed } = removeMessages({ users_total: [count] }, { users_total: [{ ...count }] });
+
+    expect(kept).toEqual({});
+    expect(changed).toEqual([]);
+  });
+
+  it("drops a group left empty and reports a text the project changed", () => {
+    const { kept, changed } = removeMessages({ Users: { title: "Kişiler" } }, { Users: { title: "Users" } });
+
+    expect(kept).toEqual({});
+    expect(changed).toEqual(["Users.title"]);
+  });
+});
+
+describe("removing a feature", () => {
+  const files = [
+    { target: "src/features/users/api/get-users.ts", content: "api" },
+    { target: "src/app/users/page.tsx", content: "page" },
+  ];
+  const options = (cwd) => ({ cwd, template: "nextjs", i18n: false, packageManager: "pnpm" });
+  const registry = (item) => {
+    process.env.VIRASTACK_REGISTRY_URL = project({ [`${item.name}.json`]: JSON.stringify(item) });
+  };
+
+  afterEach(() => {
+    delete process.env.VIRASTACK_REGISTRY_URL;
+  });
+
+  it("deletes the files and the folders they leave empty, and nothing else", async () => {
+    registry({ name: "users-nextjs", files });
+    const cwd = project({
+      "src/features/users/api/get-users.ts": "api",
+      "src/features/home/page.tsx": "home",
+      "src/app/users/page.tsx": "page",
+      "src/app/page.tsx": "root",
+    });
+
+    const plan = await planRemoval("users", options(cwd));
+    expect(plan.changed).toEqual([]);
+    await applyRemoval(plan, options(cwd));
+
+    expect(existsSync(path.join(cwd, "src/features/users"))).toBe(false);
+    expect(existsSync(path.join(cwd, "src/app/users"))).toBe(false);
+    expect(readFileSync(path.join(cwd, "src/features/home/page.tsx"), "utf8")).toBe("home");
+    expect(readFileSync(path.join(cwd, "src/app/page.tsx"), "utf8")).toBe("root");
+  });
+
+  it("keeps a folder that still holds the project's own file", async () => {
+    registry({ name: "users-nextjs", files });
+    const cwd = project({
+      "src/features/users/api/get-users.ts": "api",
+      "src/features/users/api/mine.ts": "mine",
+    });
+
+    await applyRemoval(await planRemoval("users", options(cwd)), options(cwd));
+
+    expect(readFileSync(path.join(cwd, "src/features/users/api/mine.ts"), "utf8")).toBe("mine");
+  });
+
+  it("keeps the first folders under src even when they end up empty", async () => {
+    registry({ name: "users-nextjs", files });
+    const cwd = project({ "src/features/users/api/get-users.ts": "api", "src/app/users/page.tsx": "page" });
+
+    await applyRemoval(await planRemoval("users", options(cwd)), options(cwd));
+
+    expect(existsSync(path.join(cwd, "src/features"))).toBe(true);
+    expect(existsSync(path.join(cwd, "src/app"))).toBe(true);
+  });
+
+  it("reports a file the project changed, and writes nothing while planning", async () => {
+    registry({ name: "users-nextjs", files });
+    const cwd = project({ "src/features/users/api/get-users.ts": "edited", "src/app/users/page.tsx": "page" });
+
+    const plan = await planRemoval("users", options(cwd));
+
+    expect(plan.changed).toEqual(["src/features/users/api/get-users.ts"]);
+    expect(readFileSync(path.join(cwd, "src/features/users/api/get-users.ts"), "utf8")).toBe("edited");
+  });
+
+  it("does not call the import shadcn rewrites a change", async () => {
+    const content = 'import * as m from "@/paraglide/messages.js"\n';
+    registry({ name: "users-nextjs", files: [{ target: "src/features/users/a.ts", content }] });
+    const cwd = project({ "src/features/users/a.ts": 'import * as m from "@/paraglide/messages"\n' });
+
+    expect((await planRemoval("users", options(cwd))).changed).toEqual([]);
+  });
+
+  it("finds nothing to do in a project without the module", async () => {
+    registry({ name: "users-nextjs", files });
+
+    const plan = await planRemoval("users", options(project({ "package.json": "{}" })));
+
+    expect(plan.files).toEqual([]);
+    expect(plan.messages).toEqual([]);
+  });
+
+  it("refuses a registry file that points outside the project", async () => {
+    registry({ name: "users-nextjs", files: [{ target: "../outside.ts", content: "x" }] });
+
+    await expect(planRemoval("users", options(project()))).rejects.toThrow("outside the project");
+  });
+});

@@ -1,20 +1,14 @@
-"use client";
+"use client"
 
-import { useEffect } from "react";
-import Link from "next/link";
+import { useEffect } from "react"
+import Link from "next/link"
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button"
 
-export default function Error({
-  error,
-  reset,
-}: {
-  error: Error & { digest?: string };
-  reset: () => void;
-}) {
+export default function Error({ error, retry }: { error: unknown; retry: () => void }) {
   useEffect(() => {
-    console.error(error);
-  }, [error]);
+    console.error(error)
+  }, [error])
 
   return (
     <div className="mx-auto flex flex-1 flex-col items-center justify-center gap-4 px-6 py-24 text-center">
@@ -24,11 +18,11 @@ export default function Error({
         the homepage.
       </p>
       <div className="flex gap-3">
-        <Button onClick={reset}>Try again</Button>
+        <Button onClick={() => retry()}>Try again</Button>
         <Button variant="outline" nativeButton={false} render={<Link href="/" />}>
           Go home
         </Button>
       </div>
     </div>
-  );
+  )
 }

@@ -1,5 +1,11 @@
-import { LandingPage } from "@/features/landing";
+import type { Metadata } from "next"
 
-export default function HomePage() {
-  return <LandingPage />;
+import { HomePage } from "@/features/home/components/HomePage"
+
+export const metadata: Metadata = {
+  alternates: { canonical: "/" }
+}
+
+export default function Page() {
+  return <HomePage />
 }

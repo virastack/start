@@ -29,7 +29,7 @@ Production-grade Next.js starter with feature-based architecture, strict TypeScr
 ## Why ViraStack
 
 - **Opinionated, not opaque** — clear folder rules and placement conventions; nothing important is hidden behind magic
-- **Agent-ready by default** — `AGENTS.md`, rules for Claude Code and Cursor, `llms.txt`, and agent skills ship with every project
+- **Agent-ready by default** — `AGENTS.md`, rules for Claude Code and Cursor, and agent skills ship with every project
 - **Own your UI** — Base UI primitives in `components/ui` (shadcn-style), fully editable
 - **State triad** — TanStack Query (server), Zustand (client), nuqs (URL) — each with a dedicated job
 - **DX that sticks** — ESLint, Prettier, Knip, Vitest, Husky, Commitlint, and GitHub Actions CI out of the box
@@ -60,7 +60,7 @@ Once your project is scaffolded, start the development server:
 pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000). The home route renders `LandingPage` from `src/features/landing` — a full demo of the stack (theme toggle, TanStack Query, Zustand, Zod forms, nuqs). Delete that feature when you are ready to build.
+Open [http://localhost:3000](http://localhost:3000). `/` is a short start page from `src/features/home`: the first file to edit and a map of the stack. Replace it when you are ready to build. `npx virastack add users` installs a working users module for you to place on a page.
 
 ## Environment variables
 
@@ -95,20 +95,13 @@ CI runs the same gates: typecheck → lint → knip → test → build (see `.gi
 src/
 ├── app/                  # Routes, layouts, metadata (App Router only)
 ├── features/
-│   └── landing/          # Demo feature (canonical folder layout)
-│       ├── api/
-│       ├── components/   # Hero, Features, Showcase, demos, LandingPage
-│       ├── constants/
-│       ├── helpers/
-│       ├── hooks/
-│       ├── icons/        # Brand SVGs used only by the landing demo
-│       ├── schemas/
-│       ├── stores/
-│       ├── types/
-│       └── index.ts
+│   └── home/             # Start page at `/` (deletable)
+│       ├── components/   # HomePage, StackList
+│       ├── constants/    # Stack list data and links
+│       ├── helpers/      # Parses versions read from package.json
+│       └── icons/        # Brand SVGs used by the stack list
 ├── components/
 │   ├── ui/               # Base UI primitives (Button, Dialog, Tabs, …)
-│   ├── layout/           # Header, Footer (reusable chrome)
 │   └── shared/           # Cross-feature components (ThemeToggle, …)
 ├── hooks/                # Shared hooks (promote via Rule of Three)
 ├── stores/
@@ -124,13 +117,26 @@ src/
 └── env.ts
 ```
 
-The bundled `landing` feature follows the ViraStack AI feature tree and is meant to be deleted when you start building.
+The start page follows the ViraStack AI feature tree and is meant to be deleted when you start building.
 
-**Quick start (strip the demo)**
+**Modules**
 
-1. Delete `src/features/landing`
+Run `npx virastack add <module>` to add a working feature: `users`, `checkout-address` or `checkout-card`. It installs `src/features/<module>` and the packages the module needs, creates no page, and prints the import line for your own page. See every module and the steps for your framework at [virastack.com/start/features](https://virastack.com/start/features).
+
+Run `npx virastack remove <module>` to take one out. It asks before deleting files you changed, and leaves packages in place because other code may use them.
+
+**About the users module**
+
+- A list with pagination and search in the URL, a shared add and edit form, and row actions for details, editing and deleting, backed by the [DummyJSON](https://dummyjson.com) demo API
+- Page and search stay in the URL (`?page=2&q=ann`), so a shared link opens the same view
+- DummyJSON answers `POST`, `PUT` and `DELETE` without saving: a new user never appears in the list, and edits and deletes last until the list reloads
+
+**Remove the start page**
+
+1. Delete `src/features/home`
 2. Replace `src/app/page.tsx` with your own page
-3. Keep `components/layout` Header/Footer if you still want site chrome — pass `links` only when you need nav items
+
+Then run `pnpm knip` and remove what it reports as unused.
 
 **Rules of thumb**
 
@@ -154,7 +160,7 @@ Search the repo for `FIXME:` to find the first things to own:
 | `src/env.ts` + `.env.example` | New environment variables                |
 | `public/`                     | Favicon and static assets                |
 
-You own every file — trim demos, rename features, keep only what you need.
+You own every file — trim pages, rename features, keep only what you need.
 
 ## ViraStack AI
 
@@ -169,7 +175,6 @@ Developed with [**ViraStack AI**](https://github.com/virastack/ai) — an AI-nat
 | `AGENTS.md`                | Agent operating guide (managed block + yours) |
 | `.agents/skills/`          | Skills for other agents                       |
 | `.virastack/ai.json`       | Manifest of the files ViraStack AI manages    |
-| `public/llms.txt`          | Machine-readable project summary              |
 
 Install or refresh rules: `npx @virastack/ai init` (pick tools with `--agent claude,cursor`).
 
@@ -193,7 +198,7 @@ Optimized for [Vercel](https://vercel.com/):
 
 Ideas and bug reports welcome — open an [issue](https://github.com/virastack/start/issues).
 
-PRs that improve DX, architecture docs, or the landing showcase are especially appreciated.
+PRs that improve DX, architecture docs, or the bundled modules are especially appreciated.
 
 ---
 

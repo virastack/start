@@ -6,20 +6,28 @@ on:
     paths:
       - "bin/**"
       - "src/**"
+      - "scripts/**"
       - "package.json"
       - "package-lock.json"
       - "templates/**"
       - "templates-i18n/**"
+      - "templates-shared/**"
+      - "registry/**"
+      - "registry.json"
       - ".github/workflows/cli.yml"
   pull_request:
     branches: [main, master]
     paths:
       - "bin/**"
       - "src/**"
+      - "scripts/**"
       - "package.json"
       - "package-lock.json"
       - "templates/**"
       - "templates-i18n/**"
+      - "templates-shared/**"
+      - "registry/**"
+      - "registry.json"
       - ".github/workflows/cli.yml"
 
 jobs:
@@ -44,6 +52,12 @@ jobs:
 
       - name: Lint
         run: npm run lint
+
+      - name: Template drift
+        run: npm run check:templates
+
+      - name: Registry
+        run: npm run build:registry
 
       - name: Unit tests
         run: npm test

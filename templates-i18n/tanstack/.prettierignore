@@ -1,9 +1,9 @@
 .next
+.output
+dist
 node_modules
 pnpm-lock.yaml
 public
-CHANGELOG.md
-.changeset
 src/routeTree.gen.ts
 src/paraglide
 project.inlang/*

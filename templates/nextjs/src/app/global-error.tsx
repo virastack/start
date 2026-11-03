@@ -1,17 +1,11 @@
-"use client";
+"use client"
 
-import { useEffect } from "react";
+import { useEffect } from "react"
 
-export default function GlobalError({
-  error,
-  reset,
-}: {
-  error: Error & { digest?: string };
-  reset: () => void;
-}) {
+export default function GlobalError({ error, retry }: { error: unknown; retry: () => void }) {
   useEffect(() => {
-    console.error(error);
-  }, [error]);
+    console.error(error)
+  }, [error])
 
   return (
     <html lang="en" data-scroll-behavior="smooth">
@@ -21,12 +15,12 @@ export default function GlobalError({
           The application failed to render. Please try again.
         </p>
         <button
-          onClick={reset}
+          onClick={() => retry()}
           className="rounded-md bg-neutral-900 px-4 py-2 text-sm font-medium text-white"
         >
           Try again
         </button>
       </body>
     </html>
-  );
+  )
 }

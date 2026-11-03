@@ -4,8 +4,10 @@ import { disableTelemetry } from "./utils/telemetry.js";
 import { setLocale, t } from "./i18n.js";
 import { runInit } from "./commands/init.js";
 import { runAdd } from "./commands/add.js";
+import { runRemove } from "./commands/remove.js";
 import { parseToolsFlag } from "./utils/tools.js";
 import { parseAgentFlag } from "./utils/agents.js";
+import { FEATURES_URL, listFeatures } from "./utils/features.js";
 
 function resolveI18nFlag(flags) {
   if (hasFlag(flags, "no-i18n")) return false;
@@ -55,7 +57,8 @@ export async function main() {
   }
 
   if (hasFlag(flags, "h", "help")) {
-    console.log(t("help"));
+    const modules = await listFeatures({ timeout: 3_000 });
+    console.log(t("help", { modules: modules.join(", ") || FEATURES_URL }));
     return;
   }
 
@@ -70,6 +73,9 @@ export async function main() {
       break;
     case "add":
       await runAdd(rest[0], { agents: resolveAgentFlag(flags) });
+      break;
+    case "remove":
+      await runRemove(rest[0], { yes: hasFlag(flags, "yes", "y") });
       break;
     default:
       // `pnpm dlx virastack my-app --yes` — first token is the project name.

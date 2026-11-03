@@ -20,15 +20,7 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"],
-      "@/ui": ["./src/components/ui/index.ts"],
-      "@/ui/*": ["./src/components/ui/*"],
-      "@/layout": ["./src/components/layout/index.ts"],
-      "@/layout/*": ["./src/components/layout/*"],
-      "@/hooks": ["./src/hooks/index.ts"],
-      "@/hooks/*": ["./src/hooks/*"],
-      "@/schemas": ["./src/schemas/index.ts"],
-      "@/schemas/*": ["./src/schemas/*"]
+      "@/*": ["./src/*"]
     }
   },
   "include": [

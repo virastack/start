@@ -2,7 +2,7 @@ import js from "@eslint/js";
 import globals from "globals";
 
 export default [
-  { ignores: ["node_modules", "templates", "templates-i18n", "coverage"] },
+  { ignores: ["node_modules", "templates", "templates-i18n", "templates-shared", "registry", "registry-dist", "coverage"] },
   js.configs.recommended,
   {
     languageOptions: {
@@ -17,7 +17,7 @@ export default [
     },
   },
   {
-    files: ["src/**/*.test.js"],
+    files: ["src/**/*.test.js", "scripts/**/*.test.js"],
     languageOptions: { globals: { ...globals.node, ...globals.vitest } },
   },
 ];

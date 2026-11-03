@@ -1,16 +1,16 @@
-import type { ErrorComponentProps } from "@tanstack/react-router";
-import { Link, rootRouteId, useMatch, useRouter } from "@tanstack/react-router";
+import type { ErrorComponentProps } from "@tanstack/react-router"
+import { Link, rootRouteId, useMatch, useRouter } from "@tanstack/react-router"
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button"
 
 export function DefaultCatchBoundary({ error }: ErrorComponentProps) {
-  const router = useRouter();
+  const router = useRouter()
   const isRoot = useMatch({
     strict: false,
-    select: (state) => state.id === rootRouteId,
-  });
+    select: (state) => state.id === rootRouteId
+  })
 
-  console.error(error);
+  console.error(error)
 
   return (
     <div className="mx-auto flex flex-1 flex-col items-center justify-center gap-4 px-6 py-24 text-center">
@@ -32,5 +32,5 @@ export function DefaultCatchBoundary({ error }: ErrorComponentProps) {
         )}
       </div>
     </div>
-  );
+  )
 }

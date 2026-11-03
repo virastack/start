@@ -39,3 +39,6 @@ templates-i18n/**/pnpm-lock.yaml
 templates-i18n/**/package-lock.json
 templates-i18n/**/yarn.lock
 templates-i18n/**/skills-lock.json
+
+# Built by scripts/build-registry.js
+registry-dist

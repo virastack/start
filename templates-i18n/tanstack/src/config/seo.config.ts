@@ -1,52 +1,51 @@
-import { siteConfig } from "@/config/site.config";
+import { siteConfig } from "@/config/site.config"
+
+import * as m from "@/paraglide/messages.js"
+import { getLocale } from "@/paraglide/runtime.js"
+import type { Locale } from "@/paraglide/runtime.js"
+
+const OG_LOCALES: Record<Locale, string> = { en: "en_US", tr: "tr_TR" }
 
 /** Shared SEO fields used by the root route `head()` and social meta tags. */
 const defaultSeo = {
   title: siteConfig.name,
   titleTemplate: `%s · ${siteConfig.name}`,
-  description: siteConfig.description,
-  keywords: ["TanStack Start", "React", "TypeScript", "Tailwind CSS", "ViraStack", "Boilerplate"],
-  authors: [{ name: "ViraStack", url: siteConfig.url }],
-  creator: "ViraStack",
+  authors: [{ name: siteConfig.name, url: siteConfig.url }],
+  creator: siteConfig.name,
   openGraph: {
     type: "website",
-    locale: "en_US",
-    url: siteConfig.url,
     title: siteConfig.name,
-    description: siteConfig.description,
     siteName: siteConfig.name,
-    images: [{ url: siteConfig.ogImage, width: 1200, height: 630, alt: siteConfig.name }],
+    images: [{ url: siteConfig.ogImage, width: 1200, height: 630, alt: siteConfig.name }]
   },
   twitter: {
     card: "summary_large_image",
     title: siteConfig.name,
-    description: siteConfig.description,
-    images: [siteConfig.ogImage],
-  },
-} as const;
+    images: [siteConfig.ogImage]
+  }
+} as const
 
 /** Flatten `defaultSeo` into TanStack Router `head().meta` entries. */
 export function seoHeadMeta() {
-  const og = defaultSeo.openGraph;
-  const twitter = defaultSeo.twitter;
+  const og = defaultSeo.openGraph
+  const twitter = defaultSeo.twitter
+  const description = m.site_description()
 
   return [
     { title: defaultSeo.title },
-    { name: "description", content: defaultSeo.description },
-    { name: "keywords", content: defaultSeo.keywords.join(", ") },
+    { name: "description", content: description },
     { name: "author", content: defaultSeo.creator },
     { name: "creator", content: defaultSeo.creator },
     { name: "robots", content: "index, follow" },
     { property: "og:type", content: og.type },
-    { property: "og:locale", content: og.locale },
-    { property: "og:url", content: og.url },
+    { property: "og:locale", content: OG_LOCALES[getLocale()] },
     { property: "og:title", content: og.title },
-    { property: "og:description", content: og.description },
+    { property: "og:description", content: description },
     { property: "og:site_name", content: og.siteName },
     { property: "og:image", content: og.images[0].url },
     { name: "twitter:card", content: twitter.card },
     { name: "twitter:title", content: twitter.title },
-    { name: "twitter:description", content: twitter.description },
-    { name: "twitter:image", content: twitter.images[0] },
-  ];
+    { name: "twitter:description", content: description },
+    { name: "twitter:image", content: twitter.images[0] }
+  ]
 }

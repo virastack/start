@@ -1,0 +1,27 @@
+{
+  "Common": {
+    "site_description": "Ölçeklenebilir UI/UX, temiz mimari ve agent'larla rahat çalışan bir geliştirici deneyimi için hazırlanmış Next.js boilerplate'i.",
+    "language": "Dil",
+    "theme_to_light": "Açık temaya geç",
+    "theme_to_dark": "Koyu temaya geç",
+    "error_title": "Bir şeyler ters gitti",
+    "error_description": "Bu sayfa gösterilirken beklenmedik bir hata oluştu. Tekrar deneyebilir ya da ana sayfaya dönebilirsiniz.",
+    "error_retry": "Tekrar dene",
+    "not_found_title": "Sayfa bulunamadı",
+    "not_found_description": "Aradığınız sayfa yok ya da başka bir yere taşınmış.",
+    "go_home": "Ana sayfaya dön"
+  },
+  "Home": {
+    "cta": "Çalışmaya hazır modülleri keşfedin",
+    "next_steps_title": "Sırada ne var?",
+    "step_replace_page": "Bu sayfayı kendinize göre değiştirin",
+    "step_add_feature": "İlk feature'ınızı ekleyin",
+    "step_add_module": "Çalışmaya hazır bir modül ekleyin",
+    "stack_label": "Kullanılan teknolojiler",
+    "links_label": "Proje bağlantıları",
+    "link_docs": "Dokümantasyon",
+    "link_ai": "ViraStack AI",
+    "link_academy": "Academy",
+    "link_github": "GitHub"
+  }
+}
