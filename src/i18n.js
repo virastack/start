@@ -120,7 +120,7 @@ Tools:
   mask, password, address, ai
 
 Modules:
-  users
+  {modules}
 
 Options:
   --name <name>         Project name (or pass as positional arg / ".")
@@ -258,7 +258,7 @@ Araçlar:
   mask, password, address, ai
 
 Modüller:
-  users
+  {modules}
 
 Seçenekler:
   --name <ad>           Proje adı (veya positional arg / ".")

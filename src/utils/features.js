@@ -7,6 +7,7 @@ import { runCommand } from "./exec.js";
 import { getDlxCommand, getExecCommand } from "./package-manager.js";
 
 const DEFAULT_REGISTRY = "https://virastack.com/r";
+export const FEATURES_URL = "https://virastack.com/start/features";
 /** The version the registry was last tested with. Raised on purpose, never `latest`. */
 export const SHADCN = "shadcn@4.23.0";
 const MESSAGES_DIR = "src/messages";
@@ -69,7 +70,7 @@ export async function readProjectInfo(cwd) {
 }
 
 /** The registry is read on every run, so a new module needs no CLI release. */
-async function loadRegistryFile(file) {
+async function loadRegistryFile(file, timeout = 15_000) {
   const base = getRegistryUrl();
   if (!/^https?:/.test(base)) {
     const filePath = path.join(base, file);
@@ -79,7 +80,7 @@ async function loadRegistryFile(file) {
 
   let response;
   try {
-    response = await fetch(`${base}/${file}`, { signal: AbortSignal.timeout(15_000) });
+    response = await fetch(`${base}/${file}`, { signal: AbortSignal.timeout(timeout) });
   } catch (error) {
     throw new RegistryUnavailableError(`Could not reach ${base}`, { cause: error });
   }
@@ -88,10 +89,13 @@ async function loadRegistryFile(file) {
   return response.json();
 }
 
-/** The modules the registry offers now. Empty when it cannot be reached. */
-export async function listFeatures() {
+/**
+ * The modules the registry offers now. Empty when it cannot be reached.
+ * @param {{ timeout?: number }} [options]
+ */
+export async function listFeatures({ timeout } = {}) {
   try {
-    const registry = await loadRegistryFile("registry.json");
+    const registry = await loadRegistryFile("registry.json", timeout);
     const ids = (registry?.items ?? []).map((item) => item.name.replace(ITEM_SUFFIX, ""));
     return [...new Set(ids)];
   } catch {

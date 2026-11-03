@@ -10,6 +10,7 @@ import { trackEvent } from "../utils/telemetry.js";
 import { findTool, TOOLS } from "../utils/tools.js";
 import { getAiInitArgs } from "../utils/agents.js";
 import {
+  FEATURES_URL,
   FeatureConflictError,
   FeatureNotFoundError,
   installFeature,
@@ -18,8 +19,6 @@ import {
   RegistryUnavailableError,
   StartTooOldError,
 } from "../utils/features.js";
-
-const FEATURES_URL = "https://virastack.com/start/features";
 
 async function fileExists(filePath) {
   try {
