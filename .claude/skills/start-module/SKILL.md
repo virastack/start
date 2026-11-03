@@ -1,6 +1,6 @@
 ---
 name: start-module
-description: Builds or changes a ViraStack Start ready module (installed with `npx virastack add <name>`) end to end, from the registry source in this repository to its page on virastack.com (/start/features/<name>), whose sections are a live preview, Projene ekle, Modülde neler var, Projene neler iner and Nasıl kullanırsın. Use when adding a module, changing what a module installs, or writing or fixing a module page.
+description: Builds or changes a ViraStack Start ready module (installed with `npx virastack add <name>`) end to end, from the registry source in this repository to its page on virastack.com (/start/features/<name>), whose sections are a live preview with a Code tab and a copyable prompt, Modülde neler var and Nasıl kullanırsın. Use when adding a module, changing what a module installs, or writing or fixing a module page.
 ---
 
 # Start module
@@ -27,7 +27,7 @@ A module is a working feature the reader copies into their Start project: screen
 
 1. `npm run check` in this repository.
 2. `npm run build:registry` writes the JSON to `../virastack.com/public/r` and runs `sync:preview`, which copies the module into `virastack.com/src/features/start/demos/<name>/` with its `install-files.ts`. The preview is generated: never edit it by hand.
-3. `node scripts/e2e.js --full --only <text>` installs a fresh project, runs `add <name>`, typecheck, `lint:ci`, test and build with and without the page the site tells people to write, then `remove <name>`. Run it for all four templates before calling the module ready.
+3. `node scripts/e2e.js --full --only <text>` installs a fresh project, runs `add <name>`, typecheck, `lint:ci`, test and build with and without the page the site's prompt asks the agent for (`scripts/feature-route.ts`), then `remove <name>`. Run it for all four templates before calling the module ready.
 4. `remove` deletes the module's files, empty folders and messages, and asks before deleting files the reader changed. Check that too.
 
 ## Page (virastack.com)
@@ -35,16 +35,17 @@ A module is a working feature the reader copies into their Start project: screen
 Wire the module:
 
 - `src/features/start/data/feature-catalog.ts`: entry with `id` (the `add` argument), `group`, `status: "ready"`, `tags` and `packages`.
-- `src/features/start/components/StartFeatureDetailPage.tsx`: add the module to `READY_CONTENT` with its `Demo`, `files`, `route`, the `rows` it explains, `previewNote`, `apiKey` and `hasMoreNote`.
+- `src/features/start/components/FeatureDemoPage.tsx`: add the demo to `FEATURE_DEMOS`. It renders alone on `/start/preview/<name>` (noindex, no header or footer), which the page shows in an iframe.
+- `src/features/start/components/StartFeatureDetailPage.tsx`: add the module to `READY_CONTENT` with its `route` (the prompt names its `component` and, when set, its `fallback` and `routeSearch`), the `rows` it explains, `previewNote`, `apiKey` and `hasMoreNote`.
 - `src/messages/tr.json` and `en.json`, namespace `StartFeatureCatalog`: the card text under `items.<name>` and the detail keys under `detail`.
 
 The page reads top to bottom in this order. Keep it.
 
-1. **Live preview:** the demo from `demos/<name>`, with a one-sentence note under it on what is real and what is not (`Kaydet düğmesi DummyJSON'a gerçek bir istek atar; adres yalnızca bu sayfada kalır`). For card or personal data, say what never to type.
-2. **Projene ekle:** `FeatureInstall` builds the prompt and the manual steps from the framework, i18n choice and page path. Nothing to write per module unless the route is unusual.
-3. **Modülde neler var?:** 4 to 6 rows, one per part the reader gets (list, form, data, selection, safety, tests). Each row starts with a bold phrase that names the part, then says which library does what: `<bold>Adres formu</bold> <rhf>React Hook Form</rhf> ve <zod>Zod</zod> ile doğrulanır...`. The tests row states the tools and the number of test files.
-4. **Projene neler iner?:** `FeatureVariantFileTree` from `install-files.ts`, with the note that no page is created.
-5. **Nasıl kullanırsın?:** switching to your own API (which env var or files to change, which parts to adapt to a different response) and "the code is yours" (change it freely, or `npx virastack remove <name>`). Name the module itself, never another module's name.
+1. **Live preview:** the demo from `demos/<name>`, with a one-sentence note under it on what is real and what is not (`Kaydet düğmesi DummyJSON'a gerçek bir istek atar; adres yalnızca bu sayfada kalır`). For card or personal data, say what never to type. The demo's breakpoints follow the iframe, so check it with the mobile (375px), tablet (768px) and desktop buttons. Its Kod tab reads `public/r/<name>-<template>.json` on its own and has the template picker; nothing to write per module. Beside the tabs, "Prompt'u kopyala" gives one framework-agnostic prompt (`readyPrompt`): run `add`, open a page at `/<name>` and render the component. There is no manual setup section: agents write the page.
+2. **Modülde neler var?:** 4 or 5 rows, one sentence each, one per part the reader gets (list, form, data, selection, safety, tests). Each row starts with a bold phrase that names the part, then says which library does what: `<bold>Adres formu</bold> <rhf>React Hook Form</rhf>, <zod>Zod</zod> ve <shadcn>shadcn/ui</shadcn> ile kurulur...`. The tests row states the tools and the number of test files.
+3. **Nasıl kullanırsın?:** two short paragraphs: switching to your own API (which env var or files to change) and "the code is yours" (change it freely, or `npx virastack remove <name>`). Name the module itself, never another module's name.
+
+There is no related-modules section; the catalog page links the modules.
 
 ### Copy
 

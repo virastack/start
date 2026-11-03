@@ -1,7 +1,6 @@
 /**
- * The page a person adds by hand or by prompt after `virastack add`. The site shows this code and
- * e2e runs it, so what the page tells people is what the tests prove. `sync-site-preview.js` copies
- * this file to the site; change it here.
+ * The page a person, or the agent following the site's prompt, adds after `virastack add`. e2e runs
+ * it, so the page the prompt asks for is one the tests prove.
  */
 export type FeatureRouteInfo = {
   feature: string;

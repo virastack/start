@@ -40,7 +40,6 @@ const UI = [
 const FOLDERS = ["api", "components", "constants", "helpers", "hooks", "schemas", "stores"];
 const DEMOS = "src/features/start/demos";
 const USERS_PREVIEW = `${DEMOS}/users`;
-const ROUTE_HELPER = "src/features/start/helpers/feature-route.ts";
 
 /** Every demo shares the UI and API copies in the users preview. */
 export function toPreviewImports(source) {
@@ -67,26 +66,13 @@ function copyTree(from, to) {
   }
 }
 
-/** The lists behind the pages' file trees, so they always match what `virastack add` installs. */
-function writeInstallFiles(root, site) {
-  const registry = JSON.parse(readFileSync(path.join(root, "registry.json"), "utf8"));
+/** The route each page's install steps are built from. The page's Code tab reads the registry JSON itself. */
+function writeInstallFiles(site) {
   for (const { name, route } of FEATURES) {
-    // One list per template, since a layer can add or swap a file (users has a hook in nextjs-i18n).
-    const files = Object.fromEntries(
-      ["nextjs", "tanstack", "nextjs-i18n", "tanstack-i18n"].map((framework) => [
-        framework,
-        registry.items
-          .find((item) => item.name === `${name}-${framework}`)
-          .files.map(({ target }) => target)
-          .filter((target) => target.startsWith("src/features/"))
-          .sort(),
-      ]),
-    );
     writeFileSync(
       path.join(site, DEMOS, name, "install-files.ts"),
       [
         "// Written by `npm run sync:preview` in the Start repo.",
-        `export const INSTALL_FILES = ${JSON.stringify(files)};`,
         `export const INSTALL_ROUTE = ${JSON.stringify(route)};`,
         "",
       ].join("\n"),
@@ -130,10 +116,9 @@ export function syncSitePreview(root) {
   );
 
   for (const name of I18N_PREVIEWS) mergeSiteMessages(root, site, name);
-  writeInstallFiles(root, site);
-  copyFile(path.join(root, "scripts/feature-route.ts"), path.join(site, ROUTE_HELPER), (source) => source);
+  writeInstallFiles(site);
 
-  spawnSync("npx", ["--no", "--", "prettier", "--write", DEMOS, ROUTE_HELPER], { cwd: site, stdio: "ignore" });
+  spawnSync("npx", ["--no", "--", "prettier", "--write", DEMOS], { cwd: site, stdio: "ignore" });
   return true;
 }
 
