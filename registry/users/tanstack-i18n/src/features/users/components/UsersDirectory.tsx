@@ -14,7 +14,6 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { AddUserDialog } from "@/features/users/components/AddUserDialog"
-import { FavoritesCount } from "@/features/users/components/FavoritesCount"
 import { UsersPagination } from "@/features/users/components/UsersPagination"
 import { UsersTable } from "@/features/users/components/UsersTable"
 import { UsersTableSkeleton } from "@/features/users/components/UsersTableSkeleton"
@@ -111,9 +110,7 @@ export function UsersDirectory() {
             total={users.data.total}
             totalPages={Math.ceil(users.data.total / USERS_PAGE_SIZE)}
             onPageChange={setPage}
-          >
-            <FavoritesCount />
-          </UsersPagination>
+          />
         </div>
       )}
     </div>

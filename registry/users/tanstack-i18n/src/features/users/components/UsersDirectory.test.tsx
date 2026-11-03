@@ -19,8 +19,7 @@ function userNamed(id: number, firstName: string) {
     id,
     firstName,
     lastName: "Test",
-    username: firstName.toLowerCase(),
-    email: `${firstName.toLowerCase()}@example.com`
+    username: firstName.toLowerCase()
   }
 }
 

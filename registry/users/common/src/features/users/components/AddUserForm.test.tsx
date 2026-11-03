@@ -16,7 +16,9 @@ const ADD_USER_URL = `${siteConfig.apiUrl}${USERS_PATH}/add`
 async function fillAndSubmit(user: UserEvent) {
   await user.type(screen.getByLabelText("First name"), "Ada")
   await user.type(screen.getByLabelText("Last name"), "Lovelace")
-  await user.type(screen.getByLabelText("Email"), "ada@example.com")
+  await user.type(screen.getByLabelText("Username"), "ada.lovelace")
+  await user.type(screen.getByLabelText("Position"), "Mathematician")
+  await user.type(screen.getByLabelText("Department"), "Research")
   await user.click(screen.getByRole("button", { name: "Add user" }))
 }
 
@@ -32,13 +34,15 @@ describe("AddUserForm", () => {
     const user = userEvent.setup()
     renderWithProviders(<AddUserForm />)
 
-    await user.type(screen.getByLabelText("Email"), "not-an-email")
+    await user.type(screen.getByLabelText("Username"), "not valid")
     await user.click(screen.getByRole("button", { name: "Add user" }))
 
     expect(await screen.findByText("Enter a first name")).toBeInTheDocument()
     expect(screen.getByText("Enter a last name")).toBeInTheDocument()
-    expect(screen.getByText("Enter a valid email address")).toBeInTheDocument()
-    expect(screen.getByLabelText("Email")).toHaveAttribute("aria-invalid", "true")
+    expect(screen.getByText("Enter a position")).toBeInTheDocument()
+    expect(screen.getByText("Enter a department")).toBeInTheDocument()
+    expect(screen.getByText(/Use letters, numbers/)).toBeInTheDocument()
+    expect(screen.getByLabelText("Username")).toHaveAttribute("aria-invalid", "true")
     expect(requests).toBe(0)
   })
 
@@ -46,7 +50,7 @@ describe("AddUserForm", () => {
     server.use(
       http.post(ADD_USER_URL, async ({ request }) => {
         const body = await request.clone().json()
-        return HttpResponse.json({ ...Object(body), id: 209, username: "" }, { status: 201 })
+        return HttpResponse.json({ ...Object(body), id: 209 }, { status: 201 })
       })
     )
     const user = userEvent.setup()
@@ -57,9 +61,32 @@ describe("AddUserForm", () => {
     const result = await screen.findByRole("status")
     expect(result).toHaveTextContent("user #209")
     expect(result).toHaveTextContent("Ada Lovelace")
-    expect(result).toHaveTextContent("ada@example.com")
+    expect(result).toHaveTextContent("@ada.lovelace")
     expect(result).toHaveTextContent(/not saved/i)
     expect(result).toHaveTextContent(/does not store it/i)
+  })
+
+  it("sends the position and department under company", async () => {
+    let body: unknown
+    server.use(
+      http.post(ADD_USER_URL, async ({ request }) => {
+        body = await request.clone().json()
+        return HttpResponse.json({ ...Object(body), id: 209 })
+      })
+    )
+    const user = userEvent.setup()
+    renderWithProviders(<AddUserForm />)
+
+    await fillAndSubmit(user)
+    await screen.findByRole("status")
+
+    expect(body).toEqual({
+      firstName: "Ada",
+      lastName: "Lovelace",
+      username: "ada.lovelace",
+      role: "user",
+      company: { title: "Mathematician", department: "Research" }
+    })
   })
 
   it("returns to an empty form for another user", async () => {
@@ -69,8 +96,7 @@ describe("AddUserForm", () => {
           id: 209,
           firstName: "Ada",
           lastName: "Lovelace",
-          username: "",
-          email: "ada@example.com"
+          username: "ada.lovelace"
         })
       )
     )

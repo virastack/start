@@ -1,7 +1,10 @@
+"use client"
+
+import { useState } from "react"
+
 import { cn } from "cn"
 
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
-import { Badge } from "@/components/ui/badge"
 import {
   Table,
   TableBody,
@@ -10,8 +13,12 @@ import {
   TableHeader,
   TableRow
 } from "@/components/ui/table"
-import { FavoriteButton } from "@/features/users/components/FavoriteButton"
-import { ROLE_BADGE_CLASS_NAMES } from "@/features/users/constants/users.constants"
+import { DeleteUserDialog } from "@/features/users/components/DeleteUserDialog"
+import { EditUserDialog } from "@/features/users/components/EditUserDialog"
+import { UserActionsMenu } from "@/features/users/components/UserActionsMenu"
+import type { UserAction } from "@/features/users/components/UserActionsMenu"
+import { UserDetailsDialog } from "@/features/users/components/UserDetailsDialog"
+import { UserRoleBadge } from "@/features/users/components/UserRoleBadge"
 import { getAvatarTint } from "@/features/users/helpers/get-avatar-tint"
 import { getInitials } from "@/features/users/helpers/get-initials"
 import type { User } from "@/features/users/schemas/user.schema"
@@ -26,17 +33,18 @@ const ROW_INSET =
 const ROW_ZEBRA =
   "even:[--row-fill:color-mix(in_oklab,var(--muted)_30%,transparent)] hover:bg-transparent hover:[--row-fill:color-mix(in_oklab,var(--muted)_60%,transparent)]"
 
-const ROLE_LABELS = {
-  admin: m.users_role_admin,
-  moderator: m.users_role_moderator,
-  user: m.users_role_user
-}
-
 type UsersTableProps = {
   users: User[]
 }
 
 export function UsersTable({ users }: UsersTableProps) {
+  const [action, setAction] = useState<UserAction | null>(null)
+  /** Stays set while a dialog closes, so its content does not vanish during the animation. */
+  const [target, setTarget] = useState<User | null>(null)
+  const dialogProps = (dialog: UserAction) => ({
+    isOpen: action === dialog,
+    onOpenChange: (isOpen: boolean) => setAction(isOpen ? dialog : null)
+  })
   return (
     <div className="overflow-hidden rounded-lg border">
       <Table className="table-fixed">
@@ -51,22 +59,15 @@ export function UsersTable({ users }: UsersTableProps) {
             <TableHead className="hidden h-11 w-28 px-3 font-medium text-foreground sm:table-cell">
               {m.users_column_role()}
             </TableHead>
-            <TableHead className="h-11 w-16">
-              <span className="sr-only">{m.users_column_favorite()}</span>
+            <TableHead className="h-11 w-14 pr-4 text-right font-medium text-foreground sm:w-22">
+              <span className="sr-only sm:not-sr-only">{m.users_column_actions()}</span>
             </TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {users.map((user) => {
             const name = `${user.firstName} ${user.lastName}`
-            const roleBadge = (
-              <Badge
-                variant="outline"
-                className={cn("capitalize", ROLE_BADGE_CLASS_NAMES[user.role])}
-              >
-                {ROLE_LABELS[user.role]()}
-              </Badge>
-            )
+            const roleBadge = <UserRoleBadge role={user.role} />
 
             return (
               <TableRow key={user.id} className={cn(ROW_INSET, ROW_ZEBRA)}>
@@ -95,14 +96,27 @@ export function UsersTable({ users }: UsersTableProps) {
                   </p>
                 </TableCell>
                 <TableCell className="hidden px-3 py-3 sm:table-cell">{roleBadge}</TableCell>
-                <TableCell className="px-0 py-3 text-center">
-                  <FavoriteButton userId={user.id} userName={name} />
+                <TableCell className="py-3 pr-4 text-right">
+                  <UserActionsMenu
+                    userName={name}
+                    onAction={(nextAction) => {
+                      setTarget(user)
+                      setAction(nextAction)
+                    }}
+                  />
                 </TableCell>
               </TableRow>
             )
           })}
         </TableBody>
       </Table>
+      {target ? (
+        <>
+          <UserDetailsDialog user={target} {...dialogProps("view")} />
+          <EditUserDialog user={target} {...dialogProps("edit")} />
+          <DeleteUserDialog user={target} {...dialogProps("delete")} />
+        </>
+      ) : null}
     </div>
   )
 }

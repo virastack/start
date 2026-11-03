@@ -16,7 +16,6 @@ const ada = {
   firstName: "Ada",
   lastName: "Lovelace",
   username: "ada",
-  email: "ada@example.com",
   role: "admin",
   company: { title: "Mathematician", department: "Research" }
 }

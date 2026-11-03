@@ -1,5 +1,3 @@
-import type { ReactNode } from "react"
-
 import { cn } from "cn"
 
 import {
@@ -15,19 +13,11 @@ type UsersPaginationProps = {
   totalPages: number
   total: number
   onPageChange: (page: number) => void
-  /** Shown after the page summary. */
-  children?: ReactNode
 }
 
 const DISABLED_LINK = "pointer-events-none opacity-50"
 
-export function UsersPagination({
-  page,
-  totalPages,
-  total,
-  onPageChange,
-  children
-}: UsersPaginationProps) {
+export function UsersPagination({ page, totalPages, total, onPageChange }: UsersPaginationProps) {
   const isFirst = page <= 1
   const isLast = page >= totalPages
 
@@ -48,19 +38,11 @@ export function UsersPagination({
             }}
           />
         </PaginationItem>
-        <PaginationItem className="flex flex-col items-center gap-x-2 gap-y-1 text-sm text-muted-foreground sm:flex-row">
+        <PaginationItem className="text-sm text-muted-foreground">
           <p aria-live="polite" className="text-center tabular-nums">
             Page {page} of {totalPages}
             <span className="hidden sm:inline"> · {total} users</span>
           </p>
-          {children ? (
-            <>
-              <span aria-hidden className="hidden sm:inline">
-                ·
-              </span>
-              {children}
-            </>
-          ) : null}
         </PaginationItem>
         <PaginationItem>
           <PaginationNext

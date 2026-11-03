@@ -1,18 +1,4 @@
 {
-  "users_favorites_count": {
-    "declarations": [
-      "input count",
-      "local countPlural = count: plural"
-    ],
-    "selectors": [
-      "countPlural"
-    ],
-    "match": {
-      "countPlural=one": "{count} favorite",
-      "countPlural=other": "{count} favorites"
-    }
-  },
-  "users_favorite": "Favorite {name}",
   "users_search": "Search users",
   "users_loading": "Loading users",
   "users_load_error": "Could not load users",
@@ -49,7 +35,6 @@
   "users_role_admin": "Admin",
   "users_role_moderator": "Moderator",
   "users_role_user": "User",
-  "users_column_favorite": "Favorite",
   "users_add": "Add user",
   "users_adding": "Adding…",
   "users_add_description": "Sends a real POST request to the DummyJSON demo API.",
@@ -60,12 +45,34 @@
   "users_add_failed": "Could not add the user. {reason}",
   "users_first_name": "First name",
   "users_last_name": "Last name",
-  "users_email": "Email",
   "users_error_first_name": "Enter a first name",
   "users_error_last_name": "Enter a last name",
   "users_error_too_long": "Use 50 characters or fewer",
-  "users_error_email": "Enter a valid email address",
   "users_error_generic": "Something went wrong.",
   "users_error_network": "Network request failed",
-  "users_error_status": "Request failed with status {status}"
+  "users_error_status": "Request failed with status {status}",
+  "users_username": "Username",
+  "users_department": "Department",
+  "users_error_username": "Enter a username",
+  "users_error_username_format": "Use letters, numbers, dots, hyphens or underscores",
+  "users_error_title": "Enter a position",
+  "users_error_department": "Enter a department",
+  "users_column_actions": "Actions",
+  "users_open_actions": "Open actions for {name}",
+  "users_action_view": "View details",
+  "users_action_edit": "Edit",
+  "users_action_delete": "Delete",
+  "users_details_title": "User details",
+  "users_details_description": "Shows the data already in the table, with no request.",
+  "users_edit_title": "Edit user",
+  "users_edit_description": "Sends a real PUT request to the DummyJSON demo API. It stores nothing, so the change lasts until the list loads again.",
+  "users_edit_save": "Save changes",
+  "users_edit_saving": "Saving…",
+  "users_edit_failed": "Could not save the user. {reason}",
+  "users_delete_title": "Delete {name}?",
+  "users_delete_description": "Sends a real DELETE request to the DummyJSON demo API. It stores nothing, so the user comes back when the list loads again.",
+  "users_delete_cancel": "Cancel",
+  "users_delete_confirm": "Delete",
+  "users_deleting": "Deleting…",
+  "users_delete_failed": "Could not delete the user. {reason}"
 }

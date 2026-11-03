@@ -10,9 +10,8 @@ export const userSchema = z.object({
   firstName: z.string(),
   lastName: z.string(),
   username: z.string(),
-  email: z.email(),
   role: userRoleSchema.default("user"),
-  // A new user comes back from `POST /users/add` without a company.
+  // The list can hold people without a company.
   company: z.object({ title: z.string(), department: z.string() }).optional()
 })
 
@@ -24,21 +23,41 @@ export const usersPageSchema = z.object({
 })
 
 // `error` is a function because this schema is built once, before any locale is known.
-export const addUserSchema = z.object({
+const tooLong = { error: () => m.users_error_too_long() }
+
+export const userFormSchema = z.object({
   firstName: z
     .string()
     .trim()
     .min(1, { error: () => m.users_error_first_name() })
-    .max(50, { error: () => m.users_error_too_long() }),
+    .max(50, tooLong),
   lastName: z
     .string()
     .trim()
     .min(1, { error: () => m.users_error_last_name() })
-    .max(50, { error: () => m.users_error_too_long() }),
-  email: z.email({ error: () => m.users_error_email() })
+    .max(50, tooLong),
+  username: z
+    .string()
+    .trim()
+    .min(1, { error: () => m.users_error_username() })
+    .max(50, tooLong)
+    .regex(/^[\w.-]+$/, { error: () => m.users_error_username_format() }),
+  title: z
+    .string()
+    .trim()
+    .min(1, { error: () => m.users_error_title() })
+    .max(50, tooLong),
+  department: z
+    .string()
+    .trim()
+    .min(1, { error: () => m.users_error_department() })
+    .max(50, tooLong),
+  role: userRoleSchema
 })
+
+export const deletedUserSchema = z.object({ id: z.number() })
 
 export type User = z.infer<typeof userSchema>
 export type UserRole = z.infer<typeof userRoleSchema>
 export type UsersPage = z.infer<typeof usersPageSchema>
-export type AddUserInput = z.infer<typeof addUserSchema>
+export type UserFormInput = z.infer<typeof userFormSchema>
