@@ -61,7 +61,7 @@ Once your project is scaffolded, start the development server:
 pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000). `/` (`/tr` in Turkish) is a short start page from `src/features/home`: the first file to edit and a list of the stack. Replace it when you are ready to build. `npx virastack add users` adds a working users module at `/users`.
+Open [http://localhost:3000](http://localhost:3000). `/` (`/tr` in Turkish) is a short start page from `src/features/home`: the first file to edit and a list of the stack. Replace it when you are ready to build. `npx virastack add users` installs a working users module for you to place on a page.
 
 ## Environment variables
 
@@ -124,22 +124,21 @@ src/
 
 The start page follows the ViraStack AI feature tree and is meant to be deleted when you start building.
 
-**The users module**
+**Modules**
 
-Run `npx virastack add users` to add a working list at `/users`: pagination and search in the URL, an Add user form and favorites, backed by the [DummyJSON](https://dummyjson.com) demo API.
+Run `npx virastack add <module>` to add a working feature: `users`, `checkout-address` or `checkout-card`. It installs `src/features/<module>` and the packages the module needs, creates no page, and prints the import line for your own page. See every module and the steps for your framework at [virastack.com/start/features](https://virastack.com/start/features).
 
-Run `npx virastack remove users` to take it out. It asks before deleting files you changed, and leaves packages in place because other code may use them.
+Run `npx virastack remove <module>` to take one out. It asks before deleting files you changed, and leaves packages in place because other code may use them.
 
 **About the users module**
 
-- Page and search stay in the URL (`/users?page=2&q=ann`), so a shared link opens the same view
-- `POST /users/add` on DummyJSON returns the new user but does not save it, so the user never appears in the list
-- Favorites stay in this browser (`localStorage`) through a Zustand store
-- The route prefetches on the server at request time, so `vite build` does not need DummyJSON
+- A list with pagination and search in the URL, a shared add and edit form, and row actions for details, editing and deleting, backed by the [DummyJSON](https://dummyjson.com) demo API
+- Page and search stay in the URL (`?page=2&q=ann`), so a shared link opens the same view
+- DummyJSON answers `POST`, `PUT` and `DELETE` without saving: a new user never appears in the list, and edits and deletes last until the list reloads
 
 **Languages**
 
-- English lives at `/` and `/users`, Turkish at `/tr` and `/tr/users`, through the optional `{-$lang}` route param
+- English lives at `/`, Turkish at `/tr`, through the optional `{-$lang}` route param
 - `/en` answers with a 301 to `/`, and an unknown language such as `/fr` is a 404
 - Only the URL decides the language: a cookie or `Accept-Language` never redirects anyone
 - The language switcher loads the other URL as a new document, so the server HTML and the URL always agree

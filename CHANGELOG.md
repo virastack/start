@@ -1,6 +1,6 @@
 # Changelog
 
-## [v2.0.0] - Unreleased
+## [v2.0.0] - 2026-11-03
 
 This release does not change existing projects. To move a 1.x project, apply the breaking changes by hand.
 
@@ -19,16 +19,16 @@ This release does not change existing projects. To move a 1.x project, apply the
 
 ### CLI
 
-- **`virastack add <module>`**: Installs `users`, `checkout-address` or `checkout-payment` from the `virastack.com/r` registry. It installs only the feature and creates no page; it prints the import line and the module's link. With i18n, messages are merged into `src/messages`. If anything conflicts, no file changes.
+- **`virastack add <module>`**: Installs `users`, `checkout-address` or `checkout-card` from the `virastack.com/r` registry. It installs only the feature and creates no page; it prints the import line and the module's link. With i18n, messages are merged into `src/messages`. If anything conflicts, no file changes.
 - **`virastack remove <module>`**: Deletes the module's files, the folders they leave empty and its messages, and keeps the packages. It asks first if you changed those files; in a script, pass `--yes`.
 - **`init`**: Installs no module.
 - **Package managers**: `init` writes `ci.yml` and the husky hooks for npm, Yarn, bun or pnpm, and adds the config file it needs.
 
 ### Modules
 
-- **`users`**: A user table with pagination, search, a form and favorites.
+- **`users`**: A user table with pagination, search, a shared add and edit form, and row actions for details, editing and deleting.
 - **`checkout-address`**: Choose shipping and billing addresses, and add or edit them in a popup, with `@virastack/address` and `@virastack/mask`.
-- **`checkout-payment`**: Choose a saved card or add a new one, with `@virastack/mask`. The card number and CVV stay off the network; the POST carries only a dummy token, the brand, the last four digits, the expiry and the name.
+- **`checkout-card`**: Choose a saved card or add a new one, with `@virastack/mask`. The card number and CVV stay off the network; the POST carries a dummy token, the brand, the last four digits, the expiry and the name. Field names follow iyzico's card storage.
 
 ### Templates
 
@@ -37,7 +37,7 @@ This release does not change existing projects. To move a 1.x project, apply the
 - **React Compiler**: On in both frameworks. On Next.js it is no longer production only.
 - **Tools**: ESLint 10, MSW 3, Vitest 5 and pnpm 12. `tsc` runs on TypeScript 7; `typescript-eslint` and `next build` run on TypeScript 6.
 - **Prettier**: `semi: false` and `trailingComma: "none"` in all four templates.
-- **shadcn**: `components.json` in all four templates. `checkbox`, `radio-group`, `select` and `textarea` were added to `components/ui`.
+- **shadcn**: `components.json` in all four templates. `alert-dialog`, `checkbox`, `dropdown-menu`, `radio-group`, `select` and `textarea` were added to `components/ui`.
 - **SEO**: The start page has a canonical, a missing `APP_URL` warns in production, and the fixed root `og:url` is gone. Next.js no longer sends `X-Powered-By`.
 - **i18n**: The default language lives at `/` and the other at `/tr`. Only the URL decides the language, and `hreflang` tags are included.
 - **Layout shift**: TanStack Start templates use a metric-matched fallback and a preload for Inter.

@@ -26,7 +26,7 @@
 - **Built-in AI Protocols:** Asks which AI coding tools you use (Claude Code, Cursor) and sets up [**ViraStack AI**](https://github.com/virastack/ai) for them — architecture rules in each tool's native format, `AGENTS.md`, and design skills from [**Emil Kowalski**](https://github.com/emilkowalski/skills) and [**Jakub Krehel**](https://github.com/jakubkrehel/skills) — giving your coding agents a strict "constitution" from day one.
 - **End-to-End Type Safety:** Strict TypeScript rules, Zod validation, and native package manager alignment (pnpm, npm, yarn, bun).
 - **Ecosystem Integration:** Add optional ViraStack tools (`@virastack/mask`, `@virastack/password`, `@virastack/address`) seamlessly.
-- **Modules:** Add a working feature (`users`, `checkout-address`, `checkout-payment`) to your project, and remove it again, with one command.
+- **Modules:** Add a working feature (`users`, `checkout-address`, `checkout-card`) to your project, and remove it again, with one command.
 
 ## Quick Start
 

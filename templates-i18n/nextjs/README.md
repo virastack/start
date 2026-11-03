@@ -61,7 +61,7 @@ Once your project is scaffolded, start the development server:
 pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000). `/` is a short start page from `src/features/home`: the first file to edit and a map of the stack. Replace it when you are ready to build. `npx virastack add users` adds a working users module at `/users`. Turkish lives at `/tr` and `/tr/users`.
+Open [http://localhost:3000](http://localhost:3000). `/` is a short start page from `src/features/home`: the first file to edit and a map of the stack. Replace it when you are ready to build. `npx virastack add users` installs a working users module for you to place on a page. Turkish lives at `/tr`.
 
 ## Environment variables
 
@@ -122,18 +122,17 @@ src/
 
 The start page follows the ViraStack AI feature tree and is meant to be deleted when you start building.
 
-**The users module**
+**Modules**
 
-Run `npx virastack add users` to add a working list at `/users`: pagination and search in the URL, an Add user form and favorites, backed by the [DummyJSON](https://dummyjson.com) demo API.
+Run `npx virastack add <module>` to add a working feature: `users`, `checkout-address` or `checkout-card`. It installs `src/features/<module>` and the packages the module needs, creates no page, and prints the import line for your own page. See every module and the steps for your framework at [virastack.com/start/features](https://virastack.com/start/features).
 
-Run `npx virastack remove users` to take it out. It asks before deleting files you changed, and leaves packages in place because other code may use them.
+Run `npx virastack remove <module>` to take one out. It asks before deleting files you changed, and leaves packages in place because other code may use them.
 
 **About the users module**
 
-- Page and search stay in the URL (`/users?page=2&q=ann`), so a shared link opens the same view
-- `POST /users/add` on DummyJSON returns the new user but does not save it, so the user never appears in the list
-- Favorites stay in this browser (`localStorage`) through a Zustand store
-- The route prefetches on the server at request time, so `next build` does not need DummyJSON
+- A list with pagination and search in the URL, a shared add and edit form, and row actions for details, editing and deleting, backed by the [DummyJSON](https://dummyjson.com) demo API
+- Page and search stay in the URL (`?page=2&q=ann`), so a shared link opens the same view
+- DummyJSON answers `POST`, `PUT` and `DELETE` without saving: a new user never appears in the list, and edits and deletes last until the list reloads
 
 **Remove the start page**
 
@@ -156,11 +155,11 @@ See the ViraStack AI `architecture` rule (`.claude/rules/virastack/` or `.cursor
 
 Text lives in `src/messages/en.json` and `src/messages/tr.json`, one namespace per feature.
 
-| URL                | Language                    |
-| :----------------- | :-------------------------- |
-| `/`, `/users`      | English                     |
-| `/tr`, `/tr/users` | Turkish                     |
-| `/en`, `/en/users` | Redirect to the English URL |
+| URL   | Language                    |
+| :---- | :-------------------------- |
+| `/`   | English                     |
+| `/tr` | Turkish                     |
+| `/en` | Redirect to the English URL |
 
 - The URL alone decides the language. Cookies and `Accept-Language` never redirect a visitor, because Google advises against automatic language redirects (`localeDetection: false` in `src/i18n/routing.ts`)
 - `src/types/next-intl.d.ts` registers the messages with `AppConfig`, so a missing key is a type error
