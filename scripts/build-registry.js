@@ -34,7 +34,7 @@ export const FEATURES = [
   {
     name: "users",
     title: "Users",
-    description: "A searchable user list with pagination in the URL, a validated form and favorites.",
+    description: "A searchable user list with pagination in the URL, a shared add and edit form and row actions.",
     frameworks: ["nextjs", "tanstack", "nextjs-i18n", "tanstack-i18n"],
     route: {
       feature: "users",
@@ -55,12 +55,12 @@ export const FEATURES = [
     minStartVersion: "2.0.0",
   },
   {
-    name: "checkout-payment",
-    title: "Checkout payment",
+    name: "checkout-card",
+    title: "Checkout card",
     description: "Choose or add a credit card, with the card number and CVV kept off the network.",
     frameworks: ["nextjs", "tanstack", "nextjs-i18n", "tanstack-i18n"],
-    route: { feature: "checkout-payment", component: "CheckoutPayment" },
-    packages: { "@virastack/mask": "^2.1.0" },
+    route: { feature: "checkout-card", component: "CheckoutCard" },
+    packages: { "@virastack/mask": "^2.2.0" },
     minStartVersion: "2.0.0",
   },
 ];

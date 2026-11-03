@@ -15,14 +15,16 @@ import { FEATURES } from "./build-registry.js";
 
 const LAYERS = ["common", "nextjs"];
 /** The site speaks two languages, so these previews use their i18n layer and its messages. */
-const I18N_PREVIEWS = new Set(["checkout-address", "checkout-payment"]);
+const I18N_PREVIEWS = new Set(["users", "checkout-address", "checkout-card"]);
 const I18N_LAYERS = ["common", "nextjs-i18n"];
 const UI = [
+  "alert-dialog",
   "avatar",
   "badge",
   "button",
   "checkbox",
   "dialog",
+  "dropdown-menu",
   "empty",
   "field",
   "input",
@@ -45,7 +47,7 @@ export function toPreviewImports(source) {
   return source
     .replaceAll('"@/features/users/', `"@/${USERS_PREVIEW.slice(4)}/`)
     .replaceAll('"@/features/checkout-address/', `"@/${DEMOS.slice(4)}/checkout-address/`)
-    .replaceAll('"@/features/checkout-payment/', `"@/${DEMOS.slice(4)}/checkout-payment/`)
+    .replaceAll('"@/features/checkout-card/', `"@/${DEMOS.slice(4)}/checkout-card/`)
     .replaceAll('"@/components/ui/', `"@/${USERS_PREVIEW.slice(4)}/ui/`)
     .replaceAll('"@/lib/api"', `"@/${USERS_PREVIEW.slice(4)}/lib/api"`)
     .replaceAll('"@/lib/query-client"', `"@/${USERS_PREVIEW.slice(4)}/lib/query-client"`)
@@ -69,13 +71,17 @@ function copyTree(from, to) {
 function writeInstallFiles(root, site) {
   const registry = JSON.parse(readFileSync(path.join(root, "registry.json"), "utf8"));
   for (const { name, route } of FEATURES) {
-    const targets = (framework) =>
-      registry.items.find((item) => item.name === `${name}-${framework}`).files.map(({ target }) => target);
-    const tanstack = new Set(targets("tanstack"));
-    // Only what both frameworks share.
-    const files = targets("nextjs")
-      .filter((target) => target.startsWith("src/features/") && tanstack.has(target))
-      .sort();
+    // One list per template, since a layer can add or swap a file (users has a hook in nextjs-i18n).
+    const files = Object.fromEntries(
+      ["nextjs", "tanstack", "nextjs-i18n", "tanstack-i18n"].map((framework) => [
+        framework,
+        registry.items
+          .find((item) => item.name === `${name}-${framework}`)
+          .files.map(({ target }) => target)
+          .filter((target) => target.startsWith("src/features/"))
+          .sort(),
+      ]),
+    );
     writeFileSync(
       path.join(site, DEMOS, name, "install-files.ts"),
       [
