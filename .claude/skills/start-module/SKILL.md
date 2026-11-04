@@ -34,7 +34,7 @@ A module is a working feature the reader copies into their Start project: screen
 
 Wire the module:
 
-- `src/features/start/data/feature-catalog.ts`: entry with `id` (the `add` argument), `group`, `status: "ready"`, `tags` and `packages`.
+- `src/config/start-modules.config.ts`: entry with `id` (the `add` argument), `group`, `status: "ready"`, `tags` and `packages`.
 - `src/features/start/components/FeatureDemoPage.tsx`: add the demo to `FEATURE_DEMOS`. It renders alone on `/start/preview/<name>` (noindex, no header or footer), which the page shows in an iframe.
 - `src/features/start/components/StartFeatureDetailPage.tsx`: add the module to `READY_CONTENT` with its `route` (the prompt names its `component` and, when set, its `fallback` and `routeSearch`), the `rows` it explains, `previewNote`, `apiKey` and `hasMoreNote`.
 - `src/messages/tr.json` and `en.json`, namespace `StartFeatureCatalog`: the card text under `items.<name>` and the detail keys under `detail`.
