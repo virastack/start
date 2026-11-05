@@ -6,8 +6,6 @@
 const dictionaries = {
   en: {
     cancel: "Operation cancelled.",
-    "telemetry.notice":
-      "ViraStack collects anonymous usage data (template, i18n choice, selected tools, AI coding tools) to improve the CLI. No personal data is ever collected. Disable anytime with --telemetry-disable.",
 
     "projectName.message": "What is your project named?",
     "projectName.placeholder": "virastack-app",
@@ -43,13 +41,9 @@ const dictionaries = {
       "The multi-language (i18n) template isn't ready for this stack yet. Using the standard template instead.",
 
     "tools.message": "Which ViraStack tools would you like to include?",
-    "tools.mask.label": "@virastack/mask",
     "tools.mask.hint": "Input masks for React Hook Form: phone, card, date, currency",
-    "tools.password.label": "@virastack/password",
     "tools.password.hint": "Accessible password hook: show/hide, strength, server checks",
-    "tools.address.label": "@virastack/address",
     "tools.address.hint": "Turkish address hook: province, district, neighbourhood and postal code",
-    "tools.ai.label": "@virastack/ai",
     "tools.ai.hint": "Architecture rules for Claude Code, Cursor and AGENTS.md",
 
     "scaffold.copying": "Creating project files...",
@@ -69,19 +63,16 @@ const dictionaries = {
     "scaffold.aiInitDone": "ViraStack AI rules added.",
     "scaffold.aiInitFailed":
       "Failed to configure ViraStack AI rules.",
-    "scaffold.skillsInit": "Installing design skills...",
-    "scaffold.skillsInitDone": "Design skills installed.",
-    "scaffold.skillsInitFailed": "Some design skills could not be installed.",
+    "scaffold.skillsInit": "Adding design skills...",
+    "scaffold.skillsProgress": "Adding design skills ({current}/{total}: {name})",
+    "scaffold.skillsInitDone": "Design skills added.",
+    "scaffold.skillsInitFailed": "{failed} of {total} design skills could not be added.",
 
-    "done.title": "You're all set!",
-    "done.partialTitle": "Project files are ready — finish setup manually:",
+
+    "done.partialTitle": "Project files are ready. Finish setup with the steps above.",
+    "done.nextSteps": "Next steps",
     "done.installFailedNote":
       "Dependency install failed. The project was created, but you need to install packages before running it.",
-    "done.cd": "  cd {dir}",
-    "done.manualInstall": "  {cmd}",
-    "done.manualAi": "  {cmd}",
-    "done.manualSkills": "  {cmd}",
-    "done.dev": "  {cmd}",
 
     "add.toolMissing": "Please specify what to add.",
     "add.startTooOld": "{pkg} needs ViraStack Start {required} or newer. This project was created with {current}.",
@@ -97,7 +88,7 @@ const dictionaries = {
     "add.alreadyInstalled": "{pkg} is already in this project. Nothing changed.",
     "add.conflict": "{pkg} was not added. Nothing changed.",
     "add.conflictList": "This project already has files or messages with the same names:\n  {list}",
-        "add.useInPage": "Add it to a page of yours:\n  {code}\nSteps for your framework: {url}",
+    "add.useInPage": "Add it to a page of yours:\n  {code}\nSteps for your framework: {url}",
     "remove.missing": "Please specify what to remove.",
     "remove.removing": "Removing {pkg}...",
     "remove.done": "{pkg} removed.",
@@ -143,21 +134,19 @@ Examples:
 
   tr: {
     cancel: "İşlem iptal edildi.",
-    "telemetry.notice":
-      "ViraStack, CLI'ı geliştirmek için anonim kullanım verisi toplar (şablon, i18n tercihi, seçilen araçlar, AI kodlama araçları). Hiçbir kişisel veri toplanmaz. --telemetry-disable ile her zaman kapatabilirsiniz.",
 
-    "projectName.message": "Projenizin adı ne olsun?",
+    "projectName.message": "Projenin adı ne olsun?",
     "projectName.placeholder": "virastack-app",
     "projectName.errorEmpty":
-      'Lütfen bir proje adı girin, ya da mevcut dizini kullanmak için "." yazın.',
+      'Lütfen bir proje adı gir ya da mevcut klasörü kullanmak için "." yaz.',
     "projectName.errorInvalid":
-      "Lütfen geçerli bir npm paket adı girin (küçük harf, rakam, tire).",
+      "Lütfen geçerli bir npm paket adı gir (küçük harf, rakam, tire).",
     "projectName.errorNonInteractive":
-      'İnteraktif olmayan modda proje adı zorunlu. Bir ad, --name veya "." verin.',
+      'İnteraktif olmayan modda proje adı zorunlu. Bir ad, --name veya "." ver.',
     "projectName.confirmNonEmptyDir":
-      '"{dir}" dizini boş değil. Devam edilsin mi?',
+      '"{dir}" klasörü boş değil. Devam edilsin mi?',
 
-    "template.message": "Hangi şablonla başlamak istiyorsunuz?",
+    "template.message": "Hangi şablonla başlamak istiyorsun?",
     "template.nextjs.label": "Next.js App Router",
     "template.nextjs.hint": "App Router + Server Components",
     "template.tanstack.label": "TanStack Start",
@@ -167,26 +156,22 @@ Examples:
     "template.errorInvalid":
       'Bilinmeyen şablon "{template}". Kullanılabilir şablonlar: nextjs, tanstack.',
 
-    "agents.message": "Hangi AI kodlama araçlarını kullanıyorsunuz?",
+    "agents.message": "Hangi AI kodlama araçlarını kullanıyorsun?",
     "agents.claude.label": "Claude Code",
     "agents.cursor.label": "Cursor",
     "agent.errorInvalid":
-      'Geçersiz --agent değeri "{value}". claude, cursor (virgülle) veya none kullanın.',
+      'Geçersiz --agent değeri "{value}". claude, cursor (virgülle) veya none kullan.',
 
-    "i18n.message": "Çoklu dil (i18n) desteği ister misiniz?",
+    "i18n.message": "Çoklu dil (i18n) desteği ister misin?",
     "i18n.active": "Evet",
     "i18n.inactive": "Hayır",
     "i18n.notReady":
       "Bu şablon için çoklu dil (i18n) sürümü henüz hazır değil. Standart şablon kullanılacak.",
 
-    "tools.message": "Projenize hangi ViraStack araçları eklensin?",
-    "tools.mask.label": "@virastack/mask",
+    "tools.message": "Projene hangi ViraStack araçları eklensin?",
     "tools.mask.hint": "React Hook Form için input maskeleri: telefon, IBAN, TCKN",
-    "tools.password.label": "@virastack/password",
     "tools.password.hint": "Erişilebilir parola hook’u: göster/gizle, güç, sunucu kontrolü",
-    "tools.address.label": "@virastack/address",
     "tools.address.hint": "Türkiye adres hook’u: il, ilçe, mahalle ve posta kodu",
-    "tools.ai.label": "@virastack/ai",
     "tools.ai.hint": "Claude Code, Cursor ve AGENTS.md için mimari kurallar",
 
     "scaffold.copying": "Proje dosyaları oluşturuluyor...",
@@ -201,27 +186,24 @@ Examples:
     "scaffold.skipInstall":
       "Bağımlılık kurulumu atlanıyor (--skip-install).",
     "scaffold.offline":
-      "İnternet bağlantısı yok gibi görünüyor. Bağımlılık kurulumu ve AI yapılandırması atlandı — çevrimiçi olduğunuzda manuel çalıştırın.",
+      "İnternet bağlantısı yok gibi görünüyor. Bağımlılık kurulumu ve AI yapılandırması atlandı, çevrimiçi olduğunda elle çalıştır.",
     "scaffold.aiInit": "ViraStack AI kuralları yapılandırılıyor...",
     "scaffold.aiInitDone": "ViraStack AI kuralları eklendi.",
     "scaffold.aiInitFailed":
       "ViraStack AI kuralları yapılandırılamadı.",
-    "scaffold.skillsInit": "Tasarım skill'leri kuruluyor...",
-    "scaffold.skillsInitDone": "Tasarım skill'leri kuruldu.",
-    "scaffold.skillsInitFailed": "Bazı tasarım skill'leri kurulamadı.",
+    "scaffold.skillsInit": "Tasarım skill'leri ekleniyor...",
+    "scaffold.skillsProgress": "Tasarım skill'leri ekleniyor ({current}/{total}: {name})",
+    "scaffold.skillsInitDone": "Tasarım skill'leri eklendi.",
+    "scaffold.skillsInitFailed": "{total} tasarım skill'inden {failed} tanesi eklenemedi.",
 
-    "done.title": "Her şey hazır!",
-    "done.partialTitle": "Proje dosyaları hazır — kurulumu manuel tamamlayın:",
+
+    "done.partialTitle": "Proje dosyaları hazır. Kurulumu yukarıdaki adımlarla tamamla.",
+    "done.nextSteps": "Sonraki adımlar",
     "done.installFailedNote":
-      "Bağımlılık kurulumu başarısız. Proje oluşturuldu, ancak çalıştırmadan önce paketleri kurmanız gerekiyor.",
-    "done.cd": "  cd {dir}",
-    "done.manualInstall": "  {cmd}",
-    "done.manualAi": "  {cmd}",
-    "done.manualSkills": "  {cmd}",
-    "done.dev": "  {cmd}",
+      "Bağımlılık kurulumu başarısız. Proje oluşturuldu, ama çalıştırmadan önce paketleri kurman gerekiyor.",
 
     "add.toolMissing":
-      "Lütfen neyi eklemek istediğinizi belirtin.",
+      "Lütfen neyi eklemek istediğini belirt.",
     "add.startTooOld": "{pkg} için ViraStack Start {required} veya üstü gerekiyor. Bu proje {current} ile kuruldu.",
     "add.tools": "Araçlar",
     "add.modules": "Modüller",
@@ -235,8 +217,8 @@ Examples:
     "add.alreadyInstalled": "{pkg} bu projede zaten var. Hiçbir şey değişmedi.",
     "add.conflict": "{pkg} eklenmedi. Hiçbir şey değişmedi.",
     "add.conflictList": "Bu projede aynı adlı dosya veya çeviriler var:\n  {list}",
-        "add.useInPage": "Kendi sayfana ekle:\n  {code}\nFramework'üne göre adımlar: {url}",
-    "remove.missing": "Lütfen neyi kaldırmak istediğinizi belirtin.",
+    "add.useInPage": "Kendi sayfana ekle:\n  {code}\nFramework'üne göre adımlar: {url}",
+    "remove.missing": "Lütfen neyi kaldırmak istediğini belirt.",
     "remove.removing": "{pkg} kaldırılıyor...",
     "remove.done": "{pkg} kaldırıldı.",
     "remove.packagesKept": "Paketleri duruyor, çünkü başka kodlar da kullanıyor olabilir.",

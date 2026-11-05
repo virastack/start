@@ -9,7 +9,8 @@ const CLI = fileURLToPath(new URL("../bin/virastack.js", import.meta.url));
 let registry;
 
 function help(args = []) {
-  const env = { ...process.env, VIRASTACK_REGISTRY_URL: registry };
+  // Plain text, so the assertions hold where CI forces colors on.
+  const env = { ...process.env, VIRASTACK_REGISTRY_URL: registry, NO_COLOR: "1", FORCE_COLOR: "" };
   return spawnSync(process.execPath, [CLI, "--help", ...args], { env, encoding: "utf8" }).stdout;
 }
 

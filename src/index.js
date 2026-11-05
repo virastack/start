@@ -8,6 +8,7 @@ import { runRemove } from "./commands/remove.js";
 import { parseToolsFlag } from "./utils/tools.js";
 import { parseAgentFlag } from "./utils/agents.js";
 import { FEATURES_URL, listFeatures } from "./utils/features.js";
+import { formatHelp } from "./utils/ui.js";
 
 function resolveI18nFlag(flags) {
   if (hasFlag(flags, "no-i18n")) return false;
@@ -58,7 +59,7 @@ export async function main() {
 
   if (hasFlag(flags, "h", "help")) {
     const modules = await listFeatures({ timeout: 3_000 });
-    console.log(t("help", { modules: modules.join(", ") || FEATURES_URL }));
+    console.log(formatHelp(t("help", { modules: modules.join(", ") || FEATURES_URL })));
     return;
   }
 

@@ -42,15 +42,6 @@ export async function disableTelemetry() {
   await writeConfig({ telemetryDisabled: true });
 }
 
-export async function hasSeenTelemetryNotice() {
-  const config = await readConfig();
-  return config.telemetryNoticeShown === true;
-}
-
-export async function markTelemetryNoticeShown() {
-  await writeConfig({ telemetryNoticeShown: true });
-}
-
 /**
  * Fire-and-forget anonymous usage event. Never collects personal data
  * (no project name, no file paths, no IP is read or stored by the CLI) and

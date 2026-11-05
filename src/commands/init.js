@@ -1,7 +1,6 @@
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import * as p from "@clack/prompts";
-import pc from "picocolors";
 
 import { t, getLocale } from "../i18n.js";
 import { copyTemplate, dirHasFiles, isDirEmpty } from "../utils/copy-template.js";
@@ -16,13 +15,14 @@ import {
   getInstallCommand,
   getRunDevCommand,
 } from "../utils/package-manager.js";
-import { trackEvent, isTelemetryDisabled, hasSeenTelemetryNotice, markTelemetryNoticeShown } from "../utils/telemetry.js";
+import { trackEvent } from "../utils/telemetry.js";
 import { TOOLS, parseToolsFlag } from "../utils/tools.js";
 import { setupEnvFile } from "../utils/setup-env.js";
 import { setupPackageManager } from "../utils/setup-package-manager.js";
 import { updatePackageJson } from "../utils/update-package-json.js";
 import { updateReadme } from "../utils/update-readme.js";
 import { validateProjectName } from "../utils/validate-project-name.js";
+import { accent, intro, logError, spinner, stepDetail, stepLabel } from "../utils/ui.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const TEMPLATES_DIR = path.resolve(__dirname, "../../templates");
@@ -59,13 +59,9 @@ export async function runInit(options = {}) {
   const yes = Boolean(options.yes);
   const skipInstall = Boolean(options.skipInstall);
 
-  console.clear();
-  p.intro(pc.bgMagenta(pc.black(" ViraStack ")));
+  console.log();
+  intro();
 
-  if (!(await isTelemetryDisabled()) && !(await hasSeenTelemetryNotice())) {
-    p.log.info(t("telemetry.notice"));
-    await markTelemetryNoticeShown();
-  }
 
   let projectNameInput = options.name;
 
@@ -199,7 +195,8 @@ export async function runInit(options = {}) {
         required: false,
         options: TOOLS.filter((tool) => !tool.hiddenFromInit).map((tool) => ({
           value: tool.id,
-          label: t(`tools.${tool.id}.label`),
+          // The question already says ViraStack, so the short name keeps the answer on one line.
+          label: tool.id,
           hint: t(`tools.${tool.id}.hint`),
         })),
       });
@@ -216,8 +213,20 @@ export async function runInit(options = {}) {
     template,
   );
 
-  const scaffoldSpinner = p.spinner();
-  scaffoldSpinner.start(t("scaffold.copying"));
+  const offline = !(await isOnline());
+  const runsInstall = !skipInstall && !offline;
+  const totalSteps = 2 + (runsInstall ? 1 : 0) + (offline ? 0 : 2);
+  let currentStep = 0;
+  const step = (text) => stepLabel(currentStep, totalSteps, text);
+  // Only the long steps show a timer; a quick one would only print [0s].
+  const startStep = (text, { timer = true } = {}) => {
+    currentStep += 1;
+    const stepSpinner = spinner({ indicator: timer ? "timer" : "dots" });
+    stepSpinner.start(step(text));
+    return stepSpinner;
+  };
+
+  const scaffoldSpinner = startStep(t("scaffold.copying"), { timer: false });
   await copyTemplate(templateSourceDir, targetDir);
   await updatePackageJson(targetDir, { projectName, tools });
   await updateReadme(targetDir, projectName);
@@ -225,42 +234,38 @@ export async function runInit(options = {}) {
   await setupPackageManager(targetDir, packageManager, {
     isYarnClassic: (process.env.npm_config_user_agent ?? "").startsWith("yarn/1."),
   });
-  scaffoldSpinner.stop(t("scaffold.copyDone"));
+  scaffoldSpinner.stop(step(t("scaffold.copyDone")));
 
   const gitInitialized = await initGitRepo(targetDir);
 
-  const online = await isOnline();
   let installOk = false;
-  const offline = !online;
 
   if (skipInstall) {
     p.log.info(t("scaffold.skipInstall"));
   } else if (offline) {
     p.log.warn(t("scaffold.offline"));
   } else {
-    const installSpinner = p.spinner();
-    installSpinner.start(t("scaffold.installing", { pm: packageManager }));
+    const installSpinner = startStep(t("scaffold.installing", { pm: packageManager }));
     try {
       await runCommand(packageManager, getInstallArgs(packageManager), { cwd: targetDir });
-      installSpinner.stop(t("scaffold.installDone"));
+      installSpinner.stop(step(t("scaffold.installDone")));
       installOk = true;
     } catch (error) {
-      installSpinner.stop(t("scaffold.installFailed"));
-      p.log.error(String(error?.message ?? error));
+      installSpinner.error(step(t("scaffold.installFailed")));
+      logError(error);
     }
   }
 
   // ViraStack AI only writes files, so it runs even with --skip-install.
   let aiOk = false;
   if (!offline) {
-    const aiSpinner = p.spinner();
-    aiSpinner.start(t("scaffold.aiInit"));
+    const aiSpinner = startStep(t("scaffold.aiInit"));
     try {
       await runCommand("npx", getAiInitArgs(agents, { tr: getLocale() === "tr" }), { cwd: targetDir });
-      aiSpinner.stop(t("scaffold.aiInitDone"));
+      aiSpinner.stop(step(t("scaffold.aiInitDone")));
       aiOk = true;
     } catch {
-      aiSpinner.stop(t("scaffold.aiInitFailed"));
+      aiSpinner.error(step(t("scaffold.aiInitFailed")));
     }
   }
 
@@ -268,25 +273,37 @@ export async function runInit(options = {}) {
   // Like ViraStack AI, they only write files, so only offline skips them.
   let skillsOk = false;
   if (!offline) {
-    const skillsSpinner = p.spinner();
-    skillsSpinner.start(t("scaffold.skillsInit"));
-    let failed = 0;
-    for (const entry of SKILLS) {
+    const skillsSpinner = startStep(t("scaffold.skillsInit"));
+    const added = [];
+    const failed = [];
+    for (const [index, entry] of SKILLS.entries()) {
+      const name = entry.skill ?? entry.source;
+      skillsSpinner.message(
+        step(t("scaffold.skillsProgress", { current: index + 1, total: SKILLS.length, name })),
+      );
       try {
         await runCommand("npx", getSkillArgs(entry, agents), { cwd: targetDir });
+        added.push(name);
       } catch {
-        failed += 1;
+        failed.push(name);
       }
     }
-    skillsOk = failed === 0;
-    skillsSpinner.stop(skillsOk ? t("scaffold.skillsInitDone") : t("scaffold.skillsInitFailed"));
+    skillsOk = failed.length === 0;
+    if (skillsOk) {
+      skillsSpinner.stop(step(t("scaffold.skillsInitDone")));
+      stepDetail(currentStep, totalSteps, added.join(", "));
+    } else {
+      skillsSpinner.error(
+        step(t("scaffold.skillsInitFailed", { failed: failed.length, total: SKILLS.length })),
+      );
+      stepDetail(currentStep, totalSteps, failed.join(", "));
+    }
   }
 
   // Last, so the first commit contains every generated file.
-  const gitSpinner = p.spinner();
-  gitSpinner.start(t("scaffold.gitInit"));
+  const gitSpinner = startStep(t("scaffold.gitInit"), { timer: false });
   const committed = gitInitialized && (await commitInitial(targetDir));
-  gitSpinner.stop(committed ? t("scaffold.gitInitDone") : t("scaffold.gitInitSkipped"));
+  gitSpinner.stop(step(committed ? t("scaffold.gitInitDone") : t("scaffold.gitInitSkipped")));
 
   await trackEvent("create", {
     template,
@@ -298,33 +315,17 @@ export async function runInit(options = {}) {
     skipInstall,
   });
 
-  const cdHint = useCurrentDir ? null : t("done.cd", { dir: projectName });
-  const installCmd = getInstallCommand(packageManager);
-  const aiCmd = getAiInitCommand(agents);
-  const skillsCmd = getSkillsCommand();
-  const devCmd = getRunDevCommand(packageManager);
+  const commands = [];
+  if (!useCurrentDir) commands.push(`cd ${projectName}`);
+  if (!installOk) commands.push(getInstallCommand(packageManager));
+  if (!aiOk) commands.push(getAiInitCommand(agents));
+  if (!skillsOk) commands.push(getSkillsCommand());
+  commands.push(getRunDevCommand(packageManager));
 
-  if (skipInstall || offline || !installOk) {
-    const outroLines = [t("done.partialTitle")];
-    if (cdHint) outroLines.push(cdHint);
-    outroLines.push(t("done.manualInstall", { cmd: installCmd }));
-    if (!aiOk) outroLines.push(t("done.manualAi", { cmd: aiCmd }));
-    if (!skillsOk) outroLines.push(t("done.manualSkills", { cmd: skillsCmd }));
-    outroLines.push(t("done.dev", { cmd: devCmd }));
-    if (!installOk && !offline && !skipInstall) {
-      p.log.error(t("done.installFailedNote"));
-    }
-    p.outro(outroLines.join("\n"));
-    if (!installOk && !offline && !skipInstall) {
-      process.exitCode = 1;
-    }
-    return;
-  }
-
-  const outroLines = [t("done.title")];
-  if (cdHint) outroLines.push(cdHint);
-  if (!aiOk) outroLines.push(t("done.manualAi", { cmd: aiCmd }));
-  if (!skillsOk) outroLines.push(t("done.manualSkills", { cmd: skillsCmd }));
-  outroLines.push(t("done.dev", { cmd: devCmd }));
-  p.outro(outroLines.join("\n"));
+  const installFailed = runsInstall && !installOk;
+  if (installFailed) p.log.error(t("done.installFailedNote"));
+  const steps = commands.map((cmd) => accent(cmd));
+  p.log.step([t("done.nextSteps"), "", ...steps].join("\n"));
+  p.outro(installOk ? "" : t("done.partialTitle"));
+  if (installFailed) process.exitCode = 1;
 }

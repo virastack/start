@@ -29,11 +29,10 @@ describe("parseToolsFlag", () => {
 describe("tool prompt copy", () => {
   afterEach(() => setLocale("en"));
 
-  it("has a label and a hint for every tool offered in init, in both languages", () => {
+  it("has a hint for every tool offered in init, in both languages", () => {
     for (const locale of ["en", "tr"]) {
       setLocale(locale);
       for (const tool of TOOLS.filter((item) => !item.hiddenFromInit)) {
-        expect(t(`tools.${tool.id}.label`)).toBe(tool.package);
         expect(t(`tools.${tool.id}.hint`)).not.toBe(`tools.${tool.id}.hint`);
       }
     }

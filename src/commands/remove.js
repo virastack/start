@@ -1,11 +1,11 @@
 import path from "node:path";
 import { promises as fs } from "node:fs";
 import * as p from "@clack/prompts";
-import pc from "picocolors";
 
 import { t } from "../i18n.js";
 import { detectPackageManager } from "../utils/package-manager.js";
 import { trackEvent } from "../utils/telemetry.js";
+import { accent, intro, logError, spinner as createSpinner } from "../utils/ui.js";
 import {
   applyRemoval,
   FeatureNotFoundError,
@@ -31,7 +31,7 @@ async function confirmChanged(id, changed, yes) {
   }
   const confirmed = await p.confirm({ message: t("remove.confirm"), initialValue: false });
   if (p.isCancel(confirmed) || !confirmed) {
-    p.outro(t("remove.kept", { pkg: id }));
+    p.outro(t("remove.kept", { pkg: accent(id) }));
     process.exit(0);
   }
 }
@@ -42,7 +42,7 @@ async function confirmChanged(id, changed, yes) {
  */
 export async function runRemove(id, { yes = false } = {}) {
   console.log();
-  p.intro(pc.bgMagenta(pc.black(" ViraStack ")));
+  intro();
 
   if (!id) {
     p.log.error(await formatAvailable(t("remove.missing")));
@@ -68,31 +68,31 @@ export async function runRemove(id, { yes = false } = {}) {
     plan = await planRemoval(id, { cwd, template, i18n });
   } catch (error) {
     if (error instanceof FeatureNotFoundError) {
-      p.log.error(await formatAvailable(t("add.toolInvalid", { tool: id })));
+      p.log.error(await formatAvailable(t("add.toolInvalid", { tool: accent(id) })));
     } else if (error instanceof RegistryUnavailableError) {
       p.log.error(t("add.registryUnavailable"));
     } else {
-      p.log.error(String(error?.message ?? error));
+      logError(error);
     }
     process.exit(1);
   }
 
   if (plan.files.length === 0 && plan.messages.length === 0) {
-    p.log.info(t("remove.notInstalled", { pkg: id }));
+    p.log.info(t("remove.notInstalled", { pkg: accent(id) }));
     return;
   }
   if (plan.changed.length > 0) await confirmChanged(id, plan.changed, yes);
 
   const packageManager = detectPackageManager();
-  const spinner = p.spinner();
-  spinner.start(t("remove.removing", { pkg: id }));
+  const spinner = createSpinner();
+  spinner.start(t("remove.removing", { pkg: accent(id) }));
   try {
     await applyRemoval(plan, { cwd, packageManager, template, i18n });
-    spinner.stop(t("remove.done", { pkg: id }));
+    spinner.stop(t("remove.done", { pkg: accent(id) }));
     p.log.info(t("remove.packagesKept"));
   } catch (error) {
-    spinner.stop(t("remove.failed", { pkg: id }));
-    p.log.error(String(error?.message ?? error));
+    spinner.error(t("remove.failed", { pkg: accent(id) }));
+    logError(error);
     process.exit(1);
   }
 
