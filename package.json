@@ -1,9 +1,9 @@
 {
   "name": "virastack",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Scaffolding CLI for Next.js and TanStack Start: ViraStack tools and AI rules in one command",
   "author": {
-    "name": "\u00d6mer G\u00fcl\u00e7i\u00e7ek (ViraStack)",
+    "name": "Ömer Gülçiçek (ViraStack)",
     "email": "iletisim@omergulcicek.com",
     "url": "https://omergulcicek.com"
   },

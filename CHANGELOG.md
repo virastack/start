@@ -1,5 +1,21 @@
 # Changelog
 
+## [v2.1.0] - 2026-11-05
+
+This release changes only the CLI's output. Projects and templates are the same as in 2.0.0.
+
+### CLI
+
+- **Badge and accent color**: The run starts with a ViraStack badge and the version. Step counters, spinners and highlights use the terminal's cyan, so they follow your theme.
+- **Step counters**: Each step shows `[n/total]`. A long step shows a dimmed timer; a failed step gets a red mark.
+- **Short errors**: A failure shows its first line and the command's last 8 lines, dimmed, instead of the whole output.
+- **Design skills**: They are added one by one with progress, and their names show on a dimmed line under the step.
+- **Next steps**: Only the commands, without a frame or a docs link.
+- **Tool choices**: Short names (`mask`, `password`, `address`, `ai`) instead of package names.
+- **Colored `--help`**: Headings are bold, commands and flags cyan. `NO_COLOR` keeps it plain.
+- **Shorter run**: The telemetry notice, the selection summary and the closing line are gone. Telemetry itself is unchanged; see [Telemetry](README.md#telemetry) to turn it off.
+- **Turkish copy** addresses you as "sen".
+
 ## [v2.0.0] - 2026-11-03
 
 This release does not change existing projects. To move a 1.x project, apply the breaking changes by hand.
