@@ -1,5 +1,15 @@
 # Changelog
 
+## [v2.1.1] - 2026-11-11
+
+This release fixes new projects. To fix a project created with 2.0.0 or 2.1.0, apply the changes below by hand.
+
+### Templates
+
+- **commitlint**: `commitlint.config.js` was CommonJS, so the commit-msg hook crashed in the TanStack Start templates, which set `"type": "module"`. It is now `commitlint.config.mjs` and uses `export default`.
+- **shadcn CSS**: `tailwind.css` now imports `shadcn/tailwind.css`, and `shadcn` is a dependency. Without it, variants such as `data-open`, `data-checked` and `data-horizontal` did nothing; a separator rendered 0px high, for example. Class order in five `components/ui` files now matches shadcn's.
+- **TanStack Start route tree**: `tsr.config.json` adds the `Register` block for `@tanstack/react-start` as `routeTreeFileFooter`, so `tsr generate` and `vite build` write the same `routeTree.gen.ts`.
+
 ## [v2.1.0] - 2026-11-05
 
 This release changes only the CLI's output. Projects and templates are the same as in 2.0.0.
