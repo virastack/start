@@ -18,6 +18,8 @@ const config = {
   ignoreDependencies: [
     "tailwindcss",
     "tw-animate-css",
+    // Imported from tailwind.css; knip does not follow CSS imports.
+    "shadcn",
     "react-hook-form",
     "@hookform/resolvers",
     "zustand",
