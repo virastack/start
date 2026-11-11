@@ -38,7 +38,7 @@ export const GROUPS = [
       ".prettierrc",
       ".vscode/extensions.json",
       "LICENSE",
-      "commitlint.config.js",
+      "commitlint.config.mjs",
       "public/favicon.ico",
       "public/logo.png",
       "public/logo.webp",

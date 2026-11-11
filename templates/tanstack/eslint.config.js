@@ -91,7 +91,7 @@ export default [
     ignores: [
       "eslint.config.js",
       "knip.config.js",
-      "commitlint.config.js",
+      "commitlint.config.mjs",
       "src/routeTree.gen.ts",
       "dist/**",
       ".tanstack/**",
