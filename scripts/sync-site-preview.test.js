@@ -27,4 +27,10 @@ describe("the site preview's copy", () => {
       'import { api } from "@/features/start/demos/users/lib/api"\nimport { ProductList } from "@/features/start/demos/products/components/ProductList"',
     );
   });
+
+  it("points the cart's imports at its own preview folder", () => {
+    expect(toPreviewImports('import { Cart } from "@/features/cart/components/Cart"')).toBe(
+      'import { Cart } from "@/features/start/demos/cart/components/Cart"',
+    );
+  });
 });

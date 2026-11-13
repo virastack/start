@@ -1,5 +1,18 @@
 # Changelog
 
+## [Unreleased]
+
+This release does not change existing projects. The new module ships from the registry and works with the published CLI.
+
+### Modules
+
+- **`cart`**: A cart page at `/cart` with a checkbox per item, quantity buttons, removal, a coupon code and an order summary of the selected items added up to the cent. On phones the summary is a bar fixed to the bottom with the total and the checkout button, and a drawer opens the rest; on a narrow list the quantity is a select instead of the stepper. The server renders the page and the cart loads in the browser, since it belongs to the visitor and is no page for search results. Every change sends the whole cart to DummyJSON and the answer replaces the cached cart, and the controls wait while a change is on its way. It works in all four templates, with Turkish and English messages in the i18n ones.
+- **`products`**: The add to cart button's comment says why it only shows a toast: DummyJSON keeps no cart.
+
+### Templates
+
+- **README**: The modules line lists `products` and `cart`, and says which modules bring their pages.
+
 ## [v2.2.0] - 2026-11-13
 
 This release does not change existing projects. A module can now bring its own pages, and `products` is the first one that does.

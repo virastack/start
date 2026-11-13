@@ -93,7 +93,9 @@ async function checkServer(dir, { template, i18n, e2e }, expect) {
     expect(ready, `the ${template} server did not start on port ${port}`);
     if (!ready) return;
     for (const prefix of i18n ? ["", "/tr"] : [""]) {
-      for (const { path: url, text, before, absent } of e2e.pages) {
+      for (const { path: url, text, before, absent, localized } of e2e.pages) {
+        // UI text, not data: on the `/tr` page the `tr` check below looks for its Turkish.
+        if (prefix && localized) continue;
         const page = await get(`${prefix}${url}`);
         const at = page.text.indexOf(text);
         expect(page.status === 200 && at !== -1, `GET ${prefix}${url}: ${page.status}, "${text}" ${at === -1 ? "not " : ""}in the visible HTML`);
@@ -134,7 +136,9 @@ async function checkServer(dir, { template, i18n, e2e }, expect) {
       const page = await get(`/tr${first.path}`);
       expect(page.text.includes(e2e.tr.text), `GET /tr${first.path}: no "${e2e.tr.text}" in the visible HTML`);
       expect(/<html[^>]*\slang="tr"/.test(page.html), `GET /tr${first.path}: the page is not lang="tr"`);
-      expect(page.html.includes(`href="${e2e.tr.link}`), `GET /tr${first.path}: no link starting with ${e2e.tr.link}`);
+      if (e2e.tr.link) {
+        expect(page.html.includes(`href="${e2e.tr.link}`), `GET /tr${first.path}: no link starting with ${e2e.tr.link}`);
+      }
     }
   } finally {
     if (server.pid) process.kill(-server.pid, "SIGTERM");

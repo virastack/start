@@ -4127,6 +4127,1000 @@
           }
         }
       }
+    },
+    {
+      "name": "cart-nextjs",
+      "type": "registry:item",
+      "title": "Cart",
+      "description": "A cart page with item selection, quantities, removal, a coupon code and an order summary.",
+      "author": "ViraStack <https://virastack.com>",
+      "dependencies": [
+        "@hookform/resolvers@^6.0.2",
+        "@tanstack/react-query@^5.105.0",
+        "cn@^0.5.1",
+        "lucide-react@^1.66.0",
+        "react-hook-form@^7.91.0",
+        "sonner@^2.0.8",
+        "zod@^4.6.7"
+      ],
+      "devDependencies": [
+        "@testing-library/react@^16.3.3",
+        "@testing-library/user-event@^14.6.8",
+        "msw@^3.0.3",
+        "vitest@^5.0.5"
+      ],
+      "registryDependencies": [
+        "drawer"
+      ],
+      "files": [
+        {
+          "path": "registry/cart/nextjs/src/app/cart/page.tsx",
+          "type": "registry:file",
+          "target": "src/app/cart/page.tsx"
+        },
+        {
+          "path": "registry/cart/common/src/features/cart/api/cart-api.test.ts",
+          "type": "registry:file",
+          "target": "src/features/cart/api/cart-api.test.ts"
+        },
+        {
+          "path": "registry/cart/common/src/features/cart/api/cart.queries.ts",
+          "type": "registry:file",
+          "target": "src/features/cart/api/cart.queries.ts"
+        },
+        {
+          "path": "registry/cart/common/src/features/cart/api/coupon.api.ts",
+          "type": "registry:file",
+          "target": "src/features/cart/api/coupon.api.ts"
+        },
+        {
+          "path": "registry/cart/common/src/features/cart/api/get-cart.api.ts",
+          "type": "registry:file",
+          "target": "src/features/cart/api/get-cart.api.ts"
+        },
+        {
+          "path": "registry/cart/common/src/features/cart/api/query-keys.ts",
+          "type": "registry:file",
+          "target": "src/features/cart/api/query-keys.ts"
+        },
+        {
+          "path": "registry/cart/common/src/features/cart/api/selection.api.ts",
+          "type": "registry:file",
+          "target": "src/features/cart/api/selection.api.ts"
+        },
+        {
+          "path": "registry/cart/common/src/features/cart/api/update-cart.api.ts",
+          "type": "registry:file",
+          "target": "src/features/cart/api/update-cart.api.ts"
+        },
+        {
+          "path": "registry/cart/nextjs/src/features/cart/components/Cart.test.tsx",
+          "type": "registry:file",
+          "target": "src/features/cart/components/Cart.test.tsx"
+        },
+        {
+          "path": "registry/cart/common/src/features/cart/components/Cart.tsx",
+          "type": "registry:file",
+          "target": "src/features/cart/components/Cart.tsx"
+        },
+        {
+          "path": "registry/cart/common/src/features/cart/components/CartEmpty.tsx",
+          "type": "registry:file",
+          "target": "src/features/cart/components/CartEmpty.tsx"
+        },
+        {
+          "path": "registry/cart/nextjs/src/features/cart/components/CartImage.tsx",
+          "type": "registry:file",
+          "target": "src/features/cart/components/CartImage.tsx"
+        },
+        {
+          "path": "registry/cart/common/src/features/cart/components/CartItem.tsx",
+          "type": "registry:file",
+          "target": "src/features/cart/components/CartItem.tsx"
+        },
+        {
+          "path": "registry/cart/common/src/features/cart/components/CartItemList.tsx",
+          "type": "registry:file",
+          "target": "src/features/cart/components/CartItemList.tsx"
+        },
+        {
+          "path": "registry/cart/nextjs/src/features/cart/components/CartLink.tsx",
+          "type": "registry:file",
+          "target": "src/features/cart/components/CartLink.tsx"
+        },
+        {
+          "path": "registry/cart/common/src/features/cart/components/CartSkeleton.tsx",
+          "type": "registry:file",
+          "target": "src/features/cart/components/CartSkeleton.tsx"
+        },
+        {
+          "path": "registry/cart/common/src/features/cart/components/CartSummary.tsx",
+          "type": "registry:file",
+          "target": "src/features/cart/components/CartSummary.tsx"
+        },
+        {
+          "path": "registry/cart/common/src/features/cart/components/CartSummaryBar.tsx",
+          "type": "registry:file",
+          "target": "src/features/cart/components/CartSummaryBar.tsx"
+        },
+        {
+          "path": "registry/cart/common/src/features/cart/components/CartSummaryDetails.tsx",
+          "type": "registry:file",
+          "target": "src/features/cart/components/CartSummaryDetails.tsx"
+        },
+        {
+          "path": "registry/cart/common/src/features/cart/components/CheckoutButton.tsx",
+          "type": "registry:file",
+          "target": "src/features/cart/components/CheckoutButton.tsx"
+        },
+        {
+          "path": "registry/cart/common/src/features/cart/components/CouponForm.tsx",
+          "type": "registry:file",
+          "target": "src/features/cart/components/CouponForm.tsx"
+        },
+        {
+          "path": "registry/cart/common/src/features/cart/components/QuantitySelect.tsx",
+          "type": "registry:file",
+          "target": "src/features/cart/components/QuantitySelect.tsx"
+        },
+        {
+          "path": "registry/cart/common/src/features/cart/components/QuantityStepper.tsx",
+          "type": "registry:file",
+          "target": "src/features/cart/components/QuantityStepper.tsx"
+        },
+        {
+          "path": "registry/cart/common/src/features/cart/constants/cart.constants.ts",
+          "type": "registry:file",
+          "target": "src/features/cart/constants/cart.constants.ts"
+        },
+        {
+          "path": "registry/cart/common/src/features/cart/helpers/cart-totals.test.ts",
+          "type": "registry:file",
+          "target": "src/features/cart/helpers/cart-totals.test.ts"
+        },
+        {
+          "path": "registry/cart/common/src/features/cart/helpers/cart-totals.ts",
+          "type": "registry:file",
+          "target": "src/features/cart/helpers/cart-totals.ts"
+        },
+        {
+          "path": "registry/cart/common/src/features/cart/helpers/price.ts",
+          "type": "registry:file",
+          "target": "src/features/cart/helpers/price.ts"
+        },
+        {
+          "path": "registry/cart/common/src/features/cart/helpers/product-href.ts",
+          "type": "registry:file",
+          "target": "src/features/cart/helpers/product-href.ts"
+        },
+        {
+          "path": "registry/cart/common/src/features/cart/hooks/use-cart-mutations.ts",
+          "type": "registry:file",
+          "target": "src/features/cart/hooks/use-cart-mutations.ts"
+        },
+        {
+          "path": "registry/cart/common/src/features/cart/hooks/use-cart.ts",
+          "type": "registry:file",
+          "target": "src/features/cart/hooks/use-cart.ts"
+        },
+        {
+          "path": "registry/cart/common/src/features/cart/schemas/cart.schema.ts",
+          "type": "registry:file",
+          "target": "src/features/cart/schemas/cart.schema.ts"
+        },
+        {
+          "path": "registry/cart/common/src/features/cart/schemas/coupon.schema.ts",
+          "type": "registry:file",
+          "target": "src/features/cart/schemas/coupon.schema.ts"
+        }
+      ],
+      "meta": {
+        "product": "virastack-start",
+        "framework": "nextjs",
+        "minStartVersion": "2.0.0",
+        "entry": {
+          "name": "Cart",
+          "file": "@/features/cart/components/Cart"
+        },
+        "pages": [
+          {
+            "path": "/cart",
+            "file": "src/app/cart/page.tsx"
+          }
+        ]
+      }
+    },
+    {
+      "name": "cart-tanstack",
+      "type": "registry:item",
+      "title": "Cart",
+      "description": "A cart page with item selection, quantities, removal, a coupon code and an order summary.",
+      "author": "ViraStack <https://virastack.com>",
+      "dependencies": [
+        "@hookform/resolvers@^6.0.2",
+        "@tanstack/react-query@^5.105.0",
+        "cn@^0.5.1",
+        "lucide-react@^1.66.0",
+        "react-hook-form@^7.91.0",
+        "sonner@^2.0.8",
+        "zod@^4.6.7"
+      ],
+      "devDependencies": [
+        "@testing-library/react@^16.3.3",
+        "@testing-library/user-event@^14.6.8",
+        "msw@^3.0.3",
+        "vitest@^5.0.5"
+      ],
+      "registryDependencies": [
+        "drawer"
+      ],
+      "files": [
+        {
+          "path": "registry/cart/common/src/features/cart/api/cart-api.test.ts",
+          "type": "registry:file",
+          "target": "src/features/cart/api/cart-api.test.ts"
+        },
+        {
+          "path": "registry/cart/common/src/features/cart/api/cart.queries.ts",
+          "type": "registry:file",
+          "target": "src/features/cart/api/cart.queries.ts"
+        },
+        {
+          "path": "registry/cart/common/src/features/cart/api/coupon.api.ts",
+          "type": "registry:file",
+          "target": "src/features/cart/api/coupon.api.ts"
+        },
+        {
+          "path": "registry/cart/common/src/features/cart/api/get-cart.api.ts",
+          "type": "registry:file",
+          "target": "src/features/cart/api/get-cart.api.ts"
+        },
+        {
+          "path": "registry/cart/common/src/features/cart/api/query-keys.ts",
+          "type": "registry:file",
+          "target": "src/features/cart/api/query-keys.ts"
+        },
+        {
+          "path": "registry/cart/common/src/features/cart/api/selection.api.ts",
+          "type": "registry:file",
+          "target": "src/features/cart/api/selection.api.ts"
+        },
+        {
+          "path": "registry/cart/common/src/features/cart/api/update-cart.api.ts",
+          "type": "registry:file",
+          "target": "src/features/cart/api/update-cart.api.ts"
+        },
+        {
+          "path": "registry/cart/tanstack/src/features/cart/components/Cart.test.tsx",
+          "type": "registry:file",
+          "target": "src/features/cart/components/Cart.test.tsx"
+        },
+        {
+          "path": "registry/cart/common/src/features/cart/components/Cart.tsx",
+          "type": "registry:file",
+          "target": "src/features/cart/components/Cart.tsx"
+        },
+        {
+          "path": "registry/cart/common/src/features/cart/components/CartEmpty.tsx",
+          "type": "registry:file",
+          "target": "src/features/cart/components/CartEmpty.tsx"
+        },
+        {
+          "path": "registry/cart/tanstack/src/features/cart/components/CartImage.tsx",
+          "type": "registry:file",
+          "target": "src/features/cart/components/CartImage.tsx"
+        },
+        {
+          "path": "registry/cart/common/src/features/cart/components/CartItem.tsx",
+          "type": "registry:file",
+          "target": "src/features/cart/components/CartItem.tsx"
+        },
+        {
+          "path": "registry/cart/common/src/features/cart/components/CartItemList.tsx",
+          "type": "registry:file",
+          "target": "src/features/cart/components/CartItemList.tsx"
+        },
+        {
+          "path": "registry/cart/tanstack/src/features/cart/components/CartLink.tsx",
+          "type": "registry:file",
+          "target": "src/features/cart/components/CartLink.tsx"
+        },
+        {
+          "path": "registry/cart/common/src/features/cart/components/CartSkeleton.tsx",
+          "type": "registry:file",
+          "target": "src/features/cart/components/CartSkeleton.tsx"
+        },
+        {
+          "path": "registry/cart/common/src/features/cart/components/CartSummary.tsx",
+          "type": "registry:file",
+          "target": "src/features/cart/components/CartSummary.tsx"
+        },
+        {
+          "path": "registry/cart/common/src/features/cart/components/CartSummaryBar.tsx",
+          "type": "registry:file",
+          "target": "src/features/cart/components/CartSummaryBar.tsx"
+        },
+        {
+          "path": "registry/cart/common/src/features/cart/components/CartSummaryDetails.tsx",
+          "type": "registry:file",
+          "target": "src/features/cart/components/CartSummaryDetails.tsx"
+        },
+        {
+          "path": "registry/cart/common/src/features/cart/components/CheckoutButton.tsx",
+          "type": "registry:file",
+          "target": "src/features/cart/components/CheckoutButton.tsx"
+        },
+        {
+          "path": "registry/cart/common/src/features/cart/components/CouponForm.tsx",
+          "type": "registry:file",
+          "target": "src/features/cart/components/CouponForm.tsx"
+        },
+        {
+          "path": "registry/cart/common/src/features/cart/components/QuantitySelect.tsx",
+          "type": "registry:file",
+          "target": "src/features/cart/components/QuantitySelect.tsx"
+        },
+        {
+          "path": "registry/cart/common/src/features/cart/components/QuantityStepper.tsx",
+          "type": "registry:file",
+          "target": "src/features/cart/components/QuantityStepper.tsx"
+        },
+        {
+          "path": "registry/cart/common/src/features/cart/constants/cart.constants.ts",
+          "type": "registry:file",
+          "target": "src/features/cart/constants/cart.constants.ts"
+        },
+        {
+          "path": "registry/cart/common/src/features/cart/helpers/cart-totals.test.ts",
+          "type": "registry:file",
+          "target": "src/features/cart/helpers/cart-totals.test.ts"
+        },
+        {
+          "path": "registry/cart/common/src/features/cart/helpers/cart-totals.ts",
+          "type": "registry:file",
+          "target": "src/features/cart/helpers/cart-totals.ts"
+        },
+        {
+          "path": "registry/cart/common/src/features/cart/helpers/price.ts",
+          "type": "registry:file",
+          "target": "src/features/cart/helpers/price.ts"
+        },
+        {
+          "path": "registry/cart/common/src/features/cart/helpers/product-href.ts",
+          "type": "registry:file",
+          "target": "src/features/cart/helpers/product-href.ts"
+        },
+        {
+          "path": "registry/cart/common/src/features/cart/hooks/use-cart-mutations.ts",
+          "type": "registry:file",
+          "target": "src/features/cart/hooks/use-cart-mutations.ts"
+        },
+        {
+          "path": "registry/cart/common/src/features/cart/hooks/use-cart.ts",
+          "type": "registry:file",
+          "target": "src/features/cart/hooks/use-cart.ts"
+        },
+        {
+          "path": "registry/cart/common/src/features/cart/schemas/cart.schema.ts",
+          "type": "registry:file",
+          "target": "src/features/cart/schemas/cart.schema.ts"
+        },
+        {
+          "path": "registry/cart/common/src/features/cart/schemas/coupon.schema.ts",
+          "type": "registry:file",
+          "target": "src/features/cart/schemas/coupon.schema.ts"
+        },
+        {
+          "path": "registry/cart/tanstack/src/routes/cart/index.tsx",
+          "type": "registry:file",
+          "target": "src/routes/cart/index.tsx"
+        }
+      ],
+      "meta": {
+        "product": "virastack-start",
+        "framework": "tanstack",
+        "minStartVersion": "2.0.0",
+        "entry": {
+          "name": "Cart",
+          "file": "@/features/cart/components/Cart"
+        },
+        "pages": [
+          {
+            "path": "/cart",
+            "file": "src/routes/cart/index.tsx"
+          }
+        ]
+      }
+    },
+    {
+      "name": "cart-nextjs-i18n",
+      "type": "registry:item",
+      "title": "Cart",
+      "description": "A cart page with item selection, quantities, removal, a coupon code and an order summary.",
+      "author": "ViraStack <https://virastack.com>",
+      "dependencies": [
+        "@hookform/resolvers@^6.0.2",
+        "@tanstack/react-query@^5.105.0",
+        "cn@^0.5.1",
+        "lucide-react@^1.66.0",
+        "react-hook-form@^7.91.0",
+        "sonner@^2.0.8",
+        "zod@^4.6.7"
+      ],
+      "devDependencies": [
+        "@testing-library/react@^16.3.3",
+        "@testing-library/user-event@^14.6.8",
+        "msw@^3.0.3",
+        "vitest@^5.0.5"
+      ],
+      "registryDependencies": [
+        "drawer"
+      ],
+      "files": [
+        {
+          "path": "registry/cart/nextjs-i18n/src/app/[locale]/cart/page.tsx",
+          "type": "registry:file",
+          "target": "src/app/[locale]/cart/page.tsx"
+        },
+        {
+          "path": "registry/cart/common/src/features/cart/api/cart-api.test.ts",
+          "type": "registry:file",
+          "target": "src/features/cart/api/cart-api.test.ts"
+        },
+        {
+          "path": "registry/cart/common/src/features/cart/api/cart.queries.ts",
+          "type": "registry:file",
+          "target": "src/features/cart/api/cart.queries.ts"
+        },
+        {
+          "path": "registry/cart/common/src/features/cart/api/coupon.api.ts",
+          "type": "registry:file",
+          "target": "src/features/cart/api/coupon.api.ts"
+        },
+        {
+          "path": "registry/cart/common/src/features/cart/api/get-cart.api.ts",
+          "type": "registry:file",
+          "target": "src/features/cart/api/get-cart.api.ts"
+        },
+        {
+          "path": "registry/cart/common/src/features/cart/api/query-keys.ts",
+          "type": "registry:file",
+          "target": "src/features/cart/api/query-keys.ts"
+        },
+        {
+          "path": "registry/cart/common/src/features/cart/api/selection.api.ts",
+          "type": "registry:file",
+          "target": "src/features/cart/api/selection.api.ts"
+        },
+        {
+          "path": "registry/cart/common/src/features/cart/api/update-cart.api.ts",
+          "type": "registry:file",
+          "target": "src/features/cart/api/update-cart.api.ts"
+        },
+        {
+          "path": "registry/cart/nextjs-i18n/src/features/cart/components/Cart.test.tsx",
+          "type": "registry:file",
+          "target": "src/features/cart/components/Cart.test.tsx"
+        },
+        {
+          "path": "registry/cart/nextjs-i18n/src/features/cart/components/Cart.tsx",
+          "type": "registry:file",
+          "target": "src/features/cart/components/Cart.tsx"
+        },
+        {
+          "path": "registry/cart/nextjs-i18n/src/features/cart/components/CartEmpty.tsx",
+          "type": "registry:file",
+          "target": "src/features/cart/components/CartEmpty.tsx"
+        },
+        {
+          "path": "registry/cart/nextjs-i18n/src/features/cart/components/CartImage.tsx",
+          "type": "registry:file",
+          "target": "src/features/cart/components/CartImage.tsx"
+        },
+        {
+          "path": "registry/cart/nextjs-i18n/src/features/cart/components/CartItem.tsx",
+          "type": "registry:file",
+          "target": "src/features/cart/components/CartItem.tsx"
+        },
+        {
+          "path": "registry/cart/nextjs-i18n/src/features/cart/components/CartItemList.tsx",
+          "type": "registry:file",
+          "target": "src/features/cart/components/CartItemList.tsx"
+        },
+        {
+          "path": "registry/cart/nextjs-i18n/src/features/cart/components/CartLink.tsx",
+          "type": "registry:file",
+          "target": "src/features/cart/components/CartLink.tsx"
+        },
+        {
+          "path": "registry/cart/nextjs-i18n/src/features/cart/components/CartSkeleton.tsx",
+          "type": "registry:file",
+          "target": "src/features/cart/components/CartSkeleton.tsx"
+        },
+        {
+          "path": "registry/cart/nextjs-i18n/src/features/cart/components/CartSummary.tsx",
+          "type": "registry:file",
+          "target": "src/features/cart/components/CartSummary.tsx"
+        },
+        {
+          "path": "registry/cart/nextjs-i18n/src/features/cart/components/CartSummaryBar.tsx",
+          "type": "registry:file",
+          "target": "src/features/cart/components/CartSummaryBar.tsx"
+        },
+        {
+          "path": "registry/cart/nextjs-i18n/src/features/cart/components/CartSummaryDetails.tsx",
+          "type": "registry:file",
+          "target": "src/features/cart/components/CartSummaryDetails.tsx"
+        },
+        {
+          "path": "registry/cart/nextjs-i18n/src/features/cart/components/CheckoutButton.tsx",
+          "type": "registry:file",
+          "target": "src/features/cart/components/CheckoutButton.tsx"
+        },
+        {
+          "path": "registry/cart/nextjs-i18n/src/features/cart/components/CouponForm.tsx",
+          "type": "registry:file",
+          "target": "src/features/cart/components/CouponForm.tsx"
+        },
+        {
+          "path": "registry/cart/nextjs-i18n/src/features/cart/components/QuantitySelect.tsx",
+          "type": "registry:file",
+          "target": "src/features/cart/components/QuantitySelect.tsx"
+        },
+        {
+          "path": "registry/cart/nextjs-i18n/src/features/cart/components/QuantityStepper.tsx",
+          "type": "registry:file",
+          "target": "src/features/cart/components/QuantityStepper.tsx"
+        },
+        {
+          "path": "registry/cart/common/src/features/cart/constants/cart.constants.ts",
+          "type": "registry:file",
+          "target": "src/features/cart/constants/cart.constants.ts"
+        },
+        {
+          "path": "registry/cart/common/src/features/cart/helpers/cart-totals.test.ts",
+          "type": "registry:file",
+          "target": "src/features/cart/helpers/cart-totals.test.ts"
+        },
+        {
+          "path": "registry/cart/common/src/features/cart/helpers/cart-totals.ts",
+          "type": "registry:file",
+          "target": "src/features/cart/helpers/cart-totals.ts"
+        },
+        {
+          "path": "registry/cart/nextjs-i18n/src/features/cart/helpers/price.ts",
+          "type": "registry:file",
+          "target": "src/features/cart/helpers/price.ts"
+        },
+        {
+          "path": "registry/cart/common/src/features/cart/helpers/product-href.ts",
+          "type": "registry:file",
+          "target": "src/features/cart/helpers/product-href.ts"
+        },
+        {
+          "path": "registry/cart/nextjs-i18n/src/features/cart/hooks/use-cart-format.ts",
+          "type": "registry:file",
+          "target": "src/features/cart/hooks/use-cart-format.ts"
+        },
+        {
+          "path": "registry/cart/common/src/features/cart/hooks/use-cart-mutations.ts",
+          "type": "registry:file",
+          "target": "src/features/cart/hooks/use-cart-mutations.ts"
+        },
+        {
+          "path": "registry/cart/common/src/features/cart/hooks/use-cart.ts",
+          "type": "registry:file",
+          "target": "src/features/cart/hooks/use-cart.ts"
+        },
+        {
+          "path": "registry/cart/common/src/features/cart/schemas/cart.schema.ts",
+          "type": "registry:file",
+          "target": "src/features/cart/schemas/cart.schema.ts"
+        },
+        {
+          "path": "registry/cart/nextjs-i18n/src/features/cart/schemas/coupon.schema.ts",
+          "type": "registry:file",
+          "target": "src/features/cart/schemas/coupon.schema.ts"
+        }
+      ],
+      "meta": {
+        "product": "virastack-start",
+        "framework": "nextjs",
+        "minStartVersion": "2.0.0",
+        "entry": {
+          "name": "Cart",
+          "file": "@/features/cart/components/Cart"
+        },
+        "pages": [
+          {
+            "path": "/cart",
+            "file": "src/app/[locale]/cart/page.tsx"
+          }
+        ],
+        "messages": {
+          "en": {
+            "Cart": {
+              "title": "Cart",
+              "items_label": "Cart items",
+              "select_all": "Select all",
+              "select_item": "Select {title}",
+              "none_selected": "Select the products you want to check out.",
+              "loading": "Loading your cart",
+              "load_error_title": "Could not load your cart",
+              "load_error_description": "Check your connection and try again.",
+              "retry": "Retry",
+              "retrying": "Retrying…",
+              "empty_title": "Your cart is empty",
+              "empty_description": "Products you add show up here.",
+              "browse_products": "Browse products",
+              "quantity_label": "Quantity of {title}",
+              "decrease": "Decrease quantity",
+              "increase": "Increase quantity",
+              "remove_item": "Remove {title}",
+              "item_removed": "{title} removed",
+              "update_error": "Could not update your cart. Try again.",
+              "summary_title": "Order summary",
+              "show_summary": "Show order summary",
+              "subtotal": "{count, plural, one {Subtotal (# item)} other {Subtotal (# items)}}",
+              "product_discount": "Product discount",
+              "coupon_row": "Coupon {code}",
+              "remove_coupon": "Remove coupon",
+              "remove_coupon_label": "Remove coupon {code}",
+              "remove_coupon_error": "Could not remove the coupon. Try again.",
+              "total": "Total",
+              "checkout": "Proceed to checkout",
+              "shipping_note": "Shipping and taxes are calculated at checkout.",
+              "coupon_label": "Coupon code",
+              "apply": "Apply",
+              "applying": "Applying…",
+              "coupon_required": "Enter a coupon code",
+              "coupon_too_long": "This is too long",
+              "coupon_invalid": "This coupon isn't valid",
+              "coupon_error": "Could not apply the coupon. Try again."
+            }
+          },
+          "tr": {
+            "Cart": {
+              "title": "Sepet",
+              "items_label": "Sepetteki ürünler",
+              "select_all": "Tümünü seç",
+              "select_item": "Seç: {title}",
+              "none_selected": "Ödemeye geçmek istediğin ürünleri seç.",
+              "loading": "Sepetin yükleniyor",
+              "load_error_title": "Sepetin yüklenemedi",
+              "load_error_description": "Bağlantını kontrol edip tekrar dene.",
+              "retry": "Tekrar dene",
+              "retrying": "Deneniyor…",
+              "empty_title": "Sepetin boş",
+              "empty_description": "Eklediğin ürünler burada görünür.",
+              "browse_products": "Ürünlere göz at",
+              "quantity_label": "{title} adedi",
+              "decrease": "Adedi azalt",
+              "increase": "Adedi artır",
+              "remove_item": "Sepetten çıkar: {title}",
+              "item_removed": "{title} sepetten çıkarıldı",
+              "update_error": "Sepetin güncellenemedi. Tekrar dene.",
+              "summary_title": "Sipariş özeti",
+              "show_summary": "Sipariş özetini göster",
+              "subtotal": "Ara toplam ({count} ürün)",
+              "product_discount": "Ürün indirimi",
+              "coupon_row": "Kupon {code}",
+              "remove_coupon": "Kuponu kaldır",
+              "remove_coupon_label": "Kuponu kaldır: {code}",
+              "remove_coupon_error": "Kupon kaldırılamadı. Tekrar dene.",
+              "total": "Toplam",
+              "checkout": "Ödemeye geç",
+              "shipping_note": "Kargo ve vergiler ödeme adımında hesaplanır.",
+              "coupon_label": "Kupon kodu",
+              "apply": "Uygula",
+              "applying": "Uygulanıyor…",
+              "coupon_required": "Kupon kodunu gir",
+              "coupon_too_long": "Bu çok uzun",
+              "coupon_invalid": "Bu kupon geçerli değil",
+              "coupon_error": "Kupon uygulanamadı. Tekrar dene."
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "cart-tanstack-i18n",
+      "type": "registry:item",
+      "title": "Cart",
+      "description": "A cart page with item selection, quantities, removal, a coupon code and an order summary.",
+      "author": "ViraStack <https://virastack.com>",
+      "dependencies": [
+        "@hookform/resolvers@^6.0.2",
+        "@tanstack/react-query@^5.105.0",
+        "cn@^0.5.1",
+        "lucide-react@^1.66.0",
+        "react-hook-form@^7.91.0",
+        "sonner@^2.0.8",
+        "zod@^4.6.7"
+      ],
+      "devDependencies": [
+        "@testing-library/react@^16.3.3",
+        "@testing-library/user-event@^14.6.8",
+        "msw@^3.0.3",
+        "vitest@^5.0.5"
+      ],
+      "registryDependencies": [
+        "drawer"
+      ],
+      "files": [
+        {
+          "path": "registry/cart/common/src/features/cart/api/cart-api.test.ts",
+          "type": "registry:file",
+          "target": "src/features/cart/api/cart-api.test.ts"
+        },
+        {
+          "path": "registry/cart/common/src/features/cart/api/cart.queries.ts",
+          "type": "registry:file",
+          "target": "src/features/cart/api/cart.queries.ts"
+        },
+        {
+          "path": "registry/cart/common/src/features/cart/api/coupon.api.ts",
+          "type": "registry:file",
+          "target": "src/features/cart/api/coupon.api.ts"
+        },
+        {
+          "path": "registry/cart/common/src/features/cart/api/get-cart.api.ts",
+          "type": "registry:file",
+          "target": "src/features/cart/api/get-cart.api.ts"
+        },
+        {
+          "path": "registry/cart/common/src/features/cart/api/query-keys.ts",
+          "type": "registry:file",
+          "target": "src/features/cart/api/query-keys.ts"
+        },
+        {
+          "path": "registry/cart/common/src/features/cart/api/selection.api.ts",
+          "type": "registry:file",
+          "target": "src/features/cart/api/selection.api.ts"
+        },
+        {
+          "path": "registry/cart/common/src/features/cart/api/update-cart.api.ts",
+          "type": "registry:file",
+          "target": "src/features/cart/api/update-cart.api.ts"
+        },
+        {
+          "path": "registry/cart/tanstack-i18n/src/features/cart/components/Cart.test.tsx",
+          "type": "registry:file",
+          "target": "src/features/cart/components/Cart.test.tsx"
+        },
+        {
+          "path": "registry/cart/tanstack-i18n/src/features/cart/components/Cart.tsx",
+          "type": "registry:file",
+          "target": "src/features/cart/components/Cart.tsx"
+        },
+        {
+          "path": "registry/cart/tanstack-i18n/src/features/cart/components/CartEmpty.tsx",
+          "type": "registry:file",
+          "target": "src/features/cart/components/CartEmpty.tsx"
+        },
+        {
+          "path": "registry/cart/tanstack-i18n/src/features/cart/components/CartImage.tsx",
+          "type": "registry:file",
+          "target": "src/features/cart/components/CartImage.tsx"
+        },
+        {
+          "path": "registry/cart/tanstack-i18n/src/features/cart/components/CartItem.tsx",
+          "type": "registry:file",
+          "target": "src/features/cart/components/CartItem.tsx"
+        },
+        {
+          "path": "registry/cart/tanstack-i18n/src/features/cart/components/CartItemList.tsx",
+          "type": "registry:file",
+          "target": "src/features/cart/components/CartItemList.tsx"
+        },
+        {
+          "path": "registry/cart/tanstack-i18n/src/features/cart/components/CartLink.tsx",
+          "type": "registry:file",
+          "target": "src/features/cart/components/CartLink.tsx"
+        },
+        {
+          "path": "registry/cart/tanstack-i18n/src/features/cart/components/CartSkeleton.tsx",
+          "type": "registry:file",
+          "target": "src/features/cart/components/CartSkeleton.tsx"
+        },
+        {
+          "path": "registry/cart/tanstack-i18n/src/features/cart/components/CartSummary.tsx",
+          "type": "registry:file",
+          "target": "src/features/cart/components/CartSummary.tsx"
+        },
+        {
+          "path": "registry/cart/tanstack-i18n/src/features/cart/components/CartSummaryBar.tsx",
+          "type": "registry:file",
+          "target": "src/features/cart/components/CartSummaryBar.tsx"
+        },
+        {
+          "path": "registry/cart/tanstack-i18n/src/features/cart/components/CartSummaryDetails.tsx",
+          "type": "registry:file",
+          "target": "src/features/cart/components/CartSummaryDetails.tsx"
+        },
+        {
+          "path": "registry/cart/tanstack-i18n/src/features/cart/components/CheckoutButton.tsx",
+          "type": "registry:file",
+          "target": "src/features/cart/components/CheckoutButton.tsx"
+        },
+        {
+          "path": "registry/cart/tanstack-i18n/src/features/cart/components/CouponForm.tsx",
+          "type": "registry:file",
+          "target": "src/features/cart/components/CouponForm.tsx"
+        },
+        {
+          "path": "registry/cart/tanstack-i18n/src/features/cart/components/QuantitySelect.tsx",
+          "type": "registry:file",
+          "target": "src/features/cart/components/QuantitySelect.tsx"
+        },
+        {
+          "path": "registry/cart/tanstack-i18n/src/features/cart/components/QuantityStepper.tsx",
+          "type": "registry:file",
+          "target": "src/features/cart/components/QuantityStepper.tsx"
+        },
+        {
+          "path": "registry/cart/common/src/features/cart/constants/cart.constants.ts",
+          "type": "registry:file",
+          "target": "src/features/cart/constants/cart.constants.ts"
+        },
+        {
+          "path": "registry/cart/common/src/features/cart/helpers/cart-totals.test.ts",
+          "type": "registry:file",
+          "target": "src/features/cart/helpers/cart-totals.test.ts"
+        },
+        {
+          "path": "registry/cart/common/src/features/cart/helpers/cart-totals.ts",
+          "type": "registry:file",
+          "target": "src/features/cart/helpers/cart-totals.ts"
+        },
+        {
+          "path": "registry/cart/tanstack-i18n/src/features/cart/helpers/price.ts",
+          "type": "registry:file",
+          "target": "src/features/cart/helpers/price.ts"
+        },
+        {
+          "path": "registry/cart/common/src/features/cart/helpers/product-href.ts",
+          "type": "registry:file",
+          "target": "src/features/cart/helpers/product-href.ts"
+        },
+        {
+          "path": "registry/cart/tanstack-i18n/src/features/cart/hooks/use-cart-format.ts",
+          "type": "registry:file",
+          "target": "src/features/cart/hooks/use-cart-format.ts"
+        },
+        {
+          "path": "registry/cart/common/src/features/cart/hooks/use-cart-mutations.ts",
+          "type": "registry:file",
+          "target": "src/features/cart/hooks/use-cart-mutations.ts"
+        },
+        {
+          "path": "registry/cart/common/src/features/cart/hooks/use-cart.ts",
+          "type": "registry:file",
+          "target": "src/features/cart/hooks/use-cart.ts"
+        },
+        {
+          "path": "registry/cart/common/src/features/cart/schemas/cart.schema.ts",
+          "type": "registry:file",
+          "target": "src/features/cart/schemas/cart.schema.ts"
+        },
+        {
+          "path": "registry/cart/tanstack-i18n/src/features/cart/schemas/coupon.schema.ts",
+          "type": "registry:file",
+          "target": "src/features/cart/schemas/coupon.schema.ts"
+        },
+        {
+          "path": "registry/cart/tanstack-i18n/src/routes/{-$lang}/cart/index.tsx",
+          "type": "registry:file",
+          "target": "src/routes/{-$lang}/cart/index.tsx"
+        }
+      ],
+      "meta": {
+        "product": "virastack-start",
+        "framework": "tanstack",
+        "minStartVersion": "2.0.0",
+        "entry": {
+          "name": "Cart",
+          "file": "@/features/cart/components/Cart"
+        },
+        "pages": [
+          {
+            "path": "/cart",
+            "file": "src/routes/{-$lang}/cart/index.tsx"
+          }
+        ],
+        "messages": {
+          "en": {
+            "cart_title": "Cart",
+            "cart_items_label": "Cart items",
+            "cart_select_all": "Select all",
+            "cart_select_item": "Select {title}",
+            "cart_none_selected": "Select the products you want to check out.",
+            "cart_loading": "Loading your cart",
+            "cart_load_error_title": "Could not load your cart",
+            "cart_load_error_description": "Check your connection and try again.",
+            "cart_retry": "Retry",
+            "cart_retrying": "Retrying…",
+            "cart_empty_title": "Your cart is empty",
+            "cart_empty_description": "Products you add show up here.",
+            "cart_browse_products": "Browse products",
+            "cart_quantity_label": "Quantity of {title}",
+            "cart_decrease": "Decrease quantity",
+            "cart_increase": "Increase quantity",
+            "cart_remove_item": "Remove {title}",
+            "cart_item_removed": "{title} removed",
+            "cart_update_error": "Could not update your cart. Try again.",
+            "cart_summary_title": "Order summary",
+            "cart_show_summary": "Show order summary",
+            "cart_subtotal": {
+              "declarations": [
+                "input count",
+                "local countPlural = count: plural"
+              ],
+              "selectors": [
+                "countPlural"
+              ],
+              "match": {
+                "countPlural=one": "Subtotal ({count} item)",
+                "countPlural=other": "Subtotal ({count} items)"
+              }
+            },
+            "cart_product_discount": "Product discount",
+            "cart_coupon_row": "Coupon {code}",
+            "cart_remove_coupon": "Remove coupon",
+            "cart_remove_coupon_label": "Remove coupon {code}",
+            "cart_remove_coupon_error": "Could not remove the coupon. Try again.",
+            "cart_total": "Total",
+            "cart_checkout": "Proceed to checkout",
+            "cart_shipping_note": "Shipping and taxes are calculated at checkout.",
+            "cart_coupon_label": "Coupon code",
+            "cart_apply": "Apply",
+            "cart_applying": "Applying…",
+            "cart_coupon_required": "Enter a coupon code",
+            "cart_coupon_too_long": "This is too long",
+            "cart_coupon_invalid": "This coupon isn't valid",
+            "cart_coupon_error": "Could not apply the coupon. Try again."
+          },
+          "tr": {
+            "cart_title": "Sepet",
+            "cart_items_label": "Sepetteki ürünler",
+            "cart_select_all": "Tümünü seç",
+            "cart_select_item": "Seç: {title}",
+            "cart_none_selected": "Ödemeye geçmek istediğin ürünleri seç.",
+            "cart_loading": "Sepetin yükleniyor",
+            "cart_load_error_title": "Sepetin yüklenemedi",
+            "cart_load_error_description": "Bağlantını kontrol edip tekrar dene.",
+            "cart_retry": "Tekrar dene",
+            "cart_retrying": "Deneniyor…",
+            "cart_empty_title": "Sepetin boş",
+            "cart_empty_description": "Eklediğin ürünler burada görünür.",
+            "cart_browse_products": "Ürünlere göz at",
+            "cart_quantity_label": "{title} adedi",
+            "cart_decrease": "Adedi azalt",
+            "cart_increase": "Adedi artır",
+            "cart_remove_item": "Sepetten çıkar: {title}",
+            "cart_item_removed": "{title} sepetten çıkarıldı",
+            "cart_update_error": "Sepetin güncellenemedi. Tekrar dene.",
+            "cart_summary_title": "Sipariş özeti",
+            "cart_show_summary": "Sipariş özetini göster",
+            "cart_subtotal": "Ara toplam ({count} ürün)",
+            "cart_product_discount": "Ürün indirimi",
+            "cart_coupon_row": "Kupon {code}",
+            "cart_remove_coupon": "Kuponu kaldır",
+            "cart_remove_coupon_label": "Kuponu kaldır: {code}",
+            "cart_remove_coupon_error": "Kupon kaldırılamadı. Tekrar dene.",
+            "cart_total": "Toplam",
+            "cart_checkout": "Ödemeye geç",
+            "cart_shipping_note": "Kargo ve vergiler ödeme adımında hesaplanır.",
+            "cart_coupon_label": "Kupon kodu",
+            "cart_apply": "Uygula",
+            "cart_applying": "Uygulanıyor…",
+            "cart_coupon_required": "Kupon kodunu gir",
+            "cart_coupon_too_long": "Bu çok uzun",
+            "cart_coupon_invalid": "Bu kupon geçerli değil",
+            "cart_coupon_error": "Kupon uygulanamadı. Tekrar dene."
+          }
+        }
+      }
     }
   ]
 }

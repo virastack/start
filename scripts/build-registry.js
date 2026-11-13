@@ -119,6 +119,26 @@ export const FEATURES = [
     },
     minStartVersion: "2.0.0",
   },
+  {
+    name: "cart",
+    title: "Cart",
+    description: "A cart page with item selection, quantities, removal, a coupon code and an order summary.",
+    frameworks: ["nextjs", "tanstack", "nextjs-i18n", "tanstack-i18n"],
+    // Its page is in its layers, so `route` only describes the entry for a page of the reader's,
+    // after `add --no-pages`.
+    route: { feature: "cart", component: "Cart" },
+    /** shadcn components no template ships: shadcn adds them only where they are missing. */
+    ui: ["drawer"],
+    e2e: {
+      // The server renders the page and the cart loads in the browser, so the HTML has only the
+      // page's own title, in the visitor's language.
+      pages: [{ path: "/cart", text: "Cart", localized: true }],
+      missing: [],
+      head: [{ path: "/cart", includes: ['name="robots" content="noindex, follow"'] }],
+      tr: { text: "Sepet" },
+    },
+    minStartVersion: "2.0.0",
+  },
 ];
 
 function listFiles(root, rel) {

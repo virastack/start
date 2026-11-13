@@ -1,0 +1,51 @@
+{
+  "cart_title": "Cart",
+  "cart_items_label": "Cart items",
+  "cart_select_all": "Select all",
+  "cart_select_item": "Select {title}",
+  "cart_none_selected": "Select the products you want to check out.",
+  "cart_loading": "Loading your cart",
+  "cart_load_error_title": "Could not load your cart",
+  "cart_load_error_description": "Check your connection and try again.",
+  "cart_retry": "Retry",
+  "cart_retrying": "Retrying…",
+  "cart_empty_title": "Your cart is empty",
+  "cart_empty_description": "Products you add show up here.",
+  "cart_browse_products": "Browse products",
+  "cart_quantity_label": "Quantity of {title}",
+  "cart_decrease": "Decrease quantity",
+  "cart_increase": "Increase quantity",
+  "cart_remove_item": "Remove {title}",
+  "cart_item_removed": "{title} removed",
+  "cart_update_error": "Could not update your cart. Try again.",
+  "cart_summary_title": "Order summary",
+  "cart_show_summary": "Show order summary",
+  "cart_subtotal": {
+    "declarations": [
+      "input count",
+      "local countPlural = count: plural"
+    ],
+    "selectors": [
+      "countPlural"
+    ],
+    "match": {
+      "countPlural=one": "Subtotal ({count} item)",
+      "countPlural=other": "Subtotal ({count} items)"
+    }
+  },
+  "cart_product_discount": "Product discount",
+  "cart_coupon_row": "Coupon {code}",
+  "cart_remove_coupon": "Remove coupon",
+  "cart_remove_coupon_label": "Remove coupon {code}",
+  "cart_remove_coupon_error": "Could not remove the coupon. Try again.",
+  "cart_total": "Total",
+  "cart_checkout": "Proceed to checkout",
+  "cart_shipping_note": "Shipping and taxes are calculated at checkout.",
+  "cart_coupon_label": "Coupon code",
+  "cart_apply": "Apply",
+  "cart_applying": "Applying…",
+  "cart_coupon_required": "Enter a coupon code",
+  "cart_coupon_too_long": "This is too long",
+  "cart_coupon_invalid": "This coupon isn't valid",
+  "cart_coupon_error": "Could not apply the coupon. Try again."
+}

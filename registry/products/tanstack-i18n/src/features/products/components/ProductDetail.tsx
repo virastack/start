@@ -82,7 +82,7 @@ export function ProductDetail({ initialProduct }: ProductDetailProps) {
         ? m.products_stock_out()
         : null
 
-  // There is no cart yet: the toast stands where a cart module's call goes.
+  // DummyJSON keeps no cart, so the toast stands where a request to your cart API goes.
   const addToCart = () => toast.success(m.products_added_to_cart(), { description: details.title })
 
   return (

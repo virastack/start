@@ -15,7 +15,7 @@ import { buildItem, FEATURES } from "./build-registry.js";
 
 const LAYERS = ["common", "nextjs"];
 /** The site speaks two languages, so these previews use their i18n layer and its messages. */
-const I18N_PREVIEWS = new Set(["users", "checkout-address", "checkout-card", "products"]);
+const I18N_PREVIEWS = new Set(["users", "checkout-address", "checkout-card", "products", "cart"]);
 /**
  * A module's message namespace the site already uses for its own text, renamed in the preview's
  * copy and in the messages merged into the site.
@@ -53,6 +53,7 @@ export function toPreviewImports(source) {
     .replaceAll('"@/features/checkout-address/', `"@/${DEMOS.slice(4)}/checkout-address/`)
     .replaceAll('"@/features/checkout-card/', `"@/${DEMOS.slice(4)}/checkout-card/`)
     .replaceAll('"@/features/products/', `"@/${DEMOS.slice(4)}/products/`)
+    .replaceAll('"@/features/cart/', `"@/${DEMOS.slice(4)}/cart/`)
     .replaceAll('"@/components/ui/', `"@/${USERS_PREVIEW.slice(4)}/ui/`)
     .replaceAll('"@/lib/api"', `"@/${USERS_PREVIEW.slice(4)}/lib/api"`)
     .replaceAll('"@/lib/query-client"', `"@/${USERS_PREVIEW.slice(4)}/lib/query-client"`)
@@ -61,19 +62,19 @@ export function toPreviewImports(source) {
 
 /** The products demo lives under the preview route, not at the module's own pages. */
 const SITE_REWRITES = {
-  "constants/products.constants.ts": [
-    'export const PRODUCTS_ROUTE = "/products"',
-    'export const PRODUCTS_ROUTE = "/start/preview/products"',
+  "products/constants/products.constants.ts": [
+    ['export const PRODUCTS_ROUTE = "/products"', 'export const PRODUCTS_ROUTE = "/start/preview/products"'],
   ],
 };
 
-/** Applies the rewrite a preview file needs, and fails loudly when the module no longer matches it. */
+/** Applies the rewrites a preview file needs, and fails loudly when the module no longer matches them. */
 function rewriteForSite(file, source) {
   const entry = Object.entries(SITE_REWRITES).find(([suffix]) => file.endsWith(suffix));
   if (!entry) return source;
-  const [, [from, to]] = entry;
-  if (!source.includes(from)) throw new Error(`${file} no longer has ${from}; update SITE_REWRITES`);
-  return source.replace(from, to);
+  return entry[1].reduce((text, [from, to]) => {
+    if (!text.includes(from)) throw new Error(`${file} no longer has ${from}; update SITE_REWRITES`);
+    return text.replace(from, to);
+  }, source);
 }
 
 function copyFile(from, to, transform = toPreviewImports) {

@@ -76,7 +76,7 @@ export function ProductDetail({ initialProduct }: ProductDetailProps) {
   const stock = STOCK_LABELS[details.availabilityStatus]
   const isOutOfStock = details.availabilityStatus === "Out of Stock"
 
-  // There is no cart yet: the toast stands where a cart module's call goes.
+  // DummyJSON keeps no cart, so the toast stands where a request to your cart API goes.
   const addToCart = () => toast.success("Added to cart", { description: details.title })
 
   return (

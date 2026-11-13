@@ -122,8 +122,16 @@ describe("pages", () => {
     expect(buildItem(REPO, products, "nextjs").meta.pages.map((page) => page.path)).toContain(route);
   });
 
+  it("list the cart page at the same URL in every template", () => {
+    const cart = FEATURES.find(({ name }) => name === "cart");
+    expect(cart).toBeDefined();
+    for (const framework of cart?.frameworks ?? []) {
+      expect(buildItem(REPO, cart, framework).meta.pages.map((page) => page.path)).toEqual(["/cart"]);
+    }
+  });
+
   it("are not listed for a module without them", () => {
-    for (const feature of FEATURES.filter(({ name }) => name !== "products")) {
+    for (const feature of FEATURES.filter(({ name }) => !["products", "cart"].includes(name))) {
       for (const framework of feature.frameworks) expect(buildItem(REPO, feature, framework).meta.pages).toBeUndefined();
     }
   });

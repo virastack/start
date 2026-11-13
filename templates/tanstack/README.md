@@ -122,7 +122,7 @@ The start page follows the ViraStack AI feature tree and is meant to be deleted 
 
 **Modules**
 
-Run `npx virastack add <module>` to add a working feature: `users`, `checkout-address` or `checkout-card`. It installs `src/features/<module>` and the packages the module needs, creates no page, and prints the import line for your own page. See every module and the steps for your framework at [virastack.com/start/features](https://virastack.com/start/features).
+Run `npx virastack add <module>` to add a working feature: `users`, `checkout-address`, `checkout-card`, `products` or `cart`. It installs `src/features/<module>` and the packages the module needs. `products` and `cart` also bring their pages; the others print the import line for your own page. See every module and the steps for your framework at [virastack.com/start/features](https://virastack.com/start/features).
 
 Run `npx virastack remove <module>` to take one out. It asks before deleting files you changed, and leaves packages in place because other code may use them.
 
