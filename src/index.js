@@ -73,7 +73,7 @@ export async function main() {
       await runInit(buildInitOptions(flags, rest[0]));
       break;
     case "add":
-      await runAdd(rest[0], { agents: resolveAgentFlag(flags) });
+      await runAdd(rest[0], { agents: resolveAgentFlag(flags), pages: !hasFlag(flags, "no-pages") });
       break;
     case "remove":
       await runRemove(rest[0], { yes: hasFlag(flags, "yes", "y") });

@@ -89,16 +89,30 @@ const dictionaries = {
     "add.conflict": "{pkg} was not added. Nothing changed.",
     "add.conflictList": "This project already has files or messages with the same names:\n  {list}",
     "add.useInPage": "Add it to a page of yours:\n  {code}\nSteps for your framework: {url}",
+    "add.pages": "Its pages are ready:\n  {list}",
+    "add.conflictRoutes": "These routes of the project answer the same URLs as the module's pages:\n  {list}",
+    "add.pagesAdded": "{pkg} was already here, so only its missing pages were added.",
+    "add.pagesSkipped": "These pages were not added, because routes of the project answer the same URLs:\n  {list}",
+    "add.conflictLinks": "These paths lead outside the project through a symbolic link:\n  {list}",
+    "add.messagesFailed": "The messages could not be compiled. Run the project's postinstall script.",
+    "add.conflictNoPages": "To keep your page and add the module without its pages, run it again with {flag}.",
+    "add.routeTreeMissing": "This project has no generate-routes script, so src/routeTree.gen.ts was not updated. The dev server updates it when it starts.",
+    "add.routeTreeFailed": "src/routeTree.gen.ts could not be updated. Run generate-routes, or start the dev server, which updates it.",
     "remove.missing": "Please specify what to remove.",
     "remove.removing": "Removing {pkg}...",
     "remove.done": "{pkg} removed.",
-    "remove.packagesKept": "Its packages stay, because other code may use them.",
+    "remove.packagesKept": "Its packages and shadcn components stay, because other code may use them.",
     "remove.failed": "Failed to remove {pkg}.",
     "remove.notInstalled": "{pkg} is not in this project. Nothing changed.",
     "remove.changedList": "You changed these:\n  {list}",
     "remove.confirm": "Delete them too?",
     "remove.kept": "{pkg} was not removed. Nothing changed.",
     "remove.needsYes": "Nothing changed. Run it again with --yes to delete them too.",
+    "remove.changedPages": "These pages differ from the module's. They may be your own (after --no-pages) or module pages you edited:\n  {list}",
+    "remove.confirmPages": "Delete these pages too?",
+    "remove.pagesStay": "The pages stay. If they still import the module, change or delete them.",
+    "remove.pagesKept": "These pages differ from the module's, so they stay: they may be your own (after --no-pages) or module pages you edited. If they still import the module, change or delete them:\n  {list}",
+    "remove.symlinks": "These are symbolic links, or inside one, so they stay:\n  {list}",
     "add.untranslated": "Added English text for: {locales}. Translate it when you are ready.",
 
     help: `Usage:
@@ -118,6 +132,7 @@ Options:
   --template <name>     Template: nextjs | tanstack
   --tools <list>        Comma-separated tools (e.g. mask,password)
   --agent <list>        AI coding tools: claude, cursor (comma separated) or none
+  --no-pages            With add: leave a module's pages out, for a project with its own
   --i18n / --no-i18n    Enable or disable the i18n template
   --yes, -y             Non-interactive mode (use flags/defaults)
   --skip-install        Skip dependency install (AI rules and skills are still added)
@@ -218,16 +233,30 @@ Examples:
     "add.conflict": "{pkg} eklenmedi. Hiçbir şey değişmedi.",
     "add.conflictList": "Bu projede aynı adlı dosya veya çeviriler var:\n  {list}",
     "add.useInPage": "Kendi sayfana ekle:\n  {code}\nFramework'üne göre adımlar: {url}",
+    "add.pages": "Sayfaları hazır:\n  {list}",
+    "add.conflictRoutes": "Projendeki bu route'lar modülün sayfalarıyla aynı adreste:\n  {list}",
+    "add.pagesAdded": "{pkg} projede zaten vardı, yalnızca eksik sayfaları eklendi.",
+    "add.pagesSkipped": "Bu sayfalar eklenmedi, çünkü projendeki route'lar aynı adreste:\n  {list}",
+    "add.conflictLinks": "Bu yollar sembolik bir link üzerinden projenin dışına çıkıyor:\n  {list}",
+    "add.messagesFailed": "Çeviriler derlenemedi. Projenin postinstall script'ini çalıştır.",
+    "add.conflictNoPages": "Kendi sayfanı koruyup modülü sayfaları olmadan eklemek için {flag} ile tekrar çalıştır.",
+    "add.routeTreeMissing": "Bu projede generate-routes script'i yok, bu yüzden src/routeTree.gen.ts güncellenmedi. Dev sunucusu açılırken onu günceller.",
+    "add.routeTreeFailed": "src/routeTree.gen.ts güncellenemedi. generate-routes'u çalıştır ya da dev sunucusunu aç, o günceller.",
     "remove.missing": "Lütfen neyi kaldırmak istediğini belirt.",
     "remove.removing": "{pkg} kaldırılıyor...",
     "remove.done": "{pkg} kaldırıldı.",
-    "remove.packagesKept": "Paketleri duruyor, çünkü başka kodlar da kullanıyor olabilir.",
+    "remove.packagesKept": "Paketleri ve shadcn bileşenleri duruyor, çünkü başka kodlar da kullanıyor olabilir.",
     "remove.failed": "{pkg} kaldırılamadı.",
     "remove.notInstalled": "{pkg} bu projede yok. Hiçbir şey değişmedi.",
     "remove.changedList": "Bunları değiştirmişsin:\n  {list}",
     "remove.confirm": "Bunlar da silinsin mi?",
     "remove.kept": "{pkg} kaldırılmadı. Hiçbir şey değişmedi.",
     "remove.needsYes": "Hiçbir şey değişmedi. Bunları da silmek için --yes ile tekrar çalıştır.",
+    "remove.changedPages": "Bu sayfalar modülünkilerden farklı. Senin sayfaların (--no-pages sonrası) ya da düzenlediğin modül sayfaları olabilir:\n  {list}",
+    "remove.confirmPages": "Bu sayfalar da silinsin mi?",
+    "remove.pagesStay": "Sayfalar duruyor. Hâlâ modülü import ediyorlarsa değiştir ya da sil.",
+    "remove.pagesKept": "Bu sayfalar modülünkilerden farklı, bu yüzden duruyor: senin sayfaların (--no-pages sonrası) ya da düzenlediğin modül sayfaları olabilir. Hâlâ modülü import ediyorlarsa değiştir ya da sil:\n  {list}",
+    "remove.symlinks": "Bunlar sembolik link ya da bir linkin içinde, bu yüzden duruyor:\n  {list}",
     "add.untranslated": "Şu diller için İngilizce metin eklendi: {locales}. Hazır olduğunda çevirebilirsin.",
 
     help: `Kullanım:
@@ -247,6 +276,7 @@ Seçenekler:
   --template <ad>       Şablon: nextjs | tanstack
   --tools <liste>       Virgülle ayrılmış araçlar (örn. mask,password)
   --agent <liste>       AI kodlama araçları: claude, cursor (virgülle) veya none
+  --no-pages            add ile: modülün sayfalarını ekleme, projende kendi sayfaların varsa
   --i18n / --no-i18n    i18n şablonunu aç / kapat
   --yes, -y             İnteraktif olmayan mod (flag/varsayılanlar)
   --skip-install        Bağımlılık kurulumunu atla (AI kuralları ve skill'ler yine eklenir)

@@ -1,6 +1,7 @@
 import * as p from "@clack/prompts";
 import pc from "picocolors";
 
+import { t } from "../i18n.js";
 import { getCliVersion } from "./package-info.js";
 
 const SHOWN_ERROR_LINES = 8;
@@ -73,4 +74,15 @@ export function formatHelp(text) {
       return match ? `${match[1]}${pc.cyan(match[2])}${match[3]}${match[4]}` : line;
     })
     .join("\n");
+}
+
+/**
+ * Generated files that could not be written are warnings only: the module's files are in place,
+ * and the dev server or the project's own script writes them too.
+ * @param {{ routeTree?: string, messages?: string }} generated
+ */
+export function warnGenerated({ routeTree, messages } = {}) {
+  if (messages === "failed") p.log.warn(t("add.messagesFailed"));
+  if (routeTree === "missing") p.log.warn(t("add.routeTreeMissing"));
+  if (routeTree === "failed") p.log.warn(t("add.routeTreeFailed"));
 }

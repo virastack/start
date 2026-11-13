@@ -5,17 +5,21 @@ import { isDeepStrictEqual } from "node:util";
 
 import { runCommand } from "./exec.js";
 import { getDlxCommand, getExecCommand } from "./package-manager.js";
+import { isRouteFile, isSameRoute, isTanstackLayout, routesDirs, toRoutePath } from "./routes.js";
 
 const DEFAULT_REGISTRY = "https://virastack.com/r";
 export const FEATURES_URL = "https://virastack.com/start/features";
 /** The version the registry was last tested with. Raised on purpose, never `latest`. */
 export const SHADCN = "shadcn@4.23.0";
 const MESSAGES_DIR = "src/messages";
+const UI_DIR = "src/components/ui";
 
 const VALID_ID = /^[a-z0-9-]+$/;
 const ITEM_SUFFIX = /-(nextjs|tanstack)(-i18n)?$/;
-/** `src/features` and `src/app` are the project's own folders, even when they are empty. */
+/** `src/features`, `src/app` and `src/routes` are the project's own folders, even when they are empty. */
 const KEPT_FOLDER_DEPTH = 2;
+/** The i18n templates' locale folders hold the project's own layout and pages. */
+const KEPT_FOLDERS = new Set(["src/app/[locale]", "src/routes/{-$lang}"]);
 
 export class FeatureNotFoundError extends Error {
   name = "FeatureNotFoundError";
@@ -90,25 +94,40 @@ async function loadRegistryFile(file, timeout = 15_000) {
 }
 
 /**
- * The modules the registry offers now. Empty when it cannot be reached.
- * @param {{ timeout?: number }} [options]
+ * The modules the registry offers now, only those for `template` when it is given. Empty when the
+ * registry cannot be reached.
+ * @param {{ timeout?: number, template?: string, i18n?: boolean }} [options]
  */
-export async function listFeatures({ timeout } = {}) {
+export async function listFeatures({ timeout, template, i18n = false } = {}) {
+  const suffix = template ? `-${template}${i18n ? "-i18n" : ""}` : null;
   try {
     const registry = await loadRegistryFile("registry.json", timeout);
-    const ids = (registry?.items ?? []).map((item) => item.name.replace(ITEM_SUFFIX, ""));
+    const items = (registry?.items ?? []).filter((item) => !suffix || item.name.endsWith(suffix));
+    const ids = items.map((item) => item.name.replace(ITEM_SUFFIX, ""));
     return [...new Set(ids)];
   } catch {
     return [];
   }
 }
 
-/** A feature that cannot be installed without touching what the project already has. */
+/**
+ * A feature that cannot be installed without touching what the project already has: files and
+ * messages of the same name in `conflicts`, route files for the same URL as a page of the module in
+ * `routes`, and paths a symbolic link would take outside the project in `links`. `pages` says only
+ * the module's pages are in the way, which `--no-pages` gets around.
+ */
 export class FeatureConflictError extends Error {
-  constructor(conflicts) {
-    super(conflicts.join(", "));
+  /**
+   * @param {string[]} conflicts
+   * @param {{ routes?: string[], links?: string[], pages?: boolean }} [options]
+   */
+  constructor(conflicts, { routes = [], links = [], pages = false } = {}) {
+    super([...conflicts, ...routes, ...links].join(", "));
     this.name = "FeatureConflictError";
     this.conflicts = conflicts;
+    this.routes = routes;
+    this.links = links;
+    this.pages = pages;
   }
 }
 
@@ -138,12 +157,129 @@ export function mergeMessages(current, incoming) {
   return merged;
 }
 
-/** All or nothing: only a part of the files means the project has its own code there. */
-async function planFiles(item, cwd) {
-  const checks = await Promise.all(item.files.map((file) => exists(path.join(cwd, file.target))));
-  const existing = item.files.filter((_, index) => checks[index]).map((file) => file.target);
-  const isPartial = existing.length > 0 && existing.length < item.files.length;
-  return { installed: existing.length === item.files.length, conflicts: isPartial ? existing : [] };
+async function existingTargets(files, cwd) {
+  const checks = await Promise.all(files.map((file) => exists(path.join(cwd, file.target))));
+  return files.filter((_, index) => checks[index]).map((file) => file.target);
+}
+
+async function lstatOrNull(filePath) {
+  try {
+    return await fs.lstat(filePath);
+  } catch {
+    return null;
+  }
+}
+
+/** shadcn drops `.js` from `@/` imports while installing, so that alone is not a change. */
+function toComparable(source) {
+  return source.replace(/\r\n/g, "\n").replace(/(from "@\/[^"]+)\.js"/g, '$1"');
+}
+
+async function hasContent(filePath, content) {
+  try {
+    return toComparable(await fs.readFile(filePath, "utf8")) === toComparable(content ?? "");
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Whether writing `target` lands inside the project. A symlinked folder on the way can point
+ * anywhere, so the deepest part of the path that exists is resolved.
+ */
+async function writesInsideProject(target, cwd) {
+  const root = await fs.realpath(cwd);
+  let current = path.resolve(cwd, target);
+  while (!(await lstatOrNull(current))) current = path.dirname(current);
+  const real = await fs.realpath(current).catch(() => null);
+  return real !== null && (real === root || real.startsWith(`${root}${path.sep}`));
+}
+
+/** Every file under the routes folders, with `/` between its parts. */
+async function listRouteFiles(cwd, template) {
+  const lists = await Promise.all(
+    routesDirs(template).map(async (dir) => {
+      if (!(await exists(path.join(cwd, dir)))) return [];
+      const entries = await fs.readdir(path.join(cwd, dir), { recursive: true });
+      return entries.map((entry) => `${dir}/${entry.replaceAll("\\", "/")}`);
+    }),
+  );
+  return lists.flat();
+}
+
+/**
+ * The project's route files that answer the same URL as one of `pages`, such as
+ * `src/app/(shop)/products/page.tsx` for `/products`. `own` are all of the module's page paths,
+ * which `planFiles` checks as files. A TanStack layout that renders an `<Outlet />` is not a page.
+ */
+export async function findRouteConflicts(pages, cwd, { template, i18n = false, own = pages.map((page) => page.target) }) {
+  const ownFiles = new Set(own);
+  const routes = pages.map((page) => toRoutePath(page.target, { i18n })).filter(Boolean);
+  const files = await listRouteFiles(cwd, template);
+  const conflicts = [];
+  for (const file of files) {
+    if (ownFiles.has(file)) continue;
+    const route = toRoutePath(file, { i18n });
+    if (!route || !routes.some((page) => isSameRoute(page, route))) continue;
+    if (template === "tanstack") {
+      const source = await fs.readFile(path.join(cwd, file), "utf8").catch(() => "");
+      if (isTanstackLayout(file, files, source)) continue;
+    }
+    conflicts.push(`${file}: ${route}`);
+  }
+  return conflicts.sort();
+}
+
+/**
+ * All or nothing for the feature's files: only a part of them means the project has its own code
+ * there. The pages count apart, because `--no-pages` leaves them out.
+ *
+ * - A fresh install is strict: a page file with other content than the module's, or another route
+ *   for one of its URLs, stops it (a page with the module's own content is the module's).
+ * - Once the feature is in, `add` never fails over pages: those that exist stay as they are, a
+ *   missing one is added, and one whose URL a route of the project answers is left out
+ *   (`skippedPages`).
+ */
+export async function planFiles(item, cwd, { template, i18n = false, pages = true }) {
+  const featureFiles = item.files.filter((file) => !isRouteFile(file.target));
+  const pageFiles = item.files.filter((file) => isRouteFile(file.target));
+  const existing = await existingTargets(featureFiles, cwd);
+  const installed = existing.length === featureFiles.length;
+  const conflicts = installed || existing.length === 0 ? [] : existing;
+
+  const pageWrites = [];
+  const pageConflicts = [];
+  const routes = [];
+  const skippedPages = [];
+  if (pages) {
+    const own = pageFiles.map((page) => page.target);
+    for (const page of pageFiles) {
+      const filePath = path.join(cwd, page.target);
+      if (await exists(filePath)) {
+        if (!installed && !(await hasContent(filePath, page.content))) pageConflicts.push(page.target);
+        continue;
+      }
+      const answered = await findRouteConflicts([page], cwd, { template, i18n, own });
+      if (answered.length === 0) pageWrites.push(page);
+      else if (installed) skippedPages.push({ file: page.target, routes: answered });
+      else routes.push(...answered.filter((route) => !routes.includes(route)));
+    }
+  }
+  // A file beside a page that is not a page itself, such as Next.js `not-found.tsx`, goes with it.
+  const skippedFolders = skippedPages.map(({ file }) => path.posix.dirname(file));
+  const pageTargets = pageWrites.filter(
+    (page) => toRoutePath(page.target, { i18n }) !== null || !skippedFolders.includes(path.posix.dirname(page.target)),
+  );
+  return {
+    installed,
+    conflicts: [...conflicts, ...pageConflicts],
+    routes: routes.sort(),
+    // Only the pages are in the way, so the feature alone (`--no-pages`) would go in.
+    onlyPages: conflicts.length === 0 && pageConflicts.length + routes.length > 0,
+    writes: [...(installed ? [] : featureFiles), ...pageTargets],
+    writesPages: pageTargets.length > 0,
+    skippedPages,
+  };
 }
 
 async function readJson(filePath, name) {
@@ -206,16 +342,108 @@ async function loadItem(id, template, i18n) {
   return item;
 }
 
-/** Paraglide compiles the messages. */
-async function refreshGenerated({ cwd, packageManager, template, i18n }) {
-  if (template === "tanstack" && i18n) await runCommand(packageManager, ["run", "postinstall"], { cwd });
+/**
+ * The shadcn components a module needs that no template ships (`registryDependencies`), and that
+ * this project does not have yet. shadcn adds them; a component the project has stays untouched.
+ */
+export async function findMissingUi(item, cwd) {
+  const names = (item.registryDependencies ?? []).filter((name) => VALID_ID.test(name));
+  const checks = await Promise.all(names.map((name) => exists(path.join(cwd, UI_DIR, `${name}.tsx`))));
+  return names.filter((_, index) => !checks[index]);
+}
+
+const SHADCN_STYLES_URL = "https://ui.shadcn.com/r/styles";
+
+async function fetchShadcnItem(style, name) {
+  let response;
+  try {
+    response = await fetch(`${SHADCN_STYLES_URL}/${style}/${name}.json`, { signal: AbortSignal.timeout(15_000) });
+  } catch (error) {
+    throw new RegistryUnavailableError(`Could not reach ${SHADCN_STYLES_URL}`, { cause: error });
+  }
+  if (!response.ok) throw new RegistryUnavailableError(`shadcn has no ${style}/${name}: ${response.status}`);
+  return response.json();
 }
 
 /**
- * Installs a feature with shadcn and merges its messages. Checks everything first, so a conflict
- * changes nothing. Throws FeatureConflictError for one.
+ * shadcn's items for the missing components and for the components those need in turn, the
+ * missing ones only. Handing shadcn a dependency the project already has would make it ask to
+ * overwrite that file, and without an answer it writes nothing at all.
  */
-export async function installFeature(id, { cwd, packageManager, template, i18n = false, isYarnClassic }) {
+export async function resolveMissingUi(names, cwd, fetchItem = fetchShadcnItem) {
+  const { style } = await readJson(path.join(cwd, "components.json"), "components.json");
+  const seen = new Set();
+  const items = [];
+  const visit = async (name) => {
+    if (seen.has(name) || !VALID_ID.test(name)) return;
+    seen.add(name);
+    if (await exists(path.join(cwd, UI_DIR, `${name}.tsx`))) return;
+    const item = await fetchItem(style, name);
+    items.push({ name, item });
+    for (const dependency of item.registryDependencies ?? []) await visit(dependency);
+  };
+  for (const name of names) await visit(name);
+  return items;
+}
+
+/** The module with its missing components' files inlined, so shadcn resolves nothing itself. */
+export function withUi(item, uiItems) {
+  const merge = (key) => [...new Set([item, ...uiItems.map((ui) => ui.item)].flatMap((entry) => entry[key] ?? []))];
+  return {
+    ...item,
+    registryDependencies: [],
+    dependencies: merge("dependencies"),
+    devDependencies: merge("devDependencies"),
+    files: [...item.files, ...uiItems.flatMap((ui) => ui.item.files ?? [])],
+  };
+}
+
+/**
+ * Paraglide compiles the messages, and TanStack Router lists the routes in `src/routeTree.gen.ts`,
+ * each only when what it reads changed. The files are in place by then, so either one failing is a
+ * warning (`messages` or `routeTree`: `"missing" | "failed"`), not a failed install.
+ */
+async function refreshGenerated({ cwd, packageManager, template, i18n, routes = false, messages = false }) {
+  if (template !== "tanstack") return {};
+  const result = {};
+  if (i18n && messages) {
+    try {
+      await runCommand(packageManager, ["run", "postinstall"], { cwd });
+    } catch {
+      result.messages = "failed";
+    }
+  }
+  if (!routes) return result;
+
+  const { scripts = {} } = await readJson(path.join(cwd, "package.json"), "package.json");
+  if (!scripts["generate-routes"]) return { ...result, routeTree: "missing" };
+  try {
+    await runCommand(packageManager, ["run", "generate-routes"], { cwd });
+    return { ...result, routeTree: "updated" };
+  } catch {
+    return { ...result, routeTree: "failed" };
+  }
+}
+
+/**
+ * @typedef {object} InstallResult
+ * @property {boolean} alreadyInstalled
+ * @property {string[]} untranslated
+ * @property {boolean} [pagesAdded]
+ * @property {{ name: string, file: string }} [entry]
+ * @property {{ path: string, file: string }[]} [pages]
+ * @property {string} [routeTree]
+ * @property {string} [messages]
+ * @property {{ file: string, routes: string[] }[]} [skippedPages]
+ */
+
+/**
+ * Installs a feature with shadcn and merges its messages. Checks everything first, so a conflict
+ * changes nothing. Throws FeatureConflictError for one. `pages: false` leaves the module's pages
+ * out, for a project that has its own at their URLs.
+ * @returns {Promise<InstallResult>}
+ */
+export async function installFeature(id, { cwd, packageManager, template, i18n = false, isYarnClassic, pages = true }) {
   const item = await loadItem(id, template, i18n);
 
   const required = item.meta?.minStartVersion;
@@ -224,22 +452,41 @@ export async function installFeature(id, { cwd, packageManager, template, i18n =
     if (isOlderVersion(version, required)) throw new StartTooOldError(required, version ?? "?");
   }
 
-  const files = await planFiles(item, cwd);
+  const files = await planFiles(item, cwd, { template, i18n, pages });
   const messages = await planMessages(item, cwd);
 
   const conflicts = [...files.conflicts, ...messages.conflicts];
-  if (conflicts.length > 0) throw new FeatureConflictError(conflicts);
-  if (files.installed && messages.writes.length === 0) return { alreadyInstalled: true, untranslated: [] };
+  if (conflicts.length > 0 || files.routes.length > 0) {
+    const pagesOnly = files.onlyPages && messages.conflicts.length === 0;
+    throw new FeatureConflictError(conflicts, { routes: files.routes, pages: pagesOnly });
+  }
+  // Pages a route of the project already answers, left out of an installed module.
+  const skipped = files.skippedPages.length > 0 ? { skippedPages: files.skippedPages } : {};
+  if (files.writes.length === 0 && messages.writes.length === 0) {
+    return { alreadyInstalled: true, untranslated: [], ...skipped };
+  }
 
-  if (!files.installed) {
+  const links = [];
+  for (const { target } of files.writes) {
+    if (!(await writesInsideProject(target, cwd))) links.push(target);
+  }
+  if (links.length > 0) throw new FeatureConflictError([], { links });
+
+  if (files.writes.length > 0) {
+    const uiItems = await resolveMissingUi(await findMissingUi(item, cwd), cwd);
+    const missingUi = uiItems.map(({ name }) => name);
     const dir = await fs.mkdtemp(path.join(os.tmpdir(), "virastack-add-"));
     const itemPath = path.join(dir, `${item.name}.json`);
     try {
-      await fs.writeFile(itemPath, JSON.stringify(item));
+      await fs.writeFile(itemPath, JSON.stringify(withUi({ ...item, files: files.writes }, uiItems)));
       const [command, prefix] = getDlxCommand(packageManager, { isYarnClassic });
       await runCommand(command, [...prefix, SHADCN, "add", itemPath, "--yes"], { cwd });
     } finally {
       await fs.rm(dir, { recursive: true, force: true });
+    }
+    // shadcn writes its components in its own style, so only the ones it just added get the project's.
+    if (missingUi.length > 0) {
+      await formatFiles(packageManager, missingUi.map((name) => `${UI_DIR}/${name}.tsx`), cwd);
     }
   }
 
@@ -248,9 +495,29 @@ export async function installFeature(id, { cwd, packageManager, template, i18n =
     await formatFiles(packageManager, messages.writes.map(({ filePath }) => filePath), cwd);
   }
 
-  await refreshGenerated({ cwd, packageManager, template, i18n });
+  const generated = await refreshGenerated({
+    cwd,
+    packageManager,
+    template,
+    i18n,
+    routes: files.writesPages,
+    messages: messages.writes.length > 0,
+  });
 
-  return { alreadyInstalled: false, untranslated: messages.untranslated, entry: item.meta?.entry };
+  return {
+    alreadyInstalled: false,
+    // The feature was there already, without its pages, and only they went in.
+    pagesAdded: files.installed && files.writesPages,
+    untranslated: messages.untranslated,
+    entry: item.meta?.entry,
+    // `{ path, file }` of the pages it put in, for the message after `add`: all of them on a fresh
+    // install, only the missing ones it added to an installed module.
+    pages: (item.meta?.pages ?? []).filter((page) =>
+      files.installed ? files.writes.some(({ target }) => target === page.file) : files.writesPages
+    ),
+    ...skipped,
+    ...generated,
+  };
 }
 
 /** Takes out what `incoming` added. A text the project changed goes too, and is reported. */
@@ -295,29 +562,44 @@ async function planMessageRemoval(item, cwd) {
   return { writes, changed };
 }
 
-/** shadcn drops `.js` from `@/` imports while installing, so that alone is not a change. */
-function toComparable(source) {
-  return source.replace(/\r\n/g, "\n").replace(/(from "@\/[^"]+)\.js"/g, '$1"');
-}
-
-/** What `virastack remove` would delete, and which of it the project has changed. Writes nothing. */
+/**
+ * What `virastack remove` would delete, and which of it the project has changed. Writes nothing.
+ * A page that differs from the module's goes in `changedPages`, apart from `files`: it may be the
+ * project's own page after `add --no-pages`, or a module page the reader edited, so it is deleted
+ * only on a yes. A symlink, or a path through one, is left alone (`symlinks`): it may lead to files
+ * that are not the module's.
+ */
 export async function planRemoval(id, { cwd, template, i18n = false }) {
   const item = await loadItem(id, template, i18n);
+  const root = await fs.realpath(cwd);
   const files = [];
   const changed = [];
+  const changedPages = [];
+  const symlinks = [];
 
   for (const { target, content } of item.files) {
     const filePath = path.resolve(cwd, target);
     if (!filePath.startsWith(`${path.resolve(cwd)}${path.sep}`)) {
       throw new Error(`${item.name} points outside the project: ${target}`);
     }
-    if (!(await exists(filePath))) continue;
+    const stat = await lstatOrNull(filePath);
+    if (!stat) continue;
+    if (stat.isSymbolicLink() || (await fs.realpath(filePath)) !== path.join(root, target)) {
+      symlinks.push(target);
+      continue;
+    }
+    if (!stat.isFile()) continue;
+    const isChanged = !(await hasContent(filePath, content));
+    if (isChanged && isRouteFile(target)) {
+      changedPages.push(target);
+      continue;
+    }
     files.push(target);
-    if (toComparable(await fs.readFile(filePath, "utf8")) !== toComparable(content)) changed.push(target);
+    if (isChanged) changed.push(target);
   }
 
   const messages = await planMessageRemoval(item, cwd);
-  return { files, messages: messages.writes, changed: [...changed, ...messages.changed] };
+  return { files, messages: messages.writes, changed: [...changed, ...messages.changed], changedPages, symlinks };
 }
 
 /** Removes the folders the files leave empty, from the deepest up. */
@@ -326,17 +608,25 @@ async function removeEmptyFolders(files, cwd) {
   for (const file of files) {
     const parts = path.dirname(file).split(/[\\/]/);
     for (let depth = parts.length; depth > KEPT_FOLDER_DEPTH; depth -= 1) {
-      folders.add(parts.slice(0, depth).join("/"));
+      const folder = parts.slice(0, depth).join("/");
+      if (!KEPT_FOLDERS.has(folder)) folders.add(folder);
     }
   }
   const deepestFirst = [...folders].sort((a, b) => b.split("/").length - a.split("/").length);
   for (const folder of deepestFirst) {
     const folderPath = path.join(cwd, folder);
-    if ((await exists(folderPath)) && (await fs.readdir(folderPath)).length === 0) await fs.rmdir(folderPath);
+    const stat = await lstatOrNull(folderPath);
+    // A symlinked folder is not the module's to delete, even when what it points at is empty.
+    if (!stat?.isDirectory() || stat.isSymbolicLink()) continue;
+    if ((await fs.readdir(folderPath)).length === 0) await fs.rmdir(folderPath);
   }
 }
 
-/** Deletes what `planRemoval` found. Packages stay: other code in the project may use them. */
+/**
+ * Deletes what `planRemoval` found in `files`, plus the changed pages the reader said yes to.
+ * Packages stay: other code in the project may use them. Returns `messages` and `routeTree`
+ * warnings as `installFeature` does.
+ */
 export async function applyRemoval(plan, { cwd, packageManager, template, i18n = false }) {
   await Promise.all(plan.files.map((file) => fs.rm(path.join(cwd, file), { force: true })));
   await removeEmptyFolders(plan.files, cwd);
@@ -346,5 +636,6 @@ export async function applyRemoval(plan, { cwd, packageManager, template, i18n =
     await formatFiles(packageManager, plan.messages.map(({ filePath }) => filePath), cwd);
   }
 
-  await refreshGenerated({ cwd, packageManager, template, i18n });
+  const routes = plan.files.some((file) => isRouteFile(file));
+  return refreshGenerated({ cwd, packageManager, template, i18n, routes, messages: plan.messages.length > 0 });
 }
