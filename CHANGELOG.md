@@ -1,5 +1,30 @@
 # Changelog
 
+## [v2.2.0] - 2026-11-13
+
+This release does not change existing projects. A module can now bring its own pages, and `products` is the first one that does.
+
+### CLI
+
+- **Module pages**: `add` installs the pages a module brings, at the template's own paths, and lists their URLs when it is done. Modules without pages (`users`, `checkout-address`, `checkout-card`) install as before.
+- **`add --no-pages`**: Installs the feature without its pages and prints the import line. A later `add` adds the pages that are missing.
+- **Route check**: `add` stops, writing nothing, when the project already has a route at one of the module's URLs. It reads the App Router and the Pages Router in Next.js and file routes in TanStack Start, with route groups, optional and dynamic segments.
+- **TanStack Start route tree**: `add` and `remove` regenerate `src/routeTree.gen.ts`, so the typecheck passes without starting the dev server.
+- **shadcn components**: A module can bring a shadcn component no template has (`card` for `products`). `add` installs it only when the project lacks it, never overwrites one, and formats the new file.
+- **`remove`**: Deletes the module's pages and the folders they leave empty. A page that differs from the module's is listed first and deleted only on a yes; with `--yes`, or in a script, it stays and a warning names it.
+- **Symlinks**: `add` does not write through a symlink that leaves the project, and `remove` does not follow one.
+- **Fixes**: `remove` lists only the modules of the project's template. A failing Paraglide compile or route generation after `add` is a warning, not a failed install.
+
+### Modules
+
+- **`products`**: A product list with search, category, sorting and pagination in the URL, and a page for each product with a gallery, details and reviews. The server renders the first view, a missing product answers 404, and the title, description, Open Graph tags and JSON-LD come from the data. It works in all four templates, with Turkish and English messages in the i18n ones.
+- **`checkout-card`**: The test that checks the CVV stays off the network no longer fails when the dummy token's timestamp contains the CVV's digits.
+
+### Templates
+
+- **Next.js `loading.tsx`**: The root `src/app/loading.tsx` is gone from the Next.js template. It streamed every page, so a `notFound()` called after the data arrived answered 200 instead of 404, and the page's content stayed hidden without JavaScript. In a project created before, delete the file to get the same.
+- **knip**: `knip.config.js` ignores `shadcn`, which only `tailwind.css` imports.
+
 ## [v2.1.1] - 2026-11-11
 
 This release fixes new projects. To fix a project created with 2.0.0 or 2.1.0, apply the changes below by hand.
