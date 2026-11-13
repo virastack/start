@@ -2510,6 +2510,1623 @@
           }
         }
       }
+    },
+    {
+      "name": "products-nextjs",
+      "type": "registry:item",
+      "title": "Products",
+      "description": "A paginated product list with search, category, sorting and the page in the URL, and a page for each product.",
+      "author": "ViraStack <https://virastack.com>",
+      "dependencies": [
+        "@tanstack/react-query@^5.105.0",
+        "cn@^0.5.1",
+        "embla-carousel-react@^8.6.0",
+        "lucide-react@^1.66.0",
+        "nuqs@^2.10.2",
+        "sonner@^2.0.8",
+        "usehooks-ts@^3.1.1",
+        "zod@^4.6.7"
+      ],
+      "devDependencies": [
+        "@testing-library/react@^16.3.3",
+        "@testing-library/user-event@^14.6.8",
+        "msw@^3.0.3",
+        "vitest@^5.0.5"
+      ],
+      "registryDependencies": [
+        "card"
+      ],
+      "files": [
+        {
+          "path": "registry/products/nextjs/src/app/products/[id]/not-found.tsx",
+          "type": "registry:file",
+          "target": "src/app/products/[id]/not-found.tsx"
+        },
+        {
+          "path": "registry/products/nextjs/src/app/products/[id]/page.tsx",
+          "type": "registry:file",
+          "target": "src/app/products/[id]/page.tsx"
+        },
+        {
+          "path": "registry/products/nextjs/src/app/products/page.tsx",
+          "type": "registry:file",
+          "target": "src/app/products/page.tsx"
+        },
+        {
+          "path": "registry/products/common/src/features/products/api/get-categories.api.ts",
+          "type": "registry:file",
+          "target": "src/features/products/api/get-categories.api.ts"
+        },
+        {
+          "path": "registry/products/nextjs/src/features/products/api/get-initial-product.api.ts",
+          "type": "registry:file",
+          "target": "src/features/products/api/get-initial-product.api.ts"
+        },
+        {
+          "path": "registry/products/nextjs/src/features/products/api/get-initial-products.api.ts",
+          "type": "registry:file",
+          "target": "src/features/products/api/get-initial-products.api.ts"
+        },
+        {
+          "path": "registry/products/common/src/features/products/api/get-product.api.ts",
+          "type": "registry:file",
+          "target": "src/features/products/api/get-product.api.ts"
+        },
+        {
+          "path": "registry/products/common/src/features/products/api/get-products.api.test.ts",
+          "type": "registry:file",
+          "target": "src/features/products/api/get-products.api.test.ts"
+        },
+        {
+          "path": "registry/products/common/src/features/products/api/get-products.api.ts",
+          "type": "registry:file",
+          "target": "src/features/products/api/get-products.api.ts"
+        },
+        {
+          "path": "registry/products/common/src/features/products/api/product.queries.ts",
+          "type": "registry:file",
+          "target": "src/features/products/api/product.queries.ts"
+        },
+        {
+          "path": "registry/products/common/src/features/products/api/query-keys.ts",
+          "type": "registry:file",
+          "target": "src/features/products/api/query-keys.ts"
+        },
+        {
+          "path": "registry/products/common/src/features/products/components/ProductBackLink.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductBackLink.tsx"
+        },
+        {
+          "path": "registry/products/common/src/features/products/components/ProductCard.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductCard.tsx"
+        },
+        {
+          "path": "registry/products/common/src/features/products/components/ProductCarousel.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductCarousel.tsx"
+        },
+        {
+          "path": "registry/products/nextjs/src/features/products/components/ProductDetail.test.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductDetail.test.tsx"
+        },
+        {
+          "path": "registry/products/common/src/features/products/components/ProductDetail.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductDetail.tsx"
+        },
+        {
+          "path": "registry/products/common/src/features/products/components/ProductDetailSkeleton.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductDetailSkeleton.tsx"
+        },
+        {
+          "path": "registry/products/common/src/features/products/components/ProductFavoriteButton.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductFavoriteButton.tsx"
+        },
+        {
+          "path": "registry/products/common/src/features/products/components/ProductGallery.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductGallery.tsx"
+        },
+        {
+          "path": "registry/products/common/src/features/products/components/ProductGrid.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductGrid.tsx"
+        },
+        {
+          "path": "registry/products/common/src/features/products/components/ProductGridSkeleton.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductGridSkeleton.tsx"
+        },
+        {
+          "path": "registry/products/nextjs/src/features/products/components/ProductImage.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductImage.tsx"
+        },
+        {
+          "path": "registry/products/common/src/features/products/components/ProductImageViewer.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductImageViewer.tsx"
+        },
+        {
+          "path": "registry/products/nextjs/src/features/products/components/ProductLink.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductLink.tsx"
+        },
+        {
+          "path": "registry/products/nextjs/src/features/products/components/ProductList.test.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductList.test.tsx"
+        },
+        {
+          "path": "registry/products/common/src/features/products/components/ProductList.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductList.tsx"
+        },
+        {
+          "path": "registry/products/common/src/features/products/components/ProductListSkeleton.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductListSkeleton.tsx"
+        },
+        {
+          "path": "registry/products/nextjs/src/features/products/components/ProductListTitle.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductListTitle.tsx"
+        },
+        {
+          "path": "registry/products/common/src/features/products/components/ProductListToolbar.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductListToolbar.tsx"
+        },
+        {
+          "path": "registry/products/common/src/features/products/components/ProductNotFound.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductNotFound.tsx"
+        },
+        {
+          "path": "registry/products/common/src/features/products/components/ProductPagination.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductPagination.tsx"
+        },
+        {
+          "path": "registry/products/common/src/features/products/components/ProductPrice.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductPrice.tsx"
+        },
+        {
+          "path": "registry/products/common/src/features/products/components/ProductRating.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductRating.tsx"
+        },
+        {
+          "path": "registry/products/common/src/features/products/components/ProductReviews.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductReviews.tsx"
+        },
+        {
+          "path": "registry/products/common/src/features/products/components/ProductSpecs.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductSpecs.tsx"
+        },
+        {
+          "path": "registry/products/common/src/features/products/constants/products.constants.ts",
+          "type": "registry:file",
+          "target": "src/features/products/constants/products.constants.ts"
+        },
+        {
+          "path": "registry/products/common/src/features/products/helpers/get-error-message.ts",
+          "type": "registry:file",
+          "target": "src/features/products/helpers/get-error-message.ts"
+        },
+        {
+          "path": "registry/products/common/src/features/products/helpers/price.test.ts",
+          "type": "registry:file",
+          "target": "src/features/products/helpers/price.test.ts"
+        },
+        {
+          "path": "registry/products/common/src/features/products/helpers/price.ts",
+          "type": "registry:file",
+          "target": "src/features/products/helpers/price.ts"
+        },
+        {
+          "path": "registry/products/common/src/features/products/helpers/product-href.ts",
+          "type": "registry:file",
+          "target": "src/features/products/helpers/product-href.ts"
+        },
+        {
+          "path": "registry/products/common/src/features/products/helpers/product-seo.test.ts",
+          "type": "registry:file",
+          "target": "src/features/products/helpers/product-seo.test.ts"
+        },
+        {
+          "path": "registry/products/common/src/features/products/helpers/product-seo.ts",
+          "type": "registry:file",
+          "target": "src/features/products/helpers/product-seo.ts"
+        },
+        {
+          "path": "registry/products/common/src/features/products/hooks/use-categories.ts",
+          "type": "registry:file",
+          "target": "src/features/products/hooks/use-categories.ts"
+        },
+        {
+          "path": "registry/products/nextjs/src/features/products/hooks/use-product-id.ts",
+          "type": "registry:file",
+          "target": "src/features/products/hooks/use-product-id.ts"
+        },
+        {
+          "path": "registry/products/nextjs/src/features/products/hooks/use-product-list-params.ts",
+          "type": "registry:file",
+          "target": "src/features/products/hooks/use-product-list-params.ts"
+        },
+        {
+          "path": "registry/products/common/src/features/products/hooks/use-product.ts",
+          "type": "registry:file",
+          "target": "src/features/products/hooks/use-product.ts"
+        },
+        {
+          "path": "registry/products/common/src/features/products/hooks/use-products.ts",
+          "type": "registry:file",
+          "target": "src/features/products/hooks/use-products.ts"
+        },
+        {
+          "path": "registry/products/common/src/features/products/hooks/use-server-data.ts",
+          "type": "registry:file",
+          "target": "src/features/products/hooks/use-server-data.ts"
+        },
+        {
+          "path": "registry/products/nextjs/src/features/products/schemas/product-list-params.schema.ts",
+          "type": "registry:file",
+          "target": "src/features/products/schemas/product-list-params.schema.ts"
+        },
+        {
+          "path": "registry/products/common/src/features/products/schemas/product.schema.ts",
+          "type": "registry:file",
+          "target": "src/features/products/schemas/product.schema.ts"
+        }
+      ],
+      "meta": {
+        "product": "virastack-start",
+        "framework": "nextjs",
+        "minStartVersion": "2.0.0",
+        "entry": {
+          "name": "ProductList",
+          "file": "@/features/products/components/ProductList"
+        },
+        "pages": [
+          {
+            "path": "/products",
+            "file": "src/app/products/page.tsx"
+          },
+          {
+            "path": "/products/:id",
+            "file": "src/app/products/[id]/page.tsx"
+          }
+        ]
+      }
+    },
+    {
+      "name": "products-tanstack",
+      "type": "registry:item",
+      "title": "Products",
+      "description": "A paginated product list with search, category, sorting and the page in the URL, and a page for each product.",
+      "author": "ViraStack <https://virastack.com>",
+      "dependencies": [
+        "@tanstack/react-query@^5.105.0",
+        "cn@^0.5.1",
+        "embla-carousel-react@^8.6.0",
+        "lucide-react@^1.66.0",
+        "sonner@^2.0.8",
+        "usehooks-ts@^3.1.1",
+        "zod@^4.6.7"
+      ],
+      "devDependencies": [
+        "@testing-library/react@^16.3.3",
+        "@testing-library/user-event@^14.6.8",
+        "msw@^3.0.3",
+        "vitest@^5.0.5"
+      ],
+      "registryDependencies": [
+        "card"
+      ],
+      "files": [
+        {
+          "path": "registry/products/common/src/features/products/api/get-categories.api.ts",
+          "type": "registry:file",
+          "target": "src/features/products/api/get-categories.api.ts"
+        },
+        {
+          "path": "registry/products/common/src/features/products/api/get-product.api.ts",
+          "type": "registry:file",
+          "target": "src/features/products/api/get-product.api.ts"
+        },
+        {
+          "path": "registry/products/common/src/features/products/api/get-products.api.test.ts",
+          "type": "registry:file",
+          "target": "src/features/products/api/get-products.api.test.ts"
+        },
+        {
+          "path": "registry/products/common/src/features/products/api/get-products.api.ts",
+          "type": "registry:file",
+          "target": "src/features/products/api/get-products.api.ts"
+        },
+        {
+          "path": "registry/products/tanstack/src/features/products/api/load-products.test.ts",
+          "type": "registry:file",
+          "target": "src/features/products/api/load-products.test.ts"
+        },
+        {
+          "path": "registry/products/tanstack/src/features/products/api/load-products.ts",
+          "type": "registry:file",
+          "target": "src/features/products/api/load-products.ts"
+        },
+        {
+          "path": "registry/products/common/src/features/products/api/product.queries.ts",
+          "type": "registry:file",
+          "target": "src/features/products/api/product.queries.ts"
+        },
+        {
+          "path": "registry/products/common/src/features/products/api/query-keys.ts",
+          "type": "registry:file",
+          "target": "src/features/products/api/query-keys.ts"
+        },
+        {
+          "path": "registry/products/common/src/features/products/components/ProductBackLink.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductBackLink.tsx"
+        },
+        {
+          "path": "registry/products/common/src/features/products/components/ProductCard.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductCard.tsx"
+        },
+        {
+          "path": "registry/products/common/src/features/products/components/ProductCarousel.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductCarousel.tsx"
+        },
+        {
+          "path": "registry/products/tanstack/src/features/products/components/ProductDetail.test.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductDetail.test.tsx"
+        },
+        {
+          "path": "registry/products/common/src/features/products/components/ProductDetail.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductDetail.tsx"
+        },
+        {
+          "path": "registry/products/common/src/features/products/components/ProductDetailSkeleton.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductDetailSkeleton.tsx"
+        },
+        {
+          "path": "registry/products/common/src/features/products/components/ProductFavoriteButton.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductFavoriteButton.tsx"
+        },
+        {
+          "path": "registry/products/common/src/features/products/components/ProductGallery.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductGallery.tsx"
+        },
+        {
+          "path": "registry/products/common/src/features/products/components/ProductGrid.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductGrid.tsx"
+        },
+        {
+          "path": "registry/products/common/src/features/products/components/ProductGridSkeleton.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductGridSkeleton.tsx"
+        },
+        {
+          "path": "registry/products/tanstack/src/features/products/components/ProductImage.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductImage.tsx"
+        },
+        {
+          "path": "registry/products/common/src/features/products/components/ProductImageViewer.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductImageViewer.tsx"
+        },
+        {
+          "path": "registry/products/tanstack/src/features/products/components/ProductLink.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductLink.tsx"
+        },
+        {
+          "path": "registry/products/tanstack/src/features/products/components/ProductList.test.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductList.test.tsx"
+        },
+        {
+          "path": "registry/products/common/src/features/products/components/ProductList.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductList.tsx"
+        },
+        {
+          "path": "registry/products/common/src/features/products/components/ProductListSkeleton.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductListSkeleton.tsx"
+        },
+        {
+          "path": "registry/products/common/src/features/products/components/ProductListToolbar.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductListToolbar.tsx"
+        },
+        {
+          "path": "registry/products/common/src/features/products/components/ProductNotFound.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductNotFound.tsx"
+        },
+        {
+          "path": "registry/products/common/src/features/products/components/ProductPagination.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductPagination.tsx"
+        },
+        {
+          "path": "registry/products/common/src/features/products/components/ProductPrice.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductPrice.tsx"
+        },
+        {
+          "path": "registry/products/common/src/features/products/components/ProductRating.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductRating.tsx"
+        },
+        {
+          "path": "registry/products/common/src/features/products/components/ProductReviews.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductReviews.tsx"
+        },
+        {
+          "path": "registry/products/common/src/features/products/components/ProductSpecs.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductSpecs.tsx"
+        },
+        {
+          "path": "registry/products/common/src/features/products/constants/products.constants.ts",
+          "type": "registry:file",
+          "target": "src/features/products/constants/products.constants.ts"
+        },
+        {
+          "path": "registry/products/common/src/features/products/helpers/get-error-message.ts",
+          "type": "registry:file",
+          "target": "src/features/products/helpers/get-error-message.ts"
+        },
+        {
+          "path": "registry/products/common/src/features/products/helpers/price.test.ts",
+          "type": "registry:file",
+          "target": "src/features/products/helpers/price.test.ts"
+        },
+        {
+          "path": "registry/products/common/src/features/products/helpers/price.ts",
+          "type": "registry:file",
+          "target": "src/features/products/helpers/price.ts"
+        },
+        {
+          "path": "registry/products/common/src/features/products/helpers/product-href.ts",
+          "type": "registry:file",
+          "target": "src/features/products/helpers/product-href.ts"
+        },
+        {
+          "path": "registry/products/common/src/features/products/helpers/product-seo.test.ts",
+          "type": "registry:file",
+          "target": "src/features/products/helpers/product-seo.test.ts"
+        },
+        {
+          "path": "registry/products/common/src/features/products/helpers/product-seo.ts",
+          "type": "registry:file",
+          "target": "src/features/products/helpers/product-seo.ts"
+        },
+        {
+          "path": "registry/products/tanstack/src/features/products/helpers/share-meta.ts",
+          "type": "registry:file",
+          "target": "src/features/products/helpers/share-meta.ts"
+        },
+        {
+          "path": "registry/products/common/src/features/products/hooks/use-categories.ts",
+          "type": "registry:file",
+          "target": "src/features/products/hooks/use-categories.ts"
+        },
+        {
+          "path": "registry/products/tanstack/src/features/products/hooks/use-product-id.ts",
+          "type": "registry:file",
+          "target": "src/features/products/hooks/use-product-id.ts"
+        },
+        {
+          "path": "registry/products/tanstack/src/features/products/hooks/use-product-list-params.ts",
+          "type": "registry:file",
+          "target": "src/features/products/hooks/use-product-list-params.ts"
+        },
+        {
+          "path": "registry/products/common/src/features/products/hooks/use-product.ts",
+          "type": "registry:file",
+          "target": "src/features/products/hooks/use-product.ts"
+        },
+        {
+          "path": "registry/products/common/src/features/products/hooks/use-products.ts",
+          "type": "registry:file",
+          "target": "src/features/products/hooks/use-products.ts"
+        },
+        {
+          "path": "registry/products/common/src/features/products/hooks/use-server-data.ts",
+          "type": "registry:file",
+          "target": "src/features/products/hooks/use-server-data.ts"
+        },
+        {
+          "path": "registry/products/tanstack/src/features/products/schemas/product-list-params.schema.ts",
+          "type": "registry:file",
+          "target": "src/features/products/schemas/product-list-params.schema.ts"
+        },
+        {
+          "path": "registry/products/common/src/features/products/schemas/product.schema.ts",
+          "type": "registry:file",
+          "target": "src/features/products/schemas/product.schema.ts"
+        },
+        {
+          "path": "registry/products/tanstack/src/routes/products/$id.tsx",
+          "type": "registry:file",
+          "target": "src/routes/products/$id.tsx"
+        },
+        {
+          "path": "registry/products/tanstack/src/routes/products/index.tsx",
+          "type": "registry:file",
+          "target": "src/routes/products/index.tsx"
+        }
+      ],
+      "meta": {
+        "product": "virastack-start",
+        "framework": "tanstack",
+        "minStartVersion": "2.0.0",
+        "entry": {
+          "name": "ProductList",
+          "file": "@/features/products/components/ProductList"
+        },
+        "pages": [
+          {
+            "path": "/products",
+            "file": "src/routes/products/index.tsx"
+          },
+          {
+            "path": "/products/:id",
+            "file": "src/routes/products/$id.tsx"
+          }
+        ]
+      }
+    },
+    {
+      "name": "products-nextjs-i18n",
+      "type": "registry:item",
+      "title": "Products",
+      "description": "A paginated product list with search, category, sorting and the page in the URL, and a page for each product.",
+      "author": "ViraStack <https://virastack.com>",
+      "dependencies": [
+        "@tanstack/react-query@^5.105.0",
+        "cn@^0.5.1",
+        "embla-carousel-react@^8.6.0",
+        "lucide-react@^1.66.0",
+        "nuqs@^2.10.2",
+        "sonner@^2.0.8",
+        "usehooks-ts@^3.1.1",
+        "zod@^4.6.7"
+      ],
+      "devDependencies": [
+        "@testing-library/react@^16.3.3",
+        "@testing-library/user-event@^14.6.8",
+        "msw@^3.0.3",
+        "vitest@^5.0.5"
+      ],
+      "registryDependencies": [
+        "card"
+      ],
+      "files": [
+        {
+          "path": "registry/products/nextjs-i18n/src/app/[locale]/products/[id]/not-found.tsx",
+          "type": "registry:file",
+          "target": "src/app/[locale]/products/[id]/not-found.tsx"
+        },
+        {
+          "path": "registry/products/nextjs-i18n/src/app/[locale]/products/[id]/page.tsx",
+          "type": "registry:file",
+          "target": "src/app/[locale]/products/[id]/page.tsx"
+        },
+        {
+          "path": "registry/products/nextjs-i18n/src/app/[locale]/products/page.tsx",
+          "type": "registry:file",
+          "target": "src/app/[locale]/products/page.tsx"
+        },
+        {
+          "path": "registry/products/common/src/features/products/api/get-categories.api.ts",
+          "type": "registry:file",
+          "target": "src/features/products/api/get-categories.api.ts"
+        },
+        {
+          "path": "registry/products/nextjs-i18n/src/features/products/api/get-initial-product.api.ts",
+          "type": "registry:file",
+          "target": "src/features/products/api/get-initial-product.api.ts"
+        },
+        {
+          "path": "registry/products/nextjs-i18n/src/features/products/api/get-initial-products.api.ts",
+          "type": "registry:file",
+          "target": "src/features/products/api/get-initial-products.api.ts"
+        },
+        {
+          "path": "registry/products/common/src/features/products/api/get-product.api.ts",
+          "type": "registry:file",
+          "target": "src/features/products/api/get-product.api.ts"
+        },
+        {
+          "path": "registry/products/common/src/features/products/api/get-products.api.test.ts",
+          "type": "registry:file",
+          "target": "src/features/products/api/get-products.api.test.ts"
+        },
+        {
+          "path": "registry/products/common/src/features/products/api/get-products.api.ts",
+          "type": "registry:file",
+          "target": "src/features/products/api/get-products.api.ts"
+        },
+        {
+          "path": "registry/products/common/src/features/products/api/product.queries.ts",
+          "type": "registry:file",
+          "target": "src/features/products/api/product.queries.ts"
+        },
+        {
+          "path": "registry/products/common/src/features/products/api/query-keys.ts",
+          "type": "registry:file",
+          "target": "src/features/products/api/query-keys.ts"
+        },
+        {
+          "path": "registry/products/nextjs-i18n/src/features/products/components/ProductBackLink.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductBackLink.tsx"
+        },
+        {
+          "path": "registry/products/nextjs-i18n/src/features/products/components/ProductCard.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductCard.tsx"
+        },
+        {
+          "path": "registry/products/nextjs-i18n/src/features/products/components/ProductCarousel.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductCarousel.tsx"
+        },
+        {
+          "path": "registry/products/nextjs-i18n/src/features/products/components/ProductDetail.test.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductDetail.test.tsx"
+        },
+        {
+          "path": "registry/products/nextjs-i18n/src/features/products/components/ProductDetail.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductDetail.tsx"
+        },
+        {
+          "path": "registry/products/nextjs-i18n/src/features/products/components/ProductDetailSkeleton.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductDetailSkeleton.tsx"
+        },
+        {
+          "path": "registry/products/nextjs-i18n/src/features/products/components/ProductFavoriteButton.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductFavoriteButton.tsx"
+        },
+        {
+          "path": "registry/products/nextjs-i18n/src/features/products/components/ProductGallery.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductGallery.tsx"
+        },
+        {
+          "path": "registry/products/nextjs-i18n/src/features/products/components/ProductGrid.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductGrid.tsx"
+        },
+        {
+          "path": "registry/products/nextjs-i18n/src/features/products/components/ProductGridSkeleton.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductGridSkeleton.tsx"
+        },
+        {
+          "path": "registry/products/nextjs-i18n/src/features/products/components/ProductImage.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductImage.tsx"
+        },
+        {
+          "path": "registry/products/common/src/features/products/components/ProductImageViewer.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductImageViewer.tsx"
+        },
+        {
+          "path": "registry/products/nextjs-i18n/src/features/products/components/ProductLink.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductLink.tsx"
+        },
+        {
+          "path": "registry/products/nextjs-i18n/src/features/products/components/ProductList.test.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductList.test.tsx"
+        },
+        {
+          "path": "registry/products/nextjs-i18n/src/features/products/components/ProductList.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductList.tsx"
+        },
+        {
+          "path": "registry/products/common/src/features/products/components/ProductListSkeleton.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductListSkeleton.tsx"
+        },
+        {
+          "path": "registry/products/nextjs-i18n/src/features/products/components/ProductListTitle.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductListTitle.tsx"
+        },
+        {
+          "path": "registry/products/nextjs-i18n/src/features/products/components/ProductListToolbar.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductListToolbar.tsx"
+        },
+        {
+          "path": "registry/products/nextjs-i18n/src/features/products/components/ProductNotFound.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductNotFound.tsx"
+        },
+        {
+          "path": "registry/products/nextjs-i18n/src/features/products/components/ProductPagination.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductPagination.tsx"
+        },
+        {
+          "path": "registry/products/nextjs-i18n/src/features/products/components/ProductPrice.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductPrice.tsx"
+        },
+        {
+          "path": "registry/products/nextjs-i18n/src/features/products/components/ProductRating.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductRating.tsx"
+        },
+        {
+          "path": "registry/products/nextjs-i18n/src/features/products/components/ProductReviews.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductReviews.tsx"
+        },
+        {
+          "path": "registry/products/nextjs-i18n/src/features/products/components/ProductSpecs.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductSpecs.tsx"
+        },
+        {
+          "path": "registry/products/common/src/features/products/constants/products.constants.ts",
+          "type": "registry:file",
+          "target": "src/features/products/constants/products.constants.ts"
+        },
+        {
+          "path": "registry/products/common/src/features/products/helpers/get-error-message.ts",
+          "type": "registry:file",
+          "target": "src/features/products/helpers/get-error-message.ts"
+        },
+        {
+          "path": "registry/products/common/src/features/products/helpers/price.test.ts",
+          "type": "registry:file",
+          "target": "src/features/products/helpers/price.test.ts"
+        },
+        {
+          "path": "registry/products/common/src/features/products/helpers/price.ts",
+          "type": "registry:file",
+          "target": "src/features/products/helpers/price.ts"
+        },
+        {
+          "path": "registry/products/common/src/features/products/helpers/product-href.ts",
+          "type": "registry:file",
+          "target": "src/features/products/helpers/product-href.ts"
+        },
+        {
+          "path": "registry/products/nextjs-i18n/src/features/products/helpers/product-list-texts.ts",
+          "type": "registry:file",
+          "target": "src/features/products/helpers/product-list-texts.ts"
+        },
+        {
+          "path": "registry/products/common/src/features/products/helpers/product-seo.test.ts",
+          "type": "registry:file",
+          "target": "src/features/products/helpers/product-seo.test.ts"
+        },
+        {
+          "path": "registry/products/common/src/features/products/helpers/product-seo.ts",
+          "type": "registry:file",
+          "target": "src/features/products/helpers/product-seo.ts"
+        },
+        {
+          "path": "registry/products/common/src/features/products/hooks/use-categories.ts",
+          "type": "registry:file",
+          "target": "src/features/products/hooks/use-categories.ts"
+        },
+        {
+          "path": "registry/products/nextjs-i18n/src/features/products/hooks/use-error-message.ts",
+          "type": "registry:file",
+          "target": "src/features/products/hooks/use-error-message.ts"
+        },
+        {
+          "path": "registry/products/nextjs-i18n/src/features/products/hooks/use-product-format.ts",
+          "type": "registry:file",
+          "target": "src/features/products/hooks/use-product-format.ts"
+        },
+        {
+          "path": "registry/products/nextjs-i18n/src/features/products/hooks/use-product-id.ts",
+          "type": "registry:file",
+          "target": "src/features/products/hooks/use-product-id.ts"
+        },
+        {
+          "path": "registry/products/nextjs-i18n/src/features/products/hooks/use-product-list-params.ts",
+          "type": "registry:file",
+          "target": "src/features/products/hooks/use-product-list-params.ts"
+        },
+        {
+          "path": "registry/products/common/src/features/products/hooks/use-product.ts",
+          "type": "registry:file",
+          "target": "src/features/products/hooks/use-product.ts"
+        },
+        {
+          "path": "registry/products/common/src/features/products/hooks/use-products.ts",
+          "type": "registry:file",
+          "target": "src/features/products/hooks/use-products.ts"
+        },
+        {
+          "path": "registry/products/common/src/features/products/hooks/use-server-data.ts",
+          "type": "registry:file",
+          "target": "src/features/products/hooks/use-server-data.ts"
+        },
+        {
+          "path": "registry/products/nextjs-i18n/src/features/products/schemas/product-list-params.schema.ts",
+          "type": "registry:file",
+          "target": "src/features/products/schemas/product-list-params.schema.ts"
+        },
+        {
+          "path": "registry/products/common/src/features/products/schemas/product.schema.ts",
+          "type": "registry:file",
+          "target": "src/features/products/schemas/product.schema.ts"
+        }
+      ],
+      "meta": {
+        "product": "virastack-start",
+        "framework": "nextjs",
+        "minStartVersion": "2.0.0",
+        "entry": {
+          "name": "ProductList",
+          "file": "@/features/products/components/ProductList"
+        },
+        "pages": [
+          {
+            "path": "/products",
+            "file": "src/app/[locale]/products/page.tsx"
+          },
+          {
+            "path": "/products/:id",
+            "file": "src/app/[locale]/products/[id]/page.tsx"
+          }
+        ],
+        "messages": {
+          "en": {
+            "Products": {
+              "title": "Products",
+              "meta_description": "Browse the products, search them and sort them by price, rating or discount.",
+              "product_fallback_title": "Product",
+              "meta_search_title": "Results for “{query}”",
+              "meta_page_title": "{title} · Page {page}",
+              "meta_list_description": "{count, plural, one {Browse # product, search it and sort it by price, rating or discount.} other {Browse # products, search them and sort them by price, rating or discount.}}",
+              "meta_category_description": "{count, plural, one {Browse # product in {category} and sort it by price, rating or discount.} other {Browse # products in {category} and sort them by price, rating or discount.}}",
+              "meta_search_description": "{count, plural, one {# result for “{query}”.} other {# results for “{query}”.}}",
+              "search_label": "Search products",
+              "category_label": "Category",
+              "all_categories": "All categories",
+              "sort_label": "Sort by",
+              "sort_featured": "Featured",
+              "sort_price_asc": "Price: low to high",
+              "sort_price_desc": "Price: high to low",
+              "sort_rating": "Top rated",
+              "sort_discount": "Biggest discount",
+              "sort_title": "Name: A to Z",
+              "summary_products": "{count, plural, one {{from}–{to} of # product} other {{from}–{to} of # products}}",
+              "summary_results": "{count, plural, one {{from}–{to} of # result for “{query}”} other {{from}–{to} of # results for “{query}”}}",
+              "no_products_found": "No products found",
+              "loading_products": "Loading products",
+              "load_error_title": "Could not load products",
+              "retry": "Retry",
+              "retrying": "Retrying…",
+              "empty_page_title": "This page is empty",
+              "empty_page_description": "The results end before page {page}.",
+              "go_to_first_page": "Go to the first page",
+              "no_results_description": "Nothing matches “{query}”.",
+              "empty_category_description": "This category has no products.",
+              "clear_filters": "Clear filters",
+              "no_products_title": "No products yet",
+              "no_products_description": "The API returned an empty list.",
+              "pagination_label": "Pagination",
+              "previous": "Previous",
+              "previous_page": "Previous page",
+              "next": "Next",
+              "next_page": "Next page",
+              "page_status": "Page {page} of {totalPages}",
+              "discount": "-{percent}%",
+              "stock_low": "Low stock",
+              "stock_out": "Out of stock",
+              "sale_price": "Sale price {sale}, was {list}",
+              "price": "Price {price}",
+              "rating": "Rated {rating} out of 5",
+              "all_products": "All products",
+              "not_found_title": "Product not found",
+              "not_found_description": "It may have been removed, or the link is wrong.",
+              "detail_load_error_title": "Could not load the product",
+              "loading_product": "Loading product",
+              "add_to_cart": "Add to cart",
+              "added_to_cart": "Added to cart",
+              "review_count": "{count, plural, one {# review} other {# reviews}}",
+              "in_stock": "{count} in stock",
+              "tags": "Tags",
+              "reviews_title": "Reviews",
+              "no_reviews": "No reviews yet.",
+              "details_title": "Details",
+              "spec_sku": "SKU",
+              "spec_warranty": "Warranty",
+              "spec_shipping": "Shipping",
+              "spec_returns": "Returns",
+              "spec_minimum_order": "Minimum order",
+              "minimum_order_value": "{count, plural, one {# piece} other {# pieces}}",
+              "spec_size": "Size (W × H × D)",
+              "favorite": "Favorite",
+              "added_to_favorites": "Added to favorites",
+              "removed_from_favorites": "Removed from favorites",
+              "open_image": "Open image {index} of {total} in full screen",
+              "show_image": "Show image {index} of {total}",
+              "previous_image": "Previous image",
+              "next_image": "Next image",
+              "images_label": "Images",
+              "carousel_label": "{title} images",
+              "slide_label": "{index} of {total}",
+              "image_alt": "{title}, image {index} of {total}",
+              "error_network": "Network request failed",
+              "error_status": "Request failed with status {status}",
+              "error_unknown": "Something went wrong."
+            }
+          },
+          "tr": {
+            "Products": {
+              "title": "Ürünler",
+              "meta_description": "Ürünlere göz at, ara ve fiyata, puana ya da indirime göre sırala.",
+              "product_fallback_title": "Ürün",
+              "meta_search_title": "“{query}” için sonuçlar",
+              "meta_page_title": "{title} · Sayfa {page}",
+              "meta_list_description": "{count} ürüne göz at, ara ve fiyata, puana ya da indirime göre sırala.",
+              "meta_category_description": "{category} kategorisindeki {count} ürüne göz at ve fiyata, puana ya da indirime göre sırala.",
+              "meta_search_description": "“{query}” için {count} sonuç.",
+              "search_label": "Ürün ara",
+              "category_label": "Kategori",
+              "all_categories": "Tüm kategoriler",
+              "sort_label": "Sırala",
+              "sort_featured": "Öne çıkanlar",
+              "sort_price_asc": "Fiyat: düşükten yükseğe",
+              "sort_price_desc": "Fiyat: yüksekten düşüğe",
+              "sort_rating": "En yüksek puan",
+              "sort_discount": "En yüksek indirim",
+              "sort_title": "Ad: A'dan Z'ye",
+              "summary_products": "{count} üründen {from}–{to} gösteriliyor",
+              "summary_results": "“{query}” için {count} sonuçtan {from}–{to} gösteriliyor",
+              "no_products_found": "Ürün bulunamadı",
+              "loading_products": "Ürünler yükleniyor",
+              "load_error_title": "Ürünler yüklenemedi",
+              "retry": "Tekrar dene",
+              "retrying": "Deneniyor…",
+              "empty_page_title": "Bu sayfa boş",
+              "empty_page_description": "Sonuçlar {page}. sayfadan önce bitiyor.",
+              "go_to_first_page": "İlk sayfaya git",
+              "no_results_description": "“{query}” ile eşleşen sonuç yok.",
+              "empty_category_description": "Bu kategoride ürün yok.",
+              "clear_filters": "Filtreleri temizle",
+              "no_products_title": "Henüz ürün yok",
+              "no_products_description": "API boş bir liste döndürdü.",
+              "pagination_label": "Sayfalama",
+              "previous": "Önceki",
+              "previous_page": "Önceki sayfa",
+              "next": "Sonraki",
+              "next_page": "Sonraki sayfa",
+              "page_status": "{totalPages} sayfadan {page}",
+              "discount": "-%{percent}",
+              "stock_low": "Az kaldı",
+              "stock_out": "Tükendi",
+              "sale_price": "İndirimli fiyat {sale}, eski fiyat {list}",
+              "price": "Fiyat {price}",
+              "rating": "5 üzerinden {rating} puan",
+              "all_products": "Tüm ürünler",
+              "not_found_title": "Ürün bulunamadı",
+              "not_found_description": "Kaldırılmış olabilir ya da bağlantı yanlış.",
+              "detail_load_error_title": "Ürün yüklenemedi",
+              "loading_product": "Ürün yükleniyor",
+              "add_to_cart": "Sepete ekle",
+              "added_to_cart": "Sepete eklendi",
+              "review_count": "{count} değerlendirme",
+              "in_stock": "Stokta {count} adet",
+              "tags": "Etiketler",
+              "reviews_title": "Değerlendirmeler",
+              "no_reviews": "Henüz değerlendirme yok.",
+              "details_title": "Ayrıntılar",
+              "spec_sku": "SKU",
+              "spec_warranty": "Garanti",
+              "spec_shipping": "Kargo",
+              "spec_returns": "İade",
+              "spec_minimum_order": "Minimum sipariş",
+              "minimum_order_value": "{count} adet",
+              "spec_size": "Boyut (G × Y × D)",
+              "favorite": "Favori",
+              "added_to_favorites": "Favorilere eklendi",
+              "removed_from_favorites": "Favorilerden çıkarıldı",
+              "open_image": "{total} görselden {index}. görseli tam ekran aç",
+              "show_image": "{total} görselden {index}. görseli göster",
+              "previous_image": "Önceki görsel",
+              "next_image": "Sonraki görsel",
+              "images_label": "Görseller",
+              "carousel_label": "{title} görselleri",
+              "slide_label": "{total} görselden {index}",
+              "image_alt": "{title}, {total} görselden {index}. görsel",
+              "error_network": "İstek gönderilemedi. İnternet bağlantını kontrol et.",
+              "error_status": "İstek başarısız oldu (durum kodu: {status})",
+              "error_unknown": "Bir şeyler ters gitti."
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "products-tanstack-i18n",
+      "type": "registry:item",
+      "title": "Products",
+      "description": "A paginated product list with search, category, sorting and the page in the URL, and a page for each product.",
+      "author": "ViraStack <https://virastack.com>",
+      "dependencies": [
+        "@tanstack/react-query@^5.105.0",
+        "cn@^0.5.1",
+        "embla-carousel-react@^8.6.0",
+        "lucide-react@^1.66.0",
+        "sonner@^2.0.8",
+        "usehooks-ts@^3.1.1",
+        "zod@^4.6.7"
+      ],
+      "devDependencies": [
+        "@testing-library/react@^16.3.3",
+        "@testing-library/user-event@^14.6.8",
+        "msw@^3.0.3",
+        "vitest@^5.0.5"
+      ],
+      "registryDependencies": [
+        "card"
+      ],
+      "files": [
+        {
+          "path": "registry/products/common/src/features/products/api/get-categories.api.ts",
+          "type": "registry:file",
+          "target": "src/features/products/api/get-categories.api.ts"
+        },
+        {
+          "path": "registry/products/common/src/features/products/api/get-product.api.ts",
+          "type": "registry:file",
+          "target": "src/features/products/api/get-product.api.ts"
+        },
+        {
+          "path": "registry/products/common/src/features/products/api/get-products.api.test.ts",
+          "type": "registry:file",
+          "target": "src/features/products/api/get-products.api.test.ts"
+        },
+        {
+          "path": "registry/products/common/src/features/products/api/get-products.api.ts",
+          "type": "registry:file",
+          "target": "src/features/products/api/get-products.api.ts"
+        },
+        {
+          "path": "registry/products/tanstack-i18n/src/features/products/api/load-products.test.ts",
+          "type": "registry:file",
+          "target": "src/features/products/api/load-products.test.ts"
+        },
+        {
+          "path": "registry/products/tanstack-i18n/src/features/products/api/load-products.ts",
+          "type": "registry:file",
+          "target": "src/features/products/api/load-products.ts"
+        },
+        {
+          "path": "registry/products/common/src/features/products/api/product.queries.ts",
+          "type": "registry:file",
+          "target": "src/features/products/api/product.queries.ts"
+        },
+        {
+          "path": "registry/products/common/src/features/products/api/query-keys.ts",
+          "type": "registry:file",
+          "target": "src/features/products/api/query-keys.ts"
+        },
+        {
+          "path": "registry/products/tanstack-i18n/src/features/products/components/ProductBackLink.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductBackLink.tsx"
+        },
+        {
+          "path": "registry/products/tanstack-i18n/src/features/products/components/ProductCard.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductCard.tsx"
+        },
+        {
+          "path": "registry/products/tanstack-i18n/src/features/products/components/ProductCarousel.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductCarousel.tsx"
+        },
+        {
+          "path": "registry/products/tanstack-i18n/src/features/products/components/ProductDetail.test.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductDetail.test.tsx"
+        },
+        {
+          "path": "registry/products/tanstack-i18n/src/features/products/components/ProductDetail.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductDetail.tsx"
+        },
+        {
+          "path": "registry/products/tanstack-i18n/src/features/products/components/ProductDetailSkeleton.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductDetailSkeleton.tsx"
+        },
+        {
+          "path": "registry/products/tanstack-i18n/src/features/products/components/ProductFavoriteButton.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductFavoriteButton.tsx"
+        },
+        {
+          "path": "registry/products/tanstack-i18n/src/features/products/components/ProductGallery.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductGallery.tsx"
+        },
+        {
+          "path": "registry/products/tanstack-i18n/src/features/products/components/ProductGrid.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductGrid.tsx"
+        },
+        {
+          "path": "registry/products/tanstack-i18n/src/features/products/components/ProductGridSkeleton.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductGridSkeleton.tsx"
+        },
+        {
+          "path": "registry/products/tanstack-i18n/src/features/products/components/ProductImage.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductImage.tsx"
+        },
+        {
+          "path": "registry/products/common/src/features/products/components/ProductImageViewer.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductImageViewer.tsx"
+        },
+        {
+          "path": "registry/products/tanstack-i18n/src/features/products/components/ProductLink.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductLink.tsx"
+        },
+        {
+          "path": "registry/products/tanstack-i18n/src/features/products/components/ProductList.test.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductList.test.tsx"
+        },
+        {
+          "path": "registry/products/tanstack-i18n/src/features/products/components/ProductList.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductList.tsx"
+        },
+        {
+          "path": "registry/products/common/src/features/products/components/ProductListSkeleton.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductListSkeleton.tsx"
+        },
+        {
+          "path": "registry/products/tanstack-i18n/src/features/products/components/ProductListToolbar.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductListToolbar.tsx"
+        },
+        {
+          "path": "registry/products/tanstack-i18n/src/features/products/components/ProductNotFound.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductNotFound.tsx"
+        },
+        {
+          "path": "registry/products/tanstack-i18n/src/features/products/components/ProductPagination.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductPagination.tsx"
+        },
+        {
+          "path": "registry/products/tanstack-i18n/src/features/products/components/ProductPrice.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductPrice.tsx"
+        },
+        {
+          "path": "registry/products/tanstack-i18n/src/features/products/components/ProductRating.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductRating.tsx"
+        },
+        {
+          "path": "registry/products/tanstack-i18n/src/features/products/components/ProductReviews.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductReviews.tsx"
+        },
+        {
+          "path": "registry/products/tanstack-i18n/src/features/products/components/ProductSpecs.tsx",
+          "type": "registry:file",
+          "target": "src/features/products/components/ProductSpecs.tsx"
+        },
+        {
+          "path": "registry/products/common/src/features/products/constants/products.constants.ts",
+          "type": "registry:file",
+          "target": "src/features/products/constants/products.constants.ts"
+        },
+        {
+          "path": "registry/products/common/src/features/products/helpers/get-error-message.ts",
+          "type": "registry:file",
+          "target": "src/features/products/helpers/get-error-message.ts"
+        },
+        {
+          "path": "registry/products/common/src/features/products/helpers/price.test.ts",
+          "type": "registry:file",
+          "target": "src/features/products/helpers/price.test.ts"
+        },
+        {
+          "path": "registry/products/common/src/features/products/helpers/price.ts",
+          "type": "registry:file",
+          "target": "src/features/products/helpers/price.ts"
+        },
+        {
+          "path": "registry/products/common/src/features/products/helpers/product-href.ts",
+          "type": "registry:file",
+          "target": "src/features/products/helpers/product-href.ts"
+        },
+        {
+          "path": "registry/products/common/src/features/products/helpers/product-seo.test.ts",
+          "type": "registry:file",
+          "target": "src/features/products/helpers/product-seo.test.ts"
+        },
+        {
+          "path": "registry/products/common/src/features/products/helpers/product-seo.ts",
+          "type": "registry:file",
+          "target": "src/features/products/helpers/product-seo.ts"
+        },
+        {
+          "path": "registry/products/tanstack-i18n/src/features/products/helpers/share-meta.ts",
+          "type": "registry:file",
+          "target": "src/features/products/helpers/share-meta.ts"
+        },
+        {
+          "path": "registry/products/common/src/features/products/hooks/use-categories.ts",
+          "type": "registry:file",
+          "target": "src/features/products/hooks/use-categories.ts"
+        },
+        {
+          "path": "registry/products/tanstack-i18n/src/features/products/hooks/use-error-message.ts",
+          "type": "registry:file",
+          "target": "src/features/products/hooks/use-error-message.ts"
+        },
+        {
+          "path": "registry/products/tanstack-i18n/src/features/products/hooks/use-product-format.ts",
+          "type": "registry:file",
+          "target": "src/features/products/hooks/use-product-format.ts"
+        },
+        {
+          "path": "registry/products/tanstack-i18n/src/features/products/hooks/use-product-id.ts",
+          "type": "registry:file",
+          "target": "src/features/products/hooks/use-product-id.ts"
+        },
+        {
+          "path": "registry/products/tanstack-i18n/src/features/products/hooks/use-product-list-params.ts",
+          "type": "registry:file",
+          "target": "src/features/products/hooks/use-product-list-params.ts"
+        },
+        {
+          "path": "registry/products/common/src/features/products/hooks/use-product.ts",
+          "type": "registry:file",
+          "target": "src/features/products/hooks/use-product.ts"
+        },
+        {
+          "path": "registry/products/common/src/features/products/hooks/use-products.ts",
+          "type": "registry:file",
+          "target": "src/features/products/hooks/use-products.ts"
+        },
+        {
+          "path": "registry/products/common/src/features/products/hooks/use-server-data.ts",
+          "type": "registry:file",
+          "target": "src/features/products/hooks/use-server-data.ts"
+        },
+        {
+          "path": "registry/products/tanstack-i18n/src/features/products/schemas/product-list-params.schema.ts",
+          "type": "registry:file",
+          "target": "src/features/products/schemas/product-list-params.schema.ts"
+        },
+        {
+          "path": "registry/products/common/src/features/products/schemas/product.schema.ts",
+          "type": "registry:file",
+          "target": "src/features/products/schemas/product.schema.ts"
+        },
+        {
+          "path": "registry/products/tanstack-i18n/src/routes/{-$lang}/products/$id.tsx",
+          "type": "registry:file",
+          "target": "src/routes/{-$lang}/products/$id.tsx"
+        },
+        {
+          "path": "registry/products/tanstack-i18n/src/routes/{-$lang}/products/index.tsx",
+          "type": "registry:file",
+          "target": "src/routes/{-$lang}/products/index.tsx"
+        }
+      ],
+      "meta": {
+        "product": "virastack-start",
+        "framework": "tanstack",
+        "minStartVersion": "2.0.0",
+        "entry": {
+          "name": "ProductList",
+          "file": "@/features/products/components/ProductList"
+        },
+        "pages": [
+          {
+            "path": "/products",
+            "file": "src/routes/{-$lang}/products/index.tsx"
+          },
+          {
+            "path": "/products/:id",
+            "file": "src/routes/{-$lang}/products/$id.tsx"
+          }
+        ],
+        "messages": {
+          "en": {
+            "products_title": "Products",
+            "products_meta_description": "Browse the products, search them and sort them by price, rating or discount.",
+            "products_product_fallback_title": "Product",
+            "products_meta_search_title": "Results for “{query}”",
+            "products_meta_page_title": "{title} · Page {page}",
+            "products_meta_list_description": {
+              "declarations": [
+                "input count",
+                "local countPlural = count: plural"
+              ],
+              "selectors": [
+                "countPlural"
+              ],
+              "match": {
+                "countPlural=one": "Browse {count} product, search it and sort it by price, rating or discount.",
+                "countPlural=other": "Browse {count} products, search them and sort them by price, rating or discount."
+              }
+            },
+            "products_meta_category_description": {
+              "declarations": [
+                "input count",
+                "local countPlural = count: plural"
+              ],
+              "selectors": [
+                "countPlural"
+              ],
+              "match": {
+                "countPlural=one": "Browse {count} product in {category} and sort it by price, rating or discount.",
+                "countPlural=other": "Browse {count} products in {category} and sort them by price, rating or discount."
+              }
+            },
+            "products_meta_search_description": {
+              "declarations": [
+                "input count",
+                "local countPlural = count: plural"
+              ],
+              "selectors": [
+                "countPlural"
+              ],
+              "match": {
+                "countPlural=one": "{count} result for “{query}”.",
+                "countPlural=other": "{count} results for “{query}”."
+              }
+            },
+            "products_search_label": "Search products",
+            "products_category_label": "Category",
+            "products_all_categories": "All categories",
+            "products_sort_label": "Sort by",
+            "products_sort_featured": "Featured",
+            "products_sort_price_asc": "Price: low to high",
+            "products_sort_price_desc": "Price: high to low",
+            "products_sort_rating": "Top rated",
+            "products_sort_discount": "Biggest discount",
+            "products_sort_title": "Name: A to Z",
+            "products_summary_products": {
+              "declarations": [
+                "input count",
+                "local countPlural = count: plural"
+              ],
+              "selectors": [
+                "countPlural"
+              ],
+              "match": {
+                "countPlural=one": "{from}–{to} of {count} product",
+                "countPlural=other": "{from}–{to} of {count} products"
+              }
+            },
+            "products_summary_results": {
+              "declarations": [
+                "input count",
+                "local countPlural = count: plural"
+              ],
+              "selectors": [
+                "countPlural"
+              ],
+              "match": {
+                "countPlural=one": "{from}–{to} of {count} result for “{query}”",
+                "countPlural=other": "{from}–{to} of {count} results for “{query}”"
+              }
+            },
+            "products_no_products_found": "No products found",
+            "products_loading_products": "Loading products",
+            "products_load_error_title": "Could not load products",
+            "products_retry": "Retry",
+            "products_retrying": "Retrying…",
+            "products_empty_page_title": "This page is empty",
+            "products_empty_page_description": "The results end before page {page}.",
+            "products_go_to_first_page": "Go to the first page",
+            "products_no_results_description": "Nothing matches “{query}”.",
+            "products_empty_category_description": "This category has no products.",
+            "products_clear_filters": "Clear filters",
+            "products_no_products_title": "No products yet",
+            "products_no_products_description": "The API returned an empty list.",
+            "products_pagination_label": "Pagination",
+            "products_previous": "Previous",
+            "products_previous_page": "Previous page",
+            "products_next": "Next",
+            "products_next_page": "Next page",
+            "products_page_status": "Page {page} of {totalPages}",
+            "products_discount": "-{percent}%",
+            "products_stock_low": "Low stock",
+            "products_stock_out": "Out of stock",
+            "products_sale_price": "Sale price {sale}, was {list}",
+            "products_price": "Price {price}",
+            "products_rating": "Rated {rating} out of 5",
+            "products_all_products": "All products",
+            "products_not_found_title": "Product not found",
+            "products_not_found_description": "It may have been removed, or the link is wrong.",
+            "products_detail_load_error_title": "Could not load the product",
+            "products_loading_product": "Loading product",
+            "products_add_to_cart": "Add to cart",
+            "products_added_to_cart": "Added to cart",
+            "products_review_count": {
+              "declarations": [
+                "input count",
+                "local countPlural = count: plural"
+              ],
+              "selectors": [
+                "countPlural"
+              ],
+              "match": {
+                "countPlural=one": "{count} review",
+                "countPlural=other": "{count} reviews"
+              }
+            },
+            "products_in_stock": "{count} in stock",
+            "products_tags": "Tags",
+            "products_reviews_title": "Reviews",
+            "products_no_reviews": "No reviews yet.",
+            "products_details_title": "Details",
+            "products_spec_sku": "SKU",
+            "products_spec_warranty": "Warranty",
+            "products_spec_shipping": "Shipping",
+            "products_spec_returns": "Returns",
+            "products_spec_minimum_order": "Minimum order",
+            "products_minimum_order_value": {
+              "declarations": [
+                "input count",
+                "local countPlural = count: plural"
+              ],
+              "selectors": [
+                "countPlural"
+              ],
+              "match": {
+                "countPlural=one": "{count} piece",
+                "countPlural=other": "{count} pieces"
+              }
+            },
+            "products_spec_size": "Size (W × H × D)",
+            "products_favorite": "Favorite",
+            "products_added_to_favorites": "Added to favorites",
+            "products_removed_from_favorites": "Removed from favorites",
+            "products_open_image": "Open image {index} of {total} in full screen",
+            "products_show_image": "Show image {index} of {total}",
+            "products_previous_image": "Previous image",
+            "products_next_image": "Next image",
+            "products_images_label": "Images",
+            "products_carousel_label": "{title} images",
+            "products_slide_label": "{index} of {total}",
+            "products_image_alt": "{title}, image {index} of {total}",
+            "products_error_network": "Network request failed",
+            "products_error_status": "Request failed with status {status}",
+            "products_error_unknown": "Something went wrong."
+          },
+          "tr": {
+            "products_title": "Ürünler",
+            "products_meta_description": "Ürünlere göz at, ara ve fiyata, puana ya da indirime göre sırala.",
+            "products_product_fallback_title": "Ürün",
+            "products_meta_search_title": "“{query}” için sonuçlar",
+            "products_meta_page_title": "{title} · Sayfa {page}",
+            "products_meta_list_description": "{count} ürüne göz at, ara ve fiyata, puana ya da indirime göre sırala.",
+            "products_meta_category_description": "{category} kategorisindeki {count} ürüne göz at ve fiyata, puana ya da indirime göre sırala.",
+            "products_meta_search_description": "“{query}” için {count} sonuç.",
+            "products_search_label": "Ürün ara",
+            "products_category_label": "Kategori",
+            "products_all_categories": "Tüm kategoriler",
+            "products_sort_label": "Sırala",
+            "products_sort_featured": "Öne çıkanlar",
+            "products_sort_price_asc": "Fiyat: düşükten yükseğe",
+            "products_sort_price_desc": "Fiyat: yüksekten düşüğe",
+            "products_sort_rating": "En yüksek puan",
+            "products_sort_discount": "En yüksek indirim",
+            "products_sort_title": "Ad: A'dan Z'ye",
+            "products_summary_products": "{count} üründen {from}–{to} gösteriliyor",
+            "products_summary_results": "“{query}” için {count} sonuçtan {from}–{to} gösteriliyor",
+            "products_no_products_found": "Ürün bulunamadı",
+            "products_loading_products": "Ürünler yükleniyor",
+            "products_load_error_title": "Ürünler yüklenemedi",
+            "products_retry": "Tekrar dene",
+            "products_retrying": "Deneniyor…",
+            "products_empty_page_title": "Bu sayfa boş",
+            "products_empty_page_description": "Sonuçlar {page}. sayfadan önce bitiyor.",
+            "products_go_to_first_page": "İlk sayfaya git",
+            "products_no_results_description": "“{query}” ile eşleşen sonuç yok.",
+            "products_empty_category_description": "Bu kategoride ürün yok.",
+            "products_clear_filters": "Filtreleri temizle",
+            "products_no_products_title": "Henüz ürün yok",
+            "products_no_products_description": "API boş bir liste döndürdü.",
+            "products_pagination_label": "Sayfalama",
+            "products_previous": "Önceki",
+            "products_previous_page": "Önceki sayfa",
+            "products_next": "Sonraki",
+            "products_next_page": "Sonraki sayfa",
+            "products_page_status": "{totalPages} sayfadan {page}",
+            "products_discount": "-%{percent}",
+            "products_stock_low": "Az kaldı",
+            "products_stock_out": "Tükendi",
+            "products_sale_price": "İndirimli fiyat {sale}, eski fiyat {list}",
+            "products_price": "Fiyat {price}",
+            "products_rating": "5 üzerinden {rating} puan",
+            "products_all_products": "Tüm ürünler",
+            "products_not_found_title": "Ürün bulunamadı",
+            "products_not_found_description": "Kaldırılmış olabilir ya da bağlantı yanlış.",
+            "products_detail_load_error_title": "Ürün yüklenemedi",
+            "products_loading_product": "Ürün yükleniyor",
+            "products_add_to_cart": "Sepete ekle",
+            "products_added_to_cart": "Sepete eklendi",
+            "products_review_count": "{count} değerlendirme",
+            "products_in_stock": "Stokta {count} adet",
+            "products_tags": "Etiketler",
+            "products_reviews_title": "Değerlendirmeler",
+            "products_no_reviews": "Henüz değerlendirme yok.",
+            "products_details_title": "Ayrıntılar",
+            "products_spec_sku": "SKU",
+            "products_spec_warranty": "Garanti",
+            "products_spec_shipping": "Kargo",
+            "products_spec_returns": "İade",
+            "products_spec_minimum_order": "Minimum sipariş",
+            "products_minimum_order_value": "{count} adet",
+            "products_spec_size": "Boyut (G × Y × D)",
+            "products_favorite": "Favori",
+            "products_added_to_favorites": "Favorilere eklendi",
+            "products_removed_from_favorites": "Favorilerden çıkarıldı",
+            "products_open_image": "{total} görselden {index}. görseli tam ekran aç",
+            "products_show_image": "{total} görselden {index}. görseli göster",
+            "products_previous_image": "Önceki görsel",
+            "products_next_image": "Sonraki görsel",
+            "products_images_label": "Görseller",
+            "products_carousel_label": "{title} görselleri",
+            "products_slide_label": "{total} görselden {index}",
+            "products_image_alt": "{title}, {total} görselden {index}. görsel",
+            "products_error_network": "İstek gönderilemedi. İnternet bağlantını kontrol et.",
+            "products_error_status": "İstek başarısız oldu (durum kodu: {status})",
+            "products_error_unknown": "Bir şeyler ters gitti."
+          }
+        }
+      }
     }
   ]
 }

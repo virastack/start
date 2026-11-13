@@ -7,6 +7,8 @@ import { buildItem, buildRegistry, FEATURES, findDependencies, packageName } fro
 
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const users = FEATURES.find((feature) => feature.name === "users");
+const products = FEATURES.find((feature) => feature.name === "products");
+if (!products) throw new Error("FEATURES has no products module");
 
 describe("packageName", () => {
   it.each([
@@ -75,6 +77,55 @@ describe.each(["nextjs", "tanstack", "nextjs-i18n", "tanstack-i18n"])("users for
     const names = item.dependencies.join(" ");
     if (framework.startsWith("nextjs")) expect(names).toContain("nuqs@");
     else expect(names).not.toContain("nuqs");
+  });
+});
+
+describe("pages", () => {
+  it.each([
+    ["nextjs", "src/app/products/page.tsx", "src/app/products/[id]/page.tsx"],
+    ["nextjs-i18n", "src/app/[locale]/products/page.tsx", "src/app/[locale]/products/[id]/page.tsx"],
+    ["tanstack", "src/routes/products/index.tsx", "src/routes/products/$id.tsx"],
+    ["tanstack-i18n", "src/routes/{-$lang}/products/index.tsx", "src/routes/{-$lang}/products/$id.tsx"],
+  ])("are listed with the same URLs in %s", (framework, list, detail) => {
+    const item = buildItem(REPO, products, framework);
+    expect(item.meta.pages).toEqual([
+      { path: "/products", file: list },
+      { path: "/products/:id", file: detail },
+    ]);
+    for (const page of item.meta.pages) expect(item.files.map((file) => file.target)).toContain(page.file);
+  });
+
+  it("ship the module's not-found page beside the detail page in Next.js, without listing it as a page", () => {
+    for (const framework of ["nextjs", "nextjs-i18n"]) {
+      const item = buildItem(REPO, products, framework);
+      const notFound = item.files.find((file) => file.target.endsWith("[id]/not-found.tsx"));
+      expect(notFound).toBeDefined();
+      expect(item.meta.pages.map((page) => page.file)).not.toContain(notFound?.target);
+    }
+  });
+
+  it("ship in every template with tests and, with i18n, messages for every locale", () => {
+    expect(products.frameworks).toEqual(["nextjs", "tanstack", "nextjs-i18n", "tanstack-i18n"]);
+    for (const framework of products.frameworks) {
+      const item = buildItem(REPO, products, framework);
+      expect(item.files.filter((file) => file.target.endsWith(".test.tsx")).length).toBeGreaterThanOrEqual(2);
+      if (framework.endsWith("-i18n")) expect(Object.keys(item.meta.messages).sort()).toEqual(["en", "tr"]);
+    }
+  });
+
+  it("sit where the module's links point", () => {
+    const constants = readFileSync(
+      path.join(REPO, "registry/products/common/src/features/products/constants/products.constants.ts"),
+      "utf8",
+    );
+    const [, route] = /export const PRODUCTS_ROUTE = "([^"]+)"/.exec(constants) ?? [];
+    expect(buildItem(REPO, products, "nextjs").meta.pages.map((page) => page.path)).toContain(route);
+  });
+
+  it("are not listed for a module without them", () => {
+    for (const feature of FEATURES.filter(({ name }) => name !== "products")) {
+      for (const framework of feature.frameworks) expect(buildItem(REPO, feature, framework).meta.pages).toBeUndefined();
+    }
   });
 });
 

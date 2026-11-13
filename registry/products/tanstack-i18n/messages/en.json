@@ -1,0 +1,165 @@
+{
+  "products_title": "Products",
+  "products_meta_description": "Browse the products, search them and sort them by price, rating or discount.",
+  "products_product_fallback_title": "Product",
+  "products_meta_search_title": "Results for “{query}”",
+  "products_meta_page_title": "{title} · Page {page}",
+  "products_meta_list_description": {
+    "declarations": [
+      "input count",
+      "local countPlural = count: plural"
+    ],
+    "selectors": [
+      "countPlural"
+    ],
+    "match": {
+      "countPlural=one": "Browse {count} product, search it and sort it by price, rating or discount.",
+      "countPlural=other": "Browse {count} products, search them and sort them by price, rating or discount."
+    }
+  },
+  "products_meta_category_description": {
+    "declarations": [
+      "input count",
+      "local countPlural = count: plural"
+    ],
+    "selectors": [
+      "countPlural"
+    ],
+    "match": {
+      "countPlural=one": "Browse {count} product in {category} and sort it by price, rating or discount.",
+      "countPlural=other": "Browse {count} products in {category} and sort them by price, rating or discount."
+    }
+  },
+  "products_meta_search_description": {
+    "declarations": [
+      "input count",
+      "local countPlural = count: plural"
+    ],
+    "selectors": [
+      "countPlural"
+    ],
+    "match": {
+      "countPlural=one": "{count} result for “{query}”.",
+      "countPlural=other": "{count} results for “{query}”."
+    }
+  },
+  "products_search_label": "Search products",
+  "products_category_label": "Category",
+  "products_all_categories": "All categories",
+  "products_sort_label": "Sort by",
+  "products_sort_featured": "Featured",
+  "products_sort_price_asc": "Price: low to high",
+  "products_sort_price_desc": "Price: high to low",
+  "products_sort_rating": "Top rated",
+  "products_sort_discount": "Biggest discount",
+  "products_sort_title": "Name: A to Z",
+  "products_summary_products": {
+    "declarations": [
+      "input count",
+      "local countPlural = count: plural"
+    ],
+    "selectors": [
+      "countPlural"
+    ],
+    "match": {
+      "countPlural=one": "{from}–{to} of {count} product",
+      "countPlural=other": "{from}–{to} of {count} products"
+    }
+  },
+  "products_summary_results": {
+    "declarations": [
+      "input count",
+      "local countPlural = count: plural"
+    ],
+    "selectors": [
+      "countPlural"
+    ],
+    "match": {
+      "countPlural=one": "{from}–{to} of {count} result for “{query}”",
+      "countPlural=other": "{from}–{to} of {count} results for “{query}”"
+    }
+  },
+  "products_no_products_found": "No products found",
+  "products_loading_products": "Loading products",
+  "products_load_error_title": "Could not load products",
+  "products_retry": "Retry",
+  "products_retrying": "Retrying…",
+  "products_empty_page_title": "This page is empty",
+  "products_empty_page_description": "The results end before page {page}.",
+  "products_go_to_first_page": "Go to the first page",
+  "products_no_results_description": "Nothing matches “{query}”.",
+  "products_empty_category_description": "This category has no products.",
+  "products_clear_filters": "Clear filters",
+  "products_no_products_title": "No products yet",
+  "products_no_products_description": "The API returned an empty list.",
+  "products_pagination_label": "Pagination",
+  "products_previous": "Previous",
+  "products_previous_page": "Previous page",
+  "products_next": "Next",
+  "products_next_page": "Next page",
+  "products_page_status": "Page {page} of {totalPages}",
+  "products_discount": "-{percent}%",
+  "products_stock_low": "Low stock",
+  "products_stock_out": "Out of stock",
+  "products_sale_price": "Sale price {sale}, was {list}",
+  "products_price": "Price {price}",
+  "products_rating": "Rated {rating} out of 5",
+  "products_all_products": "All products",
+  "products_not_found_title": "Product not found",
+  "products_not_found_description": "It may have been removed, or the link is wrong.",
+  "products_detail_load_error_title": "Could not load the product",
+  "products_loading_product": "Loading product",
+  "products_add_to_cart": "Add to cart",
+  "products_added_to_cart": "Added to cart",
+  "products_review_count": {
+    "declarations": [
+      "input count",
+      "local countPlural = count: plural"
+    ],
+    "selectors": [
+      "countPlural"
+    ],
+    "match": {
+      "countPlural=one": "{count} review",
+      "countPlural=other": "{count} reviews"
+    }
+  },
+  "products_in_stock": "{count} in stock",
+  "products_tags": "Tags",
+  "products_reviews_title": "Reviews",
+  "products_no_reviews": "No reviews yet.",
+  "products_details_title": "Details",
+  "products_spec_sku": "SKU",
+  "products_spec_warranty": "Warranty",
+  "products_spec_shipping": "Shipping",
+  "products_spec_returns": "Returns",
+  "products_spec_minimum_order": "Minimum order",
+  "products_minimum_order_value": {
+    "declarations": [
+      "input count",
+      "local countPlural = count: plural"
+    ],
+    "selectors": [
+      "countPlural"
+    ],
+    "match": {
+      "countPlural=one": "{count} piece",
+      "countPlural=other": "{count} pieces"
+    }
+  },
+  "products_spec_size": "Size (W × H × D)",
+  "products_favorite": "Favorite",
+  "products_added_to_favorites": "Added to favorites",
+  "products_removed_from_favorites": "Removed from favorites",
+  "products_open_image": "Open image {index} of {total} in full screen",
+  "products_show_image": "Show image {index} of {total}",
+  "products_previous_image": "Previous image",
+  "products_next_image": "Next image",
+  "products_images_label": "Images",
+  "products_carousel_label": "{title} images",
+  "products_slide_label": "{index} of {total}",
+  "products_image_alt": "{title}, image {index} of {total}",
+  "products_error_network": "Network request failed",
+  "products_error_status": "Request failed with status {status}",
+  "products_error_unknown": "Something went wrong."
+}
