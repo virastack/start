@@ -159,9 +159,12 @@ describe("CheckoutCard", () => {
 
     expect(await within(payment).findByText(/Visa/)).toBeInTheDocument()
     expect(within(payment).getByText(/0006/)).toBeInTheDocument()
-    expect(body).toContain("tok_dummy_")
-    expect(body).not.toContain("4543590000000006")
-    expect(body).not.toContain("321")
+    // The token holds a timestamp, whose digits can spell the CVV, so it is checked on its own.
+    const { cardToken, ...details } = JSON.parse(body) as Record<string, unknown>
+    const sent = JSON.stringify(details)
+    expect(cardToken).toMatch(/^tok_dummy_\d+$/)
+    expect(sent).not.toContain("4543590000000006")
+    expect(sent).not.toContain("321")
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument()
   })
 
