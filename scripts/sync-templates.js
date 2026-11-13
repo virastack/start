@@ -7,6 +7,7 @@
  * `templates-shared` is the source of what all four templates share. Framework pairs still copy
  * from their base template. Feature files are listed one by one, because a feature differs per
  * framework: a whole feature folder is refused. The users module lives in `registry/users`.
+ * `FORBIDDEN` lists files no template may have, and `--write` removes them.
  * This script never ships in the npm package and never runs on a user's machine.
  */
 import { execFileSync } from "node:child_process";
@@ -113,6 +114,20 @@ export const GROUPS = [
     ],
   },
 ];
+
+/**
+ * A `loading.tsx` above the pages wraps every page in a Suspense boundary, so the response starts
+ * before the page is ready: `notFound()` then answers 200, and without JavaScript the page stays
+ * hidden in the streamed HTML. Pages that want a loading state bring their own.
+ */
+export const FORBIDDEN = ["src/app/loading.tsx", "src/app/[locale]/loading.tsx"];
+
+/** The forbidden files a template has. Paths are relative to `root`. */
+export function planForbidden(root, templates = TEMPLATES) {
+  return templates.flatMap((template) =>
+    FORBIDDEN.map((file) => path.posix.join(template, file)).filter((file) => existsSync(path.join(root, file))),
+  );
+}
 
 function assertEntry(entry) {
   const normalized = path.posix.normalize(entry);
@@ -225,12 +240,15 @@ export function applyPlan(root, { copies, removals }, dependencies) {
 function main() {
   const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
   const write = process.argv.includes("--write");
-  const plan = planFiles(root);
+  const files = planFiles(root);
+  const forbidden = planForbidden(root);
+  const plan = { ...files, removals: [...files.removals, ...forbidden] };
   const dependencies = planDependencies(root);
   const total = plan.copies.length + plan.removals.length + dependencies.length;
 
   for (const { from, to } of plan.copies) console.log(`differs   ${to}  (source: ${from})`);
-  for (const file of plan.removals) console.log(`extra     ${file}`);
+  for (const file of files.removals) console.log(`extra     ${file}`);
+  for (const file of forbidden) console.log(`forbidden ${file}`);
   for (const { template, name, version, expected } of dependencies) {
     console.log(`version   ${template}: ${name} ${version}, expected ${expected}`);
   }

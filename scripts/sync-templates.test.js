@@ -3,7 +3,7 @@ import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { afterEach, describe, expect, it } from "vitest";
-import { applyPlan, GROUPS, planDependencies, planFiles, TEMPLATES } from "./sync-templates.js";
+import { applyPlan, GROUPS, planDependencies, planFiles, planForbidden, TEMPLATES } from "./sync-templates.js";
 
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const SOURCE = "templates/a";
@@ -168,10 +168,18 @@ describe("planDependencies", () => {
   });
 });
 
+describe("planForbidden", () => {
+  it("finds a root loading file in any template", () => {
+    const root = fixture({ "templates/nextjs/src/app/loading.tsx": "x", "templates-i18n/nextjs/src/app/[locale]/loading.tsx": "x", "templates/nextjs/src/app/users/loading.tsx": "x" });
+    expect(planForbidden(root)).toEqual(["templates/nextjs/src/app/loading.tsx", "templates-i18n/nextjs/src/app/[locale]/loading.tsx"]);
+  });
+});
+
 describe("this repository", () => {
   it("keeps the four templates in sync", () => {
     expect(planFiles(REPO)).toEqual({ copies: [], removals: [] });
     expect(planDependencies(REPO)).toEqual([]);
+    expect(planForbidden(REPO)).toEqual([]);
   });
 
   it("feeds all four templates from templates-shared", () => {
