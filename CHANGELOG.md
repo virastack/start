@@ -1,6 +1,6 @@
 # Changelog
 
-## [Unreleased]
+## [v2.2.1] - 2026-11-14
 
 This release does not change existing projects. The new module ships from the registry and works with the published CLI.
 
