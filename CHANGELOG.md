@@ -12,6 +12,7 @@ This release does not change existing projects. The new module ships from the re
 ### Templates
 
 - **README**: The modules line lists `products` and `cart`, and says which modules bring their pages.
+- **TanStack Router lint**: TanStack templates add `@tanstack/eslint-plugin-router`. It checks that route options follow the order TanStack Router infers types in, so `head` sees the `loader` data, and `--fix` puts them in order.
 
 ## [v2.2.0] - 2026-11-13
 
