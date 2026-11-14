@@ -3,6 +3,7 @@
 import { existsSync, readdirSync } from "node:fs"
 
 import { tanstackConfig } from "@tanstack/eslint-config"
+import pluginRouter from "@tanstack/eslint-plugin-router"
 import reactHooks from "eslint-plugin-react-hooks"
 
 const PARENT_IMPORT = {
@@ -65,6 +66,8 @@ const boundaries = [
 export default [
   ...tanstackConfig,
   reactHooks.configs.flat.recommended,
+  // Route options must follow the order TanStack Router infers types in (loader before head, ...).
+  ...pluginRouter.configs["flat/recommended"],
   // UI primitives come from shadcn; `shadcn add` must not fail lint on its own output.
   {
     files: ["src/components/ui/**/*.tsx"],
