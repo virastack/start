@@ -286,7 +286,7 @@ async function readJson(filePath, name) {
   try {
     return JSON.parse(await fs.readFile(filePath, "utf8"));
   } catch (error) {
-    throw new Error(`${name} could not be read: ${error.message}`, { cause: error });
+    throw new Error(`${name} could not be read: ${error instanceof Error ? error.message : String(error)}`, { cause: error });
   }
 }
 

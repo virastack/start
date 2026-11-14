@@ -1,8 +1,7 @@
 {
   "compilerOptions": {
-    "strict": false,
+    "strict": true,
     "noImplicitAny": false,
-    "strictNullChecks": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "target": "ES2022",
