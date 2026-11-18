@@ -28,6 +28,12 @@ describe("the site preview's copy", () => {
     );
   });
 
+  it("points the auth module's imports at its own preview folder", () => {
+    expect(toPreviewImports('import { LoginForm } from "@/features/auth/components/LoginForm"')).toBe(
+      'import { LoginForm } from "@/features/start/demos/auth/components/LoginForm"',
+    );
+  });
+
   it("points the cart's imports at its own preview folder", () => {
     expect(toPreviewImports('import { Cart } from "@/features/cart/components/Cart"')).toBe(
       'import { Cart } from "@/features/start/demos/cart/components/Cart"',

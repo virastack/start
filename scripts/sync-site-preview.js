@@ -15,7 +15,7 @@ import { buildItem, FEATURES } from "./build-registry.js";
 
 const LAYERS = ["common", "nextjs"];
 /** The site speaks two languages, so these previews use their i18n layer and its messages. */
-const I18N_PREVIEWS = new Set(["users", "checkout-address", "checkout-card", "products", "cart"]);
+const I18N_PREVIEWS = new Set(["users", "checkout-address", "checkout-card", "products", "cart", "auth"]);
 /**
  * A module's message namespace the site already uses for its own text, renamed in the preview's
  * copy and in the messages merged into the site.
@@ -54,16 +54,21 @@ export function toPreviewImports(source) {
     .replaceAll('"@/features/checkout-card/', `"@/${DEMOS.slice(4)}/checkout-card/`)
     .replaceAll('"@/features/products/', `"@/${DEMOS.slice(4)}/products/`)
     .replaceAll('"@/features/cart/', `"@/${DEMOS.slice(4)}/cart/`)
+    .replaceAll('"@/features/auth/', `"@/${DEMOS.slice(4)}/auth/`)
     .replaceAll('"@/components/ui/', `"@/${USERS_PREVIEW.slice(4)}/ui/`)
     .replaceAll('"@/lib/api"', `"@/${USERS_PREVIEW.slice(4)}/lib/api"`)
     .replaceAll('"@/lib/query-client"', `"@/${USERS_PREVIEW.slice(4)}/lib/query-client"`)
     .replaceAll('from "cn"', 'from "@/lib/utils"');
 }
 
-/** The products demo lives under the preview route, not at the module's own pages. */
+/** The products and auth demos live under the preview route, not at the modules' own pages. */
 const SITE_REWRITES = {
   "products/constants/products.constants.ts": [
     ['export const PRODUCTS_ROUTE = "/products"', 'export const PRODUCTS_ROUTE = "/start/preview/products"'],
+  ],
+  "auth/constants/auth.constants.ts": [
+    ['export const LOGIN_ROUTE = "/login"', 'export const LOGIN_ROUTE = "/start/preview/auth"'],
+    ['export const REGISTER_ROUTE = "/register"', 'export const REGISTER_ROUTE = "/start/preview/auth/register"'],
   ],
 };
 

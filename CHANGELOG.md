@@ -1,5 +1,17 @@
 # Changelog
 
+## [Unreleased]
+
+This release does not change existing projects. The new module ships from the registry and works with the published CLI.
+
+### Modules
+
+- **`auth`**: A sign-in page at `/login` and a sign-up page at `/register`. Sign-in checks the username and password against DummyJSON, says when they are wrong, offers its demo account and shows who is signed in, with a sign-out button. Sign-up asks for the name, a username, an email and a password that `@virastack/password` scores as it is typed against a NIST policy (length, common passwords, repeats and personal details), with a confirmation, and shows the account DummyJSON returns. The password fields have a show and hide button and a Caps Lock hint, and the forms post, so a submit before hydration never puts the password in the URL. The tokens DummyJSON sends never reach the page or the cache, the password leaves the form and the mutation once the answer is in, and the signed-in user lives only in the TanStack Query cache, ready for the installer's real session. The server renders the pages, which stay out of search results. It works in all four templates, with Turkish and English messages in the i18n ones.
+
+### Templates
+
+- **README**: The modules line lists `auth` among the modules that bring their pages.
+
 ## [v2.2.1] - 2026-11-14
 
 This release does not change existing projects. The new module ships from the registry and works with the published CLI.

@@ -130,8 +130,22 @@ describe("pages", () => {
     }
   });
 
+  it("list the sign-in and sign-up pages where the auth module's links point, in every template", () => {
+    const auth = FEATURES.find(({ name }) => name === "auth");
+    expect(auth).toBeDefined();
+    const constants = readFileSync(
+      path.join(REPO, "registry/auth/common/src/features/auth/constants/auth.constants.ts"),
+      "utf8",
+    );
+    const routes = [...constants.matchAll(/export const (?:LOGIN|REGISTER)_ROUTE = "([^"]+)"/g)].map(([, route]) => route);
+    expect(routes).toEqual(["/login", "/register"]);
+    for (const framework of auth?.frameworks ?? []) {
+      expect(buildItem(REPO, auth, framework).meta.pages.map((page) => page.path).sort()).toEqual(routes);
+    }
+  });
+
   it("are not listed for a module without them", () => {
-    for (const feature of FEATURES.filter(({ name }) => !["products", "cart"].includes(name))) {
+    for (const feature of FEATURES.filter(({ name }) => !["products", "cart", "auth"].includes(name))) {
       for (const framework of feature.frameworks) expect(buildItem(REPO, feature, framework).meta.pages).toBeUndefined();
     }
   });
