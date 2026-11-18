@@ -7,7 +7,7 @@ import { describe, expect, it } from "vitest"
 import { siteConfig } from "@/config/site.config"
 
 import { RegisterForm } from "@/features/auth/components/RegisterForm"
-import { REGISTER_PATH } from "@/features/auth/constants/auth.constants"
+import { NAME_MAX_LENGTH, REGISTER_PATH } from "@/features/auth/constants/auth.constants"
 import { renderWithProviders } from "@/test/render"
 import { server } from "@/test/server"
 
@@ -54,23 +54,41 @@ describe("RegisterForm", () => {
     const user = userEvent.setup()
     await renderRegister()
 
-    await user.type(screen.getByLabelText("Username"), "not valid")
     await user.type(screen.getByLabelText("Email"), "ada@")
     await user.click(screen.getByRole("button", { name: "Create account" }))
 
     expect(await screen.findByText("Enter your first name")).toBeInTheDocument()
     expect(screen.getByText("Enter your last name")).toBeInTheDocument()
-    expect(screen.getByText(/Use letters, numbers/)).toBeInTheDocument()
+    expect(screen.getByText("Choose a username")).toBeInTheDocument()
     expect(screen.getByText("Enter a valid email address")).toBeInTheDocument()
     expect(screen.getByText("Use at least 15 characters")).toBeInTheDocument()
     // The error joins the strength in the field's description; it does not replace it.
     const password = screen.getByLabelText("Password")
     expect(password).toHaveAccessibleDescription(/Use at least 15 characters/)
-    expect(password).toHaveAccessibleDescription(/Choose a long password/)
+    expect(password).toHaveAccessibleDescription(/15 characters or more/)
     expect(bodies).toHaveLength(0)
   })
 
-  it("scores the password as it is typed and ticks the rules it meets", async () => {
+  it("keeps the names to letters and spaces, and the username to what a username can hold", async () => {
+    const user = userEvent.setup()
+    await renderRegister()
+
+    await user.type(screen.getByLabelText("First name"), "Ş1ule  Çağ#rı")
+    await user.type(screen.getByLabelText("Last name"), "Gül2çiçek")
+    await user.type(screen.getByLabelText("Username"), "Ada.Love Lace!")
+
+    expect(screen.getByLabelText("First name")).toHaveValue("Şule Çağrı")
+    expect(screen.getByLabelText("Last name")).toHaveValue("Gülçiçek")
+    expect(screen.getByLabelText("Username")).toHaveValue("ada.lovelace")
+
+    // The mask stops where the schema does.
+    await user.type(screen.getByLabelText("Last name"), "a".repeat(NAME_MAX_LENGTH))
+    expect(screen.getByLabelText("Last name")).toHaveValue(
+      `Gülçiçek${"a".repeat(NAME_MAX_LENGTH - 8)}`
+    )
+  })
+
+  it("scores the password as it is typed and describes the field with its strength", async () => {
     const user = userEvent.setup()
     await renderRegister()
     const password = screen.getByLabelText("Password")
@@ -78,12 +96,10 @@ describe("RegisterForm", () => {
 
     await user.type(password, "short")
     expect(screen.getByText("Strength: Weak")).toHaveAttribute("role", "status")
-    expect(screen.getByText("15 to 64 characters")).toHaveTextContent("Not met:")
 
     await user.clear(password)
     await user.type(password, PASSWORD)
     expect(screen.getByText("Strength: Good")).toBeInTheDocument()
-    expect(screen.getByText("15 to 64 characters")).toHaveTextContent("Met:")
     expect(password).toHaveAccessibleDescription(/Strength: Good/)
   })
 

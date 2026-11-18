@@ -11,6 +11,6 @@ export function useLogout() {
   return useMutation({
     mutationFn: logout,
     // With your API, also clear the queries that belong to the user: `queryClient.clear()`.
-    onSuccess: () => queryClient.setQueryData(authKeys.session, null)
+    onSuccess: () => queryClient.setQueryData(authKeys.session(), null)
   })
 }

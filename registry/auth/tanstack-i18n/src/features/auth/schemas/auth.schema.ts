@@ -2,7 +2,11 @@ import type { PasswordIssue } from "@virastack/password/strength"
 import { evaluate } from "@virastack/password/strength"
 import { z } from "zod"
 
-import { PASSWORD_POLICY } from "@/features/auth/constants/auth.constants"
+import {
+  NAME_MAX_LENGTH,
+  PASSWORD_POLICY,
+  USERNAME_MAX_LENGTH
+} from "@/features/auth/constants/auth.constants"
 import * as m from "@/paraglide/messages"
 
 /**
@@ -20,13 +24,7 @@ export const sessionUserSchema = z.object({
 })
 
 /** The new account. DummyJSON echoes everything it was sent, the password too: it is left out. */
-export const registeredUserSchema = z.object({
-  id: z.number(),
-  username: z.string(),
-  email: z.string(),
-  firstName: z.string(),
-  lastName: z.string()
-})
+export const registeredUserSchema = sessionUserSchema.omit({ image: true })
 
 // `error` is a function because these schemas are built once, before any locale is known.
 export const loginFormSchema = z.object({
@@ -38,7 +36,7 @@ export const loginFormSchema = z.object({
   password: z.string().min(1, { error: () => m.auth_error_password() })
 })
 
-const tooLong = { error: () => m.auth_error_too_long() }
+const tooLong = (max: number) => ({ error: () => m.auth_error_too_long({ max }) })
 
 /** The package answers with keys; the words are the visitor's language, read at each check. */
 const PASSWORD_ISSUES: Record<PasswordIssue, () => string> = {
@@ -62,18 +60,18 @@ export const registerFormSchema = z
       .string()
       .trim()
       .min(1, { error: () => m.auth_error_first_name() })
-      .max(50, tooLong),
+      .max(NAME_MAX_LENGTH, tooLong(NAME_MAX_LENGTH)),
     lastName: z
       .string()
       .trim()
       .min(1, { error: () => m.auth_error_last_name() })
-      .max(50, tooLong),
+      .max(NAME_MAX_LENGTH, tooLong(NAME_MAX_LENGTH)),
     username: z
       .string()
       .trim()
       .min(1, { error: () => m.auth_error_new_username() })
-      .max(50, tooLong)
-      .regex(/^[\w.-]+$/, { error: () => m.auth_error_username_format() }),
+      .max(USERNAME_MAX_LENGTH, tooLong(USERNAME_MAX_LENGTH))
+      .regex(/^[a-z0-9._-]+$/, { error: () => m.auth_error_username_format() }),
     email: z
       .string()
       .trim()

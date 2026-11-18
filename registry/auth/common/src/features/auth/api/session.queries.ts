@@ -9,7 +9,7 @@ import { authKeys } from "@/features/auth/api/query-keys"
  * `getHeaders` or `credentials`, and guard your private pages in your own routes or proxy.
  */
 export const sessionQueryOptions = queryOptions({
-  queryKey: authKeys.session,
+  queryKey: authKeys.session(),
   queryFn: getSession,
   // Only sign-in and sign-out change it: no refetch of the placeholder `getSession`, which answers
   // `null`, may sign the visitor out. With a real `getSession`, remove this line.

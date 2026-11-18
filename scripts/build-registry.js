@@ -147,20 +147,21 @@ export const FEATURES = [
     // Its pages are in its layers, so `route` only describes the entry for a page of the reader's,
     // after `add --no-pages`.
     route: { feature: "auth", component: "LoginForm" },
-    packages: { "@virastack/password": "^1.2.0" },
+    packages: { "@virastack/mask": "^2.4.0", "@virastack/password": "^1.2.0" },
     e2e: {
       // The server renders the pages with their forms, which post: a submit before hydration never
       // puts the password in the URL. The session and the requests stay in the browser.
       pages: [
-        { path: "/login", text: "Use demo account", localized: true },
+        { path: "/login", text: "No account yet?", localized: true },
         { path: "/register", text: "Confirm password", localized: true },
       ],
       missing: [],
       head: [
-        { path: "/login", includes: ['name="robots" content="noindex, follow"', 'method="post"'] },
+        // The username comes filled in with the demo account.
+        { path: "/login", includes: ['name="robots" content="noindex, follow"', 'method="post"', 'value="emilys"'] },
         { path: "/register", includes: ['name="robots" content="noindex, follow"', 'method="post"'] },
       ],
-      tr: { text: "Demo hesabı kullan" },
+      tr: { text: "Hesabın yok mu?" },
     },
     minStartVersion: "2.0.0",
   },

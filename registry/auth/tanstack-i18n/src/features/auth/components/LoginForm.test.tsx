@@ -47,7 +47,10 @@ async function renderLogin() {
 }
 
 async function signIn(user: UserEvent, username: string, password: string) {
-  await user.type(await renderLogin(), username)
+  const field = await renderLogin()
+  await user.clear(field)
+  await user.type(field, username)
+  await user.clear(screen.getByLabelText("Password"))
   await user.type(screen.getByLabelText("Password"), password)
   await user.click(screen.getByRole("button", { name: "Sign in" }))
 }
@@ -56,8 +59,8 @@ describe("LoginForm", () => {
   it("sends nothing while a field is empty", async () => {
     const bodies = serveLogin()
     const user = userEvent.setup()
-    await renderLogin()
-
+    await user.clear(await renderLogin())
+    await user.clear(screen.getByLabelText("Password"))
     await user.click(screen.getByRole("button", { name: "Sign in" }))
 
     expect(await screen.findByText("Enter your username")).toBeInTheDocument()
@@ -79,7 +82,7 @@ describe("LoginForm", () => {
     const user = userEvent.setup()
     await renderLogin()
     const password = screen.getByLabelText("Password")
-    const toggle = screen.getByRole("button", { name: "Show password" })
+    const toggle = screen.getByRole("button", { name: "Toggle password visibility" })
 
     await user.click(toggle)
     expect(password).toHaveAttribute("type", "text")
@@ -110,12 +113,12 @@ describe("LoginForm", () => {
     expect(await screen.findByRole("alert")).toHaveTextContent("Could not sign in")
   })
 
-  it("fills in the demo account, signs in and shows who is signed in, without the tokens", async () => {
+  it("starts with the demo account, signs in with one click and shows who, without the tokens", async () => {
     const bodies = serveLogin()
     const user = userEvent.setup()
-    await renderLogin()
+    expect(await renderLogin()).toHaveValue("emilys")
+    expect(screen.getByLabelText("Password")).toHaveValue("emilyspass")
 
-    await user.click(screen.getByRole("button", { name: "Use demo account" }))
     await user.click(screen.getByRole("button", { name: "Sign in" }))
 
     const status = await screen.findByRole("status")
@@ -125,15 +128,26 @@ describe("LoginForm", () => {
     expect(document.body.innerHTML).not.toMatch(/xyzzy|plugh|emilyspass/)
   })
 
-  it("signs out back to the form", async () => {
+  it("signs out back to the form, filled with the demo account again", async () => {
     serveLogin()
     const user = userEvent.setup()
 
     await signIn(user, "emilys", "emilyspass")
     await user.click(await screen.findByRole("button", { name: "Sign out" }))
 
-    expect(await screen.findByLabelText("Username")).toHaveValue("")
+    expect(await screen.findByLabelText("Username")).toHaveValue("emilys")
+    expect(screen.getByLabelText("Password")).toHaveValue("emilyspass")
     expect(screen.queryByRole("status")).not.toBeInTheDocument()
+  })
+
+  it("lets the username hold only what a username can: capitals become lowercase", async () => {
+    const user = userEvent.setup()
+    const username = await renderLogin()
+
+    await user.clear(username)
+    await user.type(username, "Emily S!@ü")
+
+    expect(username).toHaveValue("emilys")
   })
 
   it("links to the sign-up page", async () => {

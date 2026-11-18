@@ -2,7 +2,11 @@ import type { PasswordIssue } from "@virastack/password/strength"
 import { evaluate } from "@virastack/password/strength"
 import { z } from "zod"
 
-import { PASSWORD_POLICY } from "@/features/auth/constants/auth.constants"
+import {
+  NAME_MAX_LENGTH,
+  PASSWORD_POLICY,
+  USERNAME_MAX_LENGTH
+} from "@/features/auth/constants/auth.constants"
 
 /**
  * The signed-in user. DummyJSON also sends an access and a refresh token: they are left out on
@@ -19,13 +23,7 @@ export const sessionUserSchema = z.object({
 })
 
 /** The new account. DummyJSON echoes everything it was sent, the password too: it is left out. */
-export const registeredUserSchema = z.object({
-  id: z.number(),
-  username: z.string(),
-  email: z.string(),
-  firstName: z.string(),
-  lastName: z.string()
-})
+export const registeredUserSchema = sessionUserSchema.omit({ image: true })
 
 export const loginFormSchema = z.object({
   username: z.string().trim().min(1, "Enter your username"),
@@ -33,7 +31,7 @@ export const loginFormSchema = z.object({
   password: z.string().min(1, "Enter your password")
 })
 
-const TOO_LONG = "Use 50 characters or fewer"
+const tooLong = (max: number) => `Use ${max} characters or fewer`
 
 /** The package answers with keys; the words are the form's. */
 const PASSWORD_ISSUES: Record<PasswordIssue, string> = {
@@ -53,14 +51,22 @@ const PASSWORD_ISSUES: Record<PasswordIssue, string> = {
 
 export const registerFormSchema = z
   .object({
-    firstName: z.string().trim().min(1, "Enter your first name").max(50, TOO_LONG),
-    lastName: z.string().trim().min(1, "Enter your last name").max(50, TOO_LONG),
+    firstName: z
+      .string()
+      .trim()
+      .min(1, "Enter your first name")
+      .max(NAME_MAX_LENGTH, tooLong(NAME_MAX_LENGTH)),
+    lastName: z
+      .string()
+      .trim()
+      .min(1, "Enter your last name")
+      .max(NAME_MAX_LENGTH, tooLong(NAME_MAX_LENGTH)),
     username: z
       .string()
       .trim()
       .min(1, "Choose a username")
-      .max(50, TOO_LONG)
-      .regex(/^[\w.-]+$/, "Use letters, numbers, dots, hyphens or underscores"),
+      .max(USERNAME_MAX_LENGTH, tooLong(USERNAME_MAX_LENGTH))
+      .regex(/^[a-z0-9._-]+$/, "Use lowercase letters, numbers, dots, hyphens or underscores"),
     email: z.string().trim().pipe(z.email("Enter a valid email address")),
     password: z.string(),
     confirmPassword: z.string()

@@ -1,10 +1,10 @@
 "use client"
 
-import { EyeIcon, EyeOffIcon } from "lucide-react"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { maskResolver, useViraMask } from "@virastack/mask"
 import { useViraPassword } from "@virastack/password"
 import { useTranslations } from "next-intl"
-import { useForm, useWatch } from "react-hook-form"
+import { useForm } from "react-hook-form"
 
 import { Button } from "@/components/ui/button"
 import { Field, FieldError, FieldLabel } from "@/components/ui/field"
@@ -12,7 +12,7 @@ import { Input } from "@/components/ui/input"
 import { AuthLink } from "@/features/auth/components/AuthLink"
 import { PasswordInput } from "@/features/auth/components/PasswordInput"
 import { SignedInCard } from "@/features/auth/components/SignedInCard"
-import { DEMO_ACCOUNT, REGISTER_ROUTE } from "@/features/auth/constants/auth.constants"
+import { DEMO_ACCOUNT, LOGIN_MASKS, REGISTER_ROUTE } from "@/features/auth/constants/auth.constants"
 import { isInvalidCredentials } from "@/features/auth/helpers/is-invalid-credentials"
 import { useLogin } from "@/features/auth/hooks/use-login"
 import { useSession } from "@/features/auth/hooks/use-session"
@@ -24,28 +24,23 @@ export function LoginForm() {
   const session = useSession()
   const login = useLogin()
   const form = useForm<LoginFormInput>({
-    resolver: zodResolver(createLoginFormSchema(t)),
-    defaultValues: { username: "", password: "" }
+    resolver: maskResolver(LOGIN_MASKS, zodResolver(createLoginFormSchema(t))),
+    // The demo account, so one click signs in. With your API, start both fields empty.
+    defaultValues: { username: DEMO_ACCOUNT.username, password: DEMO_ACCOUNT.password }
   })
+  const { username } = useViraMask(form, LOGIN_MASKS)
   const { errors, isSubmitting } = form.formState
-  // From `useWatch`, so `setValue` and `reset` reach the hook too.
-  const passwordValue = useWatch({ control: form.control, name: "password" })
-  // No policy: signing in checks the password, it does not judge it.
-  const password = useViraPassword({
-    id: "password",
-    value: passwordValue,
-    icons: { show: <EyeIcon aria-hidden />, hide: <EyeOffIcon aria-hidden /> },
-    btnProps: { "aria-label": t("show_password") },
-    inputProps: {
-      "aria-invalid": Boolean(errors.password),
-      ...(errors.password && { "aria-describedby": "password-error" })
-    }
+  // Bound to the form, so `password.inputProps` holds `register()`. With the resolver its rule does
+  // not run: the schema checks the field.
+  const { password } = useViraPassword(form, {
+    password: { btnProps: { "aria-label": t("toggle_password") } }
   })
 
   const onSubmit = form.handleSubmit(async (input) => {
     try {
       await login.mutateAsync(input)
-      // The form stays mounted under the signed-in card, so the password leaves it now.
+      // The form stays mounted under the signed-in card, so the password typed leaves it now; it
+      // goes back to its default values, ready for the next sign-in after a sign-out.
       form.reset()
     } catch (error) {
       form.setValue("password", "")
@@ -65,36 +60,15 @@ export function LoginForm() {
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-dashed p-3 text-sm">
-        <p className="text-muted-foreground">
-          {t("demo_account")}{" "}
-          <span className="font-mono text-foreground">{DEMO_ACCOUNT.username}</span> /{" "}
-          <span className="font-mono text-foreground">{DEMO_ACCOUNT.password}</span>
-        </p>
-        <Button
-          type="button"
-          variant="outline"
-          size="sm"
-          onClick={() => {
-            form.clearErrors()
-            form.setValue("username", DEMO_ACCOUNT.username)
-            form.setValue("password", DEMO_ACCOUNT.password)
-          }}
-        >
-          {t("use_demo_account")}
-        </Button>
-      </div>
       {/* `post`: before hydration the browser submits natively, and a GET puts the password in the URL. */}
       <form method="post" onSubmit={onSubmit} noValidate className="flex flex-col gap-4">
         <Field data-invalid={Boolean(errors.username)}>
           <FieldLabel htmlFor="username">{t("field_username")}</FieldLabel>
           <Input
-            {...form.register("username")}
+            {...username}
             id="username"
-            autoComplete="username"
             autoCapitalize="none"
             spellCheck={false}
-            aria-invalid={Boolean(errors.username)}
             aria-describedby={errors.username ? "username-error" : undefined}
           />
           {errors.username ? (
@@ -102,10 +76,10 @@ export function LoginForm() {
           ) : null}
         </Field>
         <Field data-invalid={Boolean(errors.password)}>
-          <FieldLabel htmlFor="password">{t("field_password")}</FieldLabel>
+          <FieldLabel htmlFor={password.inputProps.id}>{t("field_password")}</FieldLabel>
           <PasswordInput
-            {...form.register("password")}
             password={password}
+            errorId={errors.password && "password-error"}
             capsLockHint={t("caps_lock")}
           />
           {errors.password ? (

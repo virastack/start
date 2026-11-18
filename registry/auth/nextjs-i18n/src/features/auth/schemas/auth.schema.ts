@@ -3,7 +3,11 @@ import { evaluate } from "@virastack/password/strength"
 import type { useTranslations } from "next-intl"
 import { z } from "zod"
 
-import { PASSWORD_POLICY } from "@/features/auth/constants/auth.constants"
+import {
+  NAME_MAX_LENGTH,
+  PASSWORD_POLICY,
+  USERNAME_MAX_LENGTH
+} from "@/features/auth/constants/auth.constants"
 
 type AuthTranslator = ReturnType<typeof useTranslations<"Auth">>
 
@@ -22,13 +26,7 @@ export const sessionUserSchema = z.object({
 })
 
 /** The new account. DummyJSON echoes everything it was sent, the password too: it is left out. */
-export const registeredUserSchema = z.object({
-  id: z.number(),
-  username: z.string(),
-  email: z.string(),
-  firstName: z.string(),
-  lastName: z.string()
-})
+export const registeredUserSchema = sessionUserSchema.omit({ image: true })
 
 /** A factory, so validation errors come in the visitor's language. */
 export function createLoginFormSchema(t: AuthTranslator) {
@@ -62,14 +60,22 @@ function wordPasswordIssue(t: AuthTranslator, issue: PasswordIssue) {
 export function createRegisterFormSchema(t: AuthTranslator) {
   return z
     .object({
-      firstName: z.string().trim().min(1, t("error_first_name")).max(50, t("error_too_long")),
-      lastName: z.string().trim().min(1, t("error_last_name")).max(50, t("error_too_long")),
+      firstName: z
+        .string()
+        .trim()
+        .min(1, t("error_first_name"))
+        .max(NAME_MAX_LENGTH, t("error_too_long", { max: NAME_MAX_LENGTH })),
+      lastName: z
+        .string()
+        .trim()
+        .min(1, t("error_last_name"))
+        .max(NAME_MAX_LENGTH, t("error_too_long", { max: NAME_MAX_LENGTH })),
       username: z
         .string()
         .trim()
         .min(1, t("error_new_username"))
-        .max(50, t("error_too_long"))
-        .regex(/^[\w.-]+$/, t("error_username_format")),
+        .max(USERNAME_MAX_LENGTH, t("error_too_long", { max: USERNAME_MAX_LENGTH }))
+        .regex(/^[a-z0-9._-]+$/, t("error_username_format")),
       email: z
         .string()
         .trim()
