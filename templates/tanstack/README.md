@@ -1,7 +1,11 @@
 <div align="center">
 
 <a href="https://github.com/virastack/start" target="_blank" rel="noreferrer">
-  <img src="https://raw.githubusercontent.com/virastack/start/main/assets/logo.png" alt="ViraStack Start" height="120" style="max-width: 100%;" />
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/virastack/start/main/assets/logo-dark.png" />
+    <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/virastack/start/main/assets/logo-light.png" />
+    <img src="https://raw.githubusercontent.com/virastack/start/main/assets/logo-light.png" alt="ViraStack Start" height="80" style="max-width: 100%;" />
+  </picture>
 </a>
 
 # ViraStack Start — TanStack Edition
