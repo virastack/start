@@ -1,6 +1,6 @@
 # Changelog
 
-## [Unreleased]
+## [v2.2.2] - 2026-11-20
 
 This release does not change existing projects. The new module ships from the registry and works with the published CLI.
 
@@ -11,6 +11,7 @@ This release does not change existing projects. The new module ships from the re
 ### Templates
 
 - **README**: The modules line lists `auth` among the modules that bring their pages.
+- **Logo**: The favicon, `logo.png`, `logo.webp` and `og.png` in every template are the new ViraStack logo, and the README hero comes in a light and a dark version.
 
 ## [v2.2.1] - 2026-11-14
 
